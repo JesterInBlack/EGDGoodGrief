@@ -6,8 +6,8 @@ public class CameraController : MonoBehaviour
 	//this class tracks the position of the players, and "zooms" the camera in and out to keep them all onscreen.
 
 
-	#region vars
-	public GameObject[] players = new GameObject[4]; //list of players, for position tracking
+	#region vars	
+	public float min_orthographic_size = 4.0f; // "maximum zoom factor"
 	#endregion
 
 	// Use this for initialization
@@ -27,10 +27,10 @@ public class CameraController : MonoBehaviour
 
 		for ( int i = 0; i < 4; i++ )
 		{
-			if ( players[i] != null )
+			if ( GameState.players[i] != null )
 			{
-				avg_x += players[i].transform.position.x;
-				avg_y += players[i].transform.position.y;
+				avg_x += GameState.players[i].transform.position.x;
+				avg_y += GameState.players[i].transform.position.y;
 				playercount ++;
 			}
 		}
@@ -49,21 +49,21 @@ public class CameraController : MonoBehaviour
 
 		for ( int i = 0; i < 4; i++ )
 		{
-			if ( players[i] != null )
+			if ( GameState.players[i] != null )
 			{
 				max_dist_x = Mathf.Max ( 
-				                        Mathf.Abs( Camera.main.transform.position.x - players[i].transform.position.x ) / ratio, 
+				                        Mathf.Abs( Camera.main.transform.position.x - GameState.players[i].transform.position.x ) / ratio, 
 				                        max_dist_x 
 				                        );
 				max_dist_y = Mathf.Max ( 
-				                        Mathf.Abs( Camera.main.transform.position.y - players[i].transform.position.y ), 
+				                        Mathf.Abs( Camera.main.transform.position.y - GameState.players[i].transform.position.y ), 
 				                        max_dist_y 
 				                        );
 			}
 		}
 		float max_dist = Mathf.Max ( max_dist_x, max_dist_y );
 
-		Camera.main.orthographicSize = Mathf.Max ( 1.0f, max_dist ); //catures a unit circle in the y, 1.67 in the x
+		Camera.main.orthographicSize = Mathf.Max ( min_orthographic_size, max_dist + 0.5f ); //catures a unit circle in the y, 1.67 in the x
 		#endregion
 	}
 }

@@ -4,6 +4,9 @@ using XInputDotNetPure; // Required in C#
 
 public class CustomController : MonoBehaviour 
 {
+	//TODO: check for collision with other players
+	//TODO: check for collision with boss
+	//TODO: call functions in class from buttons
 
 	#region vars
 	public int facing = 3; //direction for sprites (0: Right, 1: Up, 2: Left, 3: Down)
@@ -14,6 +17,7 @@ public class CustomController : MonoBehaviour
 	public float speed = 2.0f; //unity units per second (we're using Tile Size pixels per unit (64) )
 	
 	BoxCollider2D my_collider;
+	ClassFunctionalityInterface actionHandler; //stores the script that handles B, X, Y, and RT functionality.
 
 	//gamepad stuff
 	bool playerIndexSet = false;
@@ -28,12 +32,14 @@ public class CustomController : MonoBehaviour
 	void Start () 
 	{
 		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
+		actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent( typeof( ClassFunctionalityInterface ) );
 
 		#region codes
+		//TODO: remove this snippet, replace with actual working code.
 		GamePadState testState = GamePad.GetState ( playerIndex );
-		//if ( testState.IsConnected )
+		if ( testState.IsConnected )
 		{
-			//
+			playerIndexSet = true;
 		}
 		#endregion
 	}
@@ -71,18 +77,21 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.X == ButtonState.Pressed && prevGamePadState.Buttons.X == ButtonState.Released )
 			{
 				//initialize charging
+				actionHandler.XPressed();
 			}
 			
 			//X is being held
 			else if ( gamePadState.Buttons.X == ButtonState.Pressed && prevGamePadState.Buttons.X == ButtonState.Pressed )
 			{
 				//increment charging
+				actionHandler.XHeld ();
 			}
 			
 			//X was released
 			else if ( gamePadState.Buttons.X == ButtonState.Released && prevGamePadState.Buttons.X == ButtonState.Pressed )
 			{
 				//release charges, have effect
+				actionHandler.XReleased();
 			}
 			#endregion
 			#region Y
@@ -90,18 +99,21 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.Y == ButtonState.Pressed && prevGamePadState.Buttons.Y == ButtonState.Released )
 			{
 				//initialize charging
+				actionHandler.YPressed();
 			}
 			
 			//Y is being held
 			else if ( gamePadState.Buttons.Y == ButtonState.Pressed && prevGamePadState.Buttons.Y == ButtonState.Pressed )
 			{
 				//increment charging
+				actionHandler.YHeld();
 			}
 			
 			//Y was released
 			else if ( gamePadState.Buttons.Y == ButtonState.Released && prevGamePadState.Buttons.Y == ButtonState.Pressed )
 			{
 				//release charges, have effect
+				actionHandler.YReleased();
 			}
 			#endregion
 			#region B
@@ -109,37 +121,44 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.B == ButtonState.Pressed && prevGamePadState.Buttons.B == ButtonState.Released )
 			{
 				//initialize charging
+				actionHandler.BPressed();
 			}
 			
 			//B is being held
 			else if ( gamePadState.Buttons.B == ButtonState.Pressed && prevGamePadState.Buttons.B == ButtonState.Pressed )
 			{
 				//increment charging
+				actionHandler.BHeld();
 			}
 			
 			//B was released
 			else if ( gamePadState.Buttons.B == ButtonState.Released && prevGamePadState.Buttons.B == ButtonState.Pressed )
 			{
 				//release charges, have effect
+				actionHandler.BReleased();
 			}
 			#endregion
 			#region A
 			//A was pressed
+			//Define behaviour here / in a common class
 			if ( gamePadState.Buttons.A == ButtonState.Pressed && prevGamePadState.Buttons.A == ButtonState.Released )
 			{
 				//initialize charging
+				//define pick up / drop
 			}
 
 			//A is being held
 			else if ( gamePadState.Buttons.A == ButtonState.Pressed && prevGamePadState.Buttons.A == ButtonState.Pressed )
 			{
 				//increment charging
+				//define?
 			}
 
 			//A was released
 			else if ( gamePadState.Buttons.A == ButtonState.Released && prevGamePadState.Buttons.A == ButtonState.Pressed )
 			{
 				//release charges, have effect
+				//define?
 			}
 			#endregion
 
@@ -150,40 +169,47 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Triggers.Right > min_trigger_value && prevGamePadState.Triggers.Right <= min_trigger_value )
 			{
 				//initialize charging
+				actionHandler.RTPressed();
 			}
 			
 			//RT is being held
 			else if ( gamePadState.Triggers.Right > min_trigger_value && prevGamePadState.Triggers.Right > min_trigger_value )
 			{
 				//increment charging
+				actionHandler.RTHeld ();
 			}
 			
 			//RT was released
 			else if ( gamePadState.Triggers.Right <= min_trigger_value && prevGamePadState.Triggers.Right > min_trigger_value )
 			{
 				//release charges, have effect
+				actionHandler.RTReleased();
 			}
 			#endregion
 
 			#region items
 			//handles LT, LB, RB
+			//define behaviour here
 			#region left trigger
 			//LT was pressed
 			if ( gamePadState.Triggers.Left > min_trigger_value && prevGamePadState.Triggers.Left <= min_trigger_value )
 			{
 				//initialize charging
+				//use un-charge-able items.
 			}
 			
 			//LT is being held
 			else if ( gamePadState.Triggers.Left > min_trigger_value && prevGamePadState.Triggers.Left > min_trigger_value )
 			{
 				//increment charging
+				//charge item
 			}
 			
 			//LT was released
 			else if ( gamePadState.Triggers.Left <= min_trigger_value && prevGamePadState.Triggers.Left > min_trigger_value )
 			{
 				//release charges, have effect
+				//use chargeable items
 			}
 			#endregion
 			#region left bumper
@@ -203,6 +229,7 @@ public class CustomController : MonoBehaviour
 			else if ( gamePadState.Buttons.LeftShoulder == ButtonState.Released && prevGamePadState.Buttons.LeftShoulder == ButtonState.Pressed )
 			{
 				//release charges, have effect
+				//do nothing.
 			}
 			#endregion
 			#region right bumper
@@ -222,6 +249,7 @@ public class CustomController : MonoBehaviour
 			else if ( gamePadState.Buttons.RightShoulder == ButtonState.Released && prevGamePadState.Buttons.RightShoulder == ButtonState.Pressed )
 			{
 				//release charges, have effect
+				//do nothing.
 			}
 			#endregion
 
@@ -233,12 +261,8 @@ public class CustomController : MonoBehaviour
 		#endregion
 		
 		#region facing parsing
-		//mouse controls dir?
-		//ASSUMPTION: player will always be centered!
-		//otherwise we need to cast x/y -> screen x y.
-		
-		float angle = Mathf.Rad2Deg * Mathf.Atan2 ( Input.mousePosition.y - Screen.height / 2, Input.mousePosition.x - Screen.width / 2 );
-		
+		float angle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
+
 		//pull into range?
 		if ( angle < 0.0f )
 		{
@@ -250,6 +274,8 @@ public class CustomController : MonoBehaviour
 		}
 		
 		//Based on angle, get facing.
+		//TODO: only if aiming (ninja or archer while RT down)
+		//TODO: if thumbstick is at (0,0), then ignore it.
 		if ( (angle >= 0.0f && angle <= 45.0f) || (angle >= 315.0f && angle <= 360.0f) )
 		{
 			facing = 0;
@@ -287,17 +313,13 @@ public class CustomController : MonoBehaviour
 			//Get direction from vec.
 			
 			//Scale to speed
-			move_vec = move_vec * speed * Time.deltaTime * StaticData.t_scale;
+			move_vec = move_vec * speed * Time.deltaTime;
+			if ( true ) //TODO: add a check for if this player is under the effects of the stopwatch.
+			{
+				move_vec = move_vec * StaticData.t_scale;
+			}
 			
 			Move ( move_vec );
-			
-			//Force Camera to lock onto player
-			/*
-			Camera.main.transform.position = new Vector3( 
-			                                             this.gameObject.transform.position.x,
-			                                             this.gameObject.transform.position.y,
-			                                             Camera.main.transform.position.z 
-			                                             );*/
 		}
 		else
 		{
