@@ -18,6 +18,7 @@ public class CustomController : MonoBehaviour
 	
 	BoxCollider2D my_collider;
 	ClassFunctionalityInterface actionHandler; //stores the script that handles B, X, Y, and RT functionality.
+	Player playerState;
 
 	//gamepad stuff
 	bool playerIndexSet = false;
@@ -32,6 +33,7 @@ public class CustomController : MonoBehaviour
 	void Start () 
 	{
 		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
+		playerState = this.gameObject.GetComponent<Player>();
 		actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent( typeof( ClassFunctionalityInterface ) );
 
 		#region codes
@@ -63,6 +65,34 @@ public class CustomController : MonoBehaviour
 				move_vec.x = gamePadState.ThumbSticks.Left.X;
 				move_vec.y = gamePadState.ThumbSticks.Left.Y;
 				move_vec.Normalize();
+				playerState.carryVec = new Vector2( move_vec.x, move_vec.y ); //store normalized vec as carry vector.
+
+				//speed stuff.
+				move_vec = move_vec * playerState.speedMultiplier;
+
+				//Downed movement logic
+				if ( playerState.isDowned )
+				{
+					if ( playerState.isCarried )
+					{
+						//override move_vec
+						Vector2 tempVec = playerState.carryVec + playerState.Carrier.GetComponent<Player>().carryVec;
+						move_vec = 0.75f * tempVec;
+					}
+					else
+					{
+						//Crawl!
+						move_vec = move_vec * 0.5f;
+					}
+				}
+
+				//Carrying movement logic
+				if ( playerState.isCarrier )
+				{
+					//override move_vec
+					Vector2 tempVec = playerState.carryVec + playerState.Carrier.GetComponent<Player>().carryVec;
+					move_vec = 0.75f * tempVec;
+				}
 			}
 			#endregion
 
@@ -145,6 +175,25 @@ public class CustomController : MonoBehaviour
 			{
 				//initialize charging
 				//define pick up / drop
+				//Pick up: contextual command?
+
+				//DROP LOGIC
+				if ( playerState.isCarried )
+				{
+					//force other player to drop you.
+					playerState.Carrier.GetComponent<Player>().isCarrier = false;
+					playerState.Carrier.GetComponent<Player>().Carried = null;
+					playerState.isCarried = false;
+					playerState.Carrier = null;
+				}
+				if ( playerState.isCarrier )
+				{
+					//drop player!
+					playerState.Carried.GetComponent<Player>().isCarried = false;
+					playerState.Carried.GetComponent<Player>().Carrier = null;
+					playerState.isCarrier = false;
+					playerState.Carried = null;
+				}
 			}
 
 			//A is being held
@@ -210,6 +259,7 @@ public class CustomController : MonoBehaviour
 			{
 				//release charges, have effect
 				//use chargeable items
+				playerState.UseItem();
 			}
 			#endregion
 			#region left bumper
@@ -217,6 +267,7 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.LeftShoulder == ButtonState.Pressed && prevGamePadState.Buttons.LeftShoulder == ButtonState.Released )
 			{
 				//initialize charging
+				playerState.ChangeItemIndex ( -1 );
 			}
 			
 			//LB is being held
@@ -237,6 +288,7 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.RightShoulder == ButtonState.Pressed && prevGamePadState.Buttons.RightShoulder == ButtonState.Released )
 			{
 				//initialize charging
+				playerState.ChangeItemIndex ( 1 );
 			}
 			
 			//RB is being held
@@ -314,7 +366,7 @@ public class CustomController : MonoBehaviour
 			
 			//Scale to speed
 			move_vec = move_vec * speed * Time.deltaTime;
-			if ( true ) //TODO: add a check for if this player is under the effects of the stopwatch.
+			if ( ! playerState.isInBulletTime ) //check if this player is under the effects of the stopwatch.
 			{
 				move_vec = move_vec * StaticData.t_scale;
 			}

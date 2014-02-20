@@ -25,6 +25,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when B is pressed.
 		//Initialize parry.
+		//Probably just animation + state vars
 	}
 	public void BReleased()
 	{
@@ -43,16 +44,25 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called when X is pressed.
 		//Initialize horizontal slash.
 		//OR: prolong hurricane spin.
+
+		//Animation + state vars
 	}
 	public void XReleased()
 	{
 		//Called when X is released.
 		//Do horizontal slash / hurricane spin.
+
+		//Animation + state vars
+		//poll gamestate, check for sector hit detection
+		//hurricane spin makes the sector thing a bit more complex.
+		//would it be better to poll gamestate, or try physics raycast type deal?
 	}
 	public void XHeld()
 	{
 		//Called every frame X is held down.
 		//Charge horizontal slash -> hurricane spin.
+
+		//Animation + state vars
 	}
 	
 	//Tap / Hold
@@ -65,6 +75,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when Y is released.
 		//Do overhead strike / blastoff
+		//Animation + state vars
+		//poll gamestate, do hitbox hit detection.
+		//with the charge, hitbox detection over time. A bit more complex?
 	}
 	public void YHeld()
 	{
