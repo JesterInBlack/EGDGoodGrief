@@ -13,20 +13,20 @@ public interface ClassFunctionalityInterface
 	//"Dodge" type ability
 	void BPressed();
 	void BReleased();
-	void BHeld();
+	void BHeld( float dt );
 
 	//Tap / Hold
 	void XPressed();
 	void XReleased();
-	void XHeld();
+	void XHeld( float dt );
 
 	//Tap / Hold
 	void YPressed();
 	void YReleased();
-	void YHeld();
+	void YHeld( float dt );
 
 	//Tap / Hold
 	void RTPressed();
 	void RTReleased();
-	void RTHeld();
+	void RTHeld( float dt );
 }

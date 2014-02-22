@@ -27,7 +27,7 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when B is released.
 	}
-	public void BHeld()
+	public void BHeld( float dt )
 	{
 		//Called every frame B is held down.
 	}
@@ -41,7 +41,7 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when X is released.
 	}
-	public void XHeld()
+	public void XHeld( float dt )
 	{
 		//Called every frame X is held down.
 	}
@@ -55,7 +55,7 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when Y is released.
 	}
-	public void YHeld()
+	public void YHeld( float dt )
 	{
 		//Called every frame Y is held down.
 	}
@@ -69,7 +69,7 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when RT is released.
 	}
-	public void RTHeld()
+	public void RTHeld( float dt )
 	{
 		//Called every frame RT is held down.
 	}

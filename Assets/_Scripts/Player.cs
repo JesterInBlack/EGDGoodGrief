@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 	#region vars
 	float HP;
 	float maxHP;
-	float baseMaxHP;
+	float baseMaxHP = 100.0f;
 
 	float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
 	float offense = 1.0f; //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
@@ -17,6 +17,11 @@ public class Player : MonoBehaviour
 	//color / player id?
 
 	//state data?
+	//idle, walk, <custom via plugin>
+	public string state = "idle";     //current state
+	public float stateTimer = 0.0f;   //state timer
+	public string nextState = "idle"; //next state: on state timer reaching 0, transition occurs.
+
 	public bool canMove = true;           //disable moving while attacking?
 	public float speedMultiplier = 1.0f;  //able to move, but at a slower pace?
 	//bool overrideMoveAni;
@@ -36,7 +41,7 @@ public class Player : MonoBehaviour
 	public Vector2 carryVec;         //unit vector representing your carry direction.
 
 	//interruption
-	private float interruptHP = 0.0f;  //"interrupt hp": if this reaches 0, you get interrupted. Set by moves.
+	public float interruptHP = 0.0f;   //"interrupt hp": if this reaches 0, you get interrupted. Set by moves.
 	private float interruptDR = 0.0f;  //interrupt diminishing returns factor. 
 	                                   //  (makes you harder to interrupt the more you get interrupted)
 
@@ -60,11 +65,9 @@ public class Player : MonoBehaviour
 	const int ITEM_SLOT_COUNT = 3;
 
 	//unique mechanic data
-	float style;
-	float focus;
-	float chain;
-	float accumulation;
-
+	public float resource = 0.0f;        //chain / focus / style / sediment. Ranges from 0 to 1
+	public float resourceGraceT = 0.0f; //at 0, resource begins degeneration
+	private Vector3 prevPos;             //previous position, for detecting movement. (focus degen)
 	#endregion
 
 	// Use this for initialization
@@ -77,6 +80,13 @@ public class Player : MonoBehaviour
 
 		offense = 1.0f;
 		defense = 1.0f;
+
+		//Placeholder code: replace with setter from pre-game screens.
+		for ( int i = 0; i < 3; i++ )
+		{
+			items[i] = new Item();
+		}
+		//END placeholder
 	}
 	
 	// Update is called once per frame
@@ -87,6 +97,19 @@ public class Player : MonoBehaviour
 
 		//Timer countdown
 		#region timers
+		stateTimer = Mathf.Max ( 0.0f, stateTimer - t );
+		if ( stateTimer <= 0 ) 
+		{ 
+			//TODO: wrap this in a set state function
+			//TODO: enum / const states.
+			if ( nextState == "idle" )
+			{
+				canMove = true;
+				speedMultiplier = 1.0f;
+			}
+			state = nextState; 
+		}
+
 		if ( isDodging ) 
 		{ 
 			dodgeTimer -= t;
@@ -113,7 +136,17 @@ public class Player : MonoBehaviour
 				isInBulletTime = false;
 			}
 		}
+
+		//Update items
+		for ( int i = 0; i < 3; i++ )
+		{
+			items[i].Update();
+		}
 		#endregion
+
+		UpdateResource ( t );
+
+		prevPos = this.gameObject.transform.position;
 	}
 
 	void Respawn()
@@ -226,4 +259,66 @@ public class Player : MonoBehaviour
 		//TODO: lerp in, add visual effect, play sound
 		//TODO: duration on t scale, lerp back in, remove visual effect, play sound
 	}
+
+	#region player resources
+	private void UpdateResource( float dt )
+	{
+		//if rev charges, ...
+		//if style, ...
+		//if focus, ...
+		//if sediment, ...
+	}
+
+	private void UpdateChain( float dt )
+	{
+		if ( state == "idle" || state == "walk" )
+		{
+			//degen grace timer
+			resourceGraceT -= dt;
+		}
+
+		if ( resourceGraceT <= 0.0f )
+		{
+			resource = Mathf.Max ( resource - 1.0f * dt, 0.0f );
+		}
+	}
+
+	private void UpdateFocus( float dt )
+	{
+		//Gain focus while standing still.
+		//TODO: EXCEPTION FOR KNOCKBACK?
+		if ( prevPos == this.gameObject.transform.position )
+		{
+			resource = Mathf.Min( resource + 0.5f * dt, 1.0f );
+		}
+		else
+		{
+			resource = Mathf.Max ( resource - 1.0f * dt, 0.0f );
+		}
+	}
+
+	private void UpdateStyle( float dt )
+	{
+		//Gain style by doing stuff.
+		//Lose style for not doing anything for a while.
+		if ( state == "idle" || state == "walk" )
+		{
+			//degen grace timer
+			resourceGraceT -= dt;
+		}
+
+		if ( resourceGraceT <= 0.0f )
+		{
+			resource = Mathf.Max ( resource - 1.0f * dt, 0.0f );
+		}
+	}
+
+	private void UpdateAccumulation( float dt )
+	{
+		//Constantly gain sediment accumulation.
+		//Some moves degenerate it.
+		resource = Mathf.Min ( resource + 0.25f * dt, 1.0f );
+	}
+
+	#endregion
 }

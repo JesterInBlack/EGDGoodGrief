@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Item : MonoBehaviour 
+public class Item
 {
 	#region vars
 	public string name;
@@ -10,15 +10,8 @@ public class Item : MonoBehaviour
 	#endregion
 
 	//TODO: add an interface for calling functions?
-
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
+	// Update is called once per frame (from the player class)
+	public void Update () 
 	{
 		float t = Time.deltaTime * StaticData.t_scale;
 		CoolDownTimer = Mathf.Max ( CoolDownTimer - t, 0.0f );

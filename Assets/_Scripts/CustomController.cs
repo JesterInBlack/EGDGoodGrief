@@ -49,6 +49,14 @@ public class CustomController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		#region delta time
+		float dt = Time.deltaTime;
+		if ( ! playerState.isInBulletTime ) //check if this player is under the effects of the stopwatch.
+		{
+			dt = dt * StaticData.t_scale;
+		}
+		#endregion
+
 		Vector2 move_vec = new Vector2( 0.0f, 0.0f );
 		
 		#region input parsing
@@ -114,7 +122,7 @@ public class CustomController : MonoBehaviour
 			else if ( gamePadState.Buttons.X == ButtonState.Pressed && prevGamePadState.Buttons.X == ButtonState.Pressed )
 			{
 				//increment charging
-				actionHandler.XHeld ();
+				actionHandler.XHeld ( dt );
 			}
 			
 			//X was released
@@ -136,7 +144,7 @@ public class CustomController : MonoBehaviour
 			else if ( gamePadState.Buttons.Y == ButtonState.Pressed && prevGamePadState.Buttons.Y == ButtonState.Pressed )
 			{
 				//increment charging
-				actionHandler.YHeld();
+				actionHandler.YHeld( dt );
 			}
 			
 			//Y was released
@@ -158,7 +166,7 @@ public class CustomController : MonoBehaviour
 			else if ( gamePadState.Buttons.B == ButtonState.Pressed && prevGamePadState.Buttons.B == ButtonState.Pressed )
 			{
 				//increment charging
-				actionHandler.BHeld();
+				actionHandler.BHeld( dt );
 			}
 			
 			//B was released
@@ -225,7 +233,7 @@ public class CustomController : MonoBehaviour
 			else if ( gamePadState.Triggers.Right > min_trigger_value && prevGamePadState.Triggers.Right > min_trigger_value )
 			{
 				//increment charging
-				actionHandler.RTHeld ();
+				actionHandler.RTHeld ( dt );
 			}
 			
 			//RT was released
@@ -365,11 +373,7 @@ public class CustomController : MonoBehaviour
 			//Get direction from vec.
 			
 			//Scale to speed
-			move_vec = move_vec * speed * Time.deltaTime;
-			if ( ! playerState.isInBulletTime ) //check if this player is under the effects of the stopwatch.
-			{
-				move_vec = move_vec * StaticData.t_scale;
-			}
+			move_vec = move_vec * speed * dt;
 			
 			Move ( move_vec );
 		}
