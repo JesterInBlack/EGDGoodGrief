@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum CharacterClasses { KNIGHT, ARCHER, NINJA, DEFENDER };
+
 public class Player : MonoBehaviour 
 {
 
 	#region vars
-	float HP;
-	float maxHP;
-	float baseMaxHP = 100.0f;
+	public float HP;
+	public float maxHP;
+	public float baseMaxHP = 100.0f;
+
+	int score = 0;
 
 	float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
 	float offense = 1.0f; //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
 
-	string characterclass; //enum this
+	CharacterClasses characterclass; //enum
 
 	//color / player id?
 
@@ -82,6 +86,7 @@ public class Player : MonoBehaviour
 		defense = 1.0f;
 
 		//Placeholder code: replace with setter from pre-game screens.
+		characterclass = CharacterClasses.KNIGHT;
 		for ( int i = 0; i < 3; i++ )
 		{
 			items[i] = new Item();
@@ -175,14 +180,35 @@ public class Player : MonoBehaviour
 		if ( isParrying ) { return; }
 
 		//deal damage
-		HP -= damage / defense;
+		float finalDamage = damage / defense;
+		//sedimentary, dear watson.
+		if ( characterclass == CharacterClasses.DEFENDER )
+		{
+			//TODO: make this sane.
+			resource = 0.0f;
+			finalDamage = damage - 1.0f;
+		}
+		HP -= finalDamage;
 		if ( HP <= 0.0f )
 		{
 			//deadz.
 			//Go into downed state.
 			isDowned = true;
-			//TODO: deduct points
+			//deduct points
+			score -= 100;
 		}
+
+		#region resource deduction
+		//resource deduction. (chain, sediment)
+		if ( characterclass == CharacterClasses.KNIGHT )
+		{
+			resource = 0.0f;
+		}
+		if ( characterclass == CharacterClasses.DEFENDER )
+		{
+			resource = 0.0f; //?
+		}
+		#endregion
 	}
 
 	public void Wound( float damage )
@@ -263,10 +289,22 @@ public class Player : MonoBehaviour
 	#region player resources
 	private void UpdateResource( float dt )
 	{
-		//if rev charges, ...
-		//if style, ...
-		//if focus, ...
-		//if sediment, ...
+		if ( characterclass == CharacterClasses.KNIGHT )
+		{
+			UpdateChain ( dt );
+		}
+		else if ( characterclass == CharacterClasses.ARCHER )
+		{
+			UpdateFocus ( dt );
+		}
+		else if ( characterclass == CharacterClasses.NINJA )
+		{
+			UpdateStyle ( dt );
+		}
+		else if ( characterclass == CharacterClasses.DEFENDER )
+		{
+			UpdateAccumulation ( dt );
+		}
 	}
 
 	private void UpdateChain( float dt )

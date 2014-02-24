@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XInputDotNetPure; // Required in C#
 
 public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface 
 {
@@ -9,14 +10,19 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	#region vars
 	private Player player;
+	private CustomController controller;
 
 	//button hold times
 	private float xHoldTime  = 0.0f;
-	private const float xChargeMin = 1.0f;  //minimum hold time to use the charged version of the x attack
-	private const float xChargeMax = 10.0f; //maximum hold time: more than this confers no benefit.
+	private const float xChargeMin = 1.0f;    //minimum hold time to use the charged version of the x attack
+	private const float xChargeMax = 10.0f;   //maximum hold time: more than this confers no benefit.
+	private const float xNormalGraceT = 1.0f; //Grace time before chain degeneration happens.
+	//private const float xSmashGraceT = 1.0f;  //Grace time before chain degeneration happens.
 	private float yHoldTime  = 0.0f;
-	private const float yChargeMin = 1.0f;  //minimum hold time to use the charged version of the y attack
-	private const float yChargeMax = 10.0f; //maximum hold time: more than this confers no benefit.
+	private const float yChargeMin = 1.0f;    //minimum hold time to use the charged version of the y attack
+	private const float yChargeMax = 10.0f;   //maximum hold time: more than this confers no benefit.
+	private const float yNormalGraceT = 1.0f; //Grace time before chain degeneration happens.
+	//private const float ySmashGraceT = 1.0f;  //Grace time before chain degeneration happens.
 	private float bHoldTime  = 0.0f;
 	private float rtHoldTime = 0.0f;
 
@@ -30,6 +36,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	void Start () 
 	{
 		player = GetComponent<Player>();
+		controller = GetComponent<CustomController>();
 	}
 	
 	// Update is called once per frame
@@ -48,6 +55,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "xsmash" )
 		{
 			//do sector based on time in state + direction
+			hitSector ( new Vector2( transform.position.x, transform.position.y ), 0.0f, 360.0f, 0.1f, 2.0f );
 		}
 
 		if ( player.state == "ynormal" )
@@ -126,6 +134,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Can parry out of default states + charging
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
+			player.canMove = false;
 			player.isParrying = true;
 			player.parryTimer = parryTime;
 		}
@@ -169,11 +178,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Animation + state vars
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
-			player.canMove = false;
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.interruptHP = 100.0f;
 			player.state = "x";
 			player.stateTimer = 0.0f;
 			player.nextState = "x";
+			gameObject.GetComponent<Animator>().Play( "xslash_down_windup" );
 		}
 	}
 	public void XReleased()
@@ -189,21 +199,28 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( xHoldTime < xChargeMin )
 		{
 			//Horizontal attack
+			player.canMove = false;
 			player.state = "xnormal";
 			player.stateTimer = 0.25f;
 			player.nextState = "idle";
 			player.canMove = false;
+			player.resourceGraceT = xNormalGraceT;
+			gameObject.GetComponent<Animator>().Play( "xslash_down" );
 		}
 		else
 		{
 			//Spin2Win
+			player.canMove = true;
 			player.state = "xsmash";
 			player.stateTimer = 0.25f;
 			player.nextState = "idle";
 			spinToWinExtensions = 0;
+			//TODO: get power based on resource and charge
+			player.resource = 0;
 			//maxSpinToWinExtensions = 5; //Scale with charge?
-			//Mathf.Min ( xHoldTime, xChargeMax );
+			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
 		}
+		player.speedMultiplier = player.speedMultiplier * 2.0f;
 		xHoldTime = 0.0f;
 	}
 
@@ -216,6 +233,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		xHoldTime += dt;
 		if ( player.state == "x" )
 		{
+			//freeze animation at charging.
+
 			if ( xHoldTime - dt < xChargeMin && xHoldTime >= xChargeMin )
 			{
 				//feedback: charge reached.
@@ -235,7 +254,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Initialize overhead strike.
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
-			player.canMove = false;
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.interruptHP = 100.0f;
 			player.state = "y";
 			player.stateTimer = 0.0f;
@@ -253,17 +272,23 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( yHoldTime < yChargeMin )
 		{
 			//overhead strike
+			player.canMove = false;
 			player.state = "ynormal";
 			player.stateTimer = 0.25f;
 			player.nextState = "idle";
+			player.resourceGraceT = yNormalGraceT;
 		}
 		else
 		{
 			//Blast Off
+			player.speedMultiplier = player.speedMultiplier * 2.0f;
 			player.state = "ysmash";
 			player.stateTimer = 0.25f;
 			player.nextState = "idle";
-			//Mathf.Min ( yHoldTime, yChargeMax );
+			//TODO: get power based on charge and resource.
+			player.resource = 0;
+			//player.resourceGraceT = ySmashGraceT;
+			//Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax;
 		}
 		yHoldTime = 0.0f;
 	}
@@ -313,6 +338,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
 		}
 		rtHoldTime = 0.0f;
+		GamePad.SetVibration ( controller.playerIndex, 0.0f, 0.0f );
 	}
 	public void RTHeld( float dt )
 	{
@@ -321,8 +347,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "revcharge" )
 		{
 			//1.0f * dt = 100% per second
-			player.resource = Mathf.Min ( player.resource + 0.10f * dt, 1.0f );
+			float deltaResource = ( 0.25f + 0.5f * Mathf.Sin ( rtHoldTime * Mathf.PI * 2.0f ) ) * 0.20f * dt; //0.10f * dt;
+			player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
 			player.resourceGraceT = 0.5f;
+			GamePad.SetVibration ( controller.playerIndex, 
+			                      0.05f + 0.05f * (0.5f * ( Mathf.Sin( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) ), 
+			                      0.1f + 0.1f * (0.5f * ( Mathf.Cos( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) ) );
+		}
+		else
+		{
+			GamePad.SetVibration ( controller.playerIndex, 0.0f, 0.0f );
 		}
 		rtHoldTime += dt;
 	}

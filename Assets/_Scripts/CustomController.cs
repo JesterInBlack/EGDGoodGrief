@@ -402,6 +402,7 @@ public class CustomController : MonoBehaviour
 	{
 		//Moves the player by move_vec (pos = pos + vec),
 		//but also respects collisions.
+		if ( playerState.canMove == false ) { return; }
 		
 		#region Collision Detection
 		//Get the distance from center to edge of box collider
