@@ -17,6 +17,7 @@ public class Initializer : MonoBehaviour
 		for ( int i = 0; i < 4; i++ )
 		{
 			GameState.players[i] = players[i];
+			players[i].GetComponent<Player>().id = i;
 		}
 		GameState.boss = boss;
 	}

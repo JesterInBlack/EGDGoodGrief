@@ -1,0 +1,603 @@
+fileFormatVersion: 2
+guid: 973115d9e5c726a40ae2b178ba14becc
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 4096
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 48
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: rocketsword2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_1
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_2
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_3
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_4
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_5
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_6
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 1320
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_8
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_9
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_10
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_11
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_12
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_13
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_14
+      rect:
+        serializedVersion: 2
+        x: 1540
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_15
+      rect:
+        serializedVersion: 2
+        x: 1760
+        y: 1100
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_17
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_18
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_19
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_20
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_21
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_22
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 880
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_23
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_24
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_25
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_26
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_27
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_28
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_29
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_30
+      rect:
+        serializedVersion: 2
+        x: 1540
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_31
+      rect:
+        serializedVersion: 2
+        x: 1760
+        y: 660
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_33
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_34
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_35
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_36
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_37
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_38
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 440
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_39
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_40
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_41
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_42
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_43
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_44
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_45
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_46
+      rect:
+        serializedVersion: 2
+        x: 1540
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_47
+      rect:
+        serializedVersion: 2
+        x: 1760
+        y: 220
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_49
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_50
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_51
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_52
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_53
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_54
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_55
+      rect:
+        serializedVersion: 2
+        x: 1540
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_56
+      rect:
+        serializedVersion: 2
+        x: 1760
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_57
+      rect:
+        serializedVersion: 2
+        x: 1980
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_58
+      rect:
+        serializedVersion: 2
+        x: 2200
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_59
+      rect:
+        serializedVersion: 2
+        x: 2420
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_60
+      rect:
+        serializedVersion: 2
+        x: 2640
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword2_61
+      rect:
+        serializedVersion: 2
+        x: 2860
+        y: 0
+        width: 220
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+  spritePackingTag: 
+  userData: 

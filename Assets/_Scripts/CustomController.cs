@@ -10,6 +10,7 @@ public class CustomController : MonoBehaviour
 
 	#region vars
 	public int facing = 3; //direction for sprites (0: Right, 1: Up, 2: Left, 3: Down)
+	private int prevFacing = 3;
 	
 	[HideInInspector]
 	public bool move_enabled = true; //for disabling motion
@@ -64,7 +65,7 @@ public class CustomController : MonoBehaviour
 		gamePadState = GamePad.GetState ( playerIndex );
 
 		//if controller connected, do stuff
-		if ( gamePadState.IsConnected )
+		if ( true ) //gamePadState.IsConnected )
 		{
 			#region moving
 			//move
@@ -98,7 +99,7 @@ public class CustomController : MonoBehaviour
 				if ( playerState.isCarrier )
 				{
 					//override move_vec
-					Vector2 tempVec = playerState.carryVec + playerState.Carrier.GetComponent<Player>().carryVec;
+					Vector2 tempVec = playerState.carryVec + playerState.Carried.GetComponent<Player>().carryVec;
 					move_vec = 0.75f * tempVec;
 				}
 			}
@@ -185,23 +186,59 @@ public class CustomController : MonoBehaviour
 				//define pick up / drop
 				//Pick up: contextual command?
 
+				#region drop logic
 				//DROP LOGIC
 				if ( playerState.isCarried )
 				{
 					//force other player to drop you.
+					//Debug.Log ( "Carried player made you drop them." );
 					playerState.Carrier.GetComponent<Player>().isCarrier = false;
 					playerState.Carrier.GetComponent<Player>().Carried = null;
 					playerState.isCarried = false;
 					playerState.Carrier = null;
 				}
-				if ( playerState.isCarrier )
+				else if ( playerState.isCarrier )
 				{
 					//drop player!
+					//Debug.Log ( "Dropped!" );
 					playerState.Carried.GetComponent<Player>().isCarried = false;
 					playerState.Carried.GetComponent<Player>().Carrier = null;
 					playerState.isCarrier = false;
 					playerState.Carried = null;
 				}
+				#endregion
+				#region pickup logic
+				else
+				{
+					for ( int i = 0; i < GameState.players.Length; i++ )
+					{
+						if ( GameState.players[i].GetComponent<Player>().id != playerState.id ) //no self-carrying!
+						{
+							float x = GameState.players[i].gameObject.transform.position.x;
+							float y = GameState.players[i].gameObject.transform.position.y;
+							float myX = gameObject.transform.position.x;
+							float myY = gameObject.transform.position.y;
+							float dist = Mathf.Pow ( (x - myX) * (x - myX) + (y - myY) * (y - myY), 0.5f);
+							if ( dist <= 1.0f ) //in range
+							{
+								if ( ! playerState.isCarried && ! playerState.isCarrier && ! playerState.isDowned) //you: valid state?
+								{
+									Player otherState = GameState.players[i].GetComponent<Player>();
+									if ( ! otherState.isCarried && ! otherState.isCarrier && otherState.isDowned ) //them: valid state?
+									{
+										//Debug.Log ( "Carry!" );
+										playerState.isCarrier = true;
+										playerState.Carried = GameState.players[i];
+										otherState.isCarried = true;
+										otherState.Carrier = this.gameObject;
+										//TODO: animation
+									}
+								}
+							}
+						}
+					}
+				}
+				#endregion
 			}
 
 			//A is being held
@@ -321,7 +358,8 @@ public class CustomController : MonoBehaviour
 		#endregion
 		
 		#region facing parsing
-		float angle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
+		float angle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Left.Y, gamePadState.ThumbSticks.Left.X );
+		float aimAngle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
 
 		//pull into range?
 		if ( angle < 0.0f )
@@ -334,40 +372,66 @@ public class CustomController : MonoBehaviour
 		}
 		
 		//Based on angle, get facing.
-		//TODO: only if aiming (ninja or archer while RT down)
-		//TODO: if thumbstick is at (0,0), then ignore it.
-		if ( (angle >= 0.0f && angle <= 45.0f) || (angle >= 315.0f && angle <= 360.0f) )
+		//TODO: aiming override (ninja or archer while RT down)
+
+		//if thumbstick is at (0,0), or you can't move, then ignore it.
+		if ( !(  Mathf.Abs ( gamePadState.ThumbSticks.Left.Y ) < 0.01f && 
+		       Mathf.Abs ( gamePadState.ThumbSticks.Left.X ) < 0.01f ) && 
+		       playerState.canMove )
 		{
-			facing = 0;
-		}
-		else if ( angle >= 45.0f && angle <= 135.0f )
-		{
-			facing = 1;
-		}
-		else if ( angle >= 135.0f && angle <= 225.0f )
-		{
-			facing = 2;
-		}
-		else if ( angle >= 225.0f && angle <= 315.0f )
-		{
-			facing = 3;
+			if ( (angle >= 0.0f && angle <= 45.0f) || (angle >= 315.0f && angle <= 360.0f) )
+			{
+				facing = 0;
+			}
+			else if ( angle >= 45.0f && angle <= 135.0f )
+			{
+				facing = 1;
+			}
+			else if ( angle >= 135.0f && angle <= 225.0f )
+			{
+				facing = 2;
+			}
+			else if ( angle >= 225.0f && angle <= 315.0f )
+			{
+				facing = 3;
+			}
 		}
 		
 		//Debug.Log ( angle + " : " + facing ); //DEBUG LINE
 		
 		#endregion
-		
+
 		if ( move_vec.sqrMagnitude > 0.0f ) //sqrMagnitude is more efficient.
 		{
-			#region animate
-			//Animate
-			/*
-			if ( facing == 0 ){ this.gameObject.GetComponent<Animator>().Play( "WalkRight" ); }
-			else if ( facing == 1 ){ this.gameObject.GetComponent<Animator>().Play( "WalkUp" ); }
-			else if ( facing == 2 ){ this.gameObject.GetComponent<Animator>().Play( "WalkLeft" ); }
-			else if ( facing == 3 ){ this.gameObject.GetComponent<Animator>().Play( "WalkDown" ); }
-			*/
-			#endregion
+			if ( playerState.state == "idle" )
+			{
+				playerState.state = "walk";
+				playerState.stateTimer = 0.0f;
+				playerState.nextState = "walk";
+			}
+
+			//animate
+			if ( playerState.state == "walk" )
+			{
+				#region animation
+				if ( facing == 0 && prevFacing != 0 )
+				{
+					gameObject.GetComponent<Animator>().Play( "walk_right" );
+				}
+				else if ( facing == 1 && prevFacing != 1 )
+				{
+					gameObject.GetComponent<Animator>().Play( "walk_up" );
+				}
+				else if ( facing == 2 && prevFacing != 2 )
+				{
+					gameObject.GetComponent<Animator>().Play( "walk_left" );
+				}
+				else if ( facing == 3 && prevFacing != 3 )
+				{
+					gameObject.GetComponent<Animator>().Play( "walk_down" );
+				}
+				#endregion
+			}
 			
 			//Move.
 			//Get direction from vec.
@@ -379,23 +443,42 @@ public class CustomController : MonoBehaviour
 		}
 		else
 		{
-			//Idle
-			#region animate
-			//this.gameObject.GetComponent<Animator>().Play("Idle");
-			//Animate
-			/*
-			if ( facing == 0 ){ this.gameObject.GetComponent<Animator>().Play( "IdleRight" ); }
-			else if ( facing == 1 ){ this.gameObject.GetComponent<Animator>().Play( "IdleUp" ); }
-			else if ( facing == 2 ){ this.gameObject.GetComponent<Animator>().Play( "IdleLeft" ); }
-			else if ( facing == 3 ){ this.gameObject.GetComponent<Animator>().Play( "IdleDown" ); }
-			*/
-			#endregion
+			if ( playerState.state == "walk" )
+			{
+				playerState.state = "idle";
+				playerState.stateTimer = 0.0f;
+				playerState.nextState = "idle";
+			}
+
+			if ( playerState.state == "idle" )
+			{
+				#region animate
+				if ( facing == 0 && prevFacing != 0 )
+				{
+					gameObject.GetComponent<Animator>().Play( "idle_right" );
+				}
+				else if ( facing == 1 && prevFacing != 1 )
+				{
+					gameObject.GetComponent<Animator>().Play( "idle_up" );
+				}
+				else if ( facing == 2 && prevFacing != 2 )
+				{
+					gameObject.GetComponent<Animator>().Play( "idle_left" );
+				}
+				else if ( facing == 3 && prevFacing != 3 )
+				{
+					gameObject.GetComponent<Animator>().Play( "idle_down" );
+				}
+				#endregion
+			}
 			
 		}
 		
 		#region animate
 		//facing based-stuff
 		#endregion
+
+		prevFacing = facing;
 	}
 	
 	public void Move( Vector3 move_vec )
@@ -403,7 +486,11 @@ public class CustomController : MonoBehaviour
 		//Moves the player by move_vec (pos = pos + vec),
 		//but also respects collisions.
 		if ( playerState.canMove == false ) { return; }
-		
+		MoveNaoPlz( move_vec );
+	}
+
+	public void MoveNaoPlz( Vector3 move_vec )
+	{
 		#region Collision Detection
 		//Get the distance from center to edge of box collider
 		float x_diff = my_collider.size.x / 2.0f + 0.01f;

@@ -7,14 +7,16 @@ public class Player : MonoBehaviour
 {
 
 	#region vars
+	public float id; //used for identity checks.
+
 	public float HP;
 	public float maxHP;
 	public float baseMaxHP = 100.0f;
 
-	int score = 0;
+	public int score = 0;
 
-	float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
-	float offense = 1.0f; //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
+	private float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
+	public float offense = 1.0f; //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
 
 	CharacterClasses characterclass; //enum
 
@@ -78,6 +80,7 @@ public class Player : MonoBehaviour
 	void Start () 
 	{
 		//initialize stats
+		//GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f ); //Change this to alter colors per player
 
 		maxHP = baseMaxHP;
 		HP = maxHP;
@@ -97,6 +100,7 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		float t = Time.deltaTime;
 		if ( ! isInBulletTime ) { t = t * StaticData.t_scale; }
 
@@ -112,6 +116,7 @@ public class Player : MonoBehaviour
 				canMove = true;
 				speedMultiplier = 1.0f;
 			}
+
 			state = nextState; 
 		}
 

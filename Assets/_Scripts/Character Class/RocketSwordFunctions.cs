@@ -28,8 +28,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	private int maxSpinToWinExtensions = 5; //the maximum number of times spin2win can be extended
 	private int spinToWinExtensions = 0;    //the number of times spin2win has been extended
+	private float spinTime = 0.0f;			//how long you've been spinning for.
+	private float attackDamage = 0.0f;      //damage the current attack will deal.
 
 	private const float parryTime = 0.5f; //how long the parry lasts for. (in s)
+
+	private string prevState = "";
 	#endregion
 
 	// Use this for initialization
@@ -50,12 +54,25 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "xnormal" )
 		{
 			//do sector based on time in state + direction
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), -45.0f, 45.0f, 0.1f, 2.0f );
+			float angle = 90.0f * GetComponent<CustomController>().facing;
+			float damage = 10.0f;
+			hitSector ( new Vector2( transform.position.x, transform.position.y ), -67.5f + angle, 67.5f + angle, 0.1f, 2.0f, damage * dt );
 		}
 		if ( player.state == "xsmash" )
 		{
 			//do sector based on time in state + direction
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), 0.0f, 360.0f, 0.1f, 2.0f );
+			//change sector angle based on frame: 1/20 s = 1/15 rotation (24 degrees)
+			spinTime += dt;
+			float minAngle = ( ( ( ( 180.0f - spinTime * 360.0f / (0.75f / 2.0f) ) % 360.0f) + 360.0f) % 360.0f);
+			float maxAngle = ( ( ( ( minAngle + 90.0f ) % 360.0f) + 360.0f) % 360.0f);
+			hitSector ( new Vector2( transform.position.x, transform.position.y ), minAngle, maxAngle, 0.1f, 2.0f, attackDamage * dt );
+			/*
+			if ( spinTime % (0.75f / 2.0f) != spinTime )
+			{
+				spinTime = spinTime % (0.75f / 2.0f );
+				hitSector ( new Vector2( transform.position.x, transform.position.y ), 0.01f, 360.0f, 0.1f, 2.0f );
+			}
+			*/
 		}
 
 		if ( player.state == "ynormal" )
@@ -65,12 +82,66 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "ysmash" )
 		{
 			//charge until duration runs out / you hit something (other than another player?)
+			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2;
+			float speed = 13.0f * dt;
+			GetComponent<CustomController>().MoveNaoPlz( new Vector3( speed * Mathf.Cos ( angle ), speed * Mathf.Sin ( angle ), 0.0f ) );
 		}
+
+		if ( player.state == "idle" )
+		{
+			#region animation
+			if ( GetComponent<CustomController>().facing == 0 )
+			{
+				GetComponent<Animator>().Play ( "idle_right" );
+			}
+			else if ( GetComponent<CustomController>().facing == 1 )
+			{
+				GetComponent<Animator>().Play ( "idle_up" );
+			}
+			else if ( GetComponent<CustomController>().facing == 2 )
+			{
+				GetComponent<Animator>().Play ( "idle_left" );
+			}
+			else if ( GetComponent<CustomController>().facing == 3 )
+			{
+				GetComponent<Animator>().Play ( "idle_down" );
+			}
+			#endregion
+		}
+
+		//handle odd state transitions?
+		//(chains longer than 2?)
+		if ( prevState != player.state )
+		{
+			OnStateChange( player.state );
+		}
+		prevState = player.state;
+		//Debug.Log ( player.state ); //DEBUG
 	}
 
-	void hitSector( Vector2 pos, float minTheta, float maxTheta, float minRadius, float maxRadius )
+	void hitSector( Vector2 pos, float minTheta, float maxTheta, float minRadius, float maxRadius, float damage )
 	{
 		//NOTE: theta is an angle, in DEGREES, >= -360.0f
+
+		#region DEBUG
+		Debug.DrawLine( new Vector3( pos.x + minRadius * Mathf.Cos ( Mathf.Deg2Rad * minTheta ), 
+		                            pos.y + minRadius * Mathf.Sin ( Mathf.Deg2Rad * minTheta ), 
+		                            0.0f ), 
+		               new Vector3( pos.x + maxRadius * Mathf.Cos ( Mathf.Deg2Rad * minTheta ), 
+		            				pos.y + maxRadius * Mathf.Sin ( Mathf.Deg2Rad * minTheta ), 
+		            				0.0f ), 
+		               new Color(0.0f, 1.0f, 0.0f) );
+		Debug.DrawLine( new Vector3( pos.x + minRadius * Mathf.Cos ( Mathf.Deg2Rad * maxTheta ), 
+		                            pos.y + minRadius * Mathf.Sin ( Mathf.Deg2Rad * maxTheta ), 
+		                            0.0f ), 
+		               new Vector3( pos.x + maxRadius * Mathf.Cos ( Mathf.Deg2Rad * maxTheta ), 
+		            				pos.y + maxRadius * Mathf.Sin ( Mathf.Deg2Rad * maxTheta ), 
+		            				0.0f ), 
+		               new Color(0.0f, 1.0f, 0.0f) );
+		#endregion
+
+		#region players
+		//players
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
 			if ( GameState.players[i] != null )
@@ -86,25 +157,10 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 					//Debug.Log ( angle ); //DEBUG
 					Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
 
-					Debug.DrawLine( new Vector3( pos.x + minRadius * Mathf.Cos ( Mathf.Deg2Rad * minTheta ), 
-					                             pos.y + minRadius * Mathf.Sin ( Mathf.Deg2Rad * minTheta ), 
-					                             0.0f ), 
-					                new Vector3( pos.x + maxRadius * Mathf.Cos ( Mathf.Deg2Rad * minTheta ), 
-					                             pos.y + maxRadius * Mathf.Sin ( Mathf.Deg2Rad * minTheta ), 
-					                             0.0f ), 
-					                new Color(0.0f, 1.0f, 0.0f) );
-					Debug.DrawLine( new Vector3( pos.x + minRadius * Mathf.Cos ( Mathf.Deg2Rad * maxTheta ), 
-					                             pos.y + minRadius * Mathf.Sin ( Mathf.Deg2Rad * maxTheta ), 
-					                             0.0f ), 
-					                new Vector3( pos.x + maxRadius * Mathf.Cos ( Mathf.Deg2Rad * maxTheta ), 
-					                             pos.y + maxRadius * Mathf.Sin ( Mathf.Deg2Rad * maxTheta ), 
-					                             0.0f ), 
-					               new Color(0.0f, 1.0f, 0.0f) );
-
 					if ( angle >= minTheta && angle <= maxTheta )
 					{
 						//Debug.Log ( "Hit, normal" );
-						GameState.players[i].GetComponent<Player>().Hurt ( 1.0f );
+						GameState.players[i].GetComponent<Player>().Hurt ( damage );
 					}
 					else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
 					{
@@ -115,12 +171,46 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 						if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
 						{
 							//Debug.Log ( "Hit, negative angle" );
-							GameState.players[i].GetComponent<Player>().Hurt ( 1.0f );
+							GameState.players[i].GetComponent<Player>().Hurt ( damage );
 						}
 					}
 				}
 			}
 		}
+		#endregion
+		#region boss
+		//boss
+		if ( GameState.boss != null )
+		{
+			float x = GameState.boss.transform.position.x;
+			float y = GameState.boss.transform.position.y;
+			float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
+			
+			if ( dist >= minRadius && dist <= maxRadius )
+			{
+				float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
+
+				Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
+				
+				if ( angle >= minTheta && angle <= maxTheta )
+				{
+					GameState.boss.GetComponent<Boss>().Hurt ( damage );
+				}
+				else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
+				{
+					//The sign on the angle changed. 
+					//So to tell if it's in the sector, 
+					//we check that it is not in the complement of the angle swept from min to max
+					//(the complement is the angle swept from max to min.)
+					if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
+					{
+						//Debug.Log ( "Hit, negative angle" );
+						GameState.boss.GetComponent<Boss>().Hurt ( damage );
+					}
+				}
+			}
+		}
+		#endregion
 	}
 
 	#region B
@@ -166,7 +256,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 				//make it so mashing x doesn't extend it multiple times...
 				//that is, pressing x 5 times during the first spin cycle shouldn't make you do all 6 attacks. 
 				//this is to keep it feeling fluid.
-				float t = 0.25f; //time to do one spin.
+				float t = 0.05f * 15.0f; //time to do one spin.
 				if ( player.stateTimer <= t )
 				{
 					spinToWinExtensions++;
@@ -180,11 +270,36 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.interruptHP = 100.0f;
-			player.state = "x";
-			player.stateTimer = 0.0f;
-			player.nextState = "x";
-			gameObject.GetComponent<Animator>().Play( "xslash_down_windup" );
+			player.state = "xwindup";
+			player.stateTimer = 0.05f * 7.0f;
+			player.nextState = "xcharge";
+			//use combo timing to shorten animation cycle between attacks.
+			//pressing x or y while the attack / recovery is going -> queues up a 0 windup attack.
+			#region animation
+			if ( GetComponent<CustomController>().facing == 0 )
+			{
+				GetComponent<Animator>().Play ( "xslash_right_windup" );
+			}
+			else if ( GetComponent<CustomController>().facing == 1 )
+			{
+				GetComponent<Animator>().Play ( "xslash_up_windup" );
+			}
+			else if ( GetComponent<CustomController>().facing == 2 )
+			{
+				GetComponent<Animator>().Play ( "xslash_left_windup" );
+			}
+			else if ( GetComponent<CustomController>().facing == 3 )
+			{
+				GetComponent<Animator>().Play ( "xslash_down_windup" );
+			}
+			#endregion
 		}
+		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
+		{
+			player.nextState = "xcharge";
+			player.interruptHP = 100.0f;
+		}
+
 	}
 	public void XReleased()
 	{
@@ -195,32 +310,48 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//poll gamestate, check for sector hit detection
 		//hurricane spin makes the sector thing a bit more complex.
 		//would it be better to poll gamestate, or try physics raycast type deal?
-		if ( player.state != "x" ) { return; }
-		if ( xHoldTime < xChargeMin )
+		if ( player.state != "xwindup" && player.state != "xcharge" && player.state != "xwinddown") { return; }
+		if (player.state == "xwinddown" )
 		{
-			//Horizontal attack
-			player.canMove = false;
-			player.state = "xnormal";
-			player.stateTimer = 0.25f;
-			player.nextState = "idle";
-			player.canMove = false;
-			player.resourceGraceT = xNormalGraceT;
-			gameObject.GetComponent<Animator>().Play( "xslash_down" );
+			//released early, queue up normal slash
+			player.nextState = "xnormal";
 		}
-		else
+		if ( player.state == "xwindup" )
 		{
-			//Spin2Win
-			player.canMove = true;
-			player.state = "xsmash";
-			player.stateTimer = 0.25f;
-			player.nextState = "idle";
-			spinToWinExtensions = 0;
-			//TODO: get power based on resource and charge
-			player.resource = 0;
-			//maxSpinToWinExtensions = 5; //Scale with charge?
-			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
+			//released early, queue up normal slash
+			player.speedMultiplier = player.speedMultiplier * 2.0f;
+			player.nextState = "xnormal";
 		}
-		player.speedMultiplier = player.speedMultiplier * 2.0f;
+		if ( player.state == "xcharge" )
+		{
+			player.speedMultiplier = player.speedMultiplier * 2.0f;
+			if ( xHoldTime < xChargeMin )
+			{
+				//Horizontal attack
+				player.nextState = "xnormal";
+			}
+			else
+			{
+				//Spin2Win
+				player.canMove = true;
+				player.state = "xsmash";
+				player.stateTimer = 0.05f * 15.0f;
+				player.nextState = "idle";
+				//get power based on charge and resource.
+				float chargePercent = Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax; //0.0f - 1.0f
+				float chainPercent = player.resource; //0.0f - 1.0f
+				//full charge = +100% damage, full chain = +200% damage.
+				//multiplicative stacking?
+				attackDamage = 100.0f * 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
+				player.resource = 0.0f;
+				spinTime = 0.0f;
+				spinToWinExtensions = 0;
+				player.interruptHP = 1000000.0f; //uninterruptable, for all intents and purposes.
+				GetComponent<Animator>().Play( "hurricane_spin" );
+				//maxSpinToWinExtensions = 5; //Scale with charge?
+				//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
+			}
+		}
 		xHoldTime = 0.0f;
 	}
 
@@ -231,7 +362,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 		//Animation + state vars
 		xHoldTime += dt;
-		if ( player.state == "x" )
+		if ( player.state == "xcharge" )
 		{
 			//freeze animation at charging.
 
@@ -277,19 +408,25 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.25f;
 			player.nextState = "idle";
 			player.resourceGraceT = yNormalGraceT;
+			//TODO: box to box collision detection
 		}
 		else
 		{
 			//Blast Off
-			player.speedMultiplier = player.speedMultiplier * 2.0f;
 			player.state = "ysmash";
-			player.stateTimer = 0.25f;
 			player.nextState = "idle";
-			//TODO: get power based on charge and resource.
+			player.canMove = false;//can't use move if I do this.
+			//get power based on charge and resource.
+			float chargePercent = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //0.0f - 1.0f
+			float chainPercent = player.resource; //0.0f - 1.0f
+			//full charge = +100% damage, full chain = +200% damage.
+			//multiplicative stacking?
+			attackDamage = 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
+			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;
-			//player.resourceGraceT = ySmashGraceT;
-			//Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax;
+			//TODO: hitbox to hitbox collision detection.
 		}
+		player.speedMultiplier = player.speedMultiplier * 2.0f;
 		yHoldTime = 0.0f;
 	}
 	public void YHeld( float dt )
@@ -361,4 +498,91 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		rtHoldTime += dt;
 	}
 	#endregion
+
+	void OnStateChange( string newState )
+	{
+		//handles setting up chains of state changes.
+		#region X
+		if ( newState == "xnormalwindup" )
+		{
+			player.nextState = "xcharge";
+			player.stateTimer = 0.05f * 7.0f; //7 frame windup
+		}
+		else if ( newState == "xcharge" )
+		{
+			player.nextState = "xcharge"; //freeze at this state
+		}
+		else if ( newState == "xnormal" )
+		{
+			//initialize the attack.
+			player.canMove = false;
+			player.stateTimer = 0.05f * 5.0f;
+			player.nextState = "xwinddown";//"idle";
+			player.canMove = false;
+			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
+			player.resourceGraceT = xNormalGraceT;
+			player.interruptHP = 100.0f;
+			#region animation
+			if ( GetComponent<CustomController>().facing == 0 )
+			{
+				gameObject.GetComponent<Animator>().Play( "xslash_right" );
+			}
+			else if ( GetComponent<CustomController>().facing == 1 )
+			{
+				gameObject.GetComponent<Animator>().Play( "xslash_up" );
+			}
+			else if ( GetComponent<CustomController>().facing == 2 )
+			{
+				gameObject.GetComponent<Animator>().Play( "xslash_left" );
+			}
+			else if ( GetComponent<CustomController>().facing == 3 )
+			{
+				gameObject.GetComponent<Animator>().Play( "xslash_down" );
+			}
+			#endregion
+		}
+		else if ( newState == "xwinddown" )
+		{
+			player.nextState = "xwinddown2";
+			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
+		}
+		else if ( newState == "xwinddown2" )
+		{
+			player.nextState = "idle";
+			player.stateTimer = 0.05f * 6.0f; //6 frame recovery
+		}
+		else if ( newState == "xsmash" )
+		{
+
+		}
+		#endregion
+		else if ( newState == "ynormal" )
+		{
+		}
+		else if ( newState == "ysmash" )
+		{
+
+		}
+		else if ( newState == "walk" )
+		{
+			#region animation
+			if ( GetComponent<CustomController>().facing == 0 )
+			{
+				gameObject.GetComponent<Animator>().Play( "walk_right" );
+			}
+			else if ( GetComponent<CustomController>().facing == 1 )
+			{
+				gameObject.GetComponent<Animator>().Play( "walk_up" );
+			}
+			else if ( GetComponent<CustomController>().facing == 2 )
+			{
+				gameObject.GetComponent<Animator>().Play( "walk_left" );
+			}
+			else if ( GetComponent<CustomController>().facing == 3 )
+			{
+				gameObject.GetComponent<Animator>().Play( "walk_down" );
+			}
+			#endregion
+		}
+	}
 }

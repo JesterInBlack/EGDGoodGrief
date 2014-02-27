@@ -1,11 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\Character Class\RocketSwordFunctions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\CustomController.cs">
     <Files>
-      <File FileName="Assets\_Scripts\Character Class\RocketSwordFunctions.cs" Line="236" Column="35" />
-      <File FileName="Assets\_Scripts\CustomController.cs" Line="44" Column="26" />
-      <File FileName="Assets\_Scripts\Player.cs" Line="187" Column="27" />
-      <File FileName="Assets\_Scripts\Item.cs" Line="15" Column="3" />
+      <File FileName="Assets\_Scripts\Character Class\RocketSwordFunctions.cs" Line="345" Column="23" />
+      <File FileName="Assets\_Scripts\CustomController.cs" Line="229" Column="36" />
+      <File FileName="Assets\_Scripts\Player.cs" Line="40" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

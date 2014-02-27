@@ -15,6 +15,7 @@ public class Boss : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		maxhp = 10000.0f;
 		hp = maxhp;
 	}
 	
@@ -22,6 +23,7 @@ public class Boss : MonoBehaviour
 	void Update () 
 	{
 		//Time.deltaTime * StaticData.t_scale;
+		GetComponent<GUIText>().text = hp + " / " + maxhp;
 	}
 
 	//--------------------------------------------------------------------------------------------------------------------
