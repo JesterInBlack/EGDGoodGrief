@@ -19,11 +19,13 @@ public interface ClassFunctionalityInterface
 	void XPressed();
 	void XReleased();
 	void XHeld( float dt );
+	void XRest( float dt );
 
 	//Tap / Hold
 	void YPressed();
 	void YReleased();
 	void YHeld( float dt );
+	void YRest( float dt );
 
 	//Tap / Hold
 	void RTPressed();

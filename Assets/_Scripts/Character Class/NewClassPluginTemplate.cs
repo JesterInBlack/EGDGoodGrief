@@ -45,6 +45,10 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called every frame X is held down.
 	}
+	public void XRest( float dt )
+	{
+		//Called every frame X is in it's natural state.
+	}
 	
 	//Tap / Hold
 	public void YPressed()
@@ -58,6 +62,10 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	public void YHeld( float dt )
 	{
 		//Called every frame Y is held down.
+	}
+	public void YRest( float dt )
+	{
+		//Called every frame Y is in it's natural state.
 	}
 	
 	//Tap / Hold

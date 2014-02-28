@@ -1,0 +1,405 @@
+fileFormatVersion: 2
+guid: bad65d8a00425cb469709bfa9566d086
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 4096
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 48
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: rocketsword_walk_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_1
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_2
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_3
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_4
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_5
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_6
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_7
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_8
+      rect:
+        serializedVersion: 2
+        x: 1592
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_9
+      rect:
+        serializedVersion: 2
+        x: 1791
+        y: 597
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_11
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_12
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_13
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_14
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_15
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_16
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_17
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_18
+      rect:
+        serializedVersion: 2
+        x: 1592
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_19
+      rect:
+        serializedVersion: 2
+        x: 1791
+        y: 398
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_21
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_22
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_23
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_24
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_25
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_26
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_27
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_28
+      rect:
+        serializedVersion: 2
+        x: 1592
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_29
+      rect:
+        serializedVersion: 2
+        x: 1791
+        y: 199
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_31
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_32
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_33
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_34
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_35
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_36
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_37
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_38
+      rect:
+        serializedVersion: 2
+        x: 1592
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: rocketsword_walk_39
+      rect:
+        serializedVersion: 2
+        x: 1791
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+  spritePackingTag: 
+  userData: 

@@ -50,7 +50,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		float dt = Time.deltaTime;
 		if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
 		#endregion
-
+		if ( player.state != "idle" ) { Debug.Log ( player.state ); }
 		if ( player.state == "xnormal" )
 		{
 			//do sector based on time in state + direction
@@ -222,11 +222,17 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Probably just animation + state vars
 		//Can't parry while attacking?
 		//Can parry out of default states + charging
+		//Can enqueue a parry out of recovery?
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.canMove = false;
 			player.isParrying = true;
 			player.parryTimer = parryTime;
+		}
+		if ( player.state == "xwinddown" || player.state == "xwinddown2" || 
+		     player.state == "ywinddown" || player.state == "ywinddown2" )
+		{
+			//TODO: enqueue a parry.
 		}
 	}
 	public void BReleased()
@@ -269,37 +275,21 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
-			player.interruptHP = 100.0f;
-			player.state = "xwindup";
-			player.stateTimer = 0.05f * 7.0f;
-			player.nextState = "xcharge";
-			//use combo timing to shorten animation cycle between attacks.
-			//pressing x or y while the attack / recovery is going -> queues up a 0 windup attack.
-			#region animation
-			if ( GetComponent<CustomController>().facing == 0 )
-			{
-				GetComponent<Animator>().Play ( "xslash_right_windup" );
-			}
-			else if ( GetComponent<CustomController>().facing == 1 )
-			{
-				GetComponent<Animator>().Play ( "xslash_up_windup" );
-			}
-			else if ( GetComponent<CustomController>().facing == 2 )
-			{
-				GetComponent<Animator>().Play ( "xslash_left_windup" );
-			}
-			else if ( GetComponent<CustomController>().facing == 3 )
-			{
-				GetComponent<Animator>().Play ( "xslash_down_windup" );
-			}
-			#endregion
+			player.nextState = "xwindup";
+			player.stateTimer = 0.0f;
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
+			//use combo timing to shorten animation cycle between attacks.
+			//pressing x or y while the attack / recovery is going -> queues up a 0 windup attack.
 			player.nextState = "xcharge";
-			player.interruptHP = 100.0f;
 		}
-
+		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
+		{
+			//you missed the recovery, but queue it up.
+			player.nextState = "xwindup";
+			//state after this -> charge / normal
+		}
 	}
 	public void XReleased()
 	{
@@ -311,7 +301,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//hurricane spin makes the sector thing a bit more complex.
 		//would it be better to poll gamestate, or try physics raycast type deal?
 		if ( player.state != "xwindup" && player.state != "xcharge" && player.state != "xwinddown") { return; }
-		if (player.state == "xwinddown" )
+		if ( player.state == "xwinddown" )
 		{
 			//released early, queue up normal slash
 			player.nextState = "xnormal";
@@ -333,10 +323,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			else
 			{
 				//Spin2Win
-				player.canMove = true;
-				player.state = "xsmash";
-				player.stateTimer = 0.05f * 15.0f;
-				player.nextState = "idle";
+				player.nextState = "xsmash";
 				//get power based on charge and resource.
 				float chargePercent = Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax; //0.0f - 1.0f
 				float chainPercent = player.resource; //0.0f - 1.0f
@@ -376,6 +363,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			}
 		}
 	}
+	public void XRest( float dt )
+	{
+		//Called every frame X is in its natural state.
+		//Solves a wierd enqueue state problem.
+		if ( player.state == "xcharge" )
+		{
+			player.nextState = "xnormal";
+			player.stateTimer = 0.0f;
+		}
+	}
 	#endregion
 	#region Y
 	//Tap / Hold
@@ -386,10 +383,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
-			player.interruptHP = 100.0f;
-			player.state = "y";
-			player.stateTimer = 0.0f;
-			player.nextState = "y";
+			player.state = "ywindup";
+		}
+		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
+		{
+			player.nextState = "ycharge";
+		}
+		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
+		{
+			//you missed the recovery, but queue it up.
+			player.nextState = "ywindup";
 		}
 	}
 	public void YReleased()
@@ -399,22 +402,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Animation + state vars
 		//poll gamestate, do hitbox hit detection.
 		//with the charge, hitbox detection over time. A bit more complex?
-		if ( player.state != "y" ) { return; }
+		if ( player.state != "ywindup" && player.state != "ycharge" ) { return; }
 		if ( yHoldTime < yChargeMin )
 		{
 			//overhead strike
-			player.canMove = false;
-			player.state = "ynormal";
-			player.stateTimer = 0.25f;
-			player.nextState = "idle";
-			player.resourceGraceT = yNormalGraceT;
-			//TODO: box to box collision detection
+			player.nextState = "ynormal";
 		}
 		else
 		{
 			//Blast Off
-			player.state = "ysmash";
-			player.nextState = "idle";
+			player.nextState = "ysmash";
 			player.canMove = false;//can't use move if I do this.
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //0.0f - 1.0f
@@ -444,6 +441,15 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			{
 				//feedback: max charge reached.
 			}
+		}
+	}
+	public void YRest( float dt )
+	{
+		//Called every frame Y is in its natural state.
+		if ( player.state == "ycharge" )
+		{
+			player.nextState = "ynormal";
+			player.stateTimer = 0.0f;
 		}
 	}
 	#endregion
@@ -503,14 +509,38 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//handles setting up chains of state changes.
 		#region X
-		if ( newState == "xnormalwindup" )
+		//windup -> charge -> attack -> winddown -> winddown2 -> idle
+		//                                       -> charge ...
+		//windup -> charge -> smash  -> winddown -> winddown2 -> idle
+		//                                       -> charge ...
+		if ( newState == "xwindup" )
 		{
 			player.nextState = "xcharge";
 			player.stateTimer = 0.05f * 7.0f; //7 frame windup
+			player.interruptHP = 100.0f;
+			#region animation
+			if ( GetComponent<CustomController>().facing == 0 )
+			{
+				GetComponent<Animator>().Play ( "xslash_right_windup" );
+			}
+			else if ( GetComponent<CustomController>().facing == 1 )
+			{
+				GetComponent<Animator>().Play ( "xslash_up_windup" );
+			}
+			else if ( GetComponent<CustomController>().facing == 2 )
+			{
+				GetComponent<Animator>().Play ( "xslash_left_windup" );
+			}
+			else if ( GetComponent<CustomController>().facing == 3 )
+			{
+				GetComponent<Animator>().Play ( "xslash_down_windup" );
+			}
+			#endregion
 		}
 		else if ( newState == "xcharge" )
 		{
 			player.nextState = "xcharge"; //freeze at this state
+			player.interruptHP = 100.0f;
 		}
 		else if ( newState == "xnormal" )
 		{
@@ -553,16 +583,54 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		else if ( newState == "xsmash" )
 		{
-
+			player.canMove = true;
+			player.nextState = "xwinddown";
+			player.stateTimer = 0.05f * 15.0f; //15 frame attack (+ can be extended)
 		}
 		#endregion
+		#region y
+		//windup -> charge -> attack -> winddown -> winddown2 -> idle
+		//                                       -> charge ...
+		//windup -> charge -> smash  -> winddown -> winddown2 -> idle
+		//                                       -> charge ...
+		else if ( newState == "ywindup" )
+		{
+			player.nextState = "ycharge";
+			player.stateTimer = 0.05f * 7.0f; //7 frame windup
+			player.interruptHP = 100.0f;
+		}
+		else if ( newState == "ycharge" )
+		{
+			player.nextState = "ycharge"; //freeze the state in a loop.
+			player.interruptHP = 100.0f;
+		}
 		else if ( newState == "ynormal" )
 		{
+			//initialize the attack
+			player.canMove = false;
+			player.stateTimer = 0.05f * 5.0f; //5 frame attack
+			player.nextState = "ywinddown";
+			player.resourceGraceT = yNormalGraceT;
+			player.interruptHP = 100.0f;
+			//TODO: box to box collision detection
+		}
+		else if ( newState == "ywinddown" )
+		{
+			player.nextState = "ywinddown2";
+			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
+		}
+		else if ( newState == "ywinddown2" )
+		{
+			player.nextState = "idle";
+			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
 		}
 		else if ( newState == "ysmash" )
 		{
-
+			//initialize the attack
+			player.canMove = false;
+			player.nextState = "ywinddown";
 		}
+		#endregion
 		else if ( newState == "walk" )
 		{
 			#region animation

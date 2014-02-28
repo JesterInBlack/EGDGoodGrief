@@ -132,6 +132,13 @@ public class CustomController : MonoBehaviour
 				//release charges, have effect
 				actionHandler.XReleased();
 			}
+
+			//X is resting in its natural position
+			else if ( gamePadState.Buttons.X == ButtonState.Released && prevGamePadState.Buttons.X == ButtonState.Released )
+			{
+				//increment charging
+				actionHandler.XRest ( dt );
+			}
 			#endregion
 			#region Y
 			//Y was pressed
@@ -153,6 +160,13 @@ public class CustomController : MonoBehaviour
 			{
 				//release charges, have effect
 				actionHandler.YReleased();
+			}
+
+			//X is resting in its natural position
+			else if ( gamePadState.Buttons.Y == ButtonState.Released && prevGamePadState.Buttons.Y == ButtonState.Released )
+			{
+				//increment charging
+				actionHandler.YRest ( dt );
 			}
 			#endregion
 			#region B
@@ -231,6 +245,14 @@ public class CustomController : MonoBehaviour
 										playerState.Carried = GameState.players[i];
 										otherState.isCarried = true;
 										otherState.Carrier = this.gameObject;
+										//TODO: lerp them / animate the pickup so the camera doesn't jump.
+										//Dispatch this to a script?
+										GameState.players[i].transform.position = 
+											new Vector3( 
+											gameObject.transform.position.x, 
+										    gameObject.transform.position.y + 1.0f, 
+										    0.0f 
+										    );
 										//TODO: animation
 									}
 								}
