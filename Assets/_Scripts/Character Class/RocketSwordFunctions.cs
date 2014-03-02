@@ -383,7 +383,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
-			player.state = "ywindup";
+			player.nextState = "ywindup";
+			player.stateTimer = 0.0f;
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
@@ -411,6 +412,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		else
 		{
 			//Blast Off
+			player.state = "ysmash";
 			player.nextState = "ysmash";
 			player.canMove = false;//can't use move if I do this.
 			//get power based on charge and resource.
