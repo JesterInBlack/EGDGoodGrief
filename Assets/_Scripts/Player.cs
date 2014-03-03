@@ -330,6 +330,7 @@ public class Player : MonoBehaviour
 	{
 		//Gain focus while standing still.
 		//TODO: EXCEPTION FOR KNOCKBACK?
+		//TODO: Grace period? (doesn't degen instantly?)
 		if ( prevPos == this.gameObject.transform.position )
 		{
 			resource = Mathf.Min( resource + 0.5f * dt, 1.0f );

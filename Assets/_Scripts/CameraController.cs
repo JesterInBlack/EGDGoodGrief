@@ -9,10 +9,17 @@ public class CameraController : MonoBehaviour
 	#region vars	
 	public float min_orthographic_size = 4.0f; // "maximum zoom factor"
 
-	//"looped" arrays for smoothing using simple filtering
+	//"looped" arrays for smoothing using simple filtering:
+	//[a], [b], [c]
+	// ^ replace
+	//[1], [b], [c]
+	//      ^ replace
+	//[1], [2], [c]
+	//           ^ replace
+	//repeat
 	private Vector3[] cameraPositions = new Vector3[10];
 	private int cameraPositionOverwriteIndex = 0;
-	private float[] cameraSizes = new float[5];
+	private float[] cameraSizes = new float[10];
 	private int cameraSizeOverwriteIndex = 0;
 	#endregion
 

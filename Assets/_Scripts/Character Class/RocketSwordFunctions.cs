@@ -275,19 +275,18 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
-			player.nextState = "xwindup";
-			player.stateTimer = 0.0f;
+			ChangeState( "xwindup" );
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
 			//use combo timing to shorten animation cycle between attacks.
 			//pressing x or y while the attack / recovery is going -> queues up a 0 windup attack.
-			player.nextState = "xcharge";
+			player.nextState = "xcharge"; //queue up.
 		}
 		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
 		{
 			//you missed the recovery, but queue it up.
-			player.nextState = "xwindup";
+			player.nextState = "xwindup"; //queue up.
 			//state after this -> charge / normal
 		}
 	}
@@ -304,13 +303,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "xwinddown" )
 		{
 			//released early, queue up normal slash
-			player.nextState = "xnormal";
+			player.nextState = "xnormal"; //queue up.
 		}
 		if ( player.state == "xwindup" )
 		{
 			//released early, queue up normal slash
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
-			player.nextState = "xnormal";
+			player.nextState = "xnormal"; //queue up.
 		}
 		if ( player.state == "xcharge" )
 		{
@@ -318,25 +317,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			if ( xHoldTime < xChargeMin )
 			{
 				//Horizontal attack
-				player.nextState = "xnormal";
+				ChangeState( "xnormal" );
 			}
 			else
 			{
 				//Spin2Win
-				player.nextState = "xsmash";
-				//get power based on charge and resource.
-				float chargePercent = Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax; //0.0f - 1.0f
-				float chainPercent = player.resource; //0.0f - 1.0f
-				//full charge = +100% damage, full chain = +200% damage.
-				//multiplicative stacking?
-				attackDamage = 100.0f * 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
-				player.resource = 0.0f;
-				spinTime = 0.0f;
-				spinToWinExtensions = 0;
-				player.interruptHP = 1000000.0f; //uninterruptable, for all intents and purposes.
-				GetComponent<Animator>().Play( "hurricane_spin" );
-				//maxSpinToWinExtensions = 5; //Scale with charge?
-				//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
+				ChangeState( "xsmash" );
 			}
 		}
 		xHoldTime = 0.0f;
@@ -369,8 +355,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Solves a wierd enqueue state problem.
 		if ( player.state == "xcharge" )
 		{
-			player.nextState = "xnormal";
-			player.stateTimer = 0.0f;
+			ChangeState( "xnormal" );
 		}
 	}
 	#endregion
@@ -383,17 +368,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
-			player.nextState = "ywindup";
-			player.stateTimer = 0.0f;
+			ChangeState( "ywindup" );
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
-			player.nextState = "ycharge";
+			player.nextState = "ycharge"; //queue up.
 		}
 		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
 		{
 			//you missed the recovery, but queue it up.
-			player.nextState = "ywindup";
+			player.nextState = "ywindup"; //queue up
 		}
 	}
 	public void YReleased()
@@ -407,23 +391,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( yHoldTime < yChargeMin )
 		{
 			//overhead strike
-			player.nextState = "ynormal";
+			player.nextState = "ynormal"; //queue up
 		}
 		else
 		{
 			//Blast Off
-			player.state = "ysmash";
-			player.nextState = "ysmash";
-			player.canMove = false;//can't use move if I do this.
-			//get power based on charge and resource.
-			float chargePercent = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //0.0f - 1.0f
-			float chainPercent = player.resource; //0.0f - 1.0f
-			//full charge = +100% damage, full chain = +200% damage.
-			//multiplicative stacking?
-			attackDamage = 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
-			player.stateTimer = 1.0f + 1.0f * chargePercent;
-			player.resource = 0;
-			//TODO: hitbox to hitbox collision detection.
+			ChangeState ( "ysmash" );
 		}
 		player.speedMultiplier = player.speedMultiplier * 2.0f;
 		yHoldTime = 0.0f;
@@ -450,8 +423,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called every frame Y is in its natural state.
 		if ( player.state == "ycharge" )
 		{
-			player.nextState = "ynormal";
-			player.stateTimer = 0.0f;
+			ChangeState( "ynormal" );
 		}
 	}
 	#endregion
@@ -464,9 +436,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Slow speed.
 		if ( player.state == "idle" || player.state == "walk" )
 		{
-			player.state = "revcharge";
-			player.stateTimer = 0.0f;
-			player.nextState = "revcharge";
+			ChangeState ( "revcharge" );
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
 		}
 	}
@@ -477,9 +447,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Reset speed.
 		if ( player.state == "revcharge" )
 		{
-			player.state = "idle";
-			player.stateTimer = 0.0f;
-			player.nextState = "idle";
+			ChangeState ( "idle" );
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
 		}
 		rtHoldTime = 0.0f;
@@ -506,6 +474,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		rtHoldTime += dt;
 	}
 	#endregion
+
+	void ChangeState( string newState )
+	{
+		//Forces the state to change next frame.
+		player.nextState = newState;
+		player.stateTimer = 0.0f;
+	}
 
 	void OnStateChange( string newState )
 	{
@@ -588,6 +563,20 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.canMove = true;
 			player.nextState = "xwinddown";
 			player.stateTimer = 0.05f * 15.0f; //15 frame attack (+ can be extended)
+
+			//get power based on charge and resource.
+			float chargePercent = Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax; //0.0f - 1.0f
+			float chainPercent = player.resource; //0.0f - 1.0f
+			//full charge = +100% damage, full chain = +200% damage.
+			//multiplicative stacking?
+			attackDamage = 100.0f * 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
+			player.resource = 0.0f;
+			spinTime = 0.0f;
+			spinToWinExtensions = 0;
+			player.interruptHP = 1000000.0f; //uninterruptable, for all intents and purposes.
+			GetComponent<Animator>().Play( "hurricane_spin" );
+			//maxSpinToWinExtensions = 5; //Scale with charge?
+			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
 		}
 		#endregion
 		#region y
@@ -631,8 +620,23 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//initialize the attack
 			player.canMove = false;
 			player.nextState = "ywinddown";
+
+			//get power based on charge and resource.
+			float chargePercent = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //0.0f - 1.0f
+			float chainPercent = player.resource; //0.0f - 1.0f
+			//full charge = +100% damage, full chain = +200% damage.
+			//multiplicative stacking?
+			attackDamage = 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
+			player.stateTimer = 1.0f + 1.0f * chargePercent;
+			player.resource = 0;
+			//TODO: hitbox to hitbox collision detection.
 		}
 		#endregion
+		else if ( newState == "revcharge" )
+		{
+			player.nextState = "revcharge"; //freeze state in a loop
+			player.stateTimer = 0.0f;
+		}
 		else if ( newState == "walk" )
 		{
 			#region animation

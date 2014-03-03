@@ -7,6 +7,8 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	private Player player;
 	private CustomController controller;
 	private string prevState = "";
+
+	private Vector3 prevPos;
 	#endregion
 
 	// Use this for initialization
@@ -19,7 +21,23 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	// Update is called once per frame
 	void Update () 
 	{
-		//TODO: trap state changes
+		#region ELSEWHERE
+		/*
+		Vector3 pos = this.gameObject.transform.position; //aliasing
+		if ( pos.x == prevPos.x && pos.y == prevPos.y )
+		{
+			player.resource = Mathf.Min ( player.resource + 0.05f, 1.0f );
+		}
+		else
+		{
+			player.resource = Mathf.Max ( player.resource - 0.05f, 0.0f );
+		}
+		//update
+		prevPos = new Vector3( pos.x, pos.y, pos.z );
+		*/
+		#endregion
+
+		//trap state changes
 		if ( prevState != player.state )
 		{
 			OnStateChange( player.state );
@@ -49,11 +67,17 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void XPressed()
 	{
 		//Called when X is pressed.
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			player.nextState = "xcharge";
+		}
 	}
 	public void XReleased()
 	{
 		//Called when X is released.
-		//TODO: blowback
+		if ( player.state != "xcharge" ) { return; }
+		player.nextState = "blowback";
+		player.stateTimer = 0.0f;
 	}
 	public void XHeld( float dt )
 	{
@@ -91,20 +115,84 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when RT is pressed.
 		//TODO: charge
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			player.state = "rtcharge";
+			player.stateTimer = 0.0f;
+			player.nextState = "rtcharge";
+		}
 	}
 	public void RTReleased()
 	{
 		//Called when RT is released.
+		if ( player.state != "rtcharge" ) { return; }
 		//TODO: fire
+		player.nextState = "rtfire";
+		player.stateTimer = 0.0f;
 	}
 	public void RTHeld( float dt )
 	{
 		//Called every frame RT is held down.
+		if ( player.state == "rtcharge" )
+		{
+			//charge += dt;
+		}
 	}
 	#endregion
+
+	void ChangeState( string newState )
+	{
+		//Forces the state to change next frame.
+		player.nextState = newState;
+		player.stateTimer = 0.0f;
+	}
 
 	void OnStateChange( string newState )
 	{
 		//handles setting up chains of state changes.
+		#region firing
+		//(no windup) charge -> fire -> winddown
+		if ( newState == "rtcharge" )
+		{
+			player.nextState = "rtcharge"; //freeze the state in a loop
+			player.stateTimer = 0.0f;
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
+		}
+		else if ( newState == "rtfire" )
+		{
+			player.canMove = false;
+			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.nextState = "rtwinddown";
+			player.speedMultiplier = player.speedMultiplier * 2.0f;
+			//TODO: attack cone / line, based on charge. Then, void charge.
+		}
+		else if ( newState == "rtwinddown" )
+		{
+			player.canMove = true;
+			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.nextState = "idle";
+		}
+		#endregion
+		#region blowback
+		//(no windup) charge -> fire -> winddown
+		else if ( newState == "xcharge" )
+		{
+			player.nextState = "xcharge"; //freeze the state in a loop
+			player.stateTimer = 0.0f;
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
+		}
+		else if ( newState == "blowback" )
+		{
+			player.nextState = "xwinddown";
+			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.speedMultiplier = player.speedMultiplier * 2.0f;
+			//TODO: push out of PBAoE.
+		}
+		else if ( newState == "xwinddown" )
+		{
+			player.nextState = "idle";
+			player.stateTimer = 0.05f * 1.0f; //1 frame
+		}
+		#endregion
 	}
 }
