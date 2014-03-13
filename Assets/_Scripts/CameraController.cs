@@ -7,7 +7,12 @@ public class CameraController : MonoBehaviour
 
 
 	#region vars	
-	public float min_orthographic_size = 4.0f; // "maximum zoom factor"
+	public float min_orthographic_size = 4.0f;  //"maximum zoom factor"
+	public float base_orthographic_size = 0.5f; //extra spacing: forces the camera to zoom out a bit.
+
+	private Vector3 shake; //used for camera shake
+	private float shakeT;
+	private float shakeMagnitude;
 
 	//"looped" arrays for smoothing using simple filtering:
 	//[a], [b], [c]
@@ -37,17 +42,27 @@ public class CameraController : MonoBehaviour
 		{
 			cameraSizes[i] = Camera.main.orthographicSize;
 		}
+
+		shake = new Vector3( 0.0f, 0.0f, 0.0f );
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		FollowUpdate (); //update camera position factor to follow avg. player position
+		ZoomUpdate ();   //update camera zoom factor to keep all players onscreen
+		ShakeUpdate ();  //camera shake effects
+		Filter ();       //smooth changes over time
+	}
+
+	void FollowUpdate ()
+	{
 		#region follow
-		//TODO: make it follow the avg. position of the players.
+		//make it follow the avg. position of the players.
 		float avg_x = 0.0f;
 		float avg_y = 0.0f;
 		float playercount = 0.0f;
-
+		
 		for ( int i = 0; i < 4; i++ )
 		{
 			if ( GameState.players[i] != null )
@@ -59,18 +74,23 @@ public class CameraController : MonoBehaviour
 		}
 		avg_x = avg_x / playercount;
 		avg_y = avg_y / playercount;
-
+		
 		cameraPositions[ cameraPositionOverwriteIndex ] = new Vector3( avg_x, avg_y, -10.0f );
-		//Camera.main.transform.position = new Vector3( avg_x, avg_y, -10.0f ); 
 		#endregion
+	}
 
+	void ZoomUpdate ()
+	{
 		#region zoom
 		//fit to max dist in y from center, max dist in x from center. Floor on zoom in.
-		float ratio = 1.67f; //factor to divide x by (aspect ratio)
-
+		//float ratio = 1.67f; //factor to divide x by (aspect ratio)
+		float ratio = Camera.main.aspect;
+		//ratio = (float)Screen.width / (float)Screen.height; //same as ^
+		//Debug.Log ( ratio );
+		
 		float max_dist_x = 0.0f;
 		float max_dist_y = 0.0f;
-
+		
 		for ( int i = 0; i < 4; i++ )
 		{
 			if ( GameState.players[i] != null )
@@ -86,15 +106,18 @@ public class CameraController : MonoBehaviour
 			}
 		}
 		float max_dist = Mathf.Max ( max_dist_x, max_dist_y );
-
-		cameraSizes[ cameraSizeOverwriteIndex ] = Mathf.Max ( min_orthographic_size, max_dist + 0.5f ); //captures a unit circle in the y, 1.67 in the x
-		//Camera.main.orthographicSize = Mathf.Max ( min_orthographic_size, max_dist + 0.5f ); //captures a unit circle in the y, 1.67 in the x
+		
+		cameraSizes[ cameraSizeOverwriteIndex ] = Mathf.Max ( min_orthographic_size, max_dist + base_orthographic_size ); 
+		//captures an ellipse: 1.0 in the y, 1.67 in the x
 		#endregion
+	}
 
+	void Filter()
+	{
 		#region filter
 		//averages the camera's target position over a few frames for a smoothing effect.
-		avg_x = 0.0f;
-		avg_y = 0.0f;
+		float avg_x = 0.0f;
+		float avg_y = 0.0f;
 		float avg_z = 0.0f;
 		for ( int i = 0; i < cameraPositions.Length; i++ )
 		{
@@ -106,19 +129,47 @@ public class CameraController : MonoBehaviour
 		avg_y = avg_y / ((float)cameraPositions.Length);
 		avg_z = avg_z / ((float)cameraPositions.Length);
 		Vector3 avg_vec = new Vector3( avg_x, avg_y, avg_z );
-
+		
 		float avg_size = 0.0f;
 		for ( int i = 0; i < cameraSizes.Length; i++ )
 		{
 			avg_size += cameraSizes[i];
 		}
 		avg_size = avg_size / ((float)cameraSizes.Length);
-
-		Camera.main.transform.position = avg_vec;
+		
+		Camera.main.transform.position = avg_vec + shake;
 		Camera.main.orthographicSize = avg_size;
-
+		
 		cameraSizeOverwriteIndex = (cameraSizeOverwriteIndex + 1) % cameraSizes.Length;
 		cameraPositionOverwriteIndex = (cameraPositionOverwriteIndex + 1) % cameraPositions.Length;
 		#endregion
+	}
+
+	void ShakeUpdate()
+	{
+		#region shake
+		//updates camera shake / zeroes it out.
+		if ( shakeT <= 0.0f ) { return; } //no shake.
+
+		float dt = Time.deltaTime * StaticData.t_scale;
+		shakeT -= dt;
+		if ( shakeT > 0.0f )
+		{
+			float x = Random.Range ( -shake.magnitude, shake.magnitude ) * Camera.main.aspect;
+			float y = Random.Range ( -shake.magnitude, shake.magnitude );
+			shake = new Vector3( 0.0f, 0.0f, 0.0f ); //TODO: shake based on t.
+		}
+		else
+		{
+			shake = new Vector3( 0.0f, 0.0f, 0.0f); //zero out
+		}
+		#endregion
+	}
+
+	public void Shake( float magnitude, float t )
+	{
+		//shakes the camera
+		shakeMagnitude = magnitude * ( Camera.main.orthographicSize / min_orthographic_size );
+		shakeT = t;
 	}
 }

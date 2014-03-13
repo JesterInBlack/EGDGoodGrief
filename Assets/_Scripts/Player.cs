@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
 
 	#region vars
-	public float id; //used for identity checks.
+	public int id; //used for identity checks.
 
 	public float HP;
 	public float maxHP;
@@ -15,18 +15,17 @@ public class Player : MonoBehaviour
 
 	public int score = 0;
 
-	private float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
-	public float offense = 1.0f; //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
+	public float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
+	public float offense = 1.0f;  //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
 
-	CharacterClasses characterclass; //enum
-
-	//color / player id?
+	public CharacterClasses characterclass = CharacterClasses.KNIGHT; //enum
 
 	//state data?
 	//idle, walk, <custom via plugin>
 	public string state = "idle";     //current state
 	public float stateTimer = 0.0f;   //state timer
 	public string nextState = "idle"; //next state: on state timer reaching 0, transition occurs.
+	public string prevState = "idle"; //previous state
 
 	public bool canMove = true;           //disable moving while attacking?
 	public float speedMultiplier = 1.0f;  //able to move, but at a slower pace?
@@ -55,14 +54,7 @@ public class Player : MonoBehaviour
 	public bool isInBulletTime = false;     //Immune to the stop watch slow?
 	float bulletTimeDuration = 0.0f;        //How long (real time) until time control immunity expires.
 
-	bool isPoisoned = false;
-	float poisonDPS = 1.0f;
-	float poisonDuration = 0.0f;
-
-	//Speed buff
-	//Regen buff
-	//Defense buff
-	//Attack buff
+	public ArrayList buffs = new ArrayList();
 
 	//items x 3
 	//item cooldowns?
@@ -89,12 +81,47 @@ public class Player : MonoBehaviour
 		defense = 1.0f;
 
 		//Placeholder code: replace with setter from pre-game screens.
-		characterclass = CharacterClasses.KNIGHT;
+		//characterclass = CharacterClasses.KNIGHT;
 		for ( int i = 0; i < 3; i++ )
 		{
 			items[i] = new Item();
 		}
 		//END placeholder
+
+		#region Class-Specific
+		//Gets the class specific action handler for the controller.
+		CustomController controller = this.gameObject.GetComponent<CustomController>();
+		//Disable all the controller scripts
+		this.gameObject.GetComponent<RocketSwordFunctions>().enabled = false;
+		this.gameObject.GetComponent<Bowlista>().enabled = false;
+		this.gameObject.GetComponent<StoneFist>().enabled = false;
+		this.gameObject.GetComponent<Chainsickle>().enabled = false;
+		//Set and re-enable the one controller script we're going to use.
+		if ( characterclass == CharacterClasses.KNIGHT )
+		{
+			controller.actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent<RocketSwordFunctions>();
+			this.gameObject.GetComponent<RocketSwordFunctions>().enabled = true;
+			//TODO: set stats (speed, defense / hp)
+		}
+		else if ( characterclass == CharacterClasses.ARCHER )
+		{
+			controller.actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent<Bowlista>();
+			this.gameObject.GetComponent<Bowlista>().enabled = true;
+			//TODO: set stats (speed, defense / hp)
+		}
+		else if ( characterclass == CharacterClasses.DEFENDER )
+		{
+			controller.actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent<StoneFist>();
+			this.gameObject.GetComponent<StoneFist>().enabled = true;
+			//TODO: set stats (speed, defense / hp)
+		}
+		else if ( characterclass == CharacterClasses.NINJA )
+		{
+			controller.actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent<Chainsickle>();
+			this.gameObject.GetComponent<Chainsickle>().enabled = true;
+			//TODO: set stats (speed, defense / hp)
+		}
+		#endregion
 	}
 	
 	// Update is called once per frame
@@ -150,11 +177,16 @@ public class Player : MonoBehaviour
 		//Update items
 		for ( int i = 0; i < 3; i++ )
 		{
-			items[i].Update();
+			items[i].Update( t );
 		}
 		#endregion
 
-		UpdateResource ( t );
+		//trap state changes
+		if ( prevState != state )
+		{
+			OnStateChange( state );
+		}
+		prevState = state;
 
 		prevPos = this.gameObject.transform.position;
 	}
@@ -183,6 +215,8 @@ public class Player : MonoBehaviour
 	{
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
+		if ( false ) { return; } //TODO: stone skin
+		//TODO: add stone skin knockback handling on hit logic (somewhere?)
 
 		//deal damage
 		float finalDamage = damage / defense;
@@ -201,6 +235,16 @@ public class Player : MonoBehaviour
 			isDowned = true;
 			//deduct points
 			score -= 100;
+			#region remove buffs
+			//remove all buffs
+			for ( int i = buffs.Count - 1; i > 0; i-- )
+			{
+				Buff tempBuff = (Buff)buffs[i];
+				tempBuff.End();
+				//buffs.RemoveAt( i ); //If we want some to not vanish on going down.
+			}
+			buffs.Clear ();
+			#endregion
 		}
 
 		#region resource deduction
@@ -218,6 +262,8 @@ public class Player : MonoBehaviour
 
 	public void Wound( float damage )
 	{
+		//TODO: figure out the conditons this will be called on.
+		//consider hurt 1st impacting the parry / shield vars.
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
 
@@ -265,15 +311,43 @@ public class Player : MonoBehaviour
 	}
 
 	//-------------------------------------------------------------------------------------------------------
+	//State Stuff
+	//-------------------------------------------------------------------------------------------------------
+	void ChangeState( string newState )
+	{
+		//Forces the state to change next frame.
+		nextState = newState;
+		stateTimer = 0.0f;
+	}
+	
+	void OnStateChange( string newState )
+	{
+		//handles "global" state changes: shared by all classes
+		if ( newState == "item windup" )
+		{
+			//TODO: stuff
+		}
+		else if ( newState == "item charge" )
+		{
+		}
+		else if ( newState == "item aim ray" )
+		{
+		}
+		else if ( newState == "item aim point" )
+		{
+		}
+	}
+
+	//-------------------------------------------------------------------------------------------------------
 	//ITEMS?
 	//-------------------------------------------------------------------------------------------------------
 	public void UseItem()
 	{
-		if ( items[ itemIndex ].CoolDownTimer <= 0.0f )
+		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
 		{
 			//TODO: check cooldowns, set cooldowns on use.
 			StopWatch();
-			items[ itemIndex ].CoolDownTimer = items[ itemIndex ].CoolDownDelay;
+			items[ itemIndex ].coolDownTimer = items[ itemIndex ].coolDownDelay;
 		}
 		else
 		{
@@ -290,79 +364,4 @@ public class Player : MonoBehaviour
 		//TODO: lerp in, add visual effect, play sound
 		//TODO: duration on t scale, lerp back in, remove visual effect, play sound
 	}
-
-	#region player resources
-	private void UpdateResource( float dt )
-	{
-		if ( characterclass == CharacterClasses.KNIGHT )
-		{
-			UpdateChain ( dt );
-		}
-		else if ( characterclass == CharacterClasses.ARCHER )
-		{
-			UpdateFocus ( dt );
-		}
-		else if ( characterclass == CharacterClasses.NINJA )
-		{
-			UpdateStyle ( dt );
-		}
-		else if ( characterclass == CharacterClasses.DEFENDER )
-		{
-			UpdateAccumulation ( dt );
-		}
-	}
-
-	private void UpdateChain( float dt )
-	{
-		if ( state == "idle" || state == "walk" )
-		{
-			//degen grace timer
-			resourceGraceT -= dt;
-		}
-
-		if ( resourceGraceT <= 0.0f )
-		{
-			resource = Mathf.Max ( resource - 1.0f * dt, 0.0f );
-		}
-	}
-
-	private void UpdateFocus( float dt )
-	{
-		//Gain focus while standing still.
-		//TODO: EXCEPTION FOR KNOCKBACK?
-		//TODO: Grace period? (doesn't degen instantly?)
-		if ( prevPos == this.gameObject.transform.position )
-		{
-			resource = Mathf.Min( resource + 0.5f * dt, 1.0f );
-		}
-		else
-		{
-			resource = Mathf.Max ( resource - 1.0f * dt, 0.0f );
-		}
-	}
-
-	private void UpdateStyle( float dt )
-	{
-		//Gain style by doing stuff.
-		//Lose style for not doing anything for a while.
-		if ( state == "idle" || state == "walk" )
-		{
-			//degen grace timer
-			resourceGraceT -= dt;
-		}
-
-		if ( resourceGraceT <= 0.0f )
-		{
-			resource = Mathf.Max ( resource - 1.0f * dt, 0.0f );
-		}
-	}
-
-	private void UpdateAccumulation( float dt )
-	{
-		//Constantly gain sediment accumulation.
-		//Some moves degenerate it.
-		resource = Mathf.Min ( resource + 0.25f * dt, 1.0f );
-	}
-
-	#endregion
 }

@@ -8,6 +8,10 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	private CustomController controller;
 	private string prevState = "";
 
+	private const float dodgeTime = 0.05f * 5.0f; //5 frames
+	private const float dodgeSpeed = 8.0f;        //dodge speed (units / s)
+	private Vector3 dodgeVec = new Vector3();     //dodge vector
+
 	private bool isSpinning = false; //whether or not the ninja is spinning his chain
 	#endregion
 	
@@ -21,7 +25,23 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	// Update is called once per frame
 	void Update () 
 	{
-		//TODO: trap state changes
+		#region dt
+		float dt = Time.deltaTime;
+		if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
+		#endregion
+		UpdateResource ( dt );
+
+		if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
+
+		//custom state logic
+		if ( player.state == "dodge" )
+		{
+			//move them along dodge vector
+			Vector3 vec = new Vector3( dodgeVec.x * dt, dodgeVec.y * dt, 0.0f );
+			controller.MoveNaoPlz ( vec );
+		}
+
+		//trap state changes
 		if ( prevState != player.state )
 		{
 			OnStateChange( player.state );
@@ -198,6 +218,22 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	}
 	#endregion
 
+	private void UpdateResource( float dt )
+	{
+		//Gain style by doing stuff.
+		//Lose style for not doing anything for a while.
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			//degen grace timer
+			player.resourceGraceT -= dt;
+		}
+		
+		if ( player.resourceGraceT <= 0.0f )
+		{
+			player.resource = Mathf.Max ( player.resource - 1.0f * dt, 0.0f );
+		}
+	}
+
 	void ChangeState( string newState )
 	{
 		//Forces the state to change next frame.
@@ -275,6 +311,26 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.05f * 1.0f; //1 frame
 			isSpinning = false;
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
+		}
+		#endregion
+		#region flip
+		else if ( newState == "flip" )
+		{
+			player.nextState = "idle";
+			player.stateTimer = dodgeTime;
+			player.canMove = false;
+			player.isDodging = true;
+			player.dodgeTimer = dodgeTime;
+			//Get dodge vector (move vector's direction, or facing if idle).
+			dodgeVec = controller.move_vec.normalized * dodgeSpeed;
+			//if idle, default to backwards
+			if ( dodgeVec.sqrMagnitude == 0.0f )
+			{
+				float angle = ( (controller.facing + 2) % 4) * Mathf.PI / 2.0f;
+				dodgeVec = new Vector3( Mathf.Cos ( angle ), Mathf.Sin ( angle ), 0.0f ) * dodgeSpeed;
+			}
+			#region animation
+			#endregion
 		}
 		#endregion
 	}

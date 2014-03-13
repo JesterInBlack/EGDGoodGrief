@@ -14,12 +14,16 @@ public class CustomController : MonoBehaviour
 	
 	[HideInInspector]
 	public bool move_enabled = true; //for disabling motion
+	[HideInInspector]
+	public Vector2 move_vec = new Vector2();
+	//public Vector2 aim_vec = new Vector2();
 	
 	public float speed = 2.0f; //unity units per second (we're using Tile Size pixels per unit (64) )
 	
 	BoxCollider2D my_collider;
-	ClassFunctionalityInterface actionHandler; //stores the script that handles B, X, Y, and RT functionality.
-	Player playerState;
+	[HideInInspector]
+	public ClassFunctionalityInterface actionHandler; //stores the script that handles B, X, Y, and RT functionality.
+	private Player playerState;
 
 	//gamepad stuff
 	bool playerIndexSet = false;
@@ -35,7 +39,7 @@ public class CustomController : MonoBehaviour
 	{
 		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
 		playerState = this.gameObject.GetComponent<Player>();
-		actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent( typeof( ClassFunctionalityInterface ) );
+		//actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent( typeof( ClassFunctionalityInterface ) );
 
 		#region codes
 		//TODO: remove this snippet, replace with actual working code.
@@ -58,7 +62,7 @@ public class CustomController : MonoBehaviour
 		}
 		#endregion
 
-		Vector2 move_vec = new Vector2( 0.0f, 0.0f );
+		move_vec = new Vector2( 0.0f, 0.0f );
 		
 		#region input parsing
 		//get gamepad state

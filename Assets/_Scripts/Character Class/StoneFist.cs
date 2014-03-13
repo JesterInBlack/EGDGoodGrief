@@ -8,6 +8,17 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	private Player player;
 	private CustomController controller;
 	private string prevState = "";
+
+	//Button Hold Times
+	private float xHoldTime  = 0.0f;
+	private const float xChargeMax = 10.0f;    //maximum hold time: more than this confers no benefit.
+	private float yHoldTime  = 0.0f;
+	private float yDamage = 0.0f;
+	private const float shieldHP = 1.0f;       //if the shield takes this much damage, it breaks.
+	private const float shieldDegenRate = 1.0f / 3.0f;  //the % of sediment the shield drains, per second.
+	private float bHoldTime  = 0.0f;
+	private const float bChargeTime = 1.0f;    //hold time to use the B buff.
+	private float rtHoldTime = 0.0f;
 	#endregion
 	
 	// Use this for initialization
@@ -20,10 +31,28 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	// Update is called once per frame
 	void Update () 
 	{
+		#region dt
+		float dt = Time.deltaTime;
+		if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
+		#endregion
+		UpdateResource ( dt ); //update "sediment accumulation"
+
+		if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
+
+		//Custom State Logic
 		if ( player.state == "ycharge" )
 		{
-			//TODO: take damage, take sediment
-			//TODO: if damage limit is exceeded, break, counterattack.
+			//take sediment
+			player.resource = Mathf.Max ( player.resource - shieldDegenRate * dt, 0.0f );
+			if ( player.resource == 0 )
+			{
+				ChangeState ( "ywinddown" );
+			}
+			//if damage limit is exceeded, break, counterattack.
+			if ( yDamage >= shieldHP )
+			{
+				ChangeState( "ywinddown" );
+			}
 		}
 
 		//trap state changes
@@ -42,14 +71,28 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//TODO: stone skin (parry)
 		//Charge up: 1 hit defensive shield / duration, breaks on hit
 		//if another player breaks the 1 hit shield, they get way knocked back.
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			ChangeState ( "bcharge" );
+		}
 	}
 	public void BReleased()
 	{
 		//Called when B is released.
+		if ( player.state != "bcharge" ) { return; }
+		if ( bHoldTime >= bChargeTime )
+		{
+			//TODO: 1 hit shield w/ duration buff?
+			//set a stoneskin flag
+			//put it on a timer
+		}
+		bHoldTime = 0.0f;
 	}
 	public void BHeld( float dt )
 	{
+		bHoldTime += dt;
 		//Called every frame B is held down.
+		if ( player.state != "bcharge" ) { return; }
 	}
 	#endregion
 	
@@ -67,6 +110,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when X is released.
 		//TODO: sand laser
+		xHoldTime = 0.0f;
 		if ( player.state != "xcharge" && player.state != "xwindup" ) { return; }
 		if ( player.state == "xcharge" )
 		{
@@ -78,6 +122,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called every frame X is held down.
 		//TODO: charge sand laser
+		xHoldTime += dt;
 	}
 	public void XRest( float dt )
 	{
@@ -101,6 +146,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when Y is released.
 		//TODO: counterattack
+		yHoldTime = 0.0f;
 		if ( player.state != "ycharge" ) { return; }
 		ChangeState ( "ywinddown" );
 	}
@@ -108,6 +154,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called every frame Y is held down.
 		//TODO: charge up counterattack
+		yHoldTime += dt;
 	}
 	public void YRest( float dt )
 	{
@@ -127,17 +174,26 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	public void RTReleased()
 	{
 		//Called when RT is released.
+		rtHoldTime = 0.0f;
 		if ( player.state != "rtwindup" && player.state != "sandstorm" ) { return; }
 		ChangeState( "rtwinddown" );
 	}
 	public void RTHeld( float dt )
 	{
 		//Called every frame RT is held down.
+		rtHoldTime += dt;
 		if ( player.state != "sandstorm" ) { return; }
 		//TODO: charge?
 		//TODO: DoT
 	}
 	#endregion
+
+	private void UpdateResource( float dt )
+	{
+		//Constantly gain sediment accumulation.
+		//Some moves degenerate it.
+		player.resource = Mathf.Min ( player.resource + 0.25f * dt, 1.0f );
+	}
 
 	void ChangeState( string newState )
 	{
@@ -171,6 +227,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "ycharge"; //freeze in a loop
 			player.stateTimer = 0.0f;
+			yDamage = 0.0f; //reset damage
 		}
 		else if ( player.state == "ywinddown" )
 		{

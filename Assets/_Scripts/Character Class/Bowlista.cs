@@ -7,8 +7,13 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	private Player player;
 	private CustomController controller;
 	private string prevState = "";
-
 	private Vector3 prevPos;
+
+	private const float dodgeTime = 0.05f * 5.0f; //5 frames
+	private const float dodgeSpeed = 8.0f;        //dodge speed (units / s)
+	private Vector3 dodgeVec = new Vector3();     //dodge vector
+	//button hold times
+	private float rtHoldTime = 0.0f;
 	#endregion
 
 	// Use this for initialization
@@ -21,21 +26,22 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	// Update is called once per frame
 	void Update () 
 	{
-		#region ELSEWHERE
-		/*
-		Vector3 pos = this.gameObject.transform.position; //aliasing
-		if ( pos.x == prevPos.x && pos.y == prevPos.y )
-		{
-			player.resource = Mathf.Min ( player.resource + 0.05f, 1.0f );
-		}
-		else
-		{
-			player.resource = Mathf.Max ( player.resource - 0.05f, 0.0f );
-		}
-		//update
-		prevPos = new Vector3( pos.x, pos.y, pos.z );
-		*/
+		#region dt
+		float dt = Time.deltaTime;
+		if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
 		#endregion
+		UpdateResource ( dt );
+
+		if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
+
+		//custom state logic
+		if ( player.state == "dodge" )
+		{
+			//move them along dodge vector
+			Vector3 vec = new Vector3( dodgeVec.x * dt, dodgeVec.y * dt, 0.0f );
+			controller.MoveNaoPlz ( vec );
+		}
+
 
 		//trap state changes
 		if ( prevState != player.state )
@@ -50,7 +56,10 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void BPressed()
 	{
 		//Called when B is pressed.
-		//TODO: dodge roll
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			ChangeState ( "dodge" ); //not doge: http://en.wikipedia.org/wiki/Doge_%28meme%29
+		}
 	}
 	public void BReleased()
 	{
@@ -140,6 +149,23 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	}
 	#endregion
 
+	private void UpdateResource( float dt )
+	{
+		//Gain focus while standing still.
+		//TODO: EXCEPTION FOR KNOCKBACK?
+		//TODO: Grace period? (doesn't degen instantly?)
+		Vector3 pos = this.gameObject.transform.position; //aliasing
+		if ( pos.x == prevPos.x && pos.y == prevPos.y )
+		{
+			player.resource = Mathf.Min( player.resource + 0.5f * dt, 1.0f );
+		}
+		else
+		{
+			player.resource = Mathf.Max ( player.resource - 1.0f * dt, 0.0f );
+		}
+		prevPos = this.gameObject.transform.position;
+	}
+
 	void ChangeState( string newState )
 	{
 		//Forces the state to change next frame.
@@ -192,6 +218,26 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
+		}
+		#endregion
+		#region dodge
+		else if ( newState == "dodge" )
+		{
+			player.nextState = "idle";
+			player.stateTimer = dodgeTime;
+			player.canMove = false;
+			player.isDodging = true;
+			player.dodgeTimer = dodgeTime;
+			//Get dodge vector (move vector's direction, or facing if idle).
+			dodgeVec = controller.move_vec.normalized * dodgeSpeed;
+			//if idle, default to forewards
+			if ( dodgeVec.sqrMagnitude == 0.0f )
+			{
+				float angle = controller.facing * Mathf.PI / 2.0f;
+				dodgeVec = new Vector3( Mathf.Cos ( angle ), Mathf.Sin ( angle ), 0.0f ) * dodgeSpeed;
+			}
+			#region animation
+			#endregion
 		}
 		#endregion
 	}

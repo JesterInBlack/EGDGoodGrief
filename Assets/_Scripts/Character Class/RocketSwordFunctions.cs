@@ -50,13 +50,15 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		float dt = Time.deltaTime;
 		if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
 		#endregion
+		UpdateResource ( dt ); //update "chain"
+
 		if ( player.state != "idle" ) { Debug.Log ( player.state ); }
 		if ( player.state == "xnormal" )
 		{
 			//do sector based on time in state + direction
 			float angle = 90.0f * GetComponent<CustomController>().facing;
 			float damage = 10.0f;
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), -67.5f + angle, 67.5f + angle, 0.1f, 2.0f, damage * dt );
+			hitSector ( new Vector2( transform.position.x, transform.position.y ), -67.5f + angle, 67.5f + angle, 0.0f, 2.0f, damage * dt, player.id );
 		}
 		if ( player.state == "xsmash" )
 		{
@@ -65,7 +67,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			spinTime += dt;
 			float minAngle = ( ( ( ( 180.0f - spinTime * 360.0f / (0.75f / 2.0f) ) % 360.0f) + 360.0f) % 360.0f);
 			float maxAngle = ( ( ( ( minAngle + 90.0f ) % 360.0f) + 360.0f) % 360.0f);
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), minAngle, maxAngle, 0.1f, 2.0f, attackDamage * dt );
+			hitSector ( new Vector2( transform.position.x, transform.position.y ), minAngle, maxAngle, 0.0f, 2.0f, attackDamage * dt, player.id );
 			/*
 			if ( spinTime % (0.75f / 2.0f) != spinTime )
 			{
@@ -119,7 +121,22 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Debug.Log ( player.state ); //DEBUG
 	}
 
-	void hitSector( Vector2 pos, float minTheta, float maxTheta, float minRadius, float maxRadius, float damage )
+	void hitBox( Rect attackBox, int id )
+	{
+		//does box-box collision.
+		Rect hitBox = new Rect( 0, 0, 1, 1 );
+		if ( !( attackBox.x + attackBox.width < hitBox.x ||
+		        hitBox.x + hitBox.width < attackBox.x ||
+		        attackBox.y + attackBox.height < hitBox.y ||
+		        hitBox.y + hitBox.height < attackBox.y ) )
+		{
+			//Collision
+		}
+
+
+	}
+
+	void hitSector( Vector2 pos, float minTheta, float maxTheta, float minRadius, float maxRadius, float damage, int id )
 	{
 		//NOTE: theta is an angle, in DEGREES, >= -360.0f
 
@@ -146,32 +163,35 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			if ( GameState.players[i] != null )
 			{
-				float x = GameState.players[i].transform.position.x;
-				float y = GameState.players[i].transform.position.y;
-				float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
-
-				if ( dist >= minRadius && dist <= maxRadius )
+				if ( i != id ) //no self-hitting
 				{
-					float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
+					float x = GameState.players[i].transform.position.x;
+					float y = GameState.players[i].transform.position.y;
+					float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
 
-					//Debug.Log ( angle ); //DEBUG
-					Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
+					if ( dist >= minRadius && dist <= maxRadius )
+					{
+						float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
 
-					if ( angle >= minTheta && angle <= maxTheta )
-					{
-						//Debug.Log ( "Hit, normal" );
-						GameState.players[i].GetComponent<Player>().Hurt ( damage );
-					}
-					else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
-					{
-						//The sign on the angle changed. 
-						//So to tell if it's in the sector, 
-						//we check that it is not in the complement of the angle swept from min to max
-						//(the complement is the angle swept from max to min.)
-						if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
+						//Debug.Log ( angle ); //DEBUG
+						Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
+
+						if ( angle >= minTheta && angle <= maxTheta )
 						{
-							//Debug.Log ( "Hit, negative angle" );
+							//Debug.Log ( "Hit, normal" );
 							GameState.players[i].GetComponent<Player>().Hurt ( damage );
+						}
+						else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
+						{
+							//The sign on the angle changed. 
+							//So to tell if it's in the sector, 
+							//we check that it is not in the complement of the angle swept from min to max
+							//(the complement is the angle swept from max to min.)
+							if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
+							{
+								//Debug.Log ( "Hit, negative angle" );
+								GameState.players[i].GetComponent<Player>().Hurt ( damage );
+							}
 						}
 					}
 				}
@@ -225,14 +245,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Can enqueue a parry out of recovery?
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
-			player.canMove = false;
-			player.isParrying = true;
-			player.parryTimer = parryTime;
+			ChangeState( "parry" );
 		}
 		if ( player.state == "xwinddown" || player.state == "xwinddown2" || 
 		     player.state == "ywinddown" || player.state == "ywinddown2" )
 		{
-			//TODO: enqueue a parry.
+			//enqueue a parry
+			player.nextState = "parry";
 		}
 	}
 	public void BReleased()
@@ -475,6 +494,20 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	}
 	#endregion
 
+	private void UpdateResource( float dt )
+	{
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			//degen grace timer
+			player.resourceGraceT -= dt;
+		}
+		
+		if ( player.resourceGraceT <= 0.0f )
+		{
+			player.resource = Mathf.Max ( player.resource - 1.0f * dt, 0.0f );
+		}
+	}
+
 	void ChangeState( string newState )
 	{
 		//Forces the state to change next frame.
@@ -658,5 +691,17 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			}
 			#endregion
 		}
+		#region parry
+		else if ( newState == "parry" )
+		{
+			player.nextState = "idle";
+			player.stateTimer = parryTime;
+			player.canMove = false;
+			player.isParrying = true;
+			player.parryTimer = parryTime;
+			#region animation
+			#endregion
+		}
+		#endregion
 	}
 }
