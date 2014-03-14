@@ -12,26 +12,51 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private Player player;
 	private CustomController controller;
 
-	//button hold times
+	//button hold times + move stats
+	#region move data
+
+	#region X
+	private const float xNormalBaseDamage = 10.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
+	private const float xChargeBaseDamage = 10.0f;   //Charge attack: Spin2Win: base damage (0 charge)          (DPS)
+	private const float xChargeAddDamage = 10.0f;    //Charge attack: Spin2Win: additional damage (100% charge) (DPS)
+	private const float xChargeChainBonus = 1.5f;    //Charge attack: Spin2Win: damage multiplier from full chain
+
+	private const float xNormalAngle = 115.0f;       //Normal attack: Horizontal Slash: hit sector angle.
+
 	private float xHoldTime  = 0.0f;
-	private const float xChargeMin = 1.0f;    //minimum hold time to use the charged version of the x attack
-	private const float xChargeMax = 10.0f;   //maximum hold time: more than this confers no benefit.
-	private const float xNormalGraceT = 1.0f; //Grace time before chain degeneration happens.
-	//private const float xSmashGraceT = 1.0f;  //Grace time before chain degeneration happens.
+	private const float xChargeMin = 1.0f;          //minimum hold time to use the charged version of the x attack
+	private const float xChargeMax = 10.0f;         //maximum hold time: more than this confers no benefit.
+	private const float xNormalGraceT = 1.0f;       //Grace time before chain degeneration happens.
+	//private const float xSmashGraceT = 1.0f;      //Grace time before chain degeneration happens. Moot.
+
+	private int maxSpinToWinExtensions = 5;         //the maximum number of times spin2win can be extended
+	private int spinToWinExtensions = 0;            //the number of times spin2win has been extended
+	private float spinTime = 0.0f;			        //how long you've been spinning for.
+	#endregion
+	
+	#region Y
+	private const float yNormalBaseDamage = 10.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
+	private const float yChargeBaseDamage = 10.0f;   //Charge attack: Blast Off: base damage (0 charge)          (DPS)
+	private const float yChargeAddDamage = 10.0f;    //Charge attack: Blast Off: additional damage (100% charge) (DPS)
+	private const float yChargeChainBonus = 1.5f;    //Charge attack: Blast Off: damage multiplier from full chain
+
 	private float yHoldTime  = 0.0f;
-	private const float yChargeMin = 1.0f;    //minimum hold time to use the charged version of the y attack
-	private const float yChargeMax = 10.0f;   //maximum hold time: more than this confers no benefit.
-	private const float yNormalGraceT = 1.0f; //Grace time before chain degeneration happens.
-	//private const float ySmashGraceT = 1.0f;  //Grace time before chain degeneration happens.
+	private const float yChargeMin = 1.0f;           //minimum hold time to use the charged version of the y attack
+	private const float yChargeMax = 10.0f;          //maximum hold time: more than this confers no benefit.
+	private const float yNormalGraceT = 1.0f;        //Grace time before chain degeneration happens.
+	//private const float ySmashGraceT = 1.0f;       //Grace time before chain degeneration happens. Moot.
+	#endregion
+
+	#region Parry
+	private const float parryTime = 0.5f;            //how long the parry lasts for. (in s)
+	#endregion
+
+	#endregion
+
 	private float bHoldTime  = 0.0f;
 	private float rtHoldTime = 0.0f;
 
-	private int maxSpinToWinExtensions = 5; //the maximum number of times spin2win can be extended
-	private int spinToWinExtensions = 0;    //the number of times spin2win has been extended
-	private float spinTime = 0.0f;			//how long you've been spinning for.
-	private float attackDamage = 0.0f;      //damage the current attack will deal.
-
-	private const float parryTime = 0.5f; //how long the parry lasts for. (in s)
+	private float attackDamage = 0.0f;               //damage the current attack will deal.
 
 	private string prevState = "";
 	#endregion
@@ -57,8 +82,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//do sector based on time in state + direction
 			float angle = 90.0f * GetComponent<CustomController>().facing;
-			float damage = 10.0f;
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), -67.5f + angle, 67.5f + angle, 0.0f, 2.0f, damage * dt, player.id );
+			float damage = xNormalBaseDamage;
+			hitSector ( new Vector2( transform.position.x, transform.position.y ), xNormalAngle * -0.5f + angle, xNormalAngle * 0.5f + angle, 0.0f, 2.0f, damage * dt, player.id );
 		}
 		if ( player.state == "xsmash" )
 		{
@@ -80,6 +105,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "ynormal" )
 		{
 			//hit objects in the hitbox
+			float damage = yNormalBaseDamage;
 		}
 		if ( player.state == "ysmash" )
 		{
@@ -598,11 +624,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.05f * 15.0f; //15 frame attack (+ can be extended)
 
 			//get power based on charge and resource.
-			float chargePercent = Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax; //0.0f - 1.0f
+			float chargePercent = Mathf.Min ( (xHoldTime - xChargeMin), (xChargeMax - xChargeMin) ) / (xChargeMax - xChargeMin); //0.0f - 1.0f
 			float chainPercent = player.resource; //0.0f - 1.0f
-			//full charge = +100% damage, full chain = +200% damage.
 			//multiplicative stacking?
-			attackDamage = 100.0f * 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
+			float baseDamage = (xChargeBaseDamage + (xChargeAddDamage * chargePercent) );
+			float multiplier = player.offense * (xChargeChainBonus * chainPercent);
+			attackDamage = baseDamage * multiplier;
 			player.resource = 0.0f;
 			spinTime = 0.0f;
 			spinToWinExtensions = 0;
@@ -655,11 +682,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "ywinddown";
 
 			//get power based on charge and resource.
-			float chargePercent = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //0.0f - 1.0f
+			float chargePercent = Mathf.Min ( (yHoldTime - yChargeMin), (yChargeMax - yChargeMin) ) / (yChargeMax - yChargeMin); //0.0f - 1.0f
 			float chainPercent = player.resource; //0.0f - 1.0f
-			//full charge = +100% damage, full chain = +200% damage.
 			//multiplicative stacking?
-			attackDamage = 1.0f * player.offense * (1.0f + 2.0f * chainPercent) * (1.0f + 1.0f * chargePercent);
+			float baseDamage = (yChargeBaseDamage + (yChargeAddDamage * chargePercent) );
+			float multiplier = player.offense * (yChargeChainBonus * chainPercent);
+			attackDamage = baseDamage * multiplier;
 			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;
 			//TODO: hitbox to hitbox collision detection.

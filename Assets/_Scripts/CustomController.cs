@@ -204,9 +204,19 @@ public class CustomController : MonoBehaviour
 				//define pick up / drop
 				//Pick up: contextual command?
 
+				if ( playerState.isDowned && ! playerState.isCarried ) //if you're downed and not being carried, A revives you.
+				{
+					if ( playerState.HP >= 50.0f ) //TODO: const this as revive threshold.
+					{
+						//revive
+						playerState.isDowned = false;
+						//TODO: graphic
+						//TODO: animation
+					}
+				}
 				#region drop logic
 				//DROP LOGIC
-				if ( playerState.isCarried )
+				else if ( playerState.isCarried )
 				{
 					//force other player to drop you.
 					//Debug.Log ( "Carried player made you drop them." );

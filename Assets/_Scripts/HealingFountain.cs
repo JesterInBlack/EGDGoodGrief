@@ -35,20 +35,23 @@ public class HealingFountain : MonoBehaviour
 
 			if ( dist <= circle.radius ) //if player is in the region (collider center point in radius)
 			{
-				//Regenerate health!
-				float dt = Time.deltaTime;
-				if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
-				player.HP = Mathf.Min ( player.HP + regenRate * dt, player.maxHP );
+				if ( ! player.isCarried ) //if the player is not being carried
+				{
+					//Regenerate health!
+					float dt = Time.deltaTime;
+					if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
+					player.HP = Mathf.Min ( player.HP + regenRate * dt, player.maxHP );
 
-				if ( player.isDowned )
-				{
-					//player is dead
-					//regenerate max hp!
-					player.maxHP = Mathf.Min ( player.maxHP + regenRate, player.baseMaxHP );
-				}
-				else
-				{
-					//player is alive
+					if ( player.isDowned )
+					{
+						//player is dead
+						//regenerate max hp!
+						player.maxHP = Mathf.Min ( player.maxHP + regenRate, player.baseMaxHP );
+					}
+					else
+					{
+						//player is alive
+					}
 				}
 			}
 		}

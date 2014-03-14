@@ -8,11 +8,33 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	private CustomController controller;
 	private string prevState = "";
 
+	private bool isSpinning = false; //whether or not the ninja is spinning his chain
+
+	#region move data
+
+	#region X
+	private const float xMeleeCombo1BaseDamage = 1.0f;   //Melee combo hit 1: base damage  (Single Hit)
+	private const float xMeleeCombo2BaseDamage = 1.0f;   //Melee combo hit 2: base damage  (Single Hit)
+	private const float xMeleeCombo3BaseDamage = 1.0f;   //Melee combo hit 3: base damage  (Single Hit)
+	private const float xRangedCombo1BaseDamage = 1.0f;  //Ranged combo hit 1: base damage (Single Hit)
+	private const float xRangedCombo2BaseDamage = 1.0f;  //Ranged combo hit 2: base damage (Single Hit)
+	private const float xRangedCombo3BaseDamage = 1.0f;  //Ranged combo hit 3: base damage (Single Hit)
+	#endregion
+
+	#region Y
+	private const float yMeleeBaseDamage = 1.0f;         //Melee smash: base damage (Single Hit)
+	private const float yRangedBaseDamage = 1.0f;        //Melee smash: base damage (Single Hit)
+	#endregion
+
+	private const float hookBaseDamage = 1.0f;           //Hook: base damage (Single Hit)
+	#endregion
+
+	#region Dodge
 	private const float dodgeTime = 0.05f * 5.0f; //5 frames
 	private const float dodgeSpeed = 8.0f;        //dodge speed (units / s)
 	private Vector3 dodgeVec = new Vector3();     //dodge vector
+	#endregion
 
-	private bool isSpinning = false; //whether or not the ninja is spinning his chain
 	#endregion
 	
 	// Use this for initialization

@@ -295,7 +295,7 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	public void Interrupt( float damage )
+	public void Interrupt( int attackerId, float damage )
 	{
 		//Attempt to interrupt the current move.
 		//(Friendly player attacks you)
@@ -311,9 +311,28 @@ public class Player : MonoBehaviour
 		if ( interruptHP <= 0.0f )
 		{
 			canMove = true;
-			//TODO: reset state stuff
 			//TODO: set ani to idle
 			//TODO: play interrupt sound
+			state = "idle";
+			stateTimer = 0.0f;
+			nextState = "idle";
+		}
+
+		//TODO: Add a threshold before auras blacklist you
+		//Go through the player's buffs, and remove any you have given them
+		Player aggressor = GameState.players[attackerId].GetComponent<Player>();
+		for ( int i = aggressor.buffs.Count - 1; i >= 0; i-- )
+		{
+			Buff tempBuff = (Buff) aggressor.buffs[i];
+			//if it's a blacklist buff, you gave it to them, and you're not hitting yourself
+			if ( tempBuff.blacklist && tempBuff.giverId == id && id != attackerId)
+			{
+				//remove the buff
+				( (Buff) aggressor.buffs[i] ).End();
+				aggressor.buffs.RemoveAt ( i );
+				//TODO: Play blacklist sound, do notification
+				Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
+			}
 		}
 	}
 
@@ -344,16 +363,28 @@ public class Player : MonoBehaviour
 		//handles "global" state changes: shared by all classes
 		if ( newState == "item windup" )
 		{
-			//TODO: stuff
+			//TODO: pull out animation
 		}
 		else if ( newState == "item charge" )
 		{
+			//freeze in a loop
+			stateTimer = 0.0f;
+			nextState = "item charge";
+			//TODO: animation
 		}
 		else if ( newState == "item aim ray" )
 		{
+			//freeze in a loop
+			stateTimer = 0.0f;
+			nextState = "item aim ray";
+			//TODO: animation
 		}
 		else if ( newState == "item aim point" )
 		{
+			//freeze in a loop
+			stateTimer = 0.0f;
+			nextState = "item aim point";
+			//TODO: animation
 		}
 	}
 
@@ -367,19 +398,32 @@ public class Player : MonoBehaviour
 			if ( items[ itemIndex ].itemType == ItemType.ITEM_FAST )
 			{
 				//Do the effect. NOW!
+				//TODO: freeze item scrolling / use during item use animation / charging
+				state = "item windup";
+				stateTimer = 0.05f * 2.0f; //frames
+				nextState = "idle";
 				UseItem2 ( itemIndex );
 			}
 			else if ( items[ itemIndex ].itemType == ItemType.ITEM_CHARGE_AND_RELEASE )
 			{
 				//Set up holding state, do the effect on release.
+				state = "item windup";
+				stateTimer = 0.05f * 2.0f; //frames
+				nextState = "item charge";
 			}
 			else if ( items[ itemIndex ].itemType == ItemType.ITEM_AIM_RAY)
 			{
 				//Set up aiming state, do the effect on release.
+				state = "item windup";
+				stateTimer = 0.05f * 2.0f; //frames
+				nextState = "item aim ray";
 			}
 			else if ( items[ itemIndex ].itemType == ItemType.ITEM_AIM_POINT )
 			{
 				//Set up aiming state, do the effect on release.
+				state = "item windup";
+				stateTimer = 0.05f * 2.0f; //frames
+				nextState = "item aim point";
 			}
 		}
 		else

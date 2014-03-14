@@ -9,11 +9,34 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	private string prevState = "";
 	private Vector3 prevPos;
 
+	#region move data
+	//button hold times
+
+	#region RT
+	private const float rtBaseDamage = 10.0f; //Gust: base damage (0 charge)
+	private const float rtAddDamage = 10.0f;  //Gust: additional damage (100% charge)
+	private const float rtStartAngle = 90.0f; //Gust: starting aim angle (goes to 0)
+	private const float rtStartRange = 1.0f;  //Gust: range ( @   0% charge )
+	private const float rtEndRange = 10.0f;   //Gust: range ( @ 100% charge )
+	//TODO: make the (damage * area) be ~ constant?
+
+	private float rtHoldTime = 0.0f;
+	private const float rtChargeMax = 1.0f;        //Maximum hold time: more than this confers no benefit.
+	private const float rtChargeMultiplier = 2.0f; //aim speed scaling factor (with focus) (2.0f = 2x charge speed at max focus)
+	#endregion
+
+	#region X
+	private const float blowbackRadius = 1.0f; //Blowback: radius
+	#endregion
+
+	#region Dodge
 	private const float dodgeTime = 0.05f * 5.0f; //5 frames
 	private const float dodgeSpeed = 8.0f;        //dodge speed (units / s)
 	private Vector3 dodgeVec = new Vector3();     //dodge vector
-	//button hold times
-	private float rtHoldTime = 0.0f;
+	#endregion
+
+	#endregion
+
 	#endregion
 
 	// Use this for initialization
@@ -145,6 +168,8 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "rtcharge" )
 		{
 			//charge += dt;
+			//increase hold time by an amount increased by focus.
+			rtHoldTime = Mathf.Min ( rtHoldTime + rtChargeMultiplier * player.resource * dt, rtChargeMax );
 		}
 	}
 	#endregion
@@ -191,6 +216,19 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "rtwinddown";
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
 			//TODO: attack cone / line, based on charge. Then, void charge.
+			float percentCharge = ( Mathf.Min ( rtHoldTime, rtChargeMax ) / rtChargeMax );
+			float baseDamage = rtBaseDamage + ( rtAddDamage * percentCharge );
+			float damage = baseDamage * player.offense;
+			float range = Mathf.Lerp ( rtStartRange, rtEndRange, percentCharge );
+			//sector / ray
+			if ( rtHoldTime < rtChargeMax )
+			{
+				//sector
+			}
+			else
+			{
+				//ray (piercing ray?)
+			}
 		}
 		else if ( newState == "rtwinddown" )
 		{
@@ -212,7 +250,16 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "xwinddown";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
+
 			//TODO: push out of PBAoE.
+			for ( int i = 0; i < GameState.players.Length; i++ )
+			{
+				float dist = 0.0f;
+				if ( dist <= blowbackRadius)
+				{
+					//TODO: push out of PBAOE
+				}
+			}
 		}
 		else if ( newState == "xwinddown" )
 		{

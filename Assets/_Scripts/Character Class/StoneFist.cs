@@ -9,16 +9,38 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	private CustomController controller;
 	private string prevState = "";
 
+	#region move data
 	//Button Hold Times
+	#region X
+	private const float xBaseDamage = 1.0f; //Sand Blast: base damage (0% charge)
+	private const float xAddDamage = 1.0f;  //Sand Blast: additional damage (100% charge)
+
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMax = 10.0f;    //maximum hold time: more than this confers no benefit.
+	#endregion
+
+	#region Y
 	private float yHoldTime  = 0.0f;
-	private float yDamage = 0.0f;
+	private float yDamage = 0.0f; //damage the shield has taken
+	private const float yBaseDamage = 1.0f; //base damage of the shield attack
+	private const float yAddDamage = 1.0f;  //additional damage of the shield attack, based on the % damage / sediment it took.
+
 	private const float shieldHP = 1.0f;       //if the shield takes this much damage, it breaks.
 	private const float shieldDegenRate = 1.0f / 3.0f;  //the % of sediment the shield drains, per second.
+	#endregion
+
+	#region B
 	private float bHoldTime  = 0.0f;
 	private const float bChargeTime = 1.0f;    //hold time to use the B buff.
+	#endregion
+	
+	#region RT
 	private float rtHoldTime = 0.0f;
+	private const float rtDamage = 1.0f; //Sandstorm DPS
+	#endregion
+
+	#endregion
+
 	#endregion
 	
 	// Use this for initialization
