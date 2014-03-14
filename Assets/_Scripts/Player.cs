@@ -86,6 +86,9 @@ public class Player : MonoBehaviour
 		{
 			items[i] = new Item();
 		}
+		items[0].Construct ( ItemName.STOPWATCH );
+		items[1].Construct ( ItemName.AURA_DEFENSE );
+		items[2].Construct ( ItemName.AURA_OFFENSE );
 		//END placeholder
 
 		#region Class-Specific
@@ -179,6 +182,22 @@ public class Player : MonoBehaviour
 		{
 			items[i].Update( t );
 		}
+
+		//Update buffs
+		for ( int i = 0; i < buffs.Count; i++ )
+		{
+			( (Buff) buffs[i] ).Update( t );
+		}
+		//Remove buffs that are tagged for removal
+		for ( int i = buffs.Count - 1; i >= 0; i-- )
+		{
+			if ( ( (Buff) buffs[i] ).taggedForRemoval )
+			{
+				( (Buff) buffs[i] ).End();
+				//Debug.Log ( "Buff expired." );
+				buffs.RemoveAt ( i );
+			}
+		}
 		#endregion
 
 		//trap state changes
@@ -237,7 +256,7 @@ public class Player : MonoBehaviour
 			score -= 100;
 			#region remove buffs
 			//remove all buffs
-			for ( int i = buffs.Count - 1; i > 0; i-- )
+			for ( int i = buffs.Count - 1; i >= 0; i-- )
 			{
 				Buff tempBuff = (Buff)buffs[i];
 				tempBuff.End();
@@ -345,14 +364,67 @@ public class Player : MonoBehaviour
 	{
 		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
 		{
-			//TODO: check cooldowns, set cooldowns on use.
-			StopWatch();
-			items[ itemIndex ].coolDownTimer = items[ itemIndex ].coolDownDelay;
+			if ( items[ itemIndex ].itemType == ItemType.ITEM_FAST )
+			{
+				//Do the effect. NOW!
+				UseItem2 ( itemIndex );
+			}
+			else if ( items[ itemIndex ].itemType == ItemType.ITEM_CHARGE_AND_RELEASE )
+			{
+				//Set up holding state, do the effect on release.
+			}
+			else if ( items[ itemIndex ].itemType == ItemType.ITEM_AIM_RAY)
+			{
+				//Set up aiming state, do the effect on release.
+			}
+			else if ( items[ itemIndex ].itemType == ItemType.ITEM_AIM_POINT )
+			{
+				//Set up aiming state, do the effect on release.
+			}
 		}
 		else
 		{
 			//Still on cooldown.
 		}
+	}
+
+	public void UseItem2( int index )
+	{
+		//This function is called when an item's effect is to take place.
+		//IE: this comes after the charging / aiming junk
+		//it does the effect + sets the cooldown
+
+		items[ index ].coolDownTimer = items[ index ].coolDownDelay; //set cooldown
+		#region effects
+		//DO EFFECT:
+		if ( items[index].name == ItemName.STOPWATCH )
+		{
+			StopWatch ();
+		}
+		else if ( items[index].name == ItemName.AURA_DEFENSE )
+		{
+			const float duration = 60.0f;
+			Aura ( id, duration, 0.0f, 1.0f, 0.0f );
+		}
+		else if ( items[index].name == ItemName.AURA_OFFENSE )
+		{
+			const float duration = 60.0f;
+			Aura ( id, duration, 1.0f, 0.0f, 0.0f );
+		}
+		else if ( items[index].name == ItemName.AURA_REGEN )
+		{
+			const float duration = 60.0f;
+			Aura ( id, duration, 0.0f, 0.0f, 1.0f );
+		}
+		else if ( items[index].name == ItemName.VAMPIRE_FANG )
+		{
+			//TODO: charge
+		}
+		else if ( items[index].name == ItemName.PHEROMONE_JAR )
+		{
+			//TODO: aim point
+		}
+		#endregion
 	}
 
 	private void StopWatch()
@@ -363,5 +435,43 @@ public class Player : MonoBehaviour
 		StaticData.bulletTimeDuration = bulletTimeDuration;
 		//TODO: lerp in, add visual effect, play sound
 		//TODO: duration on t scale, lerp back in, remove visual effect, play sound
+	}
+
+	private void Aura( int id, float duration, float offense, float defense, float regen )
+	{
+		//Give all players the blacklist buff.
+		//TODO: sound?
+		//TODO: don't allow players to stack the same buff from the same source multiple times on themselves.
+		//      instead, refresh it.
+		for ( int i = 0; i < GameState.players.Length; i++ )
+		{
+			Player targetPlayer = GameState.players[i].GetComponent<Player>();
+			Buff myBuff = new Buff();
+			myBuff.player = targetPlayer;
+			myBuff.giverId = id;
+			myBuff.blacklist = true;
+			myBuff.offense = offense;
+			myBuff.defense = defense;
+			myBuff.regen = regen;
+			myBuff.duration = duration;
+			//add to player and apply effect
+			//FIRST: change stacking from the same source -> refresh 
+			//remove any old buffs that match it with the same source
+			//(so you can't multi-stack the same aura on yourself from yourself 3 times,
+			// 12x of the same aura buffs is a scaling nightmare, and would require nerfing auras to obsolescence)
+			//Also, this lets us make the CD shorter than the duration
+			for ( int j = targetPlayer.buffs.Count - 1; j >= 0; j-- )
+			{
+				if ( ( (Buff) targetPlayer.buffs[j] ).isTheSameAs( myBuff ) )
+				{
+					( (Buff) targetPlayer.buffs[j] ).End();
+					//Debug.Log ( "Buff refreshed on player " + (i + 1) );
+					targetPlayer.buffs.RemoveAt ( j );
+				}
+			}
+			GameState.players[i].GetComponent<Player>().buffs.Add ( myBuff );
+			myBuff.Start ();
+			//Debug.Log ( "Buff started on player " + (i + 1) );
+		}
 	}
 }

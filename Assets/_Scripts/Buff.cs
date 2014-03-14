@@ -6,7 +6,7 @@ public class Buff
 	#region vars
 	public float duration = 0.0f;  //duration of buff
 	public float t = 0.0f;         //counts down to 0 from duration
-	bool taggedForRemoval = false; //lifetime has expired flag.
+	public bool taggedForRemoval = false; //lifetime has expired flag.
 	public bool blacklist = false; //whether this is a blacklist buff or not. (comes off on bothering giver)
 	public int giverId = 0;        //the id of the player who gave you the buff.
 	public Player player;
@@ -32,6 +32,18 @@ public class Buff
 	{
 		player.offense -= offense;
 		player.defense -= defense;
+	}
+
+	public bool isTheSameAs( Buff buff )
+	{
+		//checks if two buffs are the same
+		//if effect + giver matches
+		if ( buff.giverId == giverId && buff.regen == regen && buff.offense == offense && buff.defense == defense )
+		{
+			return true;
+		}
+		//omit else
+		return false;
 	}
 	
 	// Update is called once per frame
