@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\Boss.cs" />
      <Compile Include="Assets\_Scripts\Buff.cs" />
      <Compile Include="Assets\_Scripts\BulletTimeManager.cs" />
@@ -58,6 +59,7 @@
      <Compile Include="Assets\_Scripts\Character Class\StoneFist.cs" />
      <Compile Include="Assets\_Scripts\CustomController.cs" />
      <Compile Include="Assets\_Scripts\GameState.cs" />
+     <Compile Include="Assets\_Scripts\GameStateWatcher.cs" />
      <Compile Include="Assets\_Scripts\HUDScript.cs" />
      <Compile Include="Assets\_Scripts\HealingFountain.cs" />
      <Compile Include="Assets\_Scripts\Initializer.cs" />

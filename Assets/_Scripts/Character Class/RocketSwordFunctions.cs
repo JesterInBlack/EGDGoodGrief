@@ -78,12 +78,14 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		UpdateResource ( dt ); //update "chain"
 
 		if ( player.state != "idle" ) { Debug.Log ( player.state ); }
+		//TODO: charging states, tracking charge % and previous charge percent
+		//TODO: feedback on charge breakpoints being reached.
 		if ( player.state == "xnormal" )
 		{
 			//do sector based on time in state + direction
 			float angle = 90.0f * GetComponent<CustomController>().facing;
 			float damage = xNormalBaseDamage;
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), xNormalAngle * -0.5f + angle, xNormalAngle * 0.5f + angle, 0.0f, 2.0f, damage * dt, player.id );
+			AttackSystem.hitSector ( new Vector2( transform.position.x, transform.position.y ), xNormalAngle * -0.5f + angle, xNormalAngle * 0.5f + angle, 2.0f, damage * dt, player.id );
 		}
 		if ( player.state == "xsmash" )
 		{
@@ -92,7 +94,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			spinTime += dt;
 			float minAngle = ( ( ( ( 180.0f - spinTime * 360.0f / (0.75f / 2.0f) ) % 360.0f) + 360.0f) % 360.0f);
 			float maxAngle = ( ( ( ( minAngle + 90.0f ) % 360.0f) + 360.0f) % 360.0f);
-			hitSector ( new Vector2( transform.position.x, transform.position.y ), minAngle, maxAngle, 0.0f, 2.0f, attackDamage * dt, player.id );
+			AttackSystem.hitSector ( new Vector2( transform.position.x, transform.position.y ), minAngle, maxAngle, 2.0f, attackDamage * dt, player.id );
 			/*
 			if ( spinTime % (0.75f / 2.0f) != spinTime )
 			{
@@ -106,6 +108,19 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//hit objects in the hitbox
 			float damage = yNormalBaseDamage;
+			float angle = 90.0f * GetComponent<CustomController>().facing;
+			float x = transform.position.x;
+			float y = transform.position.y;
+			float angleRad = angle * Mathf.Deg2Rad;
+			float min = 0.25f; //minimum or base width & height of the hitbox
+			float r = 1.5f;   //factor applied to cos / sin to extend hitbox
+			//
+			float xmin = Mathf.Min ( x - min, x - min + r * Mathf.Cos ( angleRad ) );
+			float ymin = Mathf.Min ( y - min, y - min + r * Mathf.Sin ( angleRad ) );
+			float xmax = Mathf.Max ( x + min, x + min + r * Mathf.Cos ( angleRad ) );
+			float ymax = Mathf.Max ( y + min, y + min + r * Mathf.Sin ( angleRad ) );
+
+			AttackSystem.hitBox ( new Rect( xmin, ymin, (xmax - xmin), (ymax - ymin) ), damage * dt, player.id );
 		}
 		if ( player.state == "ysmash" )
 		{
@@ -113,6 +128,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2;
 			float speed = 13.0f * dt;
 			GetComponent<CustomController>().MoveNaoPlz( new Vector3( speed * Mathf.Cos ( angle ), speed * Mathf.Sin ( angle ), 0.0f ) );
+			AttackSystem.hitBox ( new Rect( transform.position.x, transform.position.y, 1, 1 ), attackDamage * dt, player.id );
 		}
 
 		if ( player.state == "idle" )
@@ -145,118 +161,6 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		prevState = player.state;
 		//Debug.Log ( player.state ); //DEBUG
-	}
-
-	void hitBox( Rect attackBox, int id )
-	{
-		//does box-box collision.
-		Rect hitBox = new Rect( 0, 0, 1, 1 );
-		if ( !( attackBox.x + attackBox.width < hitBox.x ||
-		        hitBox.x + hitBox.width < attackBox.x ||
-		        attackBox.y + attackBox.height < hitBox.y ||
-		        hitBox.y + hitBox.height < attackBox.y ) )
-		{
-			//Collision
-		}
-
-
-	}
-
-	void hitSector( Vector2 pos, float minTheta, float maxTheta, float minRadius, float maxRadius, float damage, int id )
-	{
-		//NOTE: theta is an angle, in DEGREES, >= -360.0f
-
-		#region DEBUG
-		Debug.DrawLine( new Vector3( pos.x + minRadius * Mathf.Cos ( Mathf.Deg2Rad * minTheta ), 
-		                            pos.y + minRadius * Mathf.Sin ( Mathf.Deg2Rad * minTheta ), 
-		                            0.0f ), 
-		               new Vector3( pos.x + maxRadius * Mathf.Cos ( Mathf.Deg2Rad * minTheta ), 
-		            				pos.y + maxRadius * Mathf.Sin ( Mathf.Deg2Rad * minTheta ), 
-		            				0.0f ), 
-		               new Color(0.0f, 1.0f, 0.0f) );
-		Debug.DrawLine( new Vector3( pos.x + minRadius * Mathf.Cos ( Mathf.Deg2Rad * maxTheta ), 
-		                            pos.y + minRadius * Mathf.Sin ( Mathf.Deg2Rad * maxTheta ), 
-		                            0.0f ), 
-		               new Vector3( pos.x + maxRadius * Mathf.Cos ( Mathf.Deg2Rad * maxTheta ), 
-		            				pos.y + maxRadius * Mathf.Sin ( Mathf.Deg2Rad * maxTheta ), 
-		            				0.0f ), 
-		               new Color(0.0f, 1.0f, 0.0f) );
-		#endregion
-
-		#region players
-		//players
-		for ( int i = 0; i < GameState.players.Length; i++ )
-		{
-			if ( GameState.players[i] != null )
-			{
-				if ( i != id ) //no self-hitting
-				{
-					float x = GameState.players[i].transform.position.x;
-					float y = GameState.players[i].transform.position.y;
-					float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
-
-					if ( dist >= minRadius && dist <= maxRadius )
-					{
-						float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
-
-						//Debug.Log ( angle ); //DEBUG
-						Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
-
-						if ( angle >= minTheta && angle <= maxTheta )
-						{
-							//Debug.Log ( "Hit, normal" );
-							GameState.players[i].GetComponent<Player>().Hurt ( damage );
-						}
-						else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
-						{
-							//The sign on the angle changed. 
-							//So to tell if it's in the sector, 
-							//we check that it is not in the complement of the angle swept from min to max
-							//(the complement is the angle swept from max to min.)
-							if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
-							{
-								//Debug.Log ( "Hit, negative angle" );
-								GameState.players[i].GetComponent<Player>().Hurt ( damage );
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion
-		#region boss
-		//boss
-		if ( GameState.boss != null )
-		{
-			float x = GameState.boss.transform.position.x;
-			float y = GameState.boss.transform.position.y;
-			float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
-			
-			if ( dist >= minRadius && dist <= maxRadius )
-			{
-				float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
-
-				Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
-				
-				if ( angle >= minTheta && angle <= maxTheta )
-				{
-					GameState.boss.GetComponent<Boss>().Hurt ( damage );
-				}
-				else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
-				{
-					//The sign on the angle changed. 
-					//So to tell if it's in the sector, 
-					//we check that it is not in the complement of the angle swept from min to max
-					//(the complement is the angle swept from max to min.)
-					if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
-					{
-						//Debug.Log ( "Hit, negative angle" );
-						GameState.boss.GetComponent<Boss>().Hurt ( damage );
-					}
-				}
-			}
-		}
-		#endregion
 	}
 
 	#region B

@@ -36,7 +36,9 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	
 	#region RT
 	private float rtHoldTime = 0.0f;
-	private const float rtDamage = 1.0f; //Sandstorm DPS
+	private const float rtDamage = 1.0f;  //Sandstorm DPS
+	private const float rtRadius = 0.67f; //Sandstorm area
+	private const float rtResourceRate = 0.1f; // % resource gained per second while sandstorm is up
 	#endregion
 
 	#endregion
@@ -76,6 +78,14 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 				ChangeState( "ywinddown" );
 			}
 		}
+		if ( player.state == "sandstorm" )
+		{
+			float x = transform.position.x;
+			float y = transform.position.y;
+			AttackSystem.hitCircle ( new Vector2( x, y ), rtRadius, rtDamage * dt, player.id );
+			player.resource = Mathf.Min ( player.resource + rtResourceRate * dt, 1.0f );
+			//TODO: suck enemies / other players in (SLOWLY)
+		}
 
 		//trap state changes
 		if ( prevState != player.state )
@@ -107,6 +117,13 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			//TODO: 1 hit shield w/ duration buff?
 			//set a stoneskin flag
 			//put it on a timer
+			ChangeState ( "idle" );
+		}
+		else
+		{
+			//not fully charged.
+			//TODO: play fail sound?
+			ChangeState ( "idle" );
 		}
 		bHoldTime = 0.0f;
 	}

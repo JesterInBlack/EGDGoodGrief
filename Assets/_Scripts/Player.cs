@@ -7,15 +7,18 @@ public class Player : MonoBehaviour
 {
 
 	#region vars
+	[HideInInspector]
 	public int id; //used for identity checks.
 
 	public float HP;
+	[HideInInspector]
 	public float maxHP;
+	[HideInInspector]
 	public float baseMaxHP = 100.0f;
 
 	public int score = 0;
 
-	public float defense = 1.0f; //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
+	public float defense = 1.0f;  //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
 	public float offense = 1.0f;  //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
 
 	public CharacterClasses characterclass = CharacterClasses.KNIGHT; //enum
@@ -23,26 +26,37 @@ public class Player : MonoBehaviour
 	//state data?
 	//idle, walk, <custom via plugin>
 	public string state = "idle";     //current state
+	[HideInInspector]
 	public float stateTimer = 0.0f;   //state timer
+	[HideInInspector]
 	public string nextState = "idle"; //next state: on state timer reaching 0, transition occurs.
+	[HideInInspector]
 	public string prevState = "idle"; //previous state
 
 	public bool canMove = true;           //disable moving while attacking?
+	[HideInInspector]
 	public float speedMultiplier = 1.0f;  //able to move, but at a slower pace?
 	//bool overrideMoveAni;
 
+	[HideInInspector]
 	public bool isDodging = false;   //currently dodging?
+	[HideInInspector]
 	public float dodgeTimer = 0.0f;  //time left in dodge animation?
 
+	[HideInInspector]
 	public bool isParrying = false;  //currently parrying?
+	[HideInInspector]
 	public float parryTimer = 0.0f;  //time left in parry animation?
 
 	//Downed / Carrying State Stuff
 	public bool isDowned = false;    //if you're downed
 	public bool isCarrier = false;   //if you're carrying another player.
 	public bool isCarried = false;   //if you're being carried by another player.
+	[HideInInspector]
 	public GameObject Carried;       //ref to the player you're carrying.
+	[HideInInspector]
 	public GameObject Carrier;       //ref to the player carrying you.
+	[HideInInspector]
 	public Vector2 carryVec;         //unit vector representing your carry direction.
 
 	//interruption
@@ -64,7 +78,8 @@ public class Player : MonoBehaviour
 
 	//unique mechanic data
 	public float resource = 0.0f;        //chain / focus / style / sediment. Ranges from 0 to 1
-	public float resourceGraceT = 0.0f; //at 0, resource begins degeneration
+	[HideInInspector]
+	public float resourceGraceT = 0.0f;  //at 0, resource begins degeneration
 	private Vector3 prevPos;             //previous position, for detecting movement. (focus degen)
 	#endregion
 

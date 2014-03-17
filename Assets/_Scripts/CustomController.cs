@@ -16,8 +16,11 @@ public class CustomController : MonoBehaviour
 	public bool move_enabled = true; //for disabling motion
 	[HideInInspector]
 	public Vector2 move_vec = new Vector2();
+	[HideInInspector]
+	public float aimAngle;
 	//public Vector2 aim_vec = new Vector2();
-	
+
+	[HideInInspector]
 	public float speed = 2.0f; //unity units per second (we're using Tile Size pixels per unit (64) )
 	
 	BoxCollider2D my_collider;
@@ -395,7 +398,6 @@ public class CustomController : MonoBehaviour
 		
 		#region facing parsing
 		float angle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Left.Y, gamePadState.ThumbSticks.Left.X );
-		float aimAngle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
 
 		//pull into range?
 		if ( angle < 0.0f )
@@ -408,7 +410,6 @@ public class CustomController : MonoBehaviour
 		}
 		
 		//Based on angle, get facing.
-		//TODO: aiming override (ninja or archer while RT down)
 
 		//if thumbstick is at (0,0), or you can't move, then ignore it.
 		if ( !(  Mathf.Abs ( gamePadState.ThumbSticks.Left.Y ) < 0.01f && 
@@ -432,7 +433,17 @@ public class CustomController : MonoBehaviour
 				facing = 3;
 			}
 		}
-		
+
+		//TODO: aiming override (ninja or archer while RT down)
+		if ( Mathf.Abs ( gamePadState.ThumbSticks.Right.Y ) > 0.0f || Mathf.Abs( gamePadState.ThumbSticks.Right.X ) > 0.0f )
+		{
+			aimAngle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
+		}
+		else
+		{
+			aimAngle = facing * 90.0f; //default to facing
+		}
+
 		//Debug.Log ( angle + " : " + facing ); //DEBUG LINE
 		
 		#endregion
@@ -592,7 +603,8 @@ public class CustomController : MonoBehaviour
 		return  Physics2D.Linecast( 
 		                           this.gameObject.transform.position + offset, 
 		                           this.gameObject.transform.position + offset + vec, 
-		                           1 << LayerMask.NameToLayer( "Wall" ) 
+		                           1 << LayerMask.NameToLayer( "Wall" )
+		                           //( (1 << LayerMask.NameToLayer( "Wall" ) ) | (1 << LayerMask.NameToLayer ( "Player" ) ) )
 		                           ); 
 	}
 }

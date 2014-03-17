@@ -54,6 +54,8 @@ public class HealingFountain : MonoBehaviour
 					}
 				}
 			}
+			//ELSE: box check: get vector of length r pointing to the player.
+			// if x component + box width and y component + box height will reach the player (2 dist checks)
 		}
 	}
 }
