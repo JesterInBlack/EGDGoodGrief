@@ -18,15 +18,15 @@ public class BehaviorBlackboard : MonoBehaviour
 	private Transform p4;
 	*/
 
-	//Character's threat levels
-	public float p1Threat;
-	public float p2Threat;
-	public float p3Threat;
-	public float p4Threat;
+	public float coopAxisRecovery;
+	public float angerAxisRecovery;
 
-	//This is the axis that the boss 
-	public float cooperationAxis; //affects the usage of Dissention/Cooperation attacks
-	public float angerAxis; //affects more powerful moves to use/aggression
-
+	//public bool needsNewTask;
+	public enum DecisionState
+	{
+		needsNewTask = 1,
+		runningTask = 2,
+	}
+	public DecisionState decisionState;
 
 }

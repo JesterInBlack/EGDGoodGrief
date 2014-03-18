@@ -68,14 +68,11 @@ public class BehaviorData
 	// Update is called once per frame
 	public void Update () 
 	{
-		if(_priority <= _maxPriority)
+		if(_priority < _maxPriority)
 		{
-			_priority = _priority + Time.deltaTime * _priorityRecovery;
+			_priority += Mathf.Min( (Time.deltaTime * _priorityRecovery), Mathf.Abs(_maxPriority - _priority) );
 		}
-		else if (_priority < _maxPriority)
-		{
-			_priority = _maxPriority;
-		}
+
 	}
 
 	public void UseAction()
