@@ -127,8 +127,18 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//charge until duration runs out / you hit something (other than another player?)
 			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2;
 			float speed = 13.0f * dt;
+			float x = transform.position.x;
+			float y = transform.position.y;
+			float min = 0.5f; //minimum or base width & height of the hitbox
+			float r = 1.25f;   //factor applied to cos / sin to extend hitbox
+			//
+			float xmin = Mathf.Min ( x - min, x - min + r * Mathf.Cos ( angle ) );
+			float ymin = Mathf.Min ( y - min, y - min + r * Mathf.Sin ( angle ) );
+			float xmax = Mathf.Max ( x + min, x + min + r * Mathf.Cos ( angle ) );
+			float ymax = Mathf.Max ( y + min, y + min + r * Mathf.Sin ( angle ) );
+
 			GetComponent<CustomController>().MoveNaoPlz( new Vector3( speed * Mathf.Cos ( angle ), speed * Mathf.Sin ( angle ), 0.0f ) );
-			AttackSystem.hitBox ( new Rect( transform.position.x, transform.position.y, 1, 1 ), attackDamage * dt, player.id );
+			AttackSystem.hitBox ( new Rect( xmin, ymin, (xmax - xmin), (ymax - ymin) ), attackDamage * dt, player.id );
 		}
 
 		if ( player.state == "idle" )
@@ -173,6 +183,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Can't parry while attacking?
 		//Can parry out of default states + charging
 		//Can enqueue a parry out of recovery?
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			ChangeState( "parry" );
@@ -189,6 +200,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called when B is released.
 		//DO NOTHING.
 		bHoldTime = 0.0f;
+		if ( player.isDowned ) { return; }
 	}
 	public void BHeld( float dt )
 	{
@@ -204,6 +216,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called when X is pressed.
 		//Initialize horizontal slash.
 		//OR: prolong hurricane spin.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "xsmash" )
 		{
 			if ( spinToWinExtensions < maxSpinToWinExtensions )
@@ -248,6 +261,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//poll gamestate, check for sector hit detection
 		//hurricane spin makes the sector thing a bit more complex.
 		//would it be better to poll gamestate, or try physics raycast type deal?
+		if ( player.isDowned ) { return; }
 		if ( player.state != "xwindup" && player.state != "xcharge" && player.state != "xwinddown") { return; }
 		if ( player.state == "xwinddown" )
 		{
@@ -314,6 +328,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when Y is pressed.
 		//Initialize overhead strike.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" || player.state == "revcharge" )
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
@@ -336,6 +351,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Animation + state vars
 		//poll gamestate, do hitbox hit detection.
 		//with the charge, hitbox detection over time. A bit more complex?
+		if ( player.isDowned ) { return; }
 		if ( player.state != "ywindup" && player.state != "ycharge" ) { return; }
 		if ( yHoldTime < yChargeMin )
 		{
@@ -383,6 +399,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called when RT is pressed.
 		//Initialize rev charge.
 		//Slow speed.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			ChangeState ( "revcharge" );
@@ -394,6 +411,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called when RT is released.
 		//Set up no degen window.
 		//Reset speed.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "revcharge" )
 		{
 			ChangeState ( "idle" );
@@ -532,7 +550,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			float chainPercent = player.resource; //0.0f - 1.0f
 			//multiplicative stacking?
 			float baseDamage = (xChargeBaseDamage + (xChargeAddDamage * chargePercent) );
-			float multiplier = player.offense * (xChargeChainBonus * chainPercent);
+			float multiplier = player.offense * (1.0f + xChargeChainBonus * chainPercent);
 			attackDamage = baseDamage * multiplier;
 			player.resource = 0.0f;
 			spinTime = 0.0f;
@@ -565,6 +583,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.canMove = false;
 			player.stateTimer = 0.05f * 5.0f; //5 frame attack
 			player.nextState = "ywinddown";
+			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
 			player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = 100.0f;
 			//TODO: box to box collision detection
@@ -590,7 +609,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			float chainPercent = player.resource; //0.0f - 1.0f
 			//multiplicative stacking?
 			float baseDamage = (yChargeBaseDamage + (yChargeAddDamage * chargePercent) );
-			float multiplier = player.offense * (yChargeChainBonus * chainPercent);
+			float multiplier = player.offense * (1.0f + yChargeChainBonus * chainPercent);
 			attackDamage = baseDamage * multiplier;
 			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;

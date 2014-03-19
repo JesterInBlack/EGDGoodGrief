@@ -56,7 +56,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
 
 		//custom state logic
-		if ( player.state == "dodge" )
+		if ( player.state == "flip" )
 		{
 			//move them along dodge vector
 			Vector3 vec = new Vector3( dodgeVec.x * dt, dodgeVec.y * dt, 0.0f );
@@ -77,10 +77,16 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when B is pressed.
 		//TODO: flip (dodge roll)
+		if ( player.isDowned ) { return; }
+		if ( player.state == "idle" || player.state == "walk" )
+		{
+			ChangeState ( "flip" );
+		}
 	}
 	public void BReleased()
 	{
 		//Called when B is released.
+		if ( player.isDowned ) { return; }
 	}
 	public void BHeld( float dt )
 	{
@@ -94,6 +100,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when X is pressed.
 		//combo 1 -> combo 2 -> combo 3 -> ...
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || 
 		     player.state == "xranged1" || player.state == "xranged2" || player.state == "xranged3" ||
 		     player.state == "xnormal1" || player.state == "xnormal2" || player.state == "xnormal3" )
@@ -145,6 +152,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	public void XReleased()
 	{
 		//Called when X is released.
+		if ( player.isDowned ) { return; }
 	}
 	public void XHeld( float dt )
 	{
@@ -163,6 +171,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		//Called when Y is pressed.
 		//TODO: read spin flag
 		//ball smash / ball throw
+		if ( player.isDowned ) { return; }
 		if ( isSpinning )
 		{
 			//ranged
@@ -177,6 +186,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	public void YReleased()
 	{
 		//Called when Y is released.
+		if ( player.isDowned ) { return; }
 	}
 	public void YHeld( float dt )
 	{
@@ -194,6 +204,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when RT is pressed.
 		//TODO: set spin flag
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			ChangeState ( "spinup" );
@@ -205,6 +216,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		//TODO: unset spin flag
 		//TODO: if twin stick not neutral, and not another button pressed, hook.
 		//TODO: the longer you spin, the further you go?
+		if ( player.isDowned ) { return; }
 		if ( isSpinning)
 		{
 			if ( player.state == "spin" )

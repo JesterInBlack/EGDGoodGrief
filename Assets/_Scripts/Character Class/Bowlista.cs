@@ -100,6 +100,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void BPressed()
 	{
 		//Called when B is pressed.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			ChangeState ( "dodge" ); //not doge: http://en.wikipedia.org/wiki/Doge_%28meme%29
@@ -108,6 +109,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void BReleased()
 	{
 		//Called when B is released.
+		if ( player.isDowned ) { return; }
 	}
 	public void BHeld( float dt )
 	{
@@ -120,6 +122,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void XPressed()
 	{
 		//Called when X is pressed.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			player.nextState = "xcharge";
@@ -128,6 +131,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void XReleased()
 	{
 		//Called when X is released.
+		if ( player.isDowned ) { return; }
 		if ( player.state != "xcharge" ) { return; }
 		player.nextState = "blowback";
 		player.stateTimer = 0.0f;
@@ -147,10 +151,12 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	public void YPressed()
 	{
 		//Called when Y is pressed.
+		if ( player.isDowned ) { return; }
 	}
 	public void YReleased()
 	{
 		//Called when Y is released.
+		if ( player.isDowned ) { return; }
 	}
 	public void YHeld( float dt )
 	{
@@ -168,6 +174,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when RT is pressed.
 		//TODO: charge
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			player.state = "rtcharge";
@@ -180,6 +187,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 		//Called when RT is released.
 		percentCharge = Mathf.Min( rtHoldTime, rtChargeMax ) / rtChargeMax;
 		rtHoldTime = 0.0f;
+		if ( player.isDowned ) { return; }
 		if ( player.state != "rtcharge" ) { return; }
 		//TODO: fire
 		player.nextState = "rtfire";

@@ -16,7 +16,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	private const float xAddDamage = 1.0f;  //Sand Blast: additional damage (100% charge)
 
 	private float xHoldTime  = 0.0f;
-	private const float xChargeMax = 10.0f;    //maximum hold time: more than this confers no benefit.
+	private const float xChargeMax = 2.0f;    //maximum hold time: more than this confers no benefit.
 	#endregion
 
 	#region Y
@@ -36,8 +36,8 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	
 	#region RT
 	private float rtHoldTime = 0.0f;
-	private const float rtDamage = 1.0f;  //Sandstorm DPS
-	private const float rtRadius = 0.67f; //Sandstorm area
+	private const float rtDamage = 2.0f;  //Sandstorm DPS
+	private const float rtRadius = 1.0f;  //Sandstorm area
 	private const float rtResourceRate = 0.1f; // % resource gained per second while sandstorm is up
 	#endregion
 
@@ -82,7 +82,8 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			float x = transform.position.x;
 			float y = transform.position.y;
-			AttackSystem.hitCircle ( new Vector2( x, y ), rtRadius, rtDamage * dt, player.id );
+			float damage = player.offense * (rtDamage * dt);
+			AttackSystem.hitCircle ( new Vector2( x, y ), rtRadius, damage, player.id );
 			player.resource = Mathf.Min ( player.resource + rtResourceRate * dt, 1.0f );
 			//TODO: suck enemies / other players in (SLOWLY)
 		}
@@ -103,6 +104,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//TODO: stone skin (parry)
 		//Charge up: 1 hit defensive shield / duration, breaks on hit
 		//if another player breaks the 1 hit shield, they get way knocked back.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			ChangeState ( "bcharge" );
@@ -111,6 +113,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	public void BReleased()
 	{
 		//Called when B is released.
+		if ( player.isDowned ) { return; }
 		if ( player.state != "bcharge" ) { return; }
 		if ( bHoldTime >= bChargeTime )
 		{
@@ -140,6 +143,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	public void XPressed()
 	{
 		//Called when X is pressed.
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			ChangeState ( "xwindup" );
@@ -149,11 +153,48 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when X is released.
 		//TODO: sand laser
+		float savedHoldTime = xHoldTime;
 		xHoldTime = 0.0f;
+		if ( player.isDowned ) { return; }
 		if ( player.state != "xcharge" && player.state != "xwindup" ) { return; }
 		if ( player.state == "xcharge" )
 		{
-			//TODO: hitbox
+			#region hitbox
+			//damage
+			float percentCharge = Mathf.Min ( savedHoldTime, xChargeMax ) / xChargeMax;
+			float damage = player.offense * (xBaseDamage + xAddDamage * percentCharge);
+			//hitbox
+			float angle = controller.facing * Mathf.PI / 2.0f;
+			float x = this.gameObject.transform.position.x;
+			float y = this.gameObject.transform.position.y;
+			float w = 5.0f * Mathf.Cos ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Cos ( angle + Mathf.PI / 2.0f );
+			float h = 5.0f * Mathf.Sin ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+
+			//shift so the box is centered on the player: 
+			//move along the perpindicular axis to the target
+			if ( controller.facing == 1 || controller.facing == 3 )
+			{
+				x -= w / 2.0f;
+			}
+			else
+			{
+				y -= h / 2.0f;
+			}
+
+			//fix negatives (swap x1 <-> x2 and y1 <-> y2)
+			if ( w < 0.0f ) 
+			{
+				x = x + w;
+				w = Mathf.Abs ( w );
+			}
+			if ( h < 0.0f )
+			{
+				y = y + h;
+				h = Mathf.Abs ( h );
+			}
+
+			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
+			#endregion
 		}
 		ChangeState ( "xwinddown" );
 	}
@@ -175,6 +216,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when Y is pressed.
 		//TODO: monodirectional shield
+		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			//TODO: change direction not allowed, move is?
@@ -186,8 +228,44 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//Called when Y is released.
 		//TODO: counterattack
 		yHoldTime = 0.0f;
+		if ( player.isDowned ) { return; }
 		if ( player.state != "ycharge" ) { return; }
 		ChangeState ( "ywinddown" );
+		#region hitbox
+		//hitbox
+		float angle = controller.facing * Mathf.PI / 2.0f;
+		float x = this.gameObject.transform.position.x;
+		float y = this.gameObject.transform.position.y;
+		float w = 2.0f * Mathf.Cos ( angle ) + 1.5f * Mathf.Cos ( angle + Mathf.PI / 2.0f );
+		float h = 2.0f * Mathf.Sin ( angle ) + 1.5f * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+		
+		//shift so the box is centered on the player: 
+		//move along the perpindicular axis to the target
+		if ( controller.facing == 1 || controller.facing == 3 )
+		{
+			x -= w / 2.0f;
+		}
+		else
+		{
+			y -= h / 2.0f;
+		}
+		
+		//fix negatives (swap x1 <-> x2 and y1 <-> y2)
+		if ( w < 0.0f ) 
+		{
+			x = x + w;
+			w = Mathf.Abs ( w );
+		}
+		if ( h < 0.0f )
+		{
+			y = y + h;
+			h = Mathf.Abs ( h );
+		}
+		//float percentCharge = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //TODO: fix to scale with dmg
+		float damage = player.offense * (yBaseDamage);// + yAddDamage * percentCharge;
+		
+		AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
+		#endregion
 	}
 	public void YHeld( float dt )
 	{
@@ -207,6 +285,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when RT is pressed.
 		//TODO: sandstorm
+		if ( player.isDowned ) { return; }
 		if ( player.state != "idle" ) { return; }
 		ChangeState ( "rtwindup" );
 	}
@@ -214,6 +293,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when RT is released.
 		rtHoldTime = 0.0f;
+		if ( player.isDowned ) { return; }
 		if ( player.state != "rtwindup" && player.state != "sandstorm" ) { return; }
 		ChangeState( "rtwinddown" );
 	}
@@ -252,7 +332,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		}
 		else if ( player.state == "xcharge" )
 		{
-			player.nextState = "xwinddown"; //freeze in a loop
+			player.nextState = "xcharge"; //freeze in a loop
 			player.stateTimer = 0.0f; 
 		}
 		else if ( player.state == "xwinddown" )

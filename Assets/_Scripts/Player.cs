@@ -145,6 +145,10 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		//isDowned = true; //DEBUG
+		HP -= Time.deltaTime * 1.0f; //DEBUG
+
+
 		GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		float t = Time.deltaTime;
 		if ( ! isInBulletTime ) { t = t * StaticData.t_scale; }
@@ -317,6 +321,8 @@ public class Player : MonoBehaviour
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
+
+		HP -= damage; //TODO: remove
 
 		//TODO: diminishing returns, thresholds for moves, move interrupt power scaling
 		//TODO: on successful interrupt, set canMove to true.

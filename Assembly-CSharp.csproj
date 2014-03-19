@@ -65,6 +65,7 @@
      <Compile Include="Assets\_Scripts\Initializer.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
+     <Compile Include="Assets\_Scripts\RocketHUD.cs" />
      <Compile Include="Assets\_Scripts\StaticData.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
  <Reference Include="XInputDotNetPure">
