@@ -90,7 +90,9 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\MoveToPoint.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorBlackboard.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorData.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\BodyScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BossManager.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_Scripts\StaticData.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
  <Reference Include="BehaviorDesignerRuntime">

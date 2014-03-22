@@ -27,6 +27,7 @@ public class BehaviorBlackboard : MonoBehaviour
 		needsNewTask = 1,
 		runningTask = 2,
 	}
+	[HideInInspector]
 	public DecisionState decisionState;
 
 }
