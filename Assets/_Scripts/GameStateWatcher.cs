@@ -34,11 +34,12 @@ public class GameStateWatcher : MonoBehaviour
 
 		#region Win Check
 		bool won = false;
-		if ( GameState.boss.GetComponent<Boss>().hp <= 0 )
+		//Jay broke it...
+		/*if ( GameState.boss.GetComponent<Boss>().hp <= 0 )
 		{
 			//TODO: restructure
 			won = true;
-		}
+		}*/
 		#endregion
 
 		if ( lost )

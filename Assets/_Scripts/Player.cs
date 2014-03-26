@@ -256,7 +256,7 @@ public class Player : MonoBehaviour
 		if ( false ) { return; } //TODO: stone skin
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
-			this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			this.gameObject.GetComponent<StoneFist>().OnHitCallback( -1, damage );
 			return; 
 		}
 		//TODO: add stone skin knockback handling on hit logic (somewhere?)
@@ -334,7 +334,7 @@ public class Player : MonoBehaviour
 		if ( false ) { return; } //TODO: stone skin
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
-			this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			this.gameObject.GetComponent<StoneFist>().OnHitCallback( attackerId, damage );
 			return; 
 		}
 
@@ -382,7 +382,7 @@ public class Player : MonoBehaviour
 		if ( false ) { return; } //TODO: stone skin
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
-			this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
 			return; 
 		}
 

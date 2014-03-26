@@ -326,7 +326,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "ycharge"; //freeze in a loop
 			player.stateTimer = 0.0f;
-			yDamage = 0.0f; //reset damage
+			shieldHP = shieldMaxHP; //reset damage
 		}
 		else if ( player.state == "ywinddown" )
 		{

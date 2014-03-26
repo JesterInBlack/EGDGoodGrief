@@ -9,4 +9,15 @@ public static class GameState //: MonoBehaviour
 	public static GameObject[] players = new GameObject[4]; //assign in pre-game screens
 	public static GameObject boss;                          //assign in pre-game screens
 	#endregion
+
+	#region BossVars
+	//Character's threat levels
+	//set this way because I don't want to mess with the players list as it's already being used in plenty of places.
+	public static float[] playerThreats = new float[4];
+	
+	//This is the axis that the boss 
+	public static float cooperationAxis; //affects the usage of Dissention/Cooperation attacks
+	public static float angerAxis; //affects more powerful moves to use/aggression
+
+	#endregion
 }

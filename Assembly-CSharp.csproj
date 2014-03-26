@@ -46,6 +46,30 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Behavior Designer\Runtime\Actions\ExternalBehaviorTree.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Actions\Log.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Actions\PerformInterruption.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Actions\StartBehaviorTree.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Actions\StopBehaviorTree.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Actions\Wait.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\BehaviorTree.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\Parallel.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\ParallelSelector.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\PrioritySelector.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\RandomSelector.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\RandomSequence.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\Selector.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Composites\Sequence.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Conditionals\RandomProbability.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Interrupt.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Inverter.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Repeater.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\ReturnFailure.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\ReturnSuccess.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\TaskGuard.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilFailure.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilSuccess.cs" />
+     <Compile Include="Assets\Behavior Designer\Runtime\EntryTask.cs" />
      <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\Boss.cs" />
      <Compile Include="Assets\_Scripts\Buff.cs" />
@@ -65,8 +89,17 @@
      <Compile Include="Assets\_Scripts\Initializer.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\MoveToPoint.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorBlackboard.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorData.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\BodyScript.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\BossManager.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_Scripts\StaticData.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
+ <Reference Include="BehaviorDesignerRuntime">
+ <HintPath>Assets\Behavior Designer\Runtime\BehaviorDesignerRuntime.dll</HintPath>
+ </Reference>
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
