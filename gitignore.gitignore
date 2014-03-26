@@ -1,8 +1,8 @@
-#ignore user preferences
+# ignore user preferences
 *.userprefs
 
-#ignore assemblies (as they are re-generated on build)
+# ignore assemblies (as they are re-generated on build)
 Library/metadata/
 
-#ignore Project Settings
+# ignore Project Settings
 ProjectSettings/
