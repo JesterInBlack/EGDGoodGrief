@@ -22,7 +22,6 @@ public class BossManager : MonoBehaviour
 
 	private BehaviorManager _behaviorManager;
 
-
 	//this is just a dummy variable to see what behavior is running in the inspector window
 	//for debug purposes only
 	public string _currentBehavior;
@@ -43,7 +42,14 @@ public class BossManager : MonoBehaviour
 
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-			if(allBehaviors[i].behaviorName == "TestBehavior")
+
+			if(allBehaviors[i].behaviorName == "Impale")
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				_behaviorList.Add(testBehavior);
+			}
+			/*
+			else if(allBehaviors[i].behaviorName == "TestBehavior")
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
@@ -58,15 +64,8 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 23);
 				_behaviorList.Add(testBehavior);
 			}
-		}
+			*/
 
-		//adds all the behaviors into the list and disables them at the start
-		for(int i = 0; i < _behaviorList.Count; i++)
-		{
-			if(_behaviorManager.isBehaviorEnabled(_behaviorList[i].Action))
-			{
-				_behaviorManager.disableBehavior(_behaviorList[i].Action);
-			}
 		}
 		#endregion
 
@@ -86,12 +85,47 @@ public class BossManager : MonoBehaviour
 		_blackboard.coopAxisRecovery = 0.01f;
 		_blackboard.angerAxisRecovery = 0.01f;
 
-		_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+		_blackboard.decisionState = BehaviorBlackboard.DecisionState.resetAllBehaviors;
+
+		_blackboard.moveDirection = new Vector2(0, 0);
 		#endregion
 	}
 	
 	// Update is called once per frame
 	void Update () 
+	{
+		bool everyoneDead = true;
+		//check health status of all the players
+		foreach(GameObject player in GameState.players)
+		{
+			if(player.GetComponent<Player>().HP > 0)
+			{
+				everyoneDead = false;
+			}
+		}
+
+		if(everyoneDead == false)
+		{
+			UpdateValences();
+			UpdateBehaviors();
+
+			//update the behaviorlist, they aren't monobehaviors so this needs to be done manually
+			for(int i = 0; i < _behaviorList.Count; i++)
+			{
+				_behaviorList[i].Update();
+			}
+		}
+		else
+		{
+			Debug.Log("Everyone dead");
+			for(int i = 0; i < _behaviorList.Count; i++)
+			{
+				_behaviorManager.disableBehavior(_behaviorList[i].Action);
+			}
+		}
+	}
+
+	void UpdateValences()
 	{
 		//update the valences to their equilibriums
 		if(GameState.cooperationAxis > 0.0f)
@@ -106,9 +140,25 @@ public class BossManager : MonoBehaviour
 		{
 			GameState.angerAxis += Mathf.Min( (Time.deltaTime * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
 		}
+	}
 
+	void UpdateBehaviors()
+	{
+		if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.resetAllBehaviors)
+		{
+			//loops all the behaviors into the list and disables them at the start
+			for(int i = 0; i < _behaviorList.Count; i++)
+			{
+				if(_behaviorManager.isBehaviorEnabled(_behaviorList[i].Action))
+				{
+					_behaviorManager.disableBehavior(_behaviorList[i].Action);
+				}
+			}
+			_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+		}
+		
 		//Select the behavior to run
-		if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.needsNewTask)
+		else if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.needsNewTask)
 		{
 			float selectedPriority = 0.0f;
 			for(int i = 0; i < _behaviorList.Count; i++)
@@ -124,34 +174,29 @@ public class BossManager : MonoBehaviour
 					}
 				}
 			}
-
+			
 			//set the priority to 0 for use
 			_behaviorList[selectedIndex].UseAction();
-
+			
 			//enable and start up the behavior
 			_behaviorManager.enableBehavior(_behaviorList[selectedIndex].Action);
 			_behaviorManager.restartBehavior(_behaviorList[selectedIndex].Action);
-
-			//picked the task
+			
+			//picked a task
 			_blackboard.decisionState = BehaviorBlackboard.DecisionState.runningTask;
-
+			
 			//set the dummy variable to see it in the inspector
 			_currentBehavior = _behaviorList[selectedIndex].Action.behaviorName;
 		}
-
+		
 		else if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.runningTask)
 		{
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
+				Debug.Log("does this even?");
 				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 			}
 		}
 
-
-		//update the behaviorlist, they aren't monobehaviors so this needs to be done manually
-		for(int i = 0; i < _behaviorList.Count; i++)
-		{
-			_behaviorList[i].Update();
-		}
 	}
 }

@@ -8,37 +8,50 @@ public class LegScript : MonoBehaviour {
 
 	public float _radius = 2.5f;
 	public float _movementFlux = 0.75f;
+	public float _moveTime;
 	public GameObject _radiusPoint;
 	public GameObject _bodyScript;
+
+	[HideInInspector]
+	public Vector2 _shadowPos;
+	[HideInInspector]
+	public Vector2 _shadowIntermediatePoint;
+	[HideInInspector]
+	public float _shadowMoveTime;
 
 	private bool _intermediatePointReached;
 	private Vector2 _intermediatePoint;
 	private Vector2 _targetPoint;
-	private Vector2 _startPoint;
-	private float _lerpTime;
+	[HideInInspector]
+	public Vector2 _startPoint;
+	[HideInInspector]
+	public float _lerpTime;
 
 	//enums
-	enum BehaviorState
+	public enum BehaviorState
 	{
 		Walking = 0,
 		Impale = 1,
 		Rake = 2,
 	}
-	BehaviorState _behaviorState;
+	[HideInInspector]
+	public BehaviorState _behaviorState;
 
-	enum LegState
+	public enum LegState
 	{
 		Idle = 0,
 		CalculateMove = 1,
 		Move = 2,
 	}
-	LegState _state;
+	[HideInInspector]
+	public LegState _state;
 
 	// Use this for initialization
 	void Start () 
 	{
 		_behaviorState = BehaviorState.Walking;
 		_state = LegState.Idle;
+		_moveTime = 0.15f;
 	}
 	
 	// Update is called once per frame
@@ -54,6 +67,7 @@ public class LegScript : MonoBehaviour {
 				{
 					_state = LegState.CalculateMove;
 				}
+				_shadowPos = (Vector2)transform.position;
 			}
 			//This picks the next area to move to
 			else if(_state == LegState.CalculateMove)
@@ -71,6 +85,11 @@ public class LegScript : MonoBehaviour {
 				//_state = LegState.Idle;
 				MoveLeg();
 			}
+		}
+		else if(_behaviorState == BehaviorState.Impale)
+		{
+			_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _shadowMoveTime);
+			_lerpTime += Time.deltaTime;
 		}
 
 		/*
@@ -110,14 +129,18 @@ public class LegScript : MonoBehaviour {
 
 	Vector2 GetMoveVector()
 	{
-		return _bodyScript.GetComponent<BodyScript>().move_vec * (_radius + Random.Range(-_movementFlux, 0));
+		return _bodyScript.GetComponent<BehaviorBlackboard>().moveDirection * (_radius + _movementFlux/2 + Random.Range(-_movementFlux, 0));
+		//return _bodyScript.GetComponent<BodyScript>().move_vec * (_radius + _movementFlux/2 + Random.Range(-_movementFlux, 0));
 	}
 
 	//returns the midpoint of ab and sets it up a bit
 	Vector2 GetIntermediatePoint(Vector2 a, Vector2 b)
 	{
 		float xPoint = a.x + ((b.x - a.x)/2);
-		float yPoint = a.y + ((b.y - a.y)/2) + _radius*1.5f;
+		float yPoint = a.y + ((b.y - a.y)/2);
+		_shadowIntermediatePoint = new Vector2(xPoint, yPoint);
+
+		yPoint += _radius * 1.6f;
 
 		if(_bodyScript.GetComponent<BodyScript>().move_vec.y > 0.5f)
 		{
@@ -135,27 +158,28 @@ public class LegScript : MonoBehaviour {
 	{
 		if(_intermediatePointReached == false)
 		{
-			if( Vector2.Distance((Vector2)transform.position, _intermediatePoint) < 0.05f)
+			if( Vector2.Distance((Vector2)transform.position, _intermediatePoint) < 0.01f)
 			{
 				_intermediatePointReached = true;
 				_lerpTime = 0.0f;
 			}
 			else
 			{
-				transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime * 10.0f);
+				transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _moveTime);
+				_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _moveTime);
 				_lerpTime += Time.deltaTime;
 			}
-
 		}
 		else
 		{
-			if( Vector2.Distance((Vector2)transform.position, _targetPoint) < 0.05f)
+			if( Vector2.Distance((Vector2)transform.position, _targetPoint) < 0.01f)
 			{
 				_state = LegState.Idle;
 			}
 			else
 			{
-				transform.position = Vector2.Lerp(_intermediatePoint, _targetPoint, _lerpTime * 10.0f);
+				transform.position = Vector2.Lerp(_intermediatePoint, _targetPoint, _lerpTime / _moveTime);
+				_shadowPos = Vector2.Lerp(_shadowIntermediatePoint, _targetPoint, _lerpTime / _moveTime);
 				_lerpTime += Time.deltaTime;
 			}
 		}
