@@ -3,12 +3,14 @@ using System.Collections;
 
 public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface 
 {
+	//TODO: hitboxes for moves, interrupt HPs
 	#region vars
 	private Player player;
 	private CustomController controller;
 	private string prevState = "";
 
 	private bool isSpinning = false; //whether or not the ninja is spinning his chain
+	private const float spinInterruptHP = 1.0f;
 
 	#region move data
 
@@ -19,14 +21,25 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 	private const float xRangedCombo1BaseDamage = 1.0f;  //Ranged combo hit 1: base damage (Single Hit)
 	private const float xRangedCombo2BaseDamage = 1.0f;  //Ranged combo hit 2: base damage (Single Hit)
 	private const float xRangedCombo3BaseDamage = 1.0f;  //Ranged combo hit 3: base damage (Single Hit)
+
+	private const float xMeleeCombo1InterruptHP = 1.0f;
+	private const float xMeleeCombo2InterruptHP = 1.0f;
+	private const float xMeleeCombo3InterruptHP = 1.0f;
+	private const float xRangedCombo1InterruptHP = 1.0f;
+	private const float xRangedCombo2InterruptHP = 1.0f;
+	private const float xRangedCombo3InterruptHP = 1.0f;
 	#endregion
 
 	#region Y
 	private const float yMeleeBaseDamage = 1.0f;         //Melee smash: base damage (Single Hit)
 	private const float yRangedBaseDamage = 1.0f;        //Melee smash: base damage (Single Hit)
+
+	private const float yMeleeInterruptHP = 1.0f;
+	private const float yRangedInterruptHP = 1.0f;
 	#endregion
 
 	private const float hookBaseDamage = 1.0f;           //Hook: base damage (Single Hit)
+	private const float hookInterruptHP = 1.0f;          //?
 	#endregion
 
 	#region Dodge
@@ -284,32 +297,49 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frames
+			player.interruptHP = xRangedCombo1InterruptHP;
+			#region hitbox
+			float x = this.gameObject.transform.position.x;
+			float y = this.gameObject.transform.position.y;
+			Vector2 pos = new Vector2( x, y );
+			float angle = controller.facing * Mathf.PI / 2.0f;
+			float sweep = Mathf.Deg2Rad * 45.0f;
+			float r = 2.0f;
+			float damage = xRangedCombo1BaseDamage;
+			AttackSystem.hitSector ( pos, angle - sweep / 2.0f, angle + sweep / 2.0f, r, damage, player.id  );
+			//TODO: ice effects?
+			#endregion
 		}
 		else if ( newState == "xranged2" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frames
+			player.interruptHP = xRangedCombo2InterruptHP;
 		}
 		else if ( newState == "xranged3" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frames
+			player.interruptHP = xRangedCombo3InterruptHP;
 		}
 		//normal
 		else if ( newState == "xnormal1" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frames
+			player.interruptHP = xMeleeCombo1InterruptHP;
 		}
 		else if ( newState == "xnormal2" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frames
+			player.interruptHP = xMeleeCombo2InterruptHP;
 		}
 		else if ( newState == "xnormal3" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frames
+			player.interruptHP = xMeleeCombo3InterruptHP;
 		}
 		#endregion
 		#region y
@@ -318,12 +348,14 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.interruptHP = yRangedInterruptHP;
 		}
 		//normal
 		else if ( newState == "ynormal" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.interruptHP = yMeleeInterruptHP;
 		}
 		#endregion
 		#region spin
@@ -333,6 +365,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.05f * 1.0f; //1 frame
 			isSpinning = true;
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
+			player.interruptHP = spinInterruptHP;
 		}
 		else if ( newState == "spin" )
 		{

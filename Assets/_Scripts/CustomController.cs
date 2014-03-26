@@ -209,7 +209,7 @@ public class CustomController : MonoBehaviour
 
 				if ( playerState.isDowned && ! playerState.isCarried ) //if you're downed and not being carried, A revives you.
 				{
-					if ( playerState.HP >= 50.0f ) //TODO: const this as revive threshold.
+					if ( playerState.HP >= StaticData.percentHPNeededToRevive * playerState.baseMaxHP )
 					{
 						//revive
 						playerState.isDowned = false;

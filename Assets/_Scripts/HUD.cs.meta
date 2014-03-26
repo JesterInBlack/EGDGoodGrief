@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 29bf52bbf203cf248a297450aad1ecea
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - myPlayer: {instanceID: 0}
+  - HPBarFill: {fileID: 2800000, guid: b9d91dedf6c22784bb11979386328b1c, type: 3}
+  - HPBarLerpFill: {fileID: 2800000, guid: a48ce126d1376cf4aaa1e6056c3fa58e, type: 3}
+  - HPBarMaxFill: {fileID: 2800000, guid: 688cc2e1a5834034b9c6235326dadb91, type: 3}
+  - HPBarOverlay: {fileID: 2800000, guid: f0e9bab5835461e46952ae615695ecd8, type: 3}
+  - HPBarAni: {instanceID: 0}
+  - HPBarLight: {instanceID: 0}
+  - aButton: {fileID: 2800000, guid: 59000df4823bb56438d87d6d95e31b67, type: 3}
+  - aButtonGray: {fileID: 2800000, guid: e926633315a77134ca74f4bafb65eb79, type: 3}
+  - knightBG: {instanceID: 0}
+  - archerBG: {instanceID: 0}
+  - monkBG: {instanceID: 0}
+  - ninjaBG: {instanceID: 0}
+  - needleTexture: {fileID: 2800000, guid: 2ca21fb7fd0f18e428c8aeeb444f6bc2, type: 3}
+  - sandTexture: {instanceID: 0}
+  - focusTexture: {instanceID: 0}
+  - styleTexture: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

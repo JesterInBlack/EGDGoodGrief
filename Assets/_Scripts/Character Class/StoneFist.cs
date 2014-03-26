@@ -3,7 +3,8 @@ using System.Collections;
 
 public class StoneFist : MonoBehaviour, ClassFunctionalityInterface 
 {
-
+	//TODO: y shield
+	//TODO: interrupt HPs.
 	#region vars
 	private Player player;
 	private CustomController controller;
@@ -12,20 +13,23 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	#region move data
 	//Button Hold Times
 	#region X
-	private const float xBaseDamage = 1.0f; //Sand Blast: base damage (0% charge)
-	private const float xAddDamage = 1.0f;  //Sand Blast: additional damage (100% charge)
+	private const float xBaseDamage = 1.0f;  //Sand Blast: base damage (0% charge)
+	private const float xAddDamage = 1.0f;   //Sand Blast: additional damage (100% charge)
+
+	private const float xInterruptHP = 1.0f; //Sand Blast: interrupt damage threshold.
 
 	private float xHoldTime  = 0.0f;
-	private const float xChargeMax = 2.0f;    //maximum hold time: more than this confers no benefit.
+	private const float xChargeMax = 2.0f;   //maximum hold time: more than this confers no benefit.
 	#endregion
 
 	#region Y
 	private float yHoldTime  = 0.0f;
-	private float yDamage = 0.0f; //damage the shield has taken
-	private const float yBaseDamage = 1.0f; //base damage of the shield attack
-	private const float yAddDamage = 1.0f;  //additional damage of the shield attack, based on the % damage / sediment it took.
+	private const float yBaseDamage = 1.0f;  //base damage of the shield attack
+	private const float yAddDamage = 1.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
 
-	private const float shieldHP = 1.0f;       //if the shield takes this much damage, it breaks.
+	//this one is uninterruptable. (how to integrate with the interrupt core player call?)
+	private const float shieldMaxHP = 1.0f;             //if the shield takes this much damage, it breaks.
+	private float shieldHP = 1.0f;                      //the shield's HP
 	private const float shieldDegenRate = 1.0f / 3.0f;  //the % of sediment the shield drains, per second.
 	#endregion
 
@@ -68,12 +72,13 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//take sediment
 			player.resource = Mathf.Max ( player.resource - shieldDegenRate * dt, 0.0f );
+			shieldHP -= shieldMaxHP * shieldDegenRate * dt; //TODO: separate shield HP and amount of sediment consumed tracker.
 			if ( player.resource == 0 )
 			{
 				ChangeState ( "ywinddown" );
 			}
 			//if damage limit is exceeded, break, counterattack.
-			if ( yDamage >= shieldHP )
+			if ( shieldHP <= 0.0f )
 			{
 				ChangeState( "ywinddown" );
 			}
@@ -220,52 +225,17 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "idle" || player.state == "walk" )
 		{
 			//TODO: change direction not allowed, move is?
+			//TODO?: have a start-up cost / wind up window? (so you can't just spam block just in time?)
 			ChangeState( "ycharge" );
 		}
 	}
 	public void YReleased()
 	{
 		//Called when Y is released.
-		//TODO: counterattack
 		yHoldTime = 0.0f;
 		if ( player.isDowned ) { return; }
 		if ( player.state != "ycharge" ) { return; }
 		ChangeState ( "ywinddown" );
-		#region hitbox
-		//hitbox
-		float angle = controller.facing * Mathf.PI / 2.0f;
-		float x = this.gameObject.transform.position.x;
-		float y = this.gameObject.transform.position.y;
-		float w = 2.0f * Mathf.Cos ( angle ) + 1.5f * Mathf.Cos ( angle + Mathf.PI / 2.0f );
-		float h = 2.0f * Mathf.Sin ( angle ) + 1.5f * Mathf.Sin ( angle + Mathf.PI / 2.0f );
-		
-		//shift so the box is centered on the player: 
-		//move along the perpindicular axis to the target
-		if ( controller.facing == 1 || controller.facing == 3 )
-		{
-			x -= w / 2.0f;
-		}
-		else
-		{
-			y -= h / 2.0f;
-		}
-		
-		//fix negatives (swap x1 <-> x2 and y1 <-> y2)
-		if ( w < 0.0f ) 
-		{
-			x = x + w;
-			w = Mathf.Abs ( w );
-		}
-		if ( h < 0.0f )
-		{
-			y = y + h;
-			h = Mathf.Abs ( h );
-		}
-		//float percentCharge = Mathf.Min ( yHoldTime, yChargeMax ) / yChargeMax; //TODO: fix to scale with dmg
-		float damage = player.offense * (yBaseDamage);// + yAddDamage * percentCharge;
-		
-		AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
-		#endregion
 	}
 	public void YHeld( float dt )
 	{
@@ -306,6 +276,16 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//TODO: DoT
 	}
 	#endregion
+
+    public void OnHitCallback( int attackerID, float damage )
+	{
+		if ( player.state == "ycharge" )
+		{
+			//take hp from shield.
+			float finalDamage = damage / player.defense;
+			shieldHP -= finalDamage;
+		}
+	}
 
 	private void UpdateResource( float dt )
 	{
@@ -352,6 +332,42 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
+			//attack
+			#region hitbox
+			//hitbox
+			float angle = controller.facing * Mathf.PI / 2.0f;
+			float x = this.gameObject.transform.position.x;
+			float y = this.gameObject.transform.position.y;
+			float w = 2.0f * Mathf.Cos ( angle ) + 1.5f * Mathf.Cos ( angle + Mathf.PI / 2.0f );
+			float h = 2.0f * Mathf.Sin ( angle ) + 1.5f * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+			
+			//shift so the box is centered on the player: 
+			//move along the perpindicular axis to the target
+			if ( controller.facing == 1 || controller.facing == 3 )
+			{
+				x -= w / 2.0f;
+			}
+			else
+			{
+				y -= h / 2.0f;
+			}
+			
+			//fix negatives (swap x1 <-> x2 and y1 <-> y2)
+			if ( w < 0.0f ) 
+			{
+				x = x + w;
+				w = Mathf.Abs ( w );
+			}
+			if ( h < 0.0f )
+			{
+				y = y + h;
+				h = Mathf.Abs ( h );
+			}
+			float percentCharge = 1.0f - Mathf.Max ( 0.0f, ( shieldHP / shieldMaxHP ) );
+			float damage = player.offense * (yBaseDamage + yAddDamage * percentCharge);
+			
+			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
+			#endregion
 		}
 		#endregion
 		#region rt

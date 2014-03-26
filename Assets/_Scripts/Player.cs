@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
 	void Update () 
 	{
 		//isDowned = true; //DEBUG
-		HP -= Time.deltaTime * 1.0f; //DEBUG
+		//HP -= Time.deltaTime * 1.0f; //DEBUG
 
 
 		GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
@@ -254,6 +254,11 @@ public class Player : MonoBehaviour
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
 		if ( false ) { return; } //TODO: stone skin
+		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
+		{ 
+			this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			return; 
+		}
 		//TODO: add stone skin knockback handling on hit logic (somewhere?)
 
 		//deal damage
@@ -271,6 +276,10 @@ public class Player : MonoBehaviour
 			//deadz.
 			//Go into downed state.
 			isDowned = true;
+			//interrupt any attacks or actions. Force state change.
+			state = "idle";
+			stateTimer = 0.0f;
+			nextState = "idle";
 			//deduct points
 			score -= 100;
 			#region remove buffs
@@ -283,6 +292,7 @@ public class Player : MonoBehaviour
 			}
 			buffs.Clear ();
 			#endregion
+			//TODO: animation
 		}
 
 		#region resource deduction
@@ -321,8 +331,14 @@ public class Player : MonoBehaviour
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
+		if ( false ) { return; } //TODO: stone skin
+		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
+		{ 
+			this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			return; 
+		}
 
-		HP -= damage; //TODO: remove
+		//HP -= damage; //TODO: remove
 
 		//TODO: diminishing returns, thresholds for moves, move interrupt power scaling
 		//TODO: on successful interrupt, set canMove to true.
@@ -363,6 +379,12 @@ public class Player : MonoBehaviour
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
+		if ( false ) { return; } //TODO: stone skin
+		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
+		{ 
+			this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			return; 
+		}
 
 		//TODO: move knockback power scaling
 		//TODO: effects that minimize / reduce knockback. (blocking, parrying, dodging?)

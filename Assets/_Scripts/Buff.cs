@@ -57,6 +57,11 @@ public class Buff
 		}
 		#endregion
 
-		player.HP += regen * dt;
+		//Regeneration
+		if ( player.HP > 0.0f ) //Only regenerate / degenerate if you're alive.
+		{
+			player.HP = Mathf.Max ( 1.0f, player.HP + regen * dt ); //degeneration can't kill you.
+			player.HP = Mathf.Min ( player.HP, player.maxHP ); //over cap check
+		}
 	}
 }

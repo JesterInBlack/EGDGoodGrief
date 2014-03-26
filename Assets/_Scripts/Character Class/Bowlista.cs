@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Bowlista : MonoBehaviour, ClassFunctionalityInterface 
 {
+	//TODO: interrupt HPs
 	#region vars
 	private Player player;
 	private CustomController controller;

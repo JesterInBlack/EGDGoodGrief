@@ -17,28 +17,36 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	#region X
 	private const float xNormalBaseDamage = 10.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
-	private const float xChargeBaseDamage = 10.0f;   //Charge attack: Spin2Win: base damage (0 charge)          (DPS)
-	private const float xChargeAddDamage = 10.0f;    //Charge attack: Spin2Win: additional damage (100% charge) (DPS)
-	private const float xChargeChainBonus = 1.5f;    //Charge attack: Spin2Win: damage multiplier from full chain
+	private const float xSmashBaseDamage  = 10.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
+	private const float xSmashAddDamage   = 10.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
+	private const float xSmashChainBonus  = 1.5f;    //Smash  attack: Spin2Win: damage multiplier from full chain
 
 	private const float xNormalAngle = 115.0f;       //Normal attack: Horizontal Slash: hit sector angle.
 
-	private float xHoldTime  = 0.0f;
-	private const float xChargeMin = 1.0f;          //minimum hold time to use the charged version of the x attack
-	private const float xChargeMax = 10.0f;         //maximum hold time: more than this confers no benefit.
-	private const float xNormalGraceT = 1.0f;       //Grace time before chain degeneration happens.
-	//private const float xSmashGraceT = 1.0f;      //Grace time before chain degeneration happens. Moot.
+	private const float xChargeInterruptHP = 100.0f; //Charging up X: interruption damage threshold 
+	private const float xNormalInterruptHP = 100.0f; //Normal attack: Horizontal Slash: interruption damage threshold.
+	private const float xSmashInterruptHP = 10000.0f;//Smash  attack: Spin2Win: interruption damage threshold.
 
-	private int maxSpinToWinExtensions = 5;         //the maximum number of times spin2win can be extended
-	private int spinToWinExtensions = 0;            //the number of times spin2win has been extended
-	private float spinTime = 0.0f;			        //how long you've been spinning for.
+	private float xHoldTime  = 0.0f;
+	private const float xChargeMin = 1.0f;           //minimum hold time to use the charged version of the x attack
+	private const float xChargeMax = 10.0f;          //maximum hold time: more than this confers no benefit.
+	private const float xNormalGraceT = 1.0f;        //Grace time before chain degeneration happens.
+	//private const float xSmashGraceT = 1.0f;       //Grace time before chain degeneration happens. Moot.
+
+	private int maxSpinToWinExtensions = 5;          //the maximum number of times spin2win can be extended
+	private int spinToWinExtensions = 0;             //the number of times spin2win has been extended
+	private float spinTime = 0.0f;			         //how long you've been spinning for.
 	#endregion
 	
 	#region Y
 	private const float yNormalBaseDamage = 10.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
-	private const float yChargeBaseDamage = 10.0f;   //Charge attack: Blast Off: base damage (0 charge)          (DPS)
-	private const float yChargeAddDamage = 10.0f;    //Charge attack: Blast Off: additional damage (100% charge) (DPS)
-	private const float yChargeChainBonus = 1.5f;    //Charge attack: Blast Off: damage multiplier from full chain
+	private const float ySmashBaseDamage  = 10.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
+	private const float ySmashAddDamage   = 10.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
+	private const float ySmashChainBonus  = 1.5f;    //Smash  attack: Blast Off: damage multiplier from full chain
+
+	private const float yChargeInterruptHP = 100.0f; //Charging up Y: interruption damage threshold.
+	private const float yNormalInterruptHP = 100.0f; //Normal attack: Vertical Slash: interruption damage threshold.
+	private const float ySmashInterruptHP  = 100.0f; //Smash  attack: HBlast Off: interruption damage threshold.
 
 	private float yHoldTime  = 0.0f;
 	private const float yChargeMin = 1.0f;           //minimum hold time to use the charged version of the y attack
@@ -475,7 +483,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "xcharge";
 			player.stateTimer = 0.05f * 7.0f; //7 frame windup
-			player.interruptHP = 100.0f;
+			player.interruptHP = xChargeInterruptHP;
 			#region animation
 			if ( GetComponent<CustomController>().facing == 0 )
 			{
@@ -498,7 +506,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		else if ( newState == "xcharge" )
 		{
 			player.nextState = "xcharge"; //freeze at this state
-			player.interruptHP = 100.0f;
+			player.interruptHP = xChargeInterruptHP;
 		}
 		else if ( newState == "xnormal" )
 		{
@@ -509,7 +517,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.canMove = false;
 			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
 			player.resourceGraceT = xNormalGraceT;
-			player.interruptHP = 100.0f;
+			player.interruptHP = xNormalInterruptHP;
 			#region animation
 			if ( GetComponent<CustomController>().facing == 0 )
 			{
@@ -549,13 +557,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			float chargePercent = Mathf.Min ( (xHoldTime - xChargeMin), (xChargeMax - xChargeMin) ) / (xChargeMax - xChargeMin); //0.0f - 1.0f
 			float chainPercent = player.resource; //0.0f - 1.0f
 			//multiplicative stacking?
-			float baseDamage = (xChargeBaseDamage + (xChargeAddDamage * chargePercent) );
-			float multiplier = player.offense * (1.0f + xChargeChainBonus * chainPercent);
+			float baseDamage = (xSmashBaseDamage + (xSmashAddDamage * chargePercent) );
+			float multiplier = player.offense * (1.0f + xSmashChainBonus * chainPercent);
 			attackDamage = baseDamage * multiplier;
 			player.resource = 0.0f;
 			spinTime = 0.0f;
 			spinToWinExtensions = 0;
-			player.interruptHP = 1000000.0f; //uninterruptable, for all intents and purposes.
+			player.interruptHP = xSmashInterruptHP; //uninterruptable, for all intents and purposes.
 			GetComponent<Animator>().Play( "hurricane_spin" );
 			//maxSpinToWinExtensions = 5; //Scale with charge?
 			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
@@ -570,12 +578,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "ycharge";
 			player.stateTimer = 0.05f * 7.0f; //7 frame windup
-			player.interruptHP = 100.0f;
+			player.interruptHP = yChargeInterruptHP;
 		}
 		else if ( newState == "ycharge" )
 		{
 			player.nextState = "ycharge"; //freeze the state in a loop.
-			player.interruptHP = 100.0f;
+			player.interruptHP = yChargeInterruptHP;
 		}
 		else if ( newState == "ynormal" )
 		{
@@ -585,7 +593,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "ywinddown";
 			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
 			player.resourceGraceT = yNormalGraceT;
-			player.interruptHP = 100.0f;
+			player.interruptHP = yNormalInterruptHP;
 			//TODO: box to box collision detection
 		}
 		else if ( newState == "ywinddown" )
@@ -603,13 +611,14 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//initialize the attack
 			player.canMove = false;
 			player.nextState = "ywinddown";
+			player.interruptHP = ySmashInterruptHP;
 
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( (yHoldTime - yChargeMin), (yChargeMax - yChargeMin) ) / (yChargeMax - yChargeMin); //0.0f - 1.0f
 			float chainPercent = player.resource; //0.0f - 1.0f
 			//multiplicative stacking?
-			float baseDamage = (yChargeBaseDamage + (yChargeAddDamage * chargePercent) );
-			float multiplier = player.offense * (1.0f + yChargeChainBonus * chainPercent);
+			float baseDamage = (ySmashBaseDamage + (ySmashAddDamage * chargePercent) );
+			float multiplier = player.offense * (1.0f + ySmashChainBonus * chainPercent);
 			attackDamage = baseDamage * multiplier;
 			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;
