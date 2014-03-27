@@ -33,7 +33,7 @@ public class CheckRadius : Action
 */
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_checkRadius = 1.0f;
+		_checkRadius = 2.0f;
 	}
 
 	//runs the actual task

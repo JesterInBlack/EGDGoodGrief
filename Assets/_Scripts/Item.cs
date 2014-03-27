@@ -30,17 +30,17 @@ public class Item
 		else if ( itemName == ItemName.AURA_DEFENSE )
 		{
 			itemType = ItemType.ITEM_FAST;
-			coolDownDelay = 0.0f;
+			coolDownDelay = 10.0f;
 		}
 		else if ( itemName == ItemName.AURA_OFFENSE )
 		{
 			itemType = ItemType.ITEM_FAST;
-			coolDownDelay = 0.0f;
+			coolDownDelay = 10.0f;
 		}
 		else if ( itemName == ItemName.AURA_REGEN )
 		{
 			itemType = ItemType.ITEM_FAST;
-			coolDownDelay = 0.0f;
+			coolDownDelay = 10.0f;
 		}
 		else if ( itemName == ItemName.VAMPIRE_FANG )
 		{

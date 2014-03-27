@@ -43,7 +43,28 @@ public class BehaviorData
 	public float FailCoopDelta { get { return _failCoopDelta; } }
 	private float _failCoopDelta;
 
-	public BehaviorData(Behavior action, float aub, float alb, float cub, float clb, float priorityMax, float priorityRec = 1, float sad = 0, float scd = 0, float fad = 0, float fcd = 0)
+	public BehaviorData(Behavior action, float aub, float alb, float cub, float clb, float priorityMax )
+	{
+		float priorityRec = 1;
+		float sad = 0;
+		float scd = 0;
+		float fad = 0;
+		float fcd = 0;
+		_action = action;
+		_angerUpperBound = aub;
+		_angerLowerBound = alb;
+		_coopUpperBound = cub;
+		_coopLowerBound = clb;
+		_maxPriority = priorityMax;
+		_priority = priorityMax;
+		_priorityRecovery = priorityRec;
+		_successAngerDelta = sad;
+		_successCoopDelta = scd;
+		_failAngerDelta = fad;
+		_failCoopDelta = fcd;
+	}
+
+	public BehaviorData(Behavior action, float aub, float alb, float cub, float clb, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
 	{
 		_action = action;
 		_angerUpperBound = aub;

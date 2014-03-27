@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
 	//items x 3
 	//item cooldowns?
 	public Item[] items = new Item[3];
-	int itemIndex = 0;
+	public int itemIndex = 0;
 	const int ITEM_SLOT_COUNT = 3;
 
 	//unique mechanic data

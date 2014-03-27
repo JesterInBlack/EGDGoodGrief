@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 1d6df3109b712e6478a171080125e6f9
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - eggPrefab: {fileID: 100000, guid: 79439bc1a051f2949a21ff0cfd364745, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

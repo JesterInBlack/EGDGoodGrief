@@ -7,6 +7,7 @@ public class HUD : MonoBehaviour
 	//TODO: animate HP bars
 	#region vars
 	public GameObject myPlayer; //set in inspector
+	//TODO: add image list for items
 	
 	public Texture2D HPBarFill;     //HP bar       (set in inspector)
 	public Texture2D HPBarLerpFill; //HP bar lerp  (set in inspector)
@@ -14,6 +15,7 @@ public class HUD : MonoBehaviour
 	public Texture2D HPBarOverlay;  //Overlay      (set in inspector)
 	public Texture2D HPBarAni;      //Animation    (set in inspector)
 	public Texture2D HPBarLight;    //Edge light   (set in inspector)
+	public Texture2D itemSelector;  //Selector     (set in inspector)
 	public Texture2D aButton;       //A button     (set in inspector)
 	public Texture2D aButtonGray;   //A button     (set in inspector)
 	//Custom parts
@@ -29,6 +31,9 @@ public class HUD : MonoBehaviour
 	public enum ScreenCorner { UPPER_RIGHT, UPPER_LEFT, LOWER_RIGHT, LOWER_LEFT };
 	public ScreenCorner screenCorner;
 	public Vector2 HPBarOffset;      //HP bar's offset.               (set in inspector)
+	public Vector2 itemPos1;         //item offset                    (set in inspector)
+	public Vector2 itemPos2;         //item offset                    (set in inspector)
+	public Vector2 itemPos3;         //item offset                    (set in inspector)
 	private bool flipAnchor = false; //do we flip the way HP fills?
 	private bool upsideDown = false; //is it upside down?
 	//Rocket Sword
@@ -48,6 +53,7 @@ public class HUD : MonoBehaviour
 	private float prevLerpHP;
 	private float nextLerpHP;
 	private float lerpT;
+	private float aniT; //animation time
 
 	private Player player;
 	#endregion
@@ -170,6 +176,26 @@ public class HUD : MonoBehaviour
 			GUI.DrawTexture ( new Rect( x, y, width, height ), HPBarLerpFill );
 		}
 
+		//Animated Overlay
+		aniT += Time.deltaTime * 8.0f;
+		if ( aniT > HPBarFill.width ) 
+		{
+			aniT -= HPBarFill.width;
+		}
+
+		x = pos.x + HPBarOffset.x;
+		y = pos.y + HPBarOffset.y;
+		width = Mathf.Max ( 0.0f, percentHP * HPBarFill.width );
+		height = HPBarFill.height;
+		if ( flipAnchor )
+		{
+			x = x + (HPBarFill.width - width);
+		}
+		GUI.BeginGroup ( new Rect( x, y, width, height ) );
+		GUI.DrawTexture ( new Rect( -HPBarFill.width + aniT, 0.0f, HPBarAni.width, HPBarAni.height ), HPBarAni, ScaleMode.StretchToFill, true );
+		GUI.DrawTexture ( new Rect( aniT, 0.0f, HPBarAni.width, HPBarAni.height ), HPBarAni, ScaleMode.StretchToFill, true );
+		GUI.EndGroup ();
+
 		//Overlay
 		x = pos.x + HPBarOffset.x;
 		y = pos.y + HPBarOffset.y;
@@ -237,6 +263,47 @@ public class HUD : MonoBehaviour
 	{
 		//! Handles drawing items for all HUDs
 		/*! \param pos top left screen coordinate of the GUI*/
+
+		//gray them out proportionally to their CD
+		//100% -> 100%
+		//99% -> 75%
+		//0% -> 25%
+		//LT
+		float f = 1.0f - (player.items[0].coolDownTimer / player.items[0].coolDownDelay);
+		if ( f < 1.0f ) 
+		{ 
+			f = f * 0.65f + 0.25f; 
+		}
+		GUI.color = new Color( f, f, f, f );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos1.x, pos.y + itemPos1.y, 32, 32 ), ItemImages.getImage ( player.items[0].name ) );
+
+		//Bumper?
+		f = 1.0f - (player.items[1].coolDownTimer / player.items[1].coolDownDelay);
+		if ( f < 1.0f ) 
+		{ 
+			f = f * 0.65f + 0.25f; 
+		}
+		GUI.color = new Color( f, f, f, f );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos2.x, pos.y + itemPos2.y, 32, 32 ), ItemImages.getImage ( player.items[1].name ) );
+
+		//RT
+		f = 1.0f - (player.items[2].coolDownTimer / player.items[2].coolDownDelay);
+		if ( f < 1.0f ) 
+		{ 
+			f = f * 0.65f + 0.25f; 
+		}
+		GUI.color = new Color( f, f, f, f );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos3.x, pos.y + itemPos3.y, 32, 32 ), ItemImages.getImage ( player.items[2].name ) );
+
+		//reset color
+		GUI.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+
+		//Draw item selector.
+		Vector2 selectorOffset = itemPos1;
+		if ( player.itemIndex == 1 ) { selectorOffset = itemPos2; }
+		else if ( player.itemIndex == 2 ) { selectorOffset = itemPos3; }
+		
+		GUI.DrawTexture ( new Rect( pos.x + selectorOffset.x, pos.y + selectorOffset.y, 32, 32 ), itemSelector );
 	}
 
 	void DrawReviveThreshold( Vector2 pos )
