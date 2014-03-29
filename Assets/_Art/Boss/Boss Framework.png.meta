@@ -1,0 +1,189 @@
+fileFormatVersion: 2
+guid: ed7e8c45a92d5e849ac9560330ba8c24
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Boss Framework_0
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 659
+        width: 76
+        height: 316
+      alignment: 9
+      pivot: {x: .499998391, y: .747120738}
+    - name: Boss Framework_1
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 885
+        width: 145
+        height: 44
+      alignment: 4
+      pivot: {x: 0, y: .5}
+    - name: Boss Framework_2
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 654
+        width: 75
+        height: 316
+      alignment: 9
+      pivot: {x: .499999195, y: .747120738}
+    - name: Boss Framework_3
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 806
+        width: 144
+        height: 44
+      alignment: 5
+      pivot: {x: 1, y: .5}
+    - name: Boss Framework_4
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 749
+        width: 123
+        height: 37
+      alignment: 4
+      pivot: {x: 0, y: .5}
+    - name: Boss Framework_5
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 690
+        width: 122
+        height: 37
+      alignment: 5
+      pivot: {x: 1, y: .5}
+    - name: Boss Framework_6
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 303
+        width: 303
+        height: 325
+      alignment: 7
+      pivot: {x: .5, y: 0}
+    - name: Boss Framework_7
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 477
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: Boss Framework_8
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 123
+        width: 52
+        height: 96
+      alignment: 2
+      pivot: {x: .5, y: 1}
+    - name: Boss Framework_9
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 123
+        width: 52
+        height: 96
+      alignment: 2
+      pivot: {x: .5, y: 1}
+    - name: Boss Framework_10
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 16
+        width: 216
+        height: 229
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: Boss Framework_11
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 51
+        width: 144
+        height: 144
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: Boss Framework_12
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 46
+        width: 26
+        height: 57
+      alignment: 2
+      pivot: {x: .5, y: 1}
+    - name: Boss Framework_13
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 14
+        width: 39
+        height: 88
+      alignment: 3
+      pivot: {x: 1, y: 1}
+    - name: Boss Framework_14
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 14
+        width: 39
+        height: 88
+      alignment: 1
+      pivot: {x: 0, y: 1}
+    - name: Boss Framework_15
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 46
+        width: 26
+        height: 57
+      alignment: 2
+      pivot: {x: .5, y: 1}
+  spritePackingTag: 
+  userData: 
