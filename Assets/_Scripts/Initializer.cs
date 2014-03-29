@@ -4,16 +4,19 @@ using System.Collections;
 public class Initializer : MonoBehaviour 
 {
 	//this class passes objects assigned in the editor to the static game state class
+	//changed width / height to be in tiles.
 
 	#region vars
-	public GameObject[] players = new GameObject[4]; //assign in pre-game screens
-	public GameObject boss;                          //assign in pre-game screens
+	public GameObject[] players = new GameObject[4];  //assign in pre-game screens
+	public GameObject boss;                           //assign in pre-game screens
 
 	//Tiles
-	public GameObject tileFolder;                    //assign in editor
-	public GameObject tilePrefab;                    //assign in editor
-	public Vector2 levelSize;                        //level width / height: assign in editor
-	public GameObject wallPrefab;                    //assign in editor
+	public GameObject tileFolder;                     //assign in editor
+	public GameObject tilePrefab;                     //assign in editor
+	public Vector2 levelSize;                         //level width / height: assign in editor
+	public GameObject wallPrefab;                     //assign in editor
+
+	private const float tilesToUnits = 64.0f / 48.0f;  //conversion factor (tile coords -> unity units)
 	#endregion
 
 	// Use this for pre-initialization
@@ -27,29 +30,35 @@ public class Initializer : MonoBehaviour
 		}
 		GameState.boss = boss;
 
+		//round to int.
+		levelSize.x = (int) levelSize.x;
+		levelSize.y = (int) levelSize.y;
+
 		//Tiles are (64.0f / 48.0f) units big.
-		for ( float x = levelSize.x / -2.0f; x <= levelSize.x / 2.0f; x += 64.0f / 48.0f )
+		for ( float x = levelSize.x / -2.0f; x <= levelSize.x / 2.0f; x ++ )
 		{
-			for ( float y = levelSize.y / -2.0f; y <= levelSize.y / 2.0f; y += 64.0f / 48.0f )
+			for ( float y = levelSize.y / -2.0f; y <= levelSize.y / 2.0f; y ++ )
 			{
-				GameObject obj = (GameObject)Instantiate ( tilePrefab,  new Vector3( x, y, 0.0f), Quaternion.identity );
+				GameObject obj = (GameObject)Instantiate ( tilePrefab,  new Vector3( x * tilesToUnits, y * tilesToUnits, 0.0f), Quaternion.identity );
 				obj.transform.parent = tileFolder.transform;
 			}
 		}
 
 		//Walls on the edge of the map
-		for ( float x = levelSize.x / -2.0f - (64.0f / 48.0f); x <= levelSize.x / 2.0f + (64.0f / 48.0f); x += 64.0f / 48.0f )
+		for ( float x = levelSize.x / -2.0f - (1.0f); x <= levelSize.x / 2.0f + (1.0f); x ++ )
 		{
-			GameObject obj = (GameObject)Instantiate ( wallPrefab, new Vector3( x, levelSize.y / -2.0f - (64.0f / 48.0f), 0.0f), Quaternion.identity );
+			GameObject obj;
+			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( x * tilesToUnits, (levelSize.y / -2.0f - 1.0f) * tilesToUnits, 0.0f), Quaternion.identity );
 			obj.transform.parent = tileFolder.transform;
-			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( x, levelSize.y / 2.0f + (64.0f / 48.0f), 0.0f), Quaternion.identity );
+			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( x * tilesToUnits, (levelSize.y /  2.0f + 1.0f) * tilesToUnits, 0.0f), Quaternion.identity );
 			obj.transform.parent = tileFolder.transform;
 		}
-		for ( float y = levelSize.y / -2.0f - (64.0f / 48.0f); y <= levelSize.y / 2.0f + (64.0f / 48.0f); y += 64.0f / 48.0f )
+		for ( float y = levelSize.y / -2.0f - (1.0f); y <= levelSize.y / 2.0f + (1.0f); y ++ )
 		{
-			GameObject obj = (GameObject)Instantiate ( wallPrefab, new Vector3( levelSize.x / -2.0f - (64.0f / 48.0f), y, 0.0f), Quaternion.identity );
+			GameObject obj;
+			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( (levelSize.x / -2.0f - 1.0f) * tilesToUnits, y * tilesToUnits, 0.0f), Quaternion.identity );
 			obj.transform.parent = tileFolder.transform;
-			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( levelSize.x / 2.0f + (64.0f / 48.0f), y, 0.0f), Quaternion.identity );
+			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( (levelSize.x /  2.0f + 1.0f) * tilesToUnits, y * tilesToUnits, 0.0f), Quaternion.identity );
 			obj.transform.parent = tileFolder.transform;
 		}
 	}
