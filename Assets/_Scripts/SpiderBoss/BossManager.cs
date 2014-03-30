@@ -142,15 +142,15 @@ public class BossManager : MonoBehaviour
 		//update the valences to their equilibriums
 		if(GameState.cooperationAxis > 0.0f)
 		{
-			GameState.cooperationAxis -= Mathf.Min( (Time.deltaTime * _blackboard.coopAxisRecovery), Mathf.Abs(GameState.cooperationAxis));
+			GameState.cooperationAxis -= Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.coopAxisRecovery), Mathf.Abs(GameState.cooperationAxis));
 		}
 		else if(GameState.cooperationAxis < 0.0f)
 		{
-			GameState.cooperationAxis += Mathf.Min( (Time.deltaTime * _blackboard.coopAxisRecovery), Mathf.Abs(GameState.cooperationAxis));
+			GameState.cooperationAxis += Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.coopAxisRecovery), Mathf.Abs(GameState.cooperationAxis));
 		}
 		if(GameState.angerAxis < 0.0f)
 		{
-			GameState.angerAxis += Mathf.Min( (Time.deltaTime * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
+			GameState.angerAxis += Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
 		}
 	}
 

@@ -68,7 +68,7 @@ public class Impale : Action
 			else
 			{
 				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _windupTime);
-				_lerpTime += Time.deltaTime;
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 				//transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 			}
 		}
@@ -98,7 +98,7 @@ public class Impale : Action
 			else
 			{
 				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _aimTime);
-				_lerpTime += Time.deltaTime;
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 		else if(_state == AttackState.Attack)
@@ -114,7 +114,7 @@ public class Impale : Action
 			else
 			{
 				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _targetPoint, _lerpTime / _attackTime);
-				_lerpTime += Time.deltaTime;
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 		else if(_state == AttackState.Cooldown)
@@ -126,7 +126,7 @@ public class Impale : Action
 			}
 			else
 			{
-				_lerpTime += Time.deltaTime;
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 
