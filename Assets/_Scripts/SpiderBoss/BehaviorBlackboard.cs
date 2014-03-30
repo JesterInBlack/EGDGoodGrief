@@ -72,13 +72,22 @@ public class BehaviorBlackboard : MonoBehaviour
 		points[6] = point7;
 		points[7] = point8;
 
+		rightLeg1.GetComponent<LegScript>()._id = 0;
 		legsList[0] = rightLeg1;
+		rightLeg2.GetComponent<LegScript>()._id = 1;
 		legsList[1] = rightLeg2;
+		rightLeg3.GetComponent<LegScript>()._id = 2;
 		legsList[2] = rightLeg3;
+		rightLeg4.GetComponent<LegScript>()._id = 3;
 		legsList[3] = rightLeg4;
+
+		leftLeg5.GetComponent<LegScript>()._id = 4;
 		legsList[4] = leftLeg5;
+		leftLeg6.GetComponent<LegScript>()._id = 5;
 		legsList[5] = leftLeg6;
+		leftLeg7.GetComponent<LegScript>()._id = 6;
 		legsList[6] = leftLeg7;
+		leftLeg8.GetComponent<LegScript>()._id = 7;
 		legsList[7] = leftLeg8;
 	}
 
