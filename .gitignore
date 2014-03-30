@@ -8,7 +8,4 @@ Library/ScriptAssemblies/
 # *.sln
 
 # ignore Project Settings
-ProjectSettings/
-
-# but not the Project Setting with sorting layers
-!ProjectSettings/TagManager.asset
+# ProjectSettings/
