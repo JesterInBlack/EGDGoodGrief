@@ -239,7 +239,14 @@ public class Player : MonoBehaviour
 	public void ChangeItemIndex( int increment )
 	{
 		//increment: +1 or -1
-		itemIndex = Mod( itemIndex + increment, ITEM_SLOT_COUNT );
+		//check to make sure we're not currently charging an item.
+		if ( ! (state == "item windup" || 
+		        state == "item charge" || 
+		        state == "item aim ray" || 
+		        state == "item aim point") )
+		{
+			itemIndex = Mod( itemIndex + increment, ITEM_SLOT_COUNT );
+		}
 	}
 
 	int Mod(int x, int m) 
@@ -434,7 +441,7 @@ public class Player : MonoBehaviour
 	//-------------------------------------------------------------------------------------------------------
 	//ITEMS?
 	//-------------------------------------------------------------------------------------------------------
-	public void UseItem()
+	public void BeginUseItem()
 	{
 		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
 		{
@@ -472,6 +479,13 @@ public class Player : MonoBehaviour
 		else
 		{
 			//Still on cooldown.
+		}
+	}
+
+	public void EndUseItem()
+	{
+		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
+		{
 		}
 	}
 

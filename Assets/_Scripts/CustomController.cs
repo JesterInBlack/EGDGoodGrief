@@ -17,8 +17,9 @@ public class CustomController : MonoBehaviour
 	[HideInInspector]
 	public Vector2 move_vec = new Vector2();
 	[HideInInspector]
-	public float aimAngle;
-	//public Vector2 aim_vec = new Vector2();
+	public float aimAngle;   //angle used for aiming a ray at an angle
+	[HideInInspector]
+	public Vector2 aimPoint; //point used for aiming at a position.
 
 	[HideInInspector]
 	public float speed = 2.0f; //unity units per second (we're using Tile Size pixels per unit (64) )
@@ -180,8 +181,17 @@ public class CustomController : MonoBehaviour
 			//B was pressed
 			if ( gamePadState.Buttons.B == ButtonState.Pressed && prevGamePadState.Buttons.B == ButtonState.Released )
 			{
-				//initialize charging
-				actionHandler.BPressed();
+				//TODO: override this if vampire.
+				//TODO: set vampire state if the item connects
+				if ( playerState.state == "vampire" )
+				{
+					//TODO: instead, do vampire things.
+				}
+				else
+				{
+					//initialize charging
+					actionHandler.BPressed();
+				}
 			}
 			
 			//B is being held
@@ -329,6 +339,7 @@ public class CustomController : MonoBehaviour
 			{
 				//initialize charging
 				//use un-charge-able items.
+				playerState.BeginUseItem(); //use un-charge-ables, begin charging charge-ables
 			}
 			
 			//LT is being held
@@ -343,7 +354,7 @@ public class CustomController : MonoBehaviour
 			{
 				//release charges, have effect
 				//use chargeable items
-				playerState.UseItem();
+				playerState.EndUseItem(); //use charge-ables.
 			}
 			#endregion
 			#region left bumper
@@ -351,6 +362,7 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.LeftShoulder == ButtonState.Pressed && prevGamePadState.Buttons.LeftShoulder == ButtonState.Released )
 			{
 				//initialize charging
+				//make sure you're not charging an item
 				playerState.ChangeItemIndex ( -1 );
 			}
 			
@@ -372,6 +384,7 @@ public class CustomController : MonoBehaviour
 			if ( gamePadState.Buttons.RightShoulder == ButtonState.Pressed && prevGamePadState.Buttons.RightShoulder == ButtonState.Released )
 			{
 				//initialize charging
+				//make sure you're not charging an item
 				playerState.ChangeItemIndex ( 1 );
 			}
 			
@@ -434,7 +447,7 @@ public class CustomController : MonoBehaviour
 			}
 		}
 
-		//TODO: aiming override (ninja or archer while RT down)
+		//aiming override (for ninja or archer while RT down / raycasting items)
 		if ( Mathf.Abs ( gamePadState.ThumbSticks.Right.Y ) > 0.0f || Mathf.Abs( gamePadState.ThumbSticks.Right.X ) > 0.0f )
 		{
 			aimAngle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
@@ -444,6 +457,13 @@ public class CustomController : MonoBehaviour
 			aimAngle = facing * 90.0f; //default to facing
 		}
 
+		aimPoint.x += Mathf.Cos ( aimAngle ) * 1.0f * Time.deltaTime;
+		aimPoint.y += Mathf.Sin ( aimAngle ) * 1.0f * Time.deltaTime;
+		//DEBUG!
+		if ( playerState.state == "item aim point" )
+		{
+			Debug.DrawLine( transform.position, aimPoint, new Color( 0.0f, 0.0f, 1.0f, 1.0f ) );
+		}
 		//Debug.Log ( angle + " : " + facing ); //DEBUG LINE
 		
 		#endregion
