@@ -102,8 +102,8 @@ public class Player : MonoBehaviour
 			items[i] = new Item();
 		}
 		items[0].Construct ( ItemName.STOPWATCH );
-		items[1].Construct ( ItemName.AURA_DEFENSE );
-		items[2].Construct ( ItemName.AURA_OFFENSE );
+		items[1].Construct ( ItemName.PHEROMONE_JAR );
+		items[2].Construct ( ItemName.VAMPIRE_FANG );
 		//END placeholder
 
 		#region Class-Specific
@@ -434,6 +434,7 @@ public class Player : MonoBehaviour
 			//freeze in a loop
 			stateTimer = 0.0f;
 			nextState = "item aim point";
+			this.gameObject.GetComponent<CustomController>().aimPoint = this.gameObject.transform.position;
 			//TODO: animation
 		}
 	}
@@ -486,6 +487,7 @@ public class Player : MonoBehaviour
 	{
 		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
 		{
+			UseItem2 ( itemIndex );
 		}
 	}
 
@@ -520,10 +522,24 @@ public class Player : MonoBehaviour
 		else if ( items[index].name == ItemName.VAMPIRE_FANG )
 		{
 			//TODO: charge
+			//TODO: hit detection box at position after animating:
+			//on success: trigger suck life
+			if ( true )
+			{
+				state = "vampire";
+				stateTimer = 1.5f;
+				nextState = "idle";
+				canMove = false;
+			}
 		}
 		else if ( items[index].name == ItemName.PHEROMONE_JAR )
 		{
 			//TODO: aim point
+			//TODO: hit detection circle at point after animating
+			//TODO: animate
+			state = "idle"; //item wind down?
+			stateTimer = 0.0f;
+			nextState = "idle";
 		}
 		#endregion
 	}

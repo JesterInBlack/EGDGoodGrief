@@ -16,7 +16,7 @@ public static class ItemImages
 	public static void Start() //initialization proxy.
 	{
 		//phermoneJar = Resources.Load<Texture2D>( "_Art/GUI/Common/Items/PheromoneJar" );
-		phermoneJar = Resources.Load<Texture2D>( "PheromoneJar" );
+		phermoneJar = Resources.Load<Texture2D>( "PheremoneJar" );
 		stopWatch   = Resources.Load<Texture2D>( "Stopwatch" );
 		auraOffense = Resources.Load<Texture2D>( "Offensive Aura" );
 		auraDefense = Resources.Load<Texture2D>( "DefensiveAura" );

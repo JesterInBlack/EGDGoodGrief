@@ -4,6 +4,7 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class Impale : Action
 {
+	#region vars
 	private BehaviorBlackboard _blackboard;
 	private Vector2 _targetPoint;
 	private Vector2 _intermediatePoint;
@@ -14,7 +15,11 @@ public class Impale : Action
 	public float _aimTime;
 	public float _attackTime;
 	public float _cooldownTime;
-	
+
+	public float radius = 1.0f;    //TODO: make < 1
+	public float damage = 1000.0f; //TODO: make sane
+	#endregion
+
 	private enum AttackState
 	{
 		Windup = 0,
@@ -110,6 +115,9 @@ public class Impale : Action
 
 				//THIS IS THE MOMENT WHERE THE ATTACK DAMAGE IS DEALT TO THE TARGET AREA!
 				//USE THE ATTACHED CIRCLE COLLIDER
+				//Not until you give me a good way to access it.
+				AttackSystem.hitCircle ( _targetPoint, radius, damage, -1 );
+
 			}
 			else
 			{

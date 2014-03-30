@@ -186,6 +186,8 @@ public class CustomController : MonoBehaviour
 				if ( playerState.state == "vampire" )
 				{
 					//TODO: instead, do vampire things.
+					playerState.HP = Mathf.Min ( playerState.HP + 5.0f, playerState.maxHP );
+					//TODO: play glug glug sound.
 				}
 				else
 				{
@@ -451,14 +453,14 @@ public class CustomController : MonoBehaviour
 		if ( Mathf.Abs ( gamePadState.ThumbSticks.Right.Y ) > 0.0f || Mathf.Abs( gamePadState.ThumbSticks.Right.X ) > 0.0f )
 		{
 			aimAngle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
+			aimPoint.x += gamePadState.ThumbSticks.Right.X * 6.0f * Time.deltaTime; //Mathf.Cos ( aimAngle ) * 6.0f * Time.deltaTime;
+			aimPoint.y += gamePadState.ThumbSticks.Right.Y * 6.0f * Time.deltaTime; //Mathf.Sin ( aimAngle ) * 6.0f * Time.deltaTime;
 		}
 		else
 		{
 			aimAngle = facing * 90.0f; //default to facing
 		}
 
-		aimPoint.x += Mathf.Cos ( aimAngle ) * 1.0f * Time.deltaTime;
-		aimPoint.y += Mathf.Sin ( aimAngle ) * 1.0f * Time.deltaTime;
 		//DEBUG!
 		if ( playerState.state == "item aim point" )
 		{
