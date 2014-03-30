@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class LegScript : MonoBehaviour {
-	
+
+	public int _id;
+
 	public float _radius = 2.5f;
 	public float _movementFlux = 0.75f;
 	public float _moveTime;
@@ -33,8 +35,9 @@ public class LegScript : MonoBehaviour {
 		Walking = 0,
 		Impale = 1,
 		Rake = 2,
+		ApplyingBuff = 3,
 	}
-	[HideInInspector]
+
 	public BehaviorState _behaviorState;
 
 	public enum LegState
@@ -160,5 +163,14 @@ public class LegScript : MonoBehaviour {
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
+	}
+
+	public void ApplyBuff(int buffID)
+	{
+
+	}
+	void RemoveBuff()
+	{
+		
 	}
 }
