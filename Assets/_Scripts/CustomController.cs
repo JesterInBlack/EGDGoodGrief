@@ -181,19 +181,9 @@ public class CustomController : MonoBehaviour
 			//B was pressed
 			if ( gamePadState.Buttons.B == ButtonState.Pressed && prevGamePadState.Buttons.B == ButtonState.Released )
 			{
-				//TODO: override this if vampire.
-				//TODO: set vampire state if the item connects
-				if ( playerState.state == "vampire" )
-				{
-					//TODO: instead, do vampire things.
-					playerState.HP = Mathf.Min ( playerState.HP + 5.0f, playerState.maxHP );
-					//TODO: play glug glug sound.
-				}
-				else
-				{
-					//initialize charging
-					actionHandler.BPressed();
-				}
+
+				//initialize charging
+				actionHandler.BPressed();
 			}
 			
 			//B is being held
@@ -248,6 +238,17 @@ public class CustomController : MonoBehaviour
 					playerState.Carried.GetComponent<Player>().Carrier = null;
 					playerState.isCarrier = false;
 					playerState.Carried = null;
+				}
+				#endregion
+				#region vampire logic
+				//TODO: override this if vampire.
+				//TODO: set vampire state if the item connects
+				else if ( playerState.state == "vampire" )
+				{
+					//TODO: instead, do vampire things.
+					playerState.HP = Mathf.Min ( playerState.HP + 5.0f, playerState.maxHP );
+					//TODO: do damage.
+					//TODO: play glug glug sound.
 				}
 				#endregion
 				#region pickup logic

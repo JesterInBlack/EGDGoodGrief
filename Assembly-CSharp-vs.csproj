@@ -70,7 +70,6 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilFailure.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilSuccess.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\EntryTask.cs" />
-     <Compile Include="Assets\VenomPool.cs" />
      <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\AuraFX.cs" />
      <Compile Include="Assets\_Scripts\Boss.cs" />
@@ -116,7 +115,9 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\LegShadow.cs" />
      <Compile Include="Assets\_Scripts\StaticData.cs" />
+     <Compile Include="Assets\_Scripts\VenomPool.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
+     <Compile Include="Assets\_Scripts\Web.cs" />
  <Reference Include="BehaviorDesignerRuntime">
  <HintPath>Assets\Behavior Designer\Runtime\BehaviorDesignerRuntime.dll</HintPath>
  </Reference>

@@ -331,21 +331,6 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	public void Poison( float duration, float degen )
-	{
-		Buff myBuff = new Buff();
-		myBuff.player = this;
-		myBuff.giverId = -1;
-		myBuff.blacklist = false;
-		myBuff.offense = 0.0f;
-		myBuff.defense = 0.0f;
-		myBuff.regen = -1.0f * degen;
-		myBuff.duration = duration;
-
-		buffs.Add ( myBuff );
-		myBuff.Start ();
-	}
-
 	public void Interrupt( int attackerId, float damage )
 	{
 		//Attempt to interrupt the current move.
@@ -411,6 +396,41 @@ public class Player : MonoBehaviour
 		//TODO: move knockback power scaling
 		//TODO: effects that minimize / reduce knockback. (blocking, parrying, dodging?)
 		//TODO: interrupt stuff on knockback?
+	}
+
+	public void Poison( float duration, float degen )
+	{
+		Buff myBuff = new Buff();
+		myBuff.player = this;
+		myBuff.giverId = -1;
+		myBuff.blacklist = false;
+		myBuff.regen = -1.0f * degen;
+		myBuff.duration = duration;
+		
+		buffs.Add ( myBuff );
+		myBuff.Start ();
+	}
+	
+	public void Slow( float duration, float percent )
+	{
+		Buff myBuff = new Buff();
+		myBuff.player = this;
+		myBuff.giverId = -1;
+		myBuff.blacklist = false;
+		myBuff.speed = -1.0f * percent;
+		myBuff.duration = duration;
+
+		//remove any other slows.
+		for ( int j = buffs.Count - 1; j >= 0; j-- )
+		{
+			if ( ( (Buff) buffs[j] ).isTheSameAs( myBuff ) )
+			{
+				( (Buff) buffs[j] ).End();
+				buffs.RemoveAt ( j );
+			}
+		}
+		buffs.Add ( myBuff );
+		myBuff.Start ();
 	}
 
 	//-------------------------------------------------------------------------------------------------------

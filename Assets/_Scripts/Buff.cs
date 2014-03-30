@@ -14,7 +14,7 @@ public class Buff
 	//STAT CHANGES
 	public float offense = 0.0f; //added to offense (% damage increase)  (1.0f = + 100% base damage bonus)   (2x = 2x)
 	public float defense = 0.0f; //added to defense (% damage reduction) (1.0f =   100% -> 50% damage taken) (2x = 2x)
-	//public float speed   = 0.0f; //added to move speed (1.0f = + 1 unit / s)
+	public float speed   = 0.0f; //multiplied by move speed (1.0f = 2x speed)
 	public float regen   = 0.0f; //regen / degen (hp / s)
 	//public float maxHp;        //added to max hp for duration
 	#endregion
@@ -25,6 +25,7 @@ public class Buff
 		t = duration;
 		player.offense += offense;
 		player.defense += defense;
+		player.speedMultiplier += speed;
 	}
 
 	//Use for cleanup
@@ -32,6 +33,7 @@ public class Buff
 	{
 		player.offense -= offense;
 		player.defense -= defense;
+		player.speedMultiplier -= speed;
 	}
 
 	public bool isTheSameAs( Buff buff )
