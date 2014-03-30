@@ -331,6 +331,21 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	public void Poison( float duration, float degen )
+	{
+		Buff myBuff = new Buff();
+		myBuff.player = this;
+		myBuff.giverId = -1;
+		myBuff.blacklist = false;
+		myBuff.offense = 0.0f;
+		myBuff.defense = 0.0f;
+		myBuff.regen = -1.0f * degen;
+		myBuff.duration = duration;
+
+		buffs.Add ( myBuff );
+		myBuff.Start ();
+	}
+
 	public void Interrupt( int attackerId, float damage )
 	{
 		//Attempt to interrupt the current move.

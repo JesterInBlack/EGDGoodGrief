@@ -70,6 +70,7 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilFailure.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilSuccess.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\EntryTask.cs" />
+     <Compile Include="Assets\VenomPool.cs" />
      <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\AuraFX.cs" />
      <Compile Include="Assets\_Scripts\Boss.cs" />
