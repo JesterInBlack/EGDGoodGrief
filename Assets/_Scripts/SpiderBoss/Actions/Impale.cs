@@ -4,7 +4,6 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class Impale : Action
 {
-	#region vars
 	private BehaviorBlackboard _blackboard;
 	private Vector2 _targetPoint;
 	private Vector2 _intermediatePoint;
@@ -15,9 +14,6 @@ public class Impale : Action
 	public float _aimTime;
 	public float _attackTime;
 	public float _cooldownTime;
-
-	public float damage = 10000.0f; //absurd TODO: tone down.
-	#endregion
 	
 	private enum AttackState
 	{
@@ -111,9 +107,9 @@ public class Impale : Action
 			{
 				_state = AttackState.Cooldown;
 				_lerpTime = 0.0f;
-				//Attack logic.
-				AttackSystem.hitCircle( _targetPoint, 1.0f, damage, -1 );
-				//TODO: get a way to get to the camera controller for screen shake, that isn't find! (unless amortized)
+
+				//THIS IS THE MOMENT WHERE THE ATTACK DAMAGE IS DEALT TO THE TARGET AREA!
+				//USE THE ATTACHED CIRCLE COLLIDER
 			}
 			else
 			{
