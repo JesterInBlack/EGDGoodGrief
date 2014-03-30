@@ -453,8 +453,17 @@ public class CustomController : MonoBehaviour
 		if ( Mathf.Abs ( gamePadState.ThumbSticks.Right.Y ) > 0.0f || Mathf.Abs( gamePadState.ThumbSticks.Right.X ) > 0.0f )
 		{
 			aimAngle = Mathf.Rad2Deg * Mathf.Atan2 ( gamePadState.ThumbSticks.Right.Y, gamePadState.ThumbSticks.Right.X );
-			aimPoint.x += gamePadState.ThumbSticks.Right.X * 6.0f * Time.deltaTime; //Mathf.Cos ( aimAngle ) * 6.0f * Time.deltaTime;
-			aimPoint.y += gamePadState.ThumbSticks.Right.Y * 6.0f * Time.deltaTime; //Mathf.Sin ( aimAngle ) * 6.0f * Time.deltaTime;
+			aimPoint.x += gamePadState.ThumbSticks.Right.X * 10.0f * Time.deltaTime; //Mathf.Cos ( aimAngle ) * 6.0f * Time.deltaTime;
+			aimPoint.y += gamePadState.ThumbSticks.Right.Y * 10.0f * Time.deltaTime; //Mathf.Sin ( aimAngle ) * 6.0f * Time.deltaTime;
+			//max range check
+			float maxRange = 10.0f;
+			if ( Mathf.Sqrt ( (aimPoint.x - transform.position.x) * (aimPoint.x - transform.position.x) + 
+			                  (aimPoint.y - transform.position.y) * (aimPoint.y - transform.position.y) ) > maxRange )
+			{
+				float tempAngle = Mathf.Atan2 ( aimPoint.y - transform.position.y, aimPoint.x - transform.position.x );
+				aimPoint.x = transform.position.x + (maxRange - 0.01f) * Mathf.Cos ( tempAngle );
+				aimPoint.y = transform.position.y + (maxRange - 0.01f) * Mathf.Sin ( tempAngle );
+			}
 		}
 		else
 		{
