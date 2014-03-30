@@ -193,7 +193,7 @@ public class BossManager : MonoBehaviour
 		{
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
-				Debug.Log("does this even?");
+				//Debug.Log("does this even?");
 				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 			}
 		}
