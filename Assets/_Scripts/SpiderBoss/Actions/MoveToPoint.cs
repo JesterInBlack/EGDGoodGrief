@@ -25,7 +25,7 @@ public class MoveToPoint : Action
 			return TaskStatus.Success;
 		}
 		// We haven't reached the target yet so keep moving towards it
-		transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+		transform.position = Vector3.MoveTowards(transform.position, target.position, speed * (Time.deltaTime* StaticData.t_scale));
 
 		Vector2 direction = (Vector2)target.position - (Vector2)transform.position;
 		direction.Normalize();

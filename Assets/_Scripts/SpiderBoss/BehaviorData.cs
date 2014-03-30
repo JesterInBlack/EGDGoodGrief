@@ -91,7 +91,7 @@ public class BehaviorData
 	{
 		if(_priority < _maxPriority)
 		{
-			_priority += Mathf.Min( (Time.deltaTime * _priorityRecovery), Mathf.Abs(_maxPriority - _priority) );
+			_priority += Mathf.Min( ((Time.deltaTime* StaticData.t_scale) * _priorityRecovery), Mathf.Abs(_maxPriority - _priority) );
 		}
 
 	}

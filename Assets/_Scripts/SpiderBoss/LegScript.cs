@@ -100,7 +100,7 @@ public class LegScript : MonoBehaviour {
 		else if(_behaviorState == BehaviorState.Impale)
 		{
 			_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _shadowMoveTime);
-			_lerpTime += Time.deltaTime;
+			_lerpTime += (Time.deltaTime* StaticData.t_scale);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class LegScript : MonoBehaviour {
 			{
 				transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _moveTime);
 				_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _moveTime);
-				_lerpTime += Time.deltaTime;
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 		else
@@ -157,7 +157,7 @@ public class LegScript : MonoBehaviour {
 			{
 				transform.position = Vector2.Lerp(_intermediatePoint, _targetPoint, _lerpTime / _moveTime);
 				_shadowPos = Vector2.Lerp(_shadowIntermediatePoint, _targetPoint, _lerpTime / _moveTime);
-				_lerpTime += Time.deltaTime;
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 	}
