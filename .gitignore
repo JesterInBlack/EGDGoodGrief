@@ -3,6 +3,12 @@
 
 # ignore assemblies (as they are re-generated on build)
 Library/metadata/
+Library/ScriptAssemblies/
+# *.csproj
+# *.sln
 
 # ignore Project Settings
 ProjectSettings/
+
+# but not the Project Setting with sorting layers
+!ProjectSettings/TagManager.asset
