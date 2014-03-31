@@ -3,6 +3,7 @@ using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
 [TaskIcon("{SkinColor}SequenceIcon.png")]
+[TaskCategory("CompositesCustom")]
 public class GetPlayerPriority_Sequence : Composite
 {
 	public int _playerNumber;
