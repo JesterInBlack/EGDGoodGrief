@@ -117,6 +117,7 @@ public class Impale : Action
 				//USE THE ATTACHED CIRCLE COLLIDER
 				//Not until you give me a good way to access it.
 				AttackSystem.hitCircle ( _targetPoint, radius, damage, -1 );
+				GameState.cameraController.Shake ( 1.0f, 1.0f );
 
 			}
 			else

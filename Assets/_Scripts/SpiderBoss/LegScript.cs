@@ -13,6 +13,7 @@ public class LegScript : MonoBehaviour {
 
 	public float _currentHP;
 	public float _maxHP;
+	public bool invincible; //true when the leg is immune to damage.
 
 	[HideInInspector]
 	public Vector2 _shadowPos;
@@ -172,5 +173,18 @@ public class LegScript : MonoBehaviour {
 	void RemoveBuff()
 	{
 		
+	}
+
+	public void Hurt( float damage, int id )
+	{
+		//Handle players doing damage to the leg.
+		//TODO: give the player score ~ damage dealt
+		//TODO: on killing blow, give bonus score
+		//TODO: flash on taking HP damage.
+		//TODO: sound.
+		if ( invincible ) { return; } //immune to damage
+		if ( _currentHP <= 0.0f ) { return; } //already dead
+		//deal damage.
+		_currentHP -= damage;
 	}
 }

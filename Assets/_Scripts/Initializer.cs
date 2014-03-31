@@ -9,6 +9,8 @@ public class Initializer : MonoBehaviour
 	#region vars
 	public GameObject[] players = new GameObject[4];  //assign in pre-game screens
 	public GameObject boss;                           //assign in pre-game screens
+	public GameObject[] bossLegs = new GameObject[8]; //assign in pre-game screens
+	public GameObject cameraController;               //set in inspector.
 
 	//Tiles
 	public GameObject tileFolder;                     //assign in editor
@@ -29,6 +31,12 @@ public class Initializer : MonoBehaviour
 			players[i].GetComponent<Player>().id = i;
 		}
 		GameState.boss = boss;
+		for ( int i = 0; i < 8; i++ )
+		{
+			GameState.bossLegs[i] = bossLegs[i];
+			//TODO: set ids?
+		}
+		GameState.cameraController = cameraController.GetComponent<CameraController>();
 
 		//round to int.
 		levelSize.x = (int) levelSize.x;

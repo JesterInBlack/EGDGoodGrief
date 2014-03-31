@@ -6,6 +6,7 @@ using System.Collections;
 //and it damages all appropriate objects that it intersects.
 
 //TODO: friendly fire flag?, damage attenuation?
+//TODO: get all colliders / players / enemies in a circle / box. (for vamp fang, pheromones)
 
 public enum PLAYER_IDS { BOSS = -1, ONE = 0, TWO = 1, THREE = 2, FOUR = 3 }; //makes id codes make english sense.
 
@@ -272,6 +273,7 @@ public static class AttackSystem
 		//NOTE: players cannot hit themselves.
 		
 		Player hitPlayer = obj.GetComponent<Player>();
+		LegScript hitLeg = obj.GetComponent<LegScript>();
 		Boss hitBoss = obj.GetComponent<Boss>();
 		//TODO: put a hit "add / leg / enemy" in here.
 		
@@ -287,6 +289,13 @@ public static class AttackSystem
 			else if ( IsEnemy( id ) ) //enemy -> player attack
 			{
 				hitPlayer.Hurt ( damage );
+			}
+		}
+		else if ( hitLeg != null )
+		{
+			if ( IsPlayer ( id ) ) //player -> boss attack
+			{
+				hitLeg.Hurt ( damage, id );
 			}
 		}
 		else if ( hitBoss != null ) //hit the boss
