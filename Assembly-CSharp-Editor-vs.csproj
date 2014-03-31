@@ -47,11 +47,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Behavior Designer\Editor\BehaviorTreeInspector.cs" />
+     <Compile Include="Assets\Behavior Designer\Editor\ExternalBehaviorTreeInspector.cs" />
  <Reference Include="BehaviorDesignerEditor">
  <HintPath>Assets\Behavior Designer\Editor\BehaviorDesignerEditor.dll</HintPath>
- </Reference>
- <Reference Include="BehaviorDesignerRuntime">
- <HintPath>Assets\Behavior Designer\Runtime\BehaviorDesignerRuntime.dll</HintPath>
  </Reference>
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>

@@ -24,7 +24,7 @@ public class BossManager : MonoBehaviour
 
 	//this is just a dummy variable to see what behavior is running in the inspector window
 	//for debug purposes only
-	public string _currentBehavior;
+	public int _currentBehavior;
 
 	public void Awake()
 	{
@@ -38,8 +38,9 @@ public class BossManager : MonoBehaviour
 
 		#region Behavior Initialization
 		//instantiate all the BehaviorData
-		Behavior[] allBehaviors = FindObjectsOfType(typeof(Behavior)) as Behavior[];
+		BehaviorTree[] allBehaviors = FindObjectsOfType(typeof(BehaviorTree)) as BehaviorTree[];
 
+		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
 			/*
@@ -49,8 +50,9 @@ public class BossManager : MonoBehaviour
 				_behaviorList.Add(testBehavior);
 			}
 			*/
-			if(allBehaviors[i].behaviorName == "ApplyLegBuff")
+			if(allBehaviors[i].group == 2)
 			{
+				//Debug.Log("found one");
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
@@ -198,7 +200,7 @@ public class BossManager : MonoBehaviour
 			_blackboard.decisionState = BehaviorBlackboard.DecisionState.runningTask;
 			
 			//set the dummy variable to see it in the inspector
-			_currentBehavior = _behaviorList[selectedIndex].Action.behaviorName;
+			_currentBehavior = _behaviorList[selectedIndex].Action.group;
 		}
 		
 		else if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.runningTask)

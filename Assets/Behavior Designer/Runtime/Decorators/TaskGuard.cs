@@ -10,9 +10,8 @@ namespace BehaviorDesigner.Runtime.Tasks
     [TaskIcon("{SkinColor}TaskGuardIcon.png")]
     public class TaskGuard : Decorator
     {
-        // The number of times the child tasks can be accessed by parallel tasks at once. Marked as SynchronizedField to synchronize the value between any linked tasks.
-        [SynchronizedField]
-        public int maxTaskAccessCount = 1;
+        // The number of times the child tasks can be accessed by parallel tasks at once.
+        public SharedInt maxTaskAccessCount = null;
         // The linked tasks that also guard a task. If the task guard is not linked against any other tasks it doesn't have much purpose. Marked as LinkedTask to
         // ensure all tasks linked are linked to the same set of tasks.
         [LinkedTask]
@@ -28,7 +27,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override bool CanExecute()
         {
             // The child task can execute if the number of executing tasks is less than the maximum number of tasks allowed.
-            return executingTasks < maxTaskAccessCount && !executing;
+            return executingTasks < maxTaskAccessCount.Value && !executing;
         }
 
         public override void OnChildRunning()
@@ -70,7 +69,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override void OnReset()
         {
             // Reset the public properties back to their original values
-            maxTaskAccessCount = 1;
+            maxTaskAccessCount = null;
             linkedTaskGuards = null;
             waitUntilTaskAvailable = true;
         }
