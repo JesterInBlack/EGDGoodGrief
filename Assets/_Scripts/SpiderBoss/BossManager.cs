@@ -206,7 +206,7 @@ public class BossManager : MonoBehaviour
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
 				//Debug.Log("Finished a behavior");
-				//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 			}
 		}
 

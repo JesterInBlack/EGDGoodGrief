@@ -4,7 +4,7 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class IsLegBuffed : Action 
 {
-	private BehaviorBlackboard _blackboard;
+	//private BehaviorBlackboard _blackboard;
 	private LegScript _legScript;
 
 	public GameObject _leg;
@@ -19,7 +19,7 @@ public class IsLegBuffed : Action
 	public override void OnAwake()
 	{
 		// cache for quick lookup
-		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
+		//_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 		_legScript = _leg.GetComponent<LegScript>();
 	}
 
