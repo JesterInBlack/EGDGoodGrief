@@ -559,7 +559,17 @@ public class Player : MonoBehaviour
 			//TODO: charge
 			//TODO: hit detection box at position after animating:
 			//on success: trigger suck life
-			if ( true )
+			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2.0f;
+			float x = transform.position.x;
+			float y = transform.position.y;
+			float min = 0.5f; //minimum or base width & height of the hitbox
+			float r = 1.0f;   //factor applied to cos / sin to extend hitbox
+			//
+			float xmin = Mathf.Min ( x - min, x - min + r * Mathf.Cos ( angle ) );
+			float ymin = Mathf.Min ( y - min, y - min + r * Mathf.Sin ( angle ) );
+			float xmax = Mathf.Max ( x + min, x + min + r * Mathf.Cos ( angle ) );
+			float ymax = Mathf.Max ( y + min, y + min + r * Mathf.Sin ( angle ) );
+			if ( AttackSystem.getHitsInBox( new Rect( xmin, ymin, (xmax - xmin), (ymax - ymin) ), id ).Length > 0 )
 			{
 				state = "vampire";
 				stateTimer = 1.5f;
@@ -569,9 +579,19 @@ public class Player : MonoBehaviour
 		}
 		else if ( items[index].name == ItemName.PHEROMONE_JAR )
 		{
-			//TODO: aim point
 			//TODO: hit detection circle at point after animating
 			//TODO: animate
+			//TODO: put gas + glass prefab
+			foreach (Collider2D hit in AttackSystem.getHitsInCircle( GetComponent<CustomController>().aimPoint, 1.0f, id ) )
+			{
+				Player tempPlayer = hit.gameObject.GetComponent<Player>();
+				if ( tempPlayer != null )
+				{
+					//Max out player threat!
+					GameState.playerThreats[ tempPlayer.id ] = 1.0f;
+				}
+			}
+			//State stuff
 			state = "idle"; //item wind down?
 			stateTimer = 0.0f;
 			nextState = "idle";

@@ -246,9 +246,58 @@ public class CustomController : MonoBehaviour
 				else if ( playerState.state == "vampire" )
 				{
 					//TODO: instead, do vampire things.
-					playerState.HP = Mathf.Min ( playerState.HP + 5.0f, playerState.maxHP );
-					//TODO: do damage.
-					//TODO: play glug glug sound.
+					float lifeDrain = 2.5f;
+					float tempAngle = facing * Mathf.PI / 2.0f;
+					float x = transform.position.x;
+					float y = transform.position.y;
+					float min = 0.5f; //minimum or base width & height of the hitbox
+					float r = 1.0f;   //factor applied to cos / sin to extend hitbox
+					//
+					float xmin = Mathf.Min ( x - min, x - min + r * Mathf.Cos ( tempAngle ) );
+					float ymin = Mathf.Min ( y - min, y - min + r * Mathf.Sin ( tempAngle ) );
+					float xmax = Mathf.Max ( x + min, x + min + r * Mathf.Cos ( tempAngle ) );
+					float ymax = Mathf.Max ( y + min, y + min + r * Mathf.Sin ( tempAngle ) );
+					Collider2D[] hits = AttackSystem.getHitsInBox( new Rect( xmin, ymin, (xmax - xmin), (ymax - ymin) ), playerState.id );
+					if ( hits.Length > 0 )
+					{
+						bool anyDrainConnected = false;
+						foreach ( Collider2D hit in hits )
+						{
+							Player tempPlayer = hit.gameObject.GetComponent<Player>();
+							LegScript tempLeg = hit.gameObject.GetComponent<LegScript>();
+							//TODO: boss!
+							bool drainConnected = false;
+							if ( tempPlayer != null ) //is a player.
+							{
+								if ( tempPlayer.id != playerState.id ) //no self-hitting
+								{
+									tempPlayer.Hurt ( lifeDrain );
+									drainConnected = true;
+									anyDrainConnected = true;
+								}
+							}
+							else if ( tempLeg != null ) //is a boss leg
+							{
+								tempLeg.Hurt ( lifeDrain, playerState.id );
+								drainConnected = true;
+								anyDrainConnected = true;
+							}
+							//else if () {}
+
+							if ( drainConnected )
+							{
+								playerState.HP = Mathf.Min ( playerState.HP + lifeDrain, playerState.maxHP );
+								//TODO: play glug glug sound.
+							}
+						}
+						if ( ! anyDrainConnected ) //no hits!
+						{
+							//hit failed to connect. End vampire drain mode!
+							playerState.state = "idle";
+							playerState.stateTimer = 0.0f;
+							playerState.nextState = "idle";
+						}
+					}
 				}
 				#endregion
 				#region pickup logic
