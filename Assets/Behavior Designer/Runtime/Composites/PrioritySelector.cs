@@ -24,7 +24,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             // priority will be first in the list and will be executed first.
             for (int i = 0; i < children.Count; ++i) {
                 float priority = children[i].GetPriority();
-                int insertIndex = 0;
+                int insertIndex = childrenExecutionOrder.Count;
                 for (int j = 0; j < childrenExecutionOrder.Count; ++j) {
                     if (children[childrenExecutionOrder[j]].GetPriority() < priority) {
                         insertIndex = j;

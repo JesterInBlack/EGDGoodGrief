@@ -9,13 +9,9 @@ namespace BehaviorDesigner.Runtime.Tasks
     // at http://www.opsive.com/assets/BehaviorDesigner/samples.php.
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=15")]
     [TaskIcon("ExternalBehaviorTreeIcon.png")]
+    [System.Obsolete("External Behavior Tree Task is deprecated. Use Behavior Tree Reference Task instead.")]
     public class ExternalBehaviorTree : ExternalBehavior
     {
         // intentionally left blank - subclass of ExternalBehavior
-        //
-        // From ExternalBehavior:
-        // 
-        // External task that this task should reference. External task must be relative to the Resources folder otherwise it won't load.
-        // public GameObject externalTask;
     }
 }
