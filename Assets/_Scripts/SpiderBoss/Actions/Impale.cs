@@ -117,8 +117,23 @@ public class Impale : Action
 				//USE THE ATTACHED CIRCLE COLLIDER
 				//Not until you give me a good way to access it.
 				AttackSystem.hitCircle ( _targetPoint, radius, damage, -1 );
-				GameState.cameraController.Shake ( 1.0f, 1.0f );
+				GameState.cameraController.Shake ( 0.1f, 0.25f );
 
+				#region poison
+				//If poisonous, go through all hit objects, find the players, and poison them.
+				if ( _blackboard.selectedLeg.GetComponent<LegScript>().isPoisonous() )
+				{
+					foreach ( Collider2D hit in AttackSystem.getHitsInCircle( _targetPoint, radius, -1) )
+					{
+						Player tempPlayer = hit.collider.gameObject.GetComponent<Player>();
+						if ( tempPlayer != null ) //this is a player.
+						{
+							LegScript tempLeg = _blackboard.selectedLeg.GetComponent<LegScript>();
+							tempPlayer.Poison ( tempLeg._poisonDuration, tempLeg._poisonDPS );
+						}
+					}
+				}
+				#endregion
 			}
 			else
 			{

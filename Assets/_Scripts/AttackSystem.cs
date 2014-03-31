@@ -23,6 +23,14 @@ public static class AttackSystem
 		}
 	}
 
+	public static Collider2D[] getHitsInCircle( Vector2 center, float radius, int id )
+	{
+		//Returns all colliders intersecting / overlapping the circle.
+
+		//TODO: layer mask based on id
+		return Physics2D.OverlapCircleAll( center, radius );
+	}
+
 	public static void hitLineSegment( Vector2 start, Vector2 end, float damage, int id )
 	{
 		//TODO: layer mask based on id
@@ -37,6 +45,18 @@ public static class AttackSystem
 		{
 			Hit ( hit.collider.gameObject, id, damage );
 		}
+	}
+
+	public static RaycastHit2D[] getHitsOnLineSegment( Vector2 start, Vector2 end, int id )
+	{
+		//returns all hits on the line segment
+
+		//TODO: layer mask based on id
+		#region DEBUG
+		Debug.DrawLine ( start, end, new Color( 0.0f, 1.0f, 0.0f) );
+		#endregion
+		
+		return Physics2D.LinecastAll( start, end );
 	}
 
 	public static void hitBox( Rect attackBox, float damage, int id )
@@ -64,6 +84,31 @@ public static class AttackSystem
 			Hit ( hit.gameObject, id, damage );
 		}
 	}
+
+	public static Collider2D[] getHitsInBox( Rect box, int id )
+	{
+		//Returns all colliders in the specified box.
+
+		//TODO: layer mask based on id
+		#region DEBUG
+		Debug.DrawLine ( new Vector3( box.x, box.y ), 
+		                new Vector3( box.x + box.width, box.y ), 
+		                new Color( 0.0f, 1.0f, 0.0f ) );
+		Debug.DrawLine ( new Vector3( box.x + box.width, box.y ), 
+		                new Vector3( box.x + box.width, box.y + box.height ), 
+		                new Color( 0.0f, 1.0f, 0.0f ) );
+		Debug.DrawLine ( new Vector3( box.x + box.width, box.y + box.height ), 
+		                new Vector3( box.x, box.y + box.height ), 
+		                new Color( 0.0f, 1.0f, 0.0f ) );
+		Debug.DrawLine ( new Vector3( box.x, box.y + box.height ), 
+		                new Vector3( box.x, box.y ), 
+		                new Color( 0.0f, 1.0f, 0.0f ) );
+		#endregion
+		return Physics2D.OverlapAreaAll( new Vector2( box.x, box.y ), 
+		                                 new Vector2( box.x + box.width, box.y + box.height) );
+
+	}
+
 	
 	public static void hitSector( Vector2 pos, float minTheta, float maxTheta, float maxRadius, float damage, int id )
 	{
@@ -260,7 +305,7 @@ public static class AttackSystem
 
         */
 	}
-	
+
 	private static void Hit( GameObject obj, int id, float damage )
 	{
 		//Does damage to a game object (boss / player)

@@ -155,9 +155,9 @@ public class CameraController : MonoBehaviour
 		shakeT -= dt;
 		if ( shakeT > 0.0f )
 		{
-			float x = Random.Range ( -shake.magnitude, shake.magnitude ) * Camera.main.aspect;
-			float y = Random.Range ( -shake.magnitude, shake.magnitude );
-			shake = new Vector3( 0.0f, 0.0f, 0.0f ); //TODO: shake based on t.
+			float x = Random.Range ( -shakeMagnitude, shakeMagnitude ) * Camera.main.aspect;
+			float y = Random.Range ( -shakeMagnitude, shakeMagnitude );
+			shake = new Vector3( x, y, 0.0f ); //TODO: shake based on t.
 		}
 		else
 		{

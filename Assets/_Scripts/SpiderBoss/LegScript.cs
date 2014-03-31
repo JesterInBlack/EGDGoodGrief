@@ -22,7 +22,8 @@ public class LegScript : MonoBehaviour {
 	public float _currentBuffDuration;
 	public float _maxBuffDuration;
 
-	public float _poisonDoT; //in damage per second
+	public float _poisonDPS;      //in damage per second
+	public float _poisonDuration; //in seconds
 	#endregion
 
 	[HideInInspector]
@@ -196,33 +197,75 @@ public class LegScript : MonoBehaviour {
 	public void ApplyBuff(int buffID)
 	{
 		_buffState = (BuffState)buffID;
-
+		GameState.cameraController.Shake ( 0.1f, 1.0f );//TEST
 		if(_buffState == BuffState.venom)
 		{
 			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
+			_poisonDPS = 1.0f;
+			_poisonDuration = 5.0f;
 		}
 		else if(_buffState == BuffState.web)
 		{
 			transform.parent.GetComponent<SpriteRenderer>().color = Color.blue;
+			_currentWebbingHP = _maxWebbingHP;
 		}
 
 	}
 	void RemoveBuff()
 	{
 		_buffState = BuffState.unbuffed;
+		//reset vars (bookkeeping)
+		_currentWebbingHP = 0.0f;
+		_poisonDPS = 0.0f;
+		_poisonDuration = 0.0f;
 		transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
+	}
+
+	public bool isPoisonous()
+	{
+		//returns whether or not the leg deals extra poison damage.
+		return (_currentBuffDuration > 0.0f && _poisonDPS > 0.0f);
 	}
 
 	public void Hurt( float damage, int id )
 	{
 		//Handle players doing damage to the leg.
-		//TODO: give the player score ~ damage dealt
-		//TODO: on killing blow, give bonus score
 		//TODO: flash on taking HP damage.
 		//TODO: sound.
 		if ( invincible ) { return; } //immune to damage
 		if ( _currentHP <= 0.0f ) { return; } //already dead
 		//deal damage.
-		_currentHP -= damage;
+
+		if ( _currentWebbingHP > 0.0f )
+		{
+			//Redirect 90% to the armor
+			float redirectionPercent = 0.90f;
+			_currentWebbingHP -= damage * redirectionPercent;
+			_currentHP -= damage * (1.0f - redirectionPercent);
+			//Edge case check: if armor was broken, deal the excess damage
+			if ( _currentWebbingHP < 0.0f )
+			{
+				_currentHP += _currentWebbingHP;
+				_currentWebbingHP = 0.0f;
+				//TODO: bonus score? (Armor breaker)
+			}
+		}
+		else
+		{
+			//Normal damage
+			_currentHP -= damage;
+		}
+		#region player score
+		if ( id >= 0 && id < 4 )
+		{
+			//Give the player score ~ damage
+			GameState.players[ id ].GetComponent<Player>().score += (int)damage;
+			//Give the player bonus score for killing blow
+			if ( _currentHP <= 0.0f )
+			{
+				GameState.players[ id ].GetComponent<Player>().score += 10;
+			}
+		}
+		#endregion
 	}
 }
