@@ -148,8 +148,6 @@ public class Player : MonoBehaviour
 		//isDowned = true; //DEBUG
 		//HP -= Time.deltaTime * 1.0f; //DEBUG
 
-
-		GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		float t = Time.deltaTime;
 		if ( ! isInBulletTime ) { t = t * StaticData.t_scale; }
 
@@ -299,6 +297,8 @@ public class Player : MonoBehaviour
 			}
 			buffs.Clear ();
 			#endregion
+			//Flash red.
+			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
 			//TODO: animation
 		}
 
@@ -346,6 +346,8 @@ public class Player : MonoBehaviour
 		}
 
 		//HP -= damage; //TODO: remove
+		//Flash red.
+		this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
 
 		//TODO: diminishing returns, thresholds for moves, move interrupt power scaling
 		//TODO: on successful interrupt, set canMove to true.

@@ -313,10 +313,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			if ( xHoldTime - dt < xChargeMin && xHoldTime >= xChargeMin )
 			{
 				//feedback: charge reached.
+				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
+				//TODO: sound
+				//TODO: vibration
 			}
 			if ( xHoldTime - dt < xChargeMax && xHoldTime >= xChargeMax )
 			{
 				//feedback: max charge reached.
+				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
+				//TODO: sound
+				//TODO: vibration
 			}
 		}
 	}
@@ -379,15 +385,19 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		//Called every frame Y is held down.
 		//Charge overhead strike -> blastoff
 		yHoldTime += dt;
-		if ( player.state == "y" )
+		if ( player.state == "ycharge" )
 		{
 			if ( yHoldTime - dt < yChargeMin && yHoldTime >= yChargeMin )
 			{
-				//feedback: charge reached.
+				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
+				//TODO: sound
+				//TODO: vibration
 			}
 			if ( yHoldTime - dt < yChargeMax && yHoldTime >= yChargeMax )
 			{
-				//feedback: max charge reached.
+				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
+				//TODO: sound
+				//TODO: vibration
 			}
 		}
 	}
