@@ -4,11 +4,11 @@
 # ignore assemblies (as they are re-generated on build)
 Library/metadata/
 Library/ScriptAssemblies/
-Library/CurrentLayout.dwlt
-Library/CurrentMaximizeLayout.dwlt
-Library/assetDatabase3
+#Library/CurrentLayout.dwlt
+#Library/CurrentMaximizeLayout.dwlt
+#Library/assetDatabase3
 # *.csproj
-*.sln
+#*.sln
 
 # ignore Project Settings
 # ProjectSettings/
