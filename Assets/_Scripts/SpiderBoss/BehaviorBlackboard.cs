@@ -4,37 +4,41 @@ using System.Collections;
 //The blackboard allows tasks to chare data with each other.
 public class BehaviorBlackboard : MonoBehaviour 
 {
-	/*
-	public Transform P1 { get { return p1; } set { p1 = value; } }
-	private Transform p1;
-
-	public Transform P2 { get { return p2; } set { p2 = value; } }
-	private Transform p2;
-
-	public Transform P3 { get { return p3; } set { p3 = value; } }
-	private Transform p3;
-
-	public Transform P4 { get { return p4; } set { p4 = value; } }
-	private Transform p4;
-	*/
-
+	#region gameobject vars
+	[HideInInspector]
 	public GameObject rightLeg1;
+	[HideInInspector]
 	public GameObject rightLeg2;
+	[HideInInspector]
 	public GameObject rightLeg3;
+	[HideInInspector]
 	public GameObject rightLeg4;
+	[HideInInspector]
 	public GameObject leftLeg5;
+	[HideInInspector]
 	public GameObject leftLeg6;
+	[HideInInspector]
 	public GameObject leftLeg7;
+	[HideInInspector]
 	public GameObject leftLeg8;
 
+	[HideInInspector]
 	public GameObject point1;
+	[HideInInspector]
 	public GameObject point2;
+	[HideInInspector]
 	public GameObject point3;
+	[HideInInspector]
 	public GameObject point4;
+	[HideInInspector]
 	public GameObject point5;
+	[HideInInspector]
 	public GameObject point6;
+	[HideInInspector]
 	public GameObject point7;
+	[HideInInspector]
 	public GameObject point8;
+	#endregion
 
 	public GameObject[] legsList = new GameObject[8];
 	public GameObject[] points = new GameObject[8];

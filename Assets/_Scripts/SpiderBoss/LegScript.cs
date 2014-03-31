@@ -14,6 +14,16 @@ public class LegScript : MonoBehaviour {
 	public float _currentHP;
 	public float _maxHP;
 
+	#region LEG BUFF VARIABLES
+	public float _currentWebbingHP;
+	public float _maxWebbingHP;
+
+	public float _currentBuffDuration;
+	public float _maxBuffDuration;
+
+	public float _poisonDoT; //in damage per second
+	#endregion
+
 	[HideInInspector]
 	public Vector2 _shadowPos;
 	[HideInInspector]
@@ -67,6 +77,12 @@ public class LegScript : MonoBehaviour {
 		_moveTime = 0.15f;
 		_maxHP = 100.0f;
 		_currentHP = _maxHP;
+
+		_maxWebbingHP = 75.0f;
+		_currentWebbingHP = 0.0f;
+
+		_maxBuffDuration = 30.0f;
+		_currentBuffDuration = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -95,8 +111,6 @@ public class LegScript : MonoBehaviour {
 			}
 			else if(_state == LegState.Move)
 			{
-				//transform.position = _targetPoint;
-				//_state = LegState.Idle;
 				MoveLeg();
 			}
 		}
@@ -105,6 +119,12 @@ public class LegScript : MonoBehaviour {
 			_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _shadowMoveTime);
 			_lerpTime += (Time.deltaTime* StaticData.t_scale);
 		}
+		else if(_behaviorState == BehaviorState.ApplyingBuff)
+		{
+			//do nothing for now
+		}
+
+		HandleStats();
 	}
 
 	Vector2 GetMoveVector()
@@ -154,6 +174,7 @@ public class LegScript : MonoBehaviour {
 		{
 			if( Vector2.Distance((Vector2)transform.position, _targetPoint) < 0.01f)
 			{
+				AttackSystem.hitCircle((Vector2)transform.position, 0.4f, 5.0f, -1);
 				_state = LegState.Idle;
 			}
 			else
@@ -165,12 +186,29 @@ public class LegScript : MonoBehaviour {
 		}
 	}
 
+	//this handles the logic for the stats on the boss like health and buffs
+	void HandleStats()
+	{
+
+	}
+
 	public void ApplyBuff(int buffID)
 	{
+		_buffState = (BuffState)buffID;
+
+		if(_buffState == BuffState.venom)
+		{
+			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
+		}
+		else if(_buffState == BuffState.web)
+		{
+			transform.parent.GetComponent<SpriteRenderer>().color = Color.blue;
+		}
 
 	}
 	void RemoveBuff()
 	{
-		
+		_buffState = BuffState.unbuffed;
+		transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
 	}
 }
