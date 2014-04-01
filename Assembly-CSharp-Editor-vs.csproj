@@ -48,6 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\Behavior Designer\Editor\BehaviorTreeInspector.cs" />
      <Compile Include="Assets\Behavior Designer\Editor\ExternalBehaviorTreeInspector.cs" />
+ <Reference Include="BehaviorDesignerEditor">
+ <HintPath>Assets\Behavior Designer\Editor\BehaviorDesignerEditor.dll</HintPath>
+ </Reference>
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
@@ -68,9 +71,6 @@
  </Reference>
  <Reference Include="UnityEditor.Android.Extensions">
  <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\EditorExtensions\UnityEditor.Android.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="BehaviorDesignerEditor">
- <HintPath>Assets\Behavior Designer\Editor\BehaviorDesignerEditor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

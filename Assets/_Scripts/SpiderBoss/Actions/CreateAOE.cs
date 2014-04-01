@@ -2,29 +2,29 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
-[TaskCategory("Action")]
-public class ShootAoe : Action 
+[TaskCategory("Attack")]
+public class CreateAOE : Action 
 {
 	public GameObject _venomPool;
 	public GameObject _webField;
-
+	
 	private Vector2 _targetPosition;
 	private float _offsetRadius = 2.0f;
-
+	
 	public enum AoeType
 	{
 		web = 0,
 		venom = 1,
 	}
 	public AoeType _aoeType;
-
+	
 	private BehaviorBlackboard _blackboard;
 	
 	public override void OnAwake()
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-
+		
 		if(_venomPool == null ||
 		   _webField == null)
 		{
@@ -46,18 +46,15 @@ public class ShootAoe : Action
 	{
 		if(_aoeType == AoeType.venom)
 		{
-			Instantiate(_venomPool, (Vector3)_targetPosition, Quaternion.identity);
+			Instantiate(_venomPool, _targetPosition, Quaternion.identity);
 			return TaskStatus.Success;
 		}
 		else if(_aoeType == AoeType.web)
 		{
-			Instantiate(_webField, (Vector3)_targetPosition, Quaternion.identity);
+			Instantiate(_webField, _targetPosition, Quaternion.identity);
 			return TaskStatus.Success;
 		}
-		else
-		{
-			return TaskStatus.Failure;
-		}
+		return TaskStatus.Failure;
+		
 	}
-
 }
