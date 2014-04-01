@@ -48,9 +48,6 @@
   <ItemGroup>
      <Compile Include="Assets\Behavior Designer\Editor\BehaviorTreeInspector.cs" />
      <Compile Include="Assets\Behavior Designer\Editor\ExternalBehaviorTreeInspector.cs" />
- <Reference Include="BehaviorDesignerEditor">
- <HintPath>Assets\Behavior Designer\Editor\BehaviorDesignerEditor.dll</HintPath>
- </Reference>
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
@@ -72,8 +69,13 @@
  <Reference Include="UnityEditor.Android.Extensions">
  <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\EditorExtensions\UnityEditor.Android.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="BehaviorDesignerEditor">
+ <HintPath>Assets\Behavior Designer\Editor\BehaviorDesignerEditor.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{EC0EF657-BA39-1FD3-5170-44AD15F90765}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{8B518695-CA99-90AC-0E81-4528D131FF1E}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>

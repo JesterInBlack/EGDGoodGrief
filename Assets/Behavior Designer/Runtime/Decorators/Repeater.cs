@@ -7,9 +7,9 @@ namespace BehaviorDesigner.Runtime.Tasks
     public class Repeater : Decorator
     {
         // The number of times to repeat the execution of its child task.
-        public int count = 0;
+        public int count = 1;
         // Should the task return if the child task returns a failure.
-        public bool endOnFailure = true;
+        public bool endOnFailure = false;
 
         // The number of times the child task has been run.
         private int executionCount = 0;

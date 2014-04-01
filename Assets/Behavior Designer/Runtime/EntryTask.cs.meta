@@ -1,14 +1,5 @@
 fileFormatVersion: 2
-guid: 143ae0c3fc255864893a532a2571f3d9
-labels:
-- behaviourtree
-- behaviour
-- behavior
-- behaviortree
-- AI
-- PlayMaker
-- uScript
-- visualeditor
+guid: c955d9be328deb745a73bb99f101ebdf
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []

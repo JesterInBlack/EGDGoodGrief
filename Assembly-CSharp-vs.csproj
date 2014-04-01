@@ -46,21 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Behavior Designer\Runtime\Actions\Action.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Actions\BehaviorReference.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\BehaviorTreeReference.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Actions\ExternalBehavior.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\ExternalBehaviorTree.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\Log.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\PerformInterruption.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\StartBehaviorTree.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\StopBehaviorTree.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Actions\Wait.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Behavior.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\BehaviorManager.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\BehaviorSource.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\BehaviorTree.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Composites\Composite.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Composites\Parallel.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Composites\ParallelSelector.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Composites\PrioritySelector.cs" />
@@ -68,9 +61,7 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Composites\RandomSequence.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Composites\Selector.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Composites\Sequence.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Conditionals\Conditional.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Conditionals\RandomProbability.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Decorator.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Interrupt.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Inverter.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\Repeater.cs" />
@@ -79,20 +70,8 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\TaskGuard.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilFailure.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Decorators\UntilSuccess.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\DeserializeJSON.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\EntryTask.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\ExternalBehavior.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\ExternalBehaviorTree.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\IBehavior.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\MiniJSON.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\NodeData.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\ParentTask.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Task.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\TaskAttribute.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\TaskCoroutine.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\TaskReferences.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\UnknownParentTask.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\UnknownTask.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedBool.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedColor.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedFloat.cs" />
@@ -103,7 +82,6 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedRect.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedString.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedTransform.cs" />
-     <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVariable.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector2.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector3.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector4.cs" />
@@ -162,6 +140,10 @@
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{EC0EF657-BA39-1FD3-5170-44AD15F90765}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
