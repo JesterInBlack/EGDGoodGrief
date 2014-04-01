@@ -110,6 +110,7 @@
      <Compile Include="Assets\_Scripts\ItemImages.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\PlayerColor.cs" />
+     <Compile Include="Assets\_Scripts\ScoreManager.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ApplyBuff.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ChasePlayer.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\CreateAOE.cs" />

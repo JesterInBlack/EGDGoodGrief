@@ -10,8 +10,10 @@ MonoImporter:
   - HPBarOverlay: {fileID: 2800000, guid: f0e9bab5835461e46952ae615695ecd8, type: 3}
   - HPBarAni: {instanceID: 0}
   - HPBarLight: {instanceID: 0}
+  - itemSelector: {instanceID: 0}
   - aButton: {fileID: 2800000, guid: 59000df4823bb56438d87d6d95e31b67, type: 3}
   - aButtonGray: {fileID: 2800000, guid: e926633315a77134ca74f4bafb65eb79, type: 3}
+  - HPBarFillGray: {fileID: 2800000, guid: d3e04a00c05f0d14ba869fadc47a99c4, type: 3}
   - knightBG: {instanceID: 0}
   - archerBG: {instanceID: 0}
   - monkBG: {instanceID: 0}

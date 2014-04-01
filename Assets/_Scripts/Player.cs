@@ -271,10 +271,20 @@ public class Player : MonoBehaviour
 	public void Hurt( float damage )
 	{
 		if ( isDowned ) { return; }
-		if ( isParrying ) { return; }
-		if ( isStoneSkin ) { isStoneSkin = false; return; }
+		if ( isParrying ) 
+		{
+			ScoreManager.AvoidedDamage ( id, damage );
+			return; 
+		}
+		if ( isStoneSkin ) 
+		{ 
+			ScoreManager.AvoidedDamage ( id, damage );
+			isStoneSkin = false; 
+			return; 
+		}
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
+			ScoreManager.AvoidedDamage ( id, damage );
 			this.gameObject.GetComponent<StoneFist>().OnHitCallback( -1, damage );
 			return; 
 		}
@@ -282,6 +292,7 @@ public class Player : MonoBehaviour
 
 		//deal damage
 		float finalDamage = damage / defense;
+		ScoreManager.TookDamage ( id, finalDamage ); //reduce point loss by buffing defense.
 		//sedimentary, dear watson.
 		if ( characterclass == CharacterClasses.DEFENDER )
 		{

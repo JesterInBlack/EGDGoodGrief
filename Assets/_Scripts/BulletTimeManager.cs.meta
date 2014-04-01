@@ -2,7 +2,8 @@ fileFormatVersion: 2
 guid: 4cbed22460588f64ebe3910567a9768f
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - clockOverlay: {fileID: 2800000, guid: 21c905fffa057244d9441c77e54a9ee0, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

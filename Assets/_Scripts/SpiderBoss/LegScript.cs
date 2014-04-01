@@ -242,12 +242,15 @@ public class LegScript : MonoBehaviour {
 			float redirectionPercent = 0.90f;
 			_currentWebbingHP -= damage * redirectionPercent;
 			_currentHP -= damage * (1.0f - redirectionPercent);
+			ScoreManager.DealtDamage( id, damage );
+			//ScoreManager.DealtDamage ( id, damage * (1.0f - redirectionPercent) ); //if armor damage doesn't give score
 			//Edge case check: if armor was broken, deal the excess damage
 			if ( _currentWebbingHP < 0.0f )
 			{
 				_currentHP += _currentWebbingHP;
 				_currentWebbingHP = 0.0f;
-				//TODO: bonus score? (Armor breaker)
+				//ScoreManager.DealtDamage ( id, _currentWebbingHP ); //if armor damage doesn't give score
+				ScoreManager.BrokeArmor( id );
 			}
 		}
 		else
@@ -259,11 +262,11 @@ public class LegScript : MonoBehaviour {
 		if ( id >= 0 && id < 4 )
 		{
 			//Give the player score ~ damage
-			GameState.players[ id ].GetComponent<Player>().score += damage;
+			ScoreManager.DealtDamage( id, damage );
 			//Give the player bonus score for killing blow
 			if ( _currentHP <= 0.0f )
 			{
-				GameState.players[ id ].GetComponent<Player>().score += 10.0f;
+				ScoreManager.KilledLeg( id );
 			}
 		}
 		#endregion

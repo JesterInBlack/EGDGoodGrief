@@ -144,7 +144,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state != "bcharge" ) { return; }
 		if ( bHoldTime >= bChargeTime && bHoldTime - dt < bChargeTime )
 		{
-			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 0.66f), 0.20f );
+			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 0.66f), 0.25f );
 		}
 	}
 	#endregion
@@ -214,6 +214,11 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//Called every frame X is held down.
 		//TODO: charge sand laser
 		xHoldTime += dt;
+		if ( player.state != "xcharge" ) { return; }
+		if ( xHoldTime >= xChargeMax && xHoldTime - dt < xChargeMax )
+		{
+			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 0.66f), 0.25f );
+		}
 	}
 	public void XRest( float dt )
 	{
