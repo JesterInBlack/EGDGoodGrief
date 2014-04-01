@@ -38,6 +38,13 @@ public class BehaviorBlackboard : MonoBehaviour
 	public GameObject point7;
 	[HideInInspector]
 	public GameObject point8;
+
+	[HideInInspector]
+	public GameObject rightMaw;
+	[HideInInspector]
+	public GameObject leftMaw;
+	[HideInInspector]
+	public GameObject eye;
 	#endregion
 
 	public GameObject[] legsList = new GameObject[8];
