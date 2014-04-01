@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("Logic")]
 public class AliveCountPlayer : Action
 {
 	private BehaviorBlackboard _blackboard;
@@ -19,7 +20,7 @@ public class AliveCountPlayer : Action
 		int aliveCount = 0;
 		for(int i = 0; i < GameState.players.Length; i++)
 		{
-			if(GameState.players[i].GetComponent<Player>().HP > 0)
+			if(GameState.players[i].GetComponent<Player>().isDowned == false)
 			{
 				aliveCount++;
 			}

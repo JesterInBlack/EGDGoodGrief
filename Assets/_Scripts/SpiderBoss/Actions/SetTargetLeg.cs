@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("BlackboardSet")]
 public class SetTargetLeg : Action 
 {
 	public int _LegNumber;							//between 1 and 8, it goes right1234 -> left1234

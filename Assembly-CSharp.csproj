@@ -138,8 +138,9 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\LegListSelector.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\MoveToPoint.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\PlayerTargeter.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetTargetLeg.cs" />
-     <Compile Include="Assets\_scripts\SpiderBoss\Actions\TargetHighestAggro.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\ShootAoE.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BehaviorBlackboard.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BehaviorData.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BodyScript.cs" />

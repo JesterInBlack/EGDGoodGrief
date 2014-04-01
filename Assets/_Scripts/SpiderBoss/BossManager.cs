@@ -13,8 +13,8 @@ public class BossManager : MonoBehaviour
 
 	//list all the behavior subtrees here
 	private BehaviorData testBehavior;
-	private BehaviorData testBehavior2;
-	private BehaviorData testBehavior3;
+	//private BehaviorData testBehavior2;
+	//private BehaviorData testBehavior3;
 
 	//this is a list of all the actions the boss knows. It iterates through this to find the moves it can use currently.
 	private List<BehaviorData> _behaviorList = new List<BehaviorData>(); 
@@ -49,8 +49,14 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			if(allBehaviors[i].group == 2)
+			{
+				//Debug.Log("found one");
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				_behaviorList.Add(testBehavior);
+			}
+			*/
+			if(allBehaviors[i].group == 3)
 			{
 				//Debug.Log("found one");
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
@@ -112,7 +118,7 @@ public class BossManager : MonoBehaviour
 		//check health status of all the players
 		foreach(GameObject player in GameState.players)
 		{
-			if(player.GetComponent<Player>().HP > 0)
+			if(player.GetComponent<Player>().isDowned == false)
 			{
 				everyoneDead = false;
 			}
@@ -207,8 +213,8 @@ public class BossManager : MonoBehaviour
 		{
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
-				//Debug.Log("Finished a behavior");
-				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+				Debug.Log("Finished a behavior");
+				//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 			}
 		}
 

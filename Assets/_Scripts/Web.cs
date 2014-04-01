@@ -7,17 +7,28 @@ public class Web : MonoBehaviour
 	private float debuffRate = 0.25f; //seconds between applications of the slow debuff
 
 	private float timer = 0.0f;
+	
+	private float growValue;
+	private float growRate;
 	#endregion
 
 	// Use this for initialization
 	void Start () 
 	{
-	
+		growRate = 1.0f;
+		growValue = 0.0f;
+		transform.localScale = new Vector3(growValue, growValue, growValue); 
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		if(growValue < 1.0f)
+		{
+			growValue += Time.deltaTime * growRate * StaticData.t_scale;
+			transform.localScale = new Vector3(growValue, growValue, growValue);
+		}
+
 		#region timer
 		bool applySlow = false;
 		timer += Time.deltaTime * StaticData.t_scale;

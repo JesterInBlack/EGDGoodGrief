@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("Logic")]
 public class IsTargetAlive : Action 
 {
 
@@ -16,9 +17,9 @@ public class IsTargetAlive : Action
 	//runs the actual task
 	public override TaskStatus OnUpdate()
 	{
-		if(_blackboard.targetPlayer.GetComponent<Player>().HP > 0.0f)
+		if(_blackboard.targetPlayer.GetComponent<Player>().isDowned == false)
 		{
-			return TaskStatus.Running;
+			return TaskStatus.Success;
 		}
 		return TaskStatus.Failure;
 	}

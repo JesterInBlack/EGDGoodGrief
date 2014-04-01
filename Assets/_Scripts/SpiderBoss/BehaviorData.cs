@@ -5,8 +5,8 @@ using BehaviorDesigner.Runtime;
 public class BehaviorData 
 {
 	//The behavior attached to this structure
-	public Behavior Action { get { return _action; } }
-	private Behavior _action;
+	public BehaviorTree Action { get { return _action; } }
+	private BehaviorTree _action;
 
 	//variables that determine where on the axes this action lies
 	public float AngerUpperBound { get { return _angerUpperBound; } }
@@ -43,7 +43,7 @@ public class BehaviorData
 	public float FailCoopDelta { get { return _failCoopDelta; } }
 	private float _failCoopDelta;
 
-	public BehaviorData(Behavior action, float aub, float alb, float cub, float clb, float priorityMax )
+	public BehaviorData(BehaviorTree action, float aub, float alb, float cub, float clb, float priorityMax )
 	{
 		float priorityRec = 1;
 		float sad = 0;
@@ -64,7 +64,7 @@ public class BehaviorData
 		_failCoopDelta = fcd;
 	}
 
-	public BehaviorData(Behavior action, float aub, float alb, float cub, float clb, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
+	public BehaviorData(BehaviorTree action, float aub, float alb, float cub, float clb, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
 	{
 		_action = action;
 		_angerUpperBound = aub;
