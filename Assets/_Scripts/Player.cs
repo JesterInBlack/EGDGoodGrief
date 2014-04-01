@@ -48,6 +48,11 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public float parryTimer = 0.0f;  //time left in parry animation?
 
+	[HideInInspector]
+	public bool isStoneSkin = false; //currently stone skin buffed? (bad practice: bubble up)
+	[HideInInspector]
+	public float stoneSkinTimer = 0.0f; //time left in stone skin buff.
+
 	//Downed / Carrying State Stuff
 	public bool isDowned = false;    //if you're downed
 	public bool isCarrier = false;   //if you're carrying another player.
@@ -185,6 +190,15 @@ public class Player : MonoBehaviour
 			}
 		}
 
+		if ( isStoneSkin  )
+		{
+			stoneSkinTimer -= t;
+			if ( stoneSkinTimer <= 0.0f )
+			{
+				isStoneSkin = false;
+			}
+		}
+
 		if ( isInBulletTime )
 		{
 			bulletTimeDuration -= t;
@@ -258,7 +272,7 @@ public class Player : MonoBehaviour
 	{
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
-		if ( false ) { return; } //TODO: stone skin
+		if ( isStoneSkin ) { isStoneSkin = false; return; }
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			this.gameObject.GetComponent<StoneFist>().OnHitCallback( -1, damage );
@@ -338,7 +352,15 @@ public class Player : MonoBehaviour
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
-		if ( false ) { return; } //TODO: stone skin
+		if ( isStoneSkin ) 
+		{
+			if ( attackerId != -1 )
+			{
+				//TODO: knock them back! alot!
+			}
+			isStoneSkin = false;
+			return; 
+		}
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			this.gameObject.GetComponent<StoneFist>().OnHitCallback( attackerId, damage );

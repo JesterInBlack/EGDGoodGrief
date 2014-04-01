@@ -124,7 +124,9 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//TODO: 1 hit shield w/ duration buff?
 			//set a stoneskin flag
+			player.isStoneSkin = true;
 			//put it on a timer
+			player.stoneSkinTimer = 15.0f;
 			ChangeState ( "idle" );
 		}
 		else
@@ -140,6 +142,10 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		bHoldTime += dt;
 		//Called every frame B is held down.
 		if ( player.state != "bcharge" ) { return; }
+		if ( bHoldTime >= bChargeTime && bHoldTime - dt < bChargeTime )
+		{
+			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 0.66f), 0.20f );
+		}
 	}
 	#endregion
 	

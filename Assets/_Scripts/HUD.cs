@@ -19,6 +19,7 @@ public class HUD : MonoBehaviour
 	public Texture2D aButton;       //A button     (set in inspector)
 	public Texture2D aButtonGray;   //A button     (set in inspector)
 	//Custom parts
+	public Texture2D HPBarFillGray; //HP bar       (set in inspector)
 	public Texture2D knightBG;      //Background   (set in inspector)
 	public Texture2D archerBG;      //Background   (set in inspector)
 	public Texture2D monkBG;        //Background   (set in inspector)
@@ -168,7 +169,14 @@ public class HUD : MonoBehaviour
 		}
 		if ( ! player.isDowned )
 		{
-			GUI.DrawTexture ( new Rect( x, y, width, height ), HPBarFill );
+			if ( ! player.isStoneSkin )
+			{
+				GUI.DrawTexture ( new Rect( x, y, width, height ), HPBarFill );
+			}
+			else
+			{
+				GUI.DrawTexture ( new Rect ( x, y, width, height), HPBarFillGray );
+			}
 		}
 		else
 		{
