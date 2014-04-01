@@ -108,6 +108,7 @@
      <Compile Include="Assets\_scripts\Item.cs" />
      <Compile Include="Assets\_scripts\ItemAnimation.cs" />
      <Compile Include="Assets\_scripts\ItemImages.cs" />
+     <Compile Include="Assets\_scripts\LobProjectile.cs" />
      <Compile Include="Assets\_scripts\Player.cs" />
      <Compile Include="Assets\_scripts\PlayerColor.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ApplyBuff.cs" />

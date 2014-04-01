@@ -15,7 +15,7 @@ public class Web : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		growRate = 1.0f;
+		growRate = 4.0f;
 		growValue = 0.0f;
 		transform.localScale = new Vector3(growValue, growValue, growValue); 
 	}

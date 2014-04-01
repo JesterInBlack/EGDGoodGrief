@@ -55,8 +55,14 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			if(allBehaviors[i].group == 3)
+			{
+				//Debug.Log("found one");
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				_behaviorList.Add(testBehavior);
+			}
+			*/
+			if(allBehaviors[i].group == 4)
 			{
 				//Debug.Log("found one");
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
@@ -213,7 +219,7 @@ public class BossManager : MonoBehaviour
 		{
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
-				Debug.Log("Finished a behavior");
+				//Debug.Log("Finished a behavior");
 				//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 			}
 		}
