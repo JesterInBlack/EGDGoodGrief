@@ -286,7 +286,7 @@ public class Player : MonoBehaviour
 			stateTimer = 0.0f;
 			nextState = "idle";
 			//deduct points
-			score -= 100;
+			score -= score * 0.25f; //25%
 			#region remove buffs
 			//remove all buffs
 			for ( int i = buffs.Count - 1; i >= 0; i-- )
