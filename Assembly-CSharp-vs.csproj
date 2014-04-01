@@ -115,6 +115,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ChasePlayer.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\CreateAOE.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FindUnbuffedLeg.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\FireChaseBeam.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\LegListSelector.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\MoveToPoint.cs" />
@@ -131,6 +132,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\EyeScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\IsTargetAlive.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegShadow.cs" />

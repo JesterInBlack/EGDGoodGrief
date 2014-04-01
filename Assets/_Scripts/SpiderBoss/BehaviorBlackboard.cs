@@ -43,6 +43,8 @@ public class BehaviorBlackboard : MonoBehaviour
 	public GameObject rightMaw;
 	[HideInInspector]
 	public GameObject leftMaw;
+	[HideInInspector]
+	public GameObject eye;
 	#endregion
 
 	public GameObject[] legsList = new GameObject[8];
