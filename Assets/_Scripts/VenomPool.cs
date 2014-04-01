@@ -13,6 +13,9 @@ public class VenomPool : MonoBehaviour
 	//timers
 	private float poisonT = 0.0f;
 	private float lifetimer = 0.0f;
+
+	private float growInTime = 1.0f;
+	private float fadeOutTime = 1.0f;
 	//TODO: ramp up damage over time?
 	#endregion
 
@@ -25,6 +28,14 @@ public class VenomPool : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		//grow in.
+		float temp = Mathf.Lerp ( 0.0f, 1.0f, Mathf.Min( 1.0f, lifetimer / growInTime) );
+		transform.localScale = new Vector3( temp, temp, temp );
+		
+		//fade out
+		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, lifetimer - (lifespan - fadeOutTime) / fadeOutTime ) );
+		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, temp );
+
 		#region timer
 		bool applyDebuff = false;
 		float dt = Time.deltaTime * StaticData.t_scale;
@@ -34,6 +45,10 @@ public class VenomPool : MonoBehaviour
 		{
 			applyDebuff = true;
 			poisonT -= poisonRate;
+		}
+		if ( lifetimer >= lifespan )
+		{
+			Destroy( this.gameObject );
 		}
 		#endregion
 

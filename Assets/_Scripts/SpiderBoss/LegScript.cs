@@ -259,11 +259,11 @@ public class LegScript : MonoBehaviour {
 		if ( id >= 0 && id < 4 )
 		{
 			//Give the player score ~ damage
-			GameState.players[ id ].GetComponent<Player>().score += (int)damage;
+			GameState.players[ id ].GetComponent<Player>().score += damage;
 			//Give the player bonus score for killing blow
 			if ( _currentHP <= 0.0f )
 			{
-				GameState.players[ id ].GetComponent<Player>().score += 10;
+				GameState.players[ id ].GetComponent<Player>().score += 10.0f;
 			}
 		}
 		#endregion

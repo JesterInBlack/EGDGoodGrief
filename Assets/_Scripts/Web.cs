@@ -5,37 +5,44 @@ public class Web : MonoBehaviour
 {
 	#region vars
 	private float debuffRate = 0.25f; //seconds between applications of the slow debuff
+	private float lifespan = 10.0f;
 
+	private float lifeTimer = 0.0f;
 	private float timer = 0.0f;
 	
-	private float growValue;
-	private float growRate;
+	private float growInTime = 1.0f;
+	private float fadeOutTime = 1.0f;
 	#endregion
 
 	// Use this for initialization
 	void Start () 
 	{
-		growRate = 1.0f;
-		growValue = 0.0f;
-		transform.localScale = new Vector3(growValue, growValue, growValue); 
+		transform.localScale = new Vector3(0.0f, 0.0f, 0.0f); 
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(growValue < 1.0f)
-		{
-			growValue += Time.deltaTime * growRate * StaticData.t_scale;
-			transform.localScale = new Vector3(growValue, growValue, growValue);
-		}
+		//grow in.
+		float temp = Mathf.Lerp ( 0.0f, 2.0f, Mathf.Min( 1.0f, lifeTimer / growInTime) );
+		transform.localScale = new Vector3( temp, temp, temp );
+
+		//fade out
+		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, lifeTimer - (lifespan - fadeOutTime) / fadeOutTime ) );
+		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, temp );
 
 		#region timer
 		bool applySlow = false;
 		timer += Time.deltaTime * StaticData.t_scale;
+		lifeTimer += Time.deltaTime * StaticData.t_scale;
 		if ( timer > debuffRate )
 		{
 			timer -= debuffRate;
 			applySlow = true;
+		}
+		if ( lifeTimer >= lifespan )
+		{
+			Destroy( this.gameObject );
 		}
 		#endregion
 
@@ -59,7 +66,6 @@ public class Web : MonoBehaviour
 				{
 					//Slow them!
 					player.Slow ( 1.0f, 0.60f );
-
 				}
 			}
 		}

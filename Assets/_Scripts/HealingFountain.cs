@@ -40,13 +40,14 @@ public class HealingFountain : MonoBehaviour
 					//Regenerate health!
 					float dt = Time.deltaTime;
 					if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
-					player.HP = Mathf.Min ( player.HP + regenRate * dt, player.maxHP );
+					//player.HP = Mathf.Min ( player.HP + regenRate * dt, player.maxHP );
+					//TODO: make up players able to channel heals on a cooldown.
 
 					if ( player.isDowned )
 					{
 						//player is dead
 						//regenerate max hp!
-						player.maxHP = Mathf.Min ( player.maxHP + regenRate, player.baseMaxHP );
+						player.maxHP = Mathf.Min ( player.maxHP + regenRate * dt, player.baseMaxHP );
 					}
 					else
 					{
