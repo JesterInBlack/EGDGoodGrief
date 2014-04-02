@@ -295,7 +295,9 @@ public class LegScript : MonoBehaviour {
 			{
 				if(_blackboard.body._behaviorState != BodyScript.BehaviorState.Disabled)
 				{
-					_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
+					//Removed passive regeneration from the legs.
+					//TODO: Make it so that legs heal to full when the boss gets back up from being  vulnerable.
+					//_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
 				}
 			}
 		}
@@ -304,7 +306,6 @@ public class LegScript : MonoBehaviour {
 	public void ApplyBuff(int buffID)
 	{
 		_buffState = (BuffState)buffID;
-		GameState.cameraController.Shake ( 0.1f, 1.0f );//TEST
 		if(_buffState == BuffState.venom)
 		{
 			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
