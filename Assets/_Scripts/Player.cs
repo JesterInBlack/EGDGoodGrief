@@ -107,9 +107,19 @@ public class Player : MonoBehaviour
 		{
 			items[i] = new Item();
 		}
-		items[0].Construct ( ItemName.STOPWATCH );
-		items[1].Construct ( ItemName.PHEROMONE_JAR );
-		items[2].Construct ( ItemName.VAMPIRE_FANG );
+
+		if ( id == 0 )
+		{
+			items[0].Construct ( ItemName.STOPWATCH );
+			items[1].Construct ( ItemName.AURA_DEFENSE );
+			items[2].Construct ( ItemName.AURA_OFFENSE );
+		}
+		else
+		{
+			items[0].Construct ( ItemName.STOPWATCH );
+			items[1].Construct ( ItemName.PHEROMONE_JAR );
+			items[2].Construct ( ItemName.VAMPIRE_FANG );
+		}
 		//END placeholder
 
 		#region Class-Specific

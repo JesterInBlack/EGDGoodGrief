@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EyeLaserScript : MonoBehaviour {
+public class EyeLaserScript : MonoBehaviour 
+{
 
 	private Vector3 _startPos;
 	//private float _rotationAngle;
@@ -17,6 +18,7 @@ public class EyeLaserScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		AttackSystem.hitCircle( transform.position, 1.0f, 1.0f * Time.deltaTime * StaticData.t_scale, -1 );
 		if(Vector3.Distance(_startPos, transform.position) > _travelDistance)
 		{
 			Destroy(this.gameObject);
