@@ -9,11 +9,14 @@ public class LegScript : MonoBehaviour {
 	public float _radius = 2.5f;
 	public float _movementFlux = 0.75f;
 	public float _moveTime;
+	public GameObject _disabledPoint;
 	public GameObject _radiusPoint;
 	public GameObject _bodyScript;
 
+	private bool _recovering;
 	public float _currentHP;
 	public float _maxHP;
+	public float _regenRate;
 	public bool invincible; //true when the leg is immune to damage.
 
 	//color vars
@@ -38,8 +41,8 @@ public class LegScript : MonoBehaviour {
 	public float _shadowMoveTime;
 
 	private bool _intermediatePointReached;
-	private Vector2 _intermediatePoint;
-	private Vector2 _targetPoint;
+	private Vector3 _intermediatePoint;
+	private Vector3 _targetPoint;
 	[HideInInspector]
 	public Vector2 _startPoint;
 	[HideInInspector]
@@ -49,6 +52,7 @@ public class LegScript : MonoBehaviour {
 	//enums
 	public enum BehaviorState
 	{
+		Disabled = -1,
 		Walking = 0,
 		Impale = 1,
 		Rake = 2,
@@ -81,7 +85,9 @@ public class LegScript : MonoBehaviour {
 		_buffState = BuffState.unbuffed;
 		_behaviorState = BehaviorState.Walking;
 		_state = LegState.Idle;
-		_moveTime = 0.15f;
+
+		_regenRate = 10.0f;
+		_moveTime = 0.25f;
 		_maxHP = 100.0f;
 		_currentHP = _maxHP;
 
@@ -90,14 +96,44 @@ public class LegScript : MonoBehaviour {
 
 		_maxBuffDuration = 30.0f;
 		_currentBuffDuration = 0.0f;
+<<<<<<< HEAD
 
 		currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f), 0.0f );
+=======
+		_recovering = false;
+>>>>>>> origin/Finishing_Eye_Laser
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(_behaviorState == BehaviorState.Walking)
+		if(_behaviorState == BehaviorState.Disabled)
+		{
+			if(_state == LegState.Idle)
+			{
+				transform.position = _disabledPoint.transform.position;
+				//transform.parent.transform.eulerAngles = new Vector3(transform.parent.transform.eulerAngles.x, transform.parent.transform.eulerAngles.y, 320.0f);
+				//transform.parent.rigidbody2D.fixedAngle = true;
+
+				_shadowPos = (Vector2)transform.position;
+				_shadowPos.y -= 3.0f;
+			}
+			else if(_state == LegState.CalculateMove)
+			{
+				_targetPoint = _disabledPoint.transform.position;
+				_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, false);
+				_intermediatePointReached = false;
+				_startPoint = transform.position;
+				_lerpTime = 0.0f;
+				_state = LegState.Move;
+
+			}
+			else if(_state == LegState.Move)
+			{
+				MoveLeg();
+			}
+		}
+		else if(_behaviorState == BehaviorState.Walking)
 		{
 			if(_state == LegState.Idle)
 			{
@@ -111,10 +147,18 @@ public class LegScript : MonoBehaviour {
 			//This picks the next area to move to
 			else if(_state == LegState.CalculateMove)
 			{
-				_targetPoint = (Vector2)_radiusPoint.transform.position + GetMoveVector();
-				_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint);
+				_targetPoint = _radiusPoint.transform.position + GetMoveVector();
+				if(_recovering)
+				{
+					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, false);
+					_recovering = false;
+				}
+				else
+				{
+					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, true);
+				}
 				_intermediatePointReached = false;
-				_startPoint = (Vector2)transform.position;
+				_startPoint = transform.position;
 				_lerpTime = 0.0f;
 				_state = LegState.Move;
 			}
@@ -133,23 +177,32 @@ public class LegScript : MonoBehaviour {
 			//do nothing for now
 		}
 
+
 		HandleStats();
 	}
 
-	Vector2 GetMoveVector()
+	Vector3 GetMoveVector()
 	{
-		return _bodyScript.GetComponent<BehaviorBlackboard>().moveDirection * (_radius + _movementFlux/2 + Random.Range(-_movementFlux, 0));
+		return (Vector3)_bodyScript.GetComponent<BehaviorBlackboard>().moveDirection * (_radius + _movementFlux/2 + Random.Range(-_movementFlux, 0));
 		//return _bodyScript.GetComponent<BodyScript>().move_vec * (_radius + _movementFlux/2 + Random.Range(-_movementFlux, 0));
 	}
 
 	//returns the midpoint of ab and sets it up a bit
-	Vector2 GetIntermediatePoint(Vector2 a, Vector2 b)
+	Vector3 GetIntermediatePoint(Vector3 a, Vector3 b, bool upOffset)
 	{
 		float xPoint = a.x + ((b.x - a.x)/2);
 		float yPoint = a.y + ((b.y - a.y)/2);
-		_shadowIntermediatePoint = new Vector2(xPoint, yPoint);
+		float zPoint = a.z + ((b.z - a.z)/2);
+		_shadowIntermediatePoint = new Vector3(xPoint, yPoint, zPoint);
 
-		yPoint += _radius * 1.6f;
+		if(upOffset)
+		{
+			yPoint += _radius * 1.6f;
+		}
+		else if(!upOffset)
+		{
+			yPoint -= _radius;
+		}
 
 		if(_bodyScript.GetComponent<BodyScript>().move_vec.y > 0.5f)
 		{
@@ -167,14 +220,14 @@ public class LegScript : MonoBehaviour {
 	{
 		if(_intermediatePointReached == false)
 		{
-			if( Vector2.Distance((Vector2)transform.position, _intermediatePoint) < 0.01f)
+			if( Vector2.Distance(transform.position, _intermediatePoint) < 0.01f)
 			{
 				_intermediatePointReached = true;
 				_lerpTime = 0.0f;
 			}
 			else
 			{
-				transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _moveTime);
+				transform.position = Vector3.Lerp(_startPoint, _intermediatePoint, _lerpTime / _moveTime);
 				_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _moveTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
@@ -188,7 +241,7 @@ public class LegScript : MonoBehaviour {
 			}
 			else
 			{
-				transform.position = Vector2.Lerp(_intermediatePoint, _targetPoint, _lerpTime / _moveTime);
+				transform.position = Vector3.Lerp(_intermediatePoint, _targetPoint, _lerpTime / _moveTime);
 				_shadowPos = Vector2.Lerp(_shadowIntermediatePoint, _targetPoint, _lerpTime / _moveTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
@@ -198,6 +251,7 @@ public class LegScript : MonoBehaviour {
 	//this handles the logic for the stats on the boss like health and buffs
 	void HandleStats()
 	{
+<<<<<<< HEAD
 		if ( currentColor.duration > 0.0f )
 		{
 			if ( currentColor.timer >= currentColor.duration )
@@ -210,6 +264,38 @@ public class LegScript : MonoBehaviour {
 				transform.parent.GetComponent<SpriteRenderer>().color = currentColor.color;
 			}
 			currentColor.timer += Time.deltaTime * StaticData.t_scale;
+=======
+		if(_behaviorState != BehaviorState.Disabled)
+		{
+			if(_currentHP <= 0.0f)
+			{
+				_behaviorState = BehaviorState.Disabled;
+				_state = LegState.CalculateMove;
+
+				Vector3 Legscale = transform.parent.transform.localScale;
+				Legscale.x = 2.0f;
+				Legscale.y = 1.5f;
+				transform.parent.transform.localScale = Legscale;
+				//_disabled = true;
+			}
+		}
+		else if(_behaviorState == BehaviorState.Disabled)
+		{
+			if(_currentHP == _maxHP)
+			{
+				_recovering = true;
+
+				Vector3 Legscale = transform.parent.transform.localScale;
+				Legscale.x = 2.25f;
+				Legscale.y = 2.25f;
+				transform.parent.transform.localScale = Legscale;
+				_behaviorState = BehaviorState.Walking;
+			}
+			else if(_currentHP < _maxHP)
+			{
+				_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
+			}
+>>>>>>> origin/Finishing_Eye_Laser
 		}
 	}
 

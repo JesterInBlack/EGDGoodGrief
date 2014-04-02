@@ -42,8 +42,8 @@ public class Impale : Action
 	public override void OnStart()
 	{
 		_state = AttackState.Windup;
-		_blackboard.selectedLeg.GetComponent<LegScript>()._state = LegScript.LegState.Idle;
-		_blackboard.selectedLeg.GetComponent<LegScript>()._behaviorState = LegScript.BehaviorState.Impale;
+		_blackboard.selectedLeg._state = LegScript.LegState.Idle;
+		_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Impale;
 
 		_startPoint = (Vector2)_blackboard.selectedLeg.transform.position;
 		_targetPoint = (Vector2)_blackboard.targetPlayer.transform.position;
@@ -52,10 +52,10 @@ public class Impale : Action
 		_lerpTime = 0.0f;
 
 		//this is for the shadow
-		_blackboard.selectedLeg.GetComponent<LegScript>()._lerpTime = 0.0f;
-		_blackboard.selectedLeg.GetComponent<LegScript>()._startPoint = _startPoint;
-		_blackboard.selectedLeg.GetComponent<LegScript>()._shadowIntermediatePoint = _targetPoint;
-		_blackboard.selectedLeg.GetComponent<LegScript>()._shadowMoveTime = _windupTime;
+		_blackboard.selectedLeg._lerpTime = 0.0f;
+		_blackboard.selectedLeg._startPoint = _startPoint;
+		_blackboard.selectedLeg._shadowIntermediatePoint = _targetPoint;
+		_blackboard.selectedLeg._shadowMoveTime = _windupTime;
 	}
 
 	//runs the actual task
@@ -74,26 +74,10 @@ public class Impale : Action
 			{
 				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _windupTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
-				//transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 			}
 		}
 		else if(_state == AttackState.Aim)
 		{
-			/*
-			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _intermediatePoint) < 0.001f)
-			{
-				_state = AttackState.Attack;
-				_lerpTime = 0.0f;
-				_startPoint = (Vector2)_blackboard.selectedLeg.transform.position;
-				_targetPoint = (Vector2)_blackboard.targetPlayer.transform.position;
-			}
-			else
-			{
-				_intermediatePoint = Vector2.Lerp(_startPoint, (Vector2)_blackboard.targetPlayer.transform.position, 0.1f);
-				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _aimTime);
-				_lerpTime += Time.deltaTime;
-			}
-			*/
 			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _intermediatePoint) < 0.001f)
 			{
 				_state = AttackState.Attack;
@@ -145,7 +129,7 @@ public class Impale : Action
 		{
 			if(_lerpTime > _cooldownTime)
 			{
-				_blackboard.selectedLeg.GetComponent<LegScript>()._behaviorState = LegScript.BehaviorState.Walking;
+				_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
 				return TaskStatus.Success;
 			}
 			else
