@@ -103,6 +103,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			float minAngle = ( ( ( ( 180.0f - spinTime * 360.0f / (0.75f / 2.0f) ) % 360.0f) + 360.0f) % 360.0f);
 			float maxAngle = ( ( ( ( minAngle + 90.0f ) % 360.0f) + 360.0f) % 360.0f);
 			AttackSystem.hitSector ( new Vector2( transform.position.x, transform.position.y ), minAngle, maxAngle, 2.0f, attackDamage * dt, player.id );
+			//Sound?
+			if ( spinTime > (0.75f / 2.0f) )
+			{
+				spinTime -= (0.75f / 2.0f);
+				GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSwoosh, 0.5f );
+			}
+
 			/*
 			if ( spinTime % (0.75f / 2.0f) != spinTime )
 			{
@@ -147,6 +154,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 			GetComponent<CustomController>().MoveNaoPlz( new Vector3( speed * Mathf.Cos ( angle ), speed * Mathf.Sin ( angle ), 0.0f ) );
 			AttackSystem.hitBox ( new Rect( xmin, ymin, (xmax - xmin), (ymax - ymin) ), attackDamage * dt, player.id );
+		}
+
+		if ( player.state == "revcharge" )
+		{
+			if ( GetComponent<AudioSource>().isPlaying == false )
+			{
+				GetComponent<AudioSource>().volume = 1.0f;
+				GetComponent<AudioSource>().clip = GetComponent<SoundStorage>().KnightRevLoop;
+				GetComponent<AudioSource>().Play();
+			}
 		}
 
 		if ( player.state == "idle" )
@@ -246,6 +263,10 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			ChangeState( "xwindup" );
+			if ( player.state == "revcharge" )
+			{
+				GetComponent<AudioSource>().Stop ();
+			}
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
@@ -347,6 +368,10 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			ChangeState( "ywindup" );
+			if ( player.state == "revcharge" )
+			{
+				GetComponent<AudioSource>().Stop ();
+			}
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
@@ -422,6 +447,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			ChangeState ( "revcharge" );
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightRevLoop, 1.0f );
 		}
 	}
 	public void RTReleased()
@@ -434,6 +460,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			ChangeState ( "idle" );
 			player.speedMultiplier = player.speedMultiplier * 2.0f;
+			GetComponent<AudioSource>().Stop ();
 		}
 		rtHoldTime = 0.0f;
 		GamePad.SetVibration ( controller.playerIndex, 0.0f, 0.0f );
@@ -546,6 +573,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 				gameObject.GetComponent<Animator>().Play( "xslash_down" );
 			}
 			#endregion
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSwoosh, 1.0f );
 		}
 		else if ( newState == "xwinddown" )
 		{
@@ -605,6 +633,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = yNormalInterruptHP;
 			//TODO: box to box collision detection
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 1.0f );
 		}
 		else if ( newState == "ywinddown" )
 		{
@@ -632,6 +661,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			attackDamage = baseDamage * multiplier;
 			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightBlastOff, 1.0f );
 			//TODO: hitbox to hitbox collision detection.
 		}
 		#endregion

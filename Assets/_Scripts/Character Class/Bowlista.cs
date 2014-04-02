@@ -134,6 +134,7 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 		//Called when X is released.
 		if ( player.isDowned ) { return; }
 		if ( player.state != "xcharge" ) { return; }
+		GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().ArcherBlowback, 1.0f );
 		player.nextState = "blowback";
 		player.stateTimer = 0.0f;
 	}
@@ -190,9 +191,10 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 		rtHoldTime = 0.0f;
 		if ( player.isDowned ) { return; }
 		if ( player.state != "rtcharge" ) { return; }
-		//TODO: fire
+		//fire
 		player.nextState = "rtfire";
 		player.stateTimer = 0.0f;
+		GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().ArcherFire, 1.0f );
 	}
 	public void RTHeld( float dt )
 	{

@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: e3b9f4680d3fd4249bb6911d5f0d2c58
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - MonkStoneSkinOn: {fileID: 8300000, guid: 9e8fad5d36743f74eb08094a0c106b44, type: 3}
+  - MonkPunch: {instanceID: 0}
+  - MonkSandStorm: {fileID: 8300000, guid: 51bb55d5153a74e4ab56d7541052e4f4, type: 3}
+  - MonkRockRaise: {fileID: 8300000, guid: b8ff7df6302868a4ca2508b80b322acf, type: 3}
+  - MonkRockBreak: {fileID: 8300000, guid: fe091f666aa8a9c43a0f57e788ead462, type: 3}
+  - MonkImpact: {fileID: 8300000, guid: 3a82a7c968b1e0e41946f8a3368ae148, type: 3}
+  - KnightBlastOff: {fileID: 8300000, guid: 1b6ce53c67394b44891eaec206c91adf, type: 3}
+  - KnightRev: {fileID: 8300000, guid: 56caf977ba5f3a64ab75f2800238c5e4, type: 3}
+  - KnightRevLoop: {fileID: 8300000, guid: 243208cfcd61c3d41bea119dc594bb10, type: 3}
+  - KnightSlice: {fileID: 8300000, guid: 49ddc9b63e2c6ac4e8338573475ecc6e, type: 3}
+  - KnightSwoosh: {fileID: 8300000, guid: 66fa06d6de5186443b1f4e1f5ca628ea, type: 3}
+  - KnightFireSword: {fileID: 8300000, guid: 05cb17cd34491d945b5cfb3627e0626f, type: 3}
+  - ArcherFire: {fileID: 8300000, guid: 41248298a954b894f824529f2bfc8a52, type: 3}
+  - ArcherBlowback: {fileID: 8300000, guid: bbaab7e71099bf344a75ca522f2b044d, type: 3}
+  - ArcherArrowImpact: {fileID: 8300000, guid: a74e3ff4ee67a6942bacc246c5ab26ea, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

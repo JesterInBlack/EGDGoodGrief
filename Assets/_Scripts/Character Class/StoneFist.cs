@@ -127,6 +127,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			player.isStoneSkin = true;
 			//put it on a timer
 			player.stoneSkinTimer = 15.0f;
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkStoneSkinOn, 1.0f );
 			ChangeState ( "idle" );
 		}
 		else
@@ -206,6 +207,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 
 			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
 			#endregion
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkPunch, 1.0f );
 		}
 		ChangeState ( "xwinddown" );
 	}
@@ -238,6 +240,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			//TODO: change direction not allowed, move is?
 			//TODO?: have a start-up cost / wind up window? (so you can't just spam block just in time?)
 			ChangeState( "ycharge" );
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkRockRaise, 1.0f );
 		}
 	}
 	public void YReleased()
@@ -379,6 +382,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			
 			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
 			#endregion
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkRockBreak, 1.0f );
 		}
 		#endregion
 		#region rt
