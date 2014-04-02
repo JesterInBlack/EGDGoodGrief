@@ -51,37 +51,29 @@ public class BossManager : MonoBehaviour
 			}
 			*/
 
-			if(allBehaviors[i].group == 1)
+			if(allBehaviors[i].group == 1)	//Impale
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 40);
 				_behaviorList.Add(testBehavior);
 			}
-
-			/*
-			if(allBehaviors[i].group == 2)
+			if(allBehaviors[i].group == 2)	//apply buff
 			{
-				//Debug.Log("found one");
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 3)
+			if(allBehaviors[i].group == 3) //AoeWeb
 			{
-				//Debug.Log("found one");
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
-			/*
-			if(allBehaviors[i].group == 4)
+			if(allBehaviors[i].group == 4) //AoeVenom
 			{
-				//Debug.Log("found one");
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 5)
+			if(allBehaviors[i].group == 5) //EyeLaser
 			{
-				//Debug.Log("found one");
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
 			/*
@@ -216,10 +208,7 @@ public class BossManager : MonoBehaviour
 					}
 				}
 			}
-			
-			//set the priority to 0 for use
-			_behaviorList[selectedIndex].UseAction();
-			
+	
 			//enable and start up the behavior
 			_behaviorManager.enableBehavior(_behaviorList[selectedIndex].Action);
 			_behaviorManager.restartBehavior(_behaviorList[selectedIndex].Action);
@@ -237,6 +226,9 @@ public class BossManager : MonoBehaviour
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
 				//Debug.Log("Finished a behavior");
+				//set the priority to 0 for use
+				_behaviorList[selectedIndex].UseAction();
+
 				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 				_blackboard._currentBehavior = null;
 			}
