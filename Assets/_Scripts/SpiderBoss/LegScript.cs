@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-<<<<<<< HEAD
 public class LegScript : MonoBehaviour {
 
 	#region vars
-=======
-public class LegScript : MonoBehaviour 
-{
->>>>>>> origin/Finishing_Eye_Laser
 	public int _id;
 
 	public float _radius = 2.5f;
@@ -159,6 +154,7 @@ public class LegScript : MonoBehaviour
 				}
 				else
 				{
+					//TODO: FIX NULL REF ERROR
 					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, true);
 				}
 				_intermediatePointReached = false;
