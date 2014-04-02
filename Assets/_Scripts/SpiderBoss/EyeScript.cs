@@ -35,6 +35,7 @@ public class EyeScript : MonoBehaviour
 			}
 			else if(_blackboard.targetPlayer != null)
 			{
+				//Debug.Log("nutin going on");
 				GetTargetAngle(_blackboard.targetPlayer.transform.position);
 				RotateToTarget(_rotationSpeed);
 			}

@@ -13,51 +13,60 @@ public class LegListSelector : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
+
+	}
+
+	public override void OnStart()
+	{
 		for(int i = 0; i < _selectedLegs.Length; i++)
 		{
 			_selectedLegs[i] = -1;
 		}
 	}
-
-
+	
 	public override TaskStatus OnUpdate()
 	{
 		//find at least 2 legs from the right legs
-		int limiter = 0;
 		int count = 0;
 		for(int i = 0; i < 4; i++)
 		{
 			//find at least 2 on the right side
-			if(limiter < 2)
+			if(count < 2)
 			{
-				if(_blackboard.legsList[i].GetComponent<LegScript>()._currentHP > 0)
+				if(_blackboard.legsList[i]._behaviorState != LegScript.BehaviorState.Disabled)
 				{
 					_selectedLegs[count] = i;
 					count++;
 				}
 			}
 		}
+		//Debug.Log("found " + count + " legs");
 
 		//if there's only one suitable leg we found
 		//we need to find 3 on the left side, otherwise failure
-		if(count == 1 || count == 2)
+		if(count == 1)
 		{
 			for(int i = 4; i < 8; i++)
 			{
-				if(_blackboard.legsList[i].GetComponent<LegScript>()._currentHP > 0)
+				if(count < 4)
 				{
-					_selectedLegs[count] = i;
-					count++;
+					if(_blackboard.legsList[i]._behaviorState != LegScript.BehaviorState.Disabled)
+					{
+						_selectedLegs[count] = i;
+						count++;
+					}
 				}
 			}
 
 			//did you get all 4 legs?
 			if(count == 4)
 			{
+				//Debug.Log("should be a 1 - 3 spread");
 				return TaskStatus.Success;
 			}
 			else
 			{
+				//Debug.Log("only 1 right leg, not enough left legs");
 				return TaskStatus.Failure;
 			}
 		}
@@ -66,15 +75,19 @@ public class LegListSelector : Action
 		{
 			for(int i = 4; i < 8; i++)
 			{
-				if(_blackboard.legsList[i].GetComponent<LegScript>()._currentHP > 0)
+				if(count < 4)
 				{
-					_selectedLegs[count] = i;
-					count++;
+					if(_blackboard.legsList[i]._behaviorState != LegScript.BehaviorState.Disabled)
+					{
+						_selectedLegs[count] = i;
+						count++;
+					}
 				}
 			}
 			//did you get all 4 legs?
 			if(count == 4)
 			{
+				//Debug.Log("should be a 2 - 2 spread");
 				return TaskStatus.Success;
 			}
 			//if not, check the right side again for a 4th one if you only have 3
@@ -82,29 +95,34 @@ public class LegListSelector : Action
 			{
 				for(int i = 0; i < 4; i++)
 				{
-					bool toCheck = true;
-					for(int j = 0; j < _selectedLegs.Length; j++)
+					if(count < 4)
 					{
-						if(_selectedLegs[j] == i)
+						bool toCheck = true;
+						for(int j = 0; j < _selectedLegs.Length; j++)
 						{
-							toCheck = false;
+							if(_selectedLegs[j] == i)
+							{
+								toCheck = false;
+							}
 						}
-					}
-					if(toCheck == true)
-					{
-						if(_blackboard.legsList[i].GetComponent<LegScript>()._currentHP > 0)
+						if(toCheck == true)
 						{
-							_selectedLegs[count] = i;
-							count++;
+							if(_blackboard.legsList[i]._behaviorState != LegScript.BehaviorState.Disabled)
+							{
+								_selectedLegs[count] = i;
+								count++;
+							}
 						}
 					}
 				}
 				if(count == 4)
 				{
+					//Debug.Log("should be a 3 - 1 spread");
 					return TaskStatus.Success;
 				}
 				else
 				{
+					//Debug.Log("only 1 left leg, not enough for a 3 - 1 spread");
 					return TaskStatus.Failure;
 				}
 			}
@@ -114,6 +132,15 @@ public class LegListSelector : Action
 			}
 		}
 
+		//Debug.Log("this should only run if there are no right legs to pick");
 		return TaskStatus.Failure;
+	}
+
+	public override void OnEnd()
+	{
+		for(int i = 0; i < _selectedLegs.Length; i++)
+		{
+			//Debug.Log(_selectedLegs[i]);
+		}
 	}
 }

@@ -62,6 +62,8 @@ public class BehaviorBlackboard : MonoBehaviour
 	public GameObject leftMaw;
 	[HideInInspector]
 	public GameObject eye;
+	[HideInInspector]
+	public BodyScript body;
 	#endregion
 
 	public LegScript[] legsList = new LegScript[8];
@@ -89,6 +91,8 @@ public class BehaviorBlackboard : MonoBehaviour
 	//impale vars
 	public LegScript selectedLeg;
 	public GameObject selectedPoint;
+
+	public BehaviorData _currentBehavior;
 
 	void Start()
 	{

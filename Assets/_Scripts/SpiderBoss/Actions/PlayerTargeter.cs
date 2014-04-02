@@ -33,9 +33,12 @@ public class PlayerTargeter : Action
 		}
 		else if(_targetType == TargetType.random)
 		{
-			int randomIndex = Random.Range(0, 3);
-			_blackboard.targetPlayer = GameState.players[randomIndex];
-			return TaskStatus.Success;
+			int randomIndex = Random.Range(0, 4);
+			if(GameState.players[randomIndex].GetComponent<Player>().isDowned == false)
+			{
+				_blackboard.targetPlayer = GameState.players[randomIndex];
+				return TaskStatus.Success;
+			}
 		}
 		else if(_targetType == TargetType.highestAggro)
 		{

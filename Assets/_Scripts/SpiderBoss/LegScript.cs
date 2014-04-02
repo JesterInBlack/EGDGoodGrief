@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+<<<<<<< HEAD
 public class LegScript : MonoBehaviour {
 
 	#region vars
+=======
+public class LegScript : MonoBehaviour 
+{
+>>>>>>> origin/Finishing_Eye_Laser
 	public int _id;
 
 	public float _radius = 2.5f;
@@ -49,6 +54,8 @@ public class LegScript : MonoBehaviour {
 	public float _lerpTime;
 	#endregion
 
+	public BehaviorBlackboard _blackboard;
+
 	//enums
 	public enum BehaviorState
 	{
@@ -58,7 +65,6 @@ public class LegScript : MonoBehaviour {
 		Rake = 2,
 		ApplyingBuff = 3,
 	}
-
 	public BehaviorState _behaviorState;
 
 	public enum LegState
@@ -109,11 +115,12 @@ public class LegScript : MonoBehaviour {
 			if(_state == LegState.Idle)
 			{
 				transform.position = _disabledPoint.transform.position;
-				//transform.parent.transform.eulerAngles = new Vector3(transform.parent.transform.eulerAngles.x, transform.parent.transform.eulerAngles.y, 320.0f);
-				//transform.parent.rigidbody2D.fixedAngle = true;
 
 				_shadowPos = (Vector2)transform.position;
-				_shadowPos.y -= 3.0f;
+				if(_blackboard.body._behaviorState != BodyScript.BehaviorState.Disabled)
+				{
+					_shadowPos.y -= 3.0f;
+				}
 			}
 			else if(_state == LegState.CalculateMove)
 			{
@@ -201,11 +208,11 @@ public class LegScript : MonoBehaviour {
 			yPoint -= _radius;
 		}
 
-		if(_bodyScript.GetComponent<BodyScript>().move_vec.y > 0.5f)
+		if(_blackboard.moveDirection.y > 0.5f)
 		{
 			yPoint = b.y + _radius;
 		}
-		else if(_bodyScript.GetComponent<BodyScript>().move_vec.y < -0.5f)
+		else if(_blackboard.moveDirection.y < -0.5f)
 		{
 			yPoint = a.y + _radius;
 		}
@@ -290,7 +297,10 @@ public class LegScript : MonoBehaviour {
 			}
 			else if(_currentHP < _maxHP)
 			{
-				_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
+				if(_blackboard.body._behaviorState != BodyScript.BehaviorState.Disabled)
+				{
+					_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
+				}
 			}
 		}
 	}

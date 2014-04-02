@@ -43,12 +43,20 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
+			/*
+			if(allBehaviors[i].group == -1)
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				_behaviorList.Add(testBehavior);
+			}
+			*/
 
 			if(allBehaviors[i].group == 1)
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
+
 			/*
 			if(allBehaviors[i].group == 2)
 			{
@@ -62,6 +70,8 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
+			*/
+			/*
 			if(allBehaviors[i].group == 4)
 			{
 				//Debug.Log("found one");
@@ -149,7 +159,7 @@ public class BossManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("Everyone dead");
+			//Debug.Log("Everyone dead");
 			for(int i = 0; i < _behaviorList.Count; i++)
 			{
 				_behaviorManager.disableBehavior(_behaviorList[i].Action);
@@ -219,6 +229,7 @@ public class BossManager : MonoBehaviour
 			
 			//set the dummy variable to see it in the inspector
 			_currentBehavior = _behaviorList[selectedIndex].Action.group;
+			_blackboard._currentBehavior = _behaviorList[selectedIndex];
 		}
 		
 		else if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.runningTask)
@@ -226,7 +237,8 @@ public class BossManager : MonoBehaviour
 			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 			{
 				//Debug.Log("Finished a behavior");
-				//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+				_blackboard._currentBehavior = null;
 			}
 		}
 

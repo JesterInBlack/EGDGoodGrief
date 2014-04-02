@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("Logic")]
 public class CheckLegHealth : Action
 {
 	private BehaviorBlackboard _blackboard;
@@ -20,9 +21,16 @@ public class CheckLegHealth : Action
 	//runs the actual task
 	public override TaskStatus OnUpdate()
 	{
-		if((float)(_legScript._currentHP / _legScript._maxHP) > _thresholdPercent)
+		if(_legScript._behaviorState != LegScript.BehaviorState.Disabled)
 		{
-			return TaskStatus.Success;
+			if((float)(_legScript._currentHP / _legScript._maxHP) > _thresholdPercent)
+			{
+				return TaskStatus.Success;
+			}
+			else
+			{
+				return TaskStatus.Failure;
+			}
 		}
 		else
 		{
