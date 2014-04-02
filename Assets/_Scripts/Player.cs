@@ -5,6 +5,7 @@ public enum CharacterClasses { KNIGHT, ARCHER, NINJA, DEFENDER };
 
 public class Player : MonoBehaviour 
 {
+	//TODO: fix throw ani for item use.
 
 	#region vars
 	[HideInInspector]
@@ -521,7 +522,7 @@ public class Player : MonoBehaviour
 				//Do the effect. NOW!
 				//TODO: freeze item scrolling / use during item use animation / charging
 				state = "item windup";
-				stateTimer = 0.05f * 2.0f; //frames
+				stateTimer = 0.05f * 12.0f; //frames
 				nextState = "idle";
 				UseItem2 ( itemIndex );
 			}
@@ -627,10 +628,13 @@ public class Player : MonoBehaviour
 				}
 			}
 			//State stuff
-			state = "idle"; //item wind down?
-			stateTimer = 0.0f;
+			state = "item windown"; //item wind down?
+			stateTimer = 0.05f * 12.0f; //frames for animation.
 			nextState = "idle";
 		}
+		#endregion
+		#region animation
+		gameObject.GetComponent<Animator>().Play( "throw_" +  GetAniSuffix() );
 		#endregion
 	}
 
@@ -680,5 +684,29 @@ public class Player : MonoBehaviour
 			myBuff.Start ();
 			//Debug.Log ( "Buff started on player " + (i + 1) );
 		}
+	}
+
+	public string GetAniSuffix()
+	{
+		//returns a string to append to a base animation anem to get the correct direction.
+		CustomController controller = GetComponent<CustomController>();
+		if ( controller.facing == 0 )
+		{
+			return "right";
+		}
+		else if ( controller.facing == 1 )
+		{
+			return "up";
+		}
+		else if ( controller.facing == 2 )
+		{
+			return "left";
+		}
+		else if ( controller.facing == 3 )
+		{
+			return "down";
+		}
+		//default
+		return "error";
 	}
 }

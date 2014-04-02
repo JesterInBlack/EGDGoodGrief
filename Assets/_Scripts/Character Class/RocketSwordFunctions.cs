@@ -158,32 +158,37 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 		if ( player.state == "revcharge" )
 		{
+			#region sound
 			if ( GetComponent<AudioSource>().isPlaying == false )
 			{
 				GetComponent<AudioSource>().volume = 1.0f;
 				GetComponent<AudioSource>().clip = GetComponent<SoundStorage>().KnightRevLoop;
 				GetComponent<AudioSource>().Play();
 			}
+			#endregion
+			#region animation
+			if ( GetComponent<CustomController>().move_vec.sqrMagnitude > 0.0f ) //moving
+			{
+				gameObject.GetComponent<Animator>().Play( "shuffle_" +  player.GetAniSuffix() );
+			}
+			else //idle
+			{
+				gameObject.GetComponent<Animator>().Play( "rev_" +  player.GetAniSuffix() );
+			}
+			#endregion
+
 		}
 
 		if ( player.state == "idle" )
 		{
 			#region animation
-			if ( GetComponent<CustomController>().facing == 0 )
+			if ( ! player.isDowned )
 			{
-				GetComponent<Animator>().Play ( "idle_right" );
+				GetComponent<Animator>().Play ( "idle_" +  player.GetAniSuffix() );
 			}
-			else if ( GetComponent<CustomController>().facing == 1 )
+			else
 			{
-				GetComponent<Animator>().Play ( "idle_up" );
-			}
-			else if ( GetComponent<CustomController>().facing == 2 )
-			{
-				GetComponent<Animator>().Play ( "idle_left" );
-			}
-			else if ( GetComponent<CustomController>().facing == 3 )
-			{
-				GetComponent<Animator>().Play ( "idle_down" );
+				GetComponent<Animator>().Play ( "downed_" +  player.GetAniSuffix() );
 			}
 			#endregion
 		}
@@ -522,22 +527,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.05f * 7.0f; //7 frame windup
 			player.interruptHP = xChargeInterruptHP;
 			#region animation
-			if ( GetComponent<CustomController>().facing == 0 )
-			{
-				GetComponent<Animator>().Play ( "xslash_right_windup" );
-			}
-			else if ( GetComponent<CustomController>().facing == 1 )
-			{
-				GetComponent<Animator>().Play ( "xslash_up_windup" );
-			}
-			else if ( GetComponent<CustomController>().facing == 2 )
-			{
-				GetComponent<Animator>().Play ( "xslash_left_windup" );
-			}
-			else if ( GetComponent<CustomController>().facing == 3 )
-			{
-				GetComponent<Animator>().Play ( "xslash_down_windup" );
-			}
+			GetComponent<Animator>().Play ( "xslash_" +  player.GetAniSuffix() + "_windup" );
 			#endregion
 		}
 		else if ( newState == "xcharge" )
@@ -556,22 +546,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.resourceGraceT = xNormalGraceT;
 			player.interruptHP = xNormalInterruptHP;
 			#region animation
-			if ( GetComponent<CustomController>().facing == 0 )
-			{
-				gameObject.GetComponent<Animator>().Play( "xslash_right" );
-			}
-			else if ( GetComponent<CustomController>().facing == 1 )
-			{
-				gameObject.GetComponent<Animator>().Play( "xslash_up" );
-			}
-			else if ( GetComponent<CustomController>().facing == 2 )
-			{
-				gameObject.GetComponent<Animator>().Play( "xslash_left" );
-			}
-			else if ( GetComponent<CustomController>().facing == 3 )
-			{
-				gameObject.GetComponent<Animator>().Play( "xslash_down" );
-			}
+			gameObject.GetComponent<Animator>().Play( "xslash_" + player.GetAniSuffix() );
 			#endregion
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSwoosh, 1.0f );
 		}
@@ -673,21 +648,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		else if ( newState == "walk" )
 		{
 			#region animation
-			if ( GetComponent<CustomController>().facing == 0 )
+			if ( ! player.isDowned )
 			{
-				gameObject.GetComponent<Animator>().Play( "walk_right" );
+				gameObject.GetComponent<Animator>().Play( "walk_" + player.GetAniSuffix() );
 			}
-			else if ( GetComponent<CustomController>().facing == 1 )
+			else
 			{
-				gameObject.GetComponent<Animator>().Play( "walk_up" );
-			}
-			else if ( GetComponent<CustomController>().facing == 2 )
-			{
-				gameObject.GetComponent<Animator>().Play( "walk_left" );
-			}
-			else if ( GetComponent<CustomController>().facing == 3 )
-			{
-				gameObject.GetComponent<Animator>().Play( "walk_down" );
+				gameObject.GetComponent<Animator>().Play( "crawl_" + player.GetAniSuffix() );
 			}
 			#endregion
 		}
@@ -700,7 +667,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.isParrying = true;
 			player.parryTimer = parryTime;
 			#region animation
+			gameObject.GetComponent<Animator>().Play( "parry_" +  player.GetAniSuffix() );
 			#endregion
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkStoneSkinOn, 1.0f );
 		}
 		#endregion
 	}
