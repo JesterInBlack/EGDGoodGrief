@@ -134,6 +134,7 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\EyeScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\IsTargetAlive.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\LegScript.cs" />

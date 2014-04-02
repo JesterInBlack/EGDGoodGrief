@@ -96,12 +96,9 @@ public class LegScript : MonoBehaviour {
 
 		_maxBuffDuration = 30.0f;
 		_currentBuffDuration = 0.0f;
-<<<<<<< HEAD
 
 		currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f), 0.0f );
-=======
 		_recovering = false;
->>>>>>> origin/Finishing_Eye_Laser
 	}
 	
 	// Update is called once per frame
@@ -251,7 +248,6 @@ public class LegScript : MonoBehaviour {
 	//this handles the logic for the stats on the boss like health and buffs
 	void HandleStats()
 	{
-<<<<<<< HEAD
 		if ( currentColor.duration > 0.0f )
 		{
 			if ( currentColor.timer >= currentColor.duration )
@@ -264,8 +260,9 @@ public class LegScript : MonoBehaviour {
 				transform.parent.GetComponent<SpriteRenderer>().color = currentColor.color;
 			}
 			currentColor.timer += Time.deltaTime * StaticData.t_scale;
-=======
-		if(_behaviorState != BehaviorState.Disabled)
+		}
+
+		if (_behaviorState != BehaviorState.Disabled)
 		{
 			if(_currentHP <= 0.0f)
 			{
@@ -295,7 +292,6 @@ public class LegScript : MonoBehaviour {
 			{
 				_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
 			}
->>>>>>> origin/Finishing_Eye_Laser
 		}
 	}
 
