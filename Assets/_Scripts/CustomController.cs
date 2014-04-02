@@ -542,21 +542,13 @@ public class CustomController : MonoBehaviour
 			if ( playerState.state == "walk" )
 			{
 				#region animation
-				if ( facing == 0 && prevFacing != 0 )
+				if ( ! playerState.isDowned )
 				{
-					gameObject.GetComponent<Animator>().Play( "walk_right" );
+					gameObject.GetComponent<Animator>().Play( "walk_" + playerState.GetAniSuffix() );
 				}
-				else if ( facing == 1 && prevFacing != 1 )
+				else
 				{
-					gameObject.GetComponent<Animator>().Play( "walk_up" );
-				}
-				else if ( facing == 2 && prevFacing != 2 )
-				{
-					gameObject.GetComponent<Animator>().Play( "walk_left" );
-				}
-				else if ( facing == 3 && prevFacing != 3 )
-				{
-					gameObject.GetComponent<Animator>().Play( "walk_down" );
+					gameObject.GetComponent<Animator>().Play( "crawl_" + playerState.GetAniSuffix() );
 				}
 				#endregion
 			}

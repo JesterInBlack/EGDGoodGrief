@@ -16,9 +16,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	#region move data
 
 	#region X
-	private const float xNormalBaseDamage = 10.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
-	private const float xSmashBaseDamage  = 10.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
-	private const float xSmashAddDamage   = 10.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
+	private const float xNormalBaseDamage = 100.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
+	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
+	private const float xSmashAddDamage   = 100.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
 	private const float xSmashChainBonus  = 1.5f;    //Smash  attack: Spin2Win: damage multiplier from full chain
 
 	private const float xNormalAngle = 115.0f;       //Normal attack: Horizontal Slash: hit sector angle.
@@ -39,9 +39,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	#endregion
 	
 	#region Y
-	private const float yNormalBaseDamage = 10.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
-	private const float ySmashBaseDamage  = 10.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
-	private const float ySmashAddDamage   = 10.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
+	private const float yNormalBaseDamage = 100.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
+	private const float ySmashBaseDamage  = 100.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
+	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
 	private const float ySmashChainBonus  = 1.5f;    //Smash  attack: Blast Off: damage multiplier from full chain
 
 	private const float yChargeInterruptHP = 100.0f; //Charging up Y: interruption damage threshold.
@@ -477,7 +477,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "revcharge" )
 		{
 			//1.0f * dt = 100% per second
-			float deltaResource = ( 0.25f + 0.5f * Mathf.Sin ( rtHoldTime * Mathf.PI * 2.0f ) ) * 0.20f * dt; //0.10f * dt;
+			float deltaResource = ( 0.5f - 3.0f * Mathf.Cos ( rtHoldTime * Mathf.PI * 2.0f ) ) * 0.20f * dt; //0.10f * dt;
 			player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
 			player.resourceGraceT = 0.5f;
 			GamePad.SetVibration ( controller.playerIndex, 

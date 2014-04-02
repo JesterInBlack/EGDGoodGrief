@@ -25,12 +25,15 @@ public class CheckRadius : Action
 				for(int j = 0; j < GameState.players.Length; j++)
 				{
 					//close to the target
-					if(Vector2.Distance((Vector2)_blackboard.points[i].transform.position, (Vector2)GameState.players[j].transform.position) < _checkRadius)
+					if(GameState.players[j].GetComponent<Player>().isDowned == false)
 					{
-						_blackboard.targetPlayer = GameState.players[j];
-						_blackboard.selectedLeg = _blackboard.legsList[i];
-						_blackboard.selectedPoint = _blackboard.points[i];
-						return TaskStatus.Success;
+						if(Vector2.Distance((Vector2)_blackboard.points[i].transform.position, (Vector2)GameState.players[j].transform.position) < _checkRadius)
+						{
+							_blackboard.targetPlayer = GameState.players[j];
+							_blackboard.selectedLeg = _blackboard.legsList[i];
+							_blackboard.selectedPoint = _blackboard.points[i];
+							return TaskStatus.Success;
+						}
 					}
 				}
 			}

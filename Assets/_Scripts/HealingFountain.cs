@@ -5,7 +5,7 @@ public class HealingFountain : MonoBehaviour
 {
 	//A class for reviving downed players.
 	#region vars
-	public const float regenRate = 2.0f; //health per second
+	public const float regenRate = 20.0f; //health per second
 	#endregion
 
 
@@ -48,6 +48,7 @@ public class HealingFountain : MonoBehaviour
 						//player is dead
 						//regenerate max hp!
 						player.maxHP = Mathf.Min ( player.maxHP + regenRate * dt, player.baseMaxHP );
+						player.HP = Mathf.Min ( player.HP + regenRate * dt, player.maxHP );
 					}
 					else
 					{

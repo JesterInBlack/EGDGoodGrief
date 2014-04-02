@@ -17,7 +17,7 @@ public class Impale : Action
 	public float _cooldownTime;
 
 	public float radius = 1.0f;    //TODO: make < 1
-	public float damage = 1000.0f; //TODO: make sane
+	public float damage = 35.0f;   //TODO: make sane
 	#endregion
 
 	private enum AttackState
@@ -37,6 +37,8 @@ public class Impale : Action
 		_aimTime = 1.5f;
 		_attackTime = 0.1f;
 		_cooldownTime = 2.0f;
+
+		damage = 35.0f;
 	}
 
 	public override void OnStart()
