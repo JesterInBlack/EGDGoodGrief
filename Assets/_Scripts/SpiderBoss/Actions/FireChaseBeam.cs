@@ -5,7 +5,12 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("Attack")]
 public class FireChaseBeam : Action
 {
-	public float _chaseSpeed = 45.0f;
+	public GameObject _laserSpawnPoint;
+	public GameObject _eyeLaser;
+	private float _lastSpawnedTime;
+	private float _spawnDuration = 0.1f;
+
+	public float _chaseSpeed = 50.0f;
 
 	public float _chaseDuration = 10.0f;
 	public float _chaseTime;
@@ -27,6 +32,7 @@ public class FireChaseBeam : Action
 		_targetPlayer = _blackboard.targetPlayer.GetComponent<Player>();
 		_eyesScript._behaviorState = EyeScript.BehaviorStates.chaseBeam;
 		_chaseTime = 0.0f;
+		_lastSpawnedTime = _chaseTime + _spawnDuration;
 		_noTargetsLeft = false;
 	}
 	
@@ -41,6 +47,19 @@ public class FireChaseBeam : Action
 			}
 			else
 			{
+				//Spawn the laser parts and send em on their way
+				if(_chaseTime - _lastSpawnedTime >= _spawnDuration)
+				{
+
+					Vector3 spawnPos = _laserSpawnPoint.transform.position;
+					spawnPos.z = _chaseTime;
+					GameObject lzr =  Instantiate(_eyeLaser) as GameObject;
+					lzr.GetComponent<EyeLaserScript>().Initializer(spawnPos, _eyesScript._rotationVec.z);
+
+					_lastSpawnedTime = _chaseTime;
+				}
+
+				//increment the time
 				_chaseTime += Time.deltaTime * StaticData.t_scale;
 
 				if(_targetPlayer.isDowned == false)
