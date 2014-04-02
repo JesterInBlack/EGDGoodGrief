@@ -36,7 +36,7 @@ public class Impale : Action
 		_windupTime = 0.4f;
 		_aimTime = 1.5f;
 		_attackTime = 0.1f;
-		_cooldownTime = 3.0f;
+		_cooldownTime = 2.0f;
 	}
 
 	public override void OnStart()
@@ -94,6 +94,7 @@ public class Impale : Action
 		{
 			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _targetPoint) < 0.005f)
 			{
+				//Debug.Log("Start the attack!");
 				_state = AttackState.Cooldown;
 				_lerpTime = 0.0f;
 
@@ -102,6 +103,8 @@ public class Impale : Action
 				//Not until you give me a good way to access it.
 				AttackSystem.hitCircle ( _targetPoint, radius, damage, -1 );
 				GameState.cameraController.Shake ( 0.1f, 0.25f );
+
+				//Debug.Log("does it ever reach here?");
 
 				#region poison
 				//If poisonous, go through all hit objects, find the players, and poison them.
@@ -121,6 +124,7 @@ public class Impale : Action
 			}
 			else
 			{
+				//Debug.Log("winding up");
 				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _targetPoint, _lerpTime / _attackTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
@@ -129,6 +133,8 @@ public class Impale : Action
 		{
 			if(_lerpTime > _cooldownTime)
 			{
+
+				//Debug.Log("It still finishes fine");
 				_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
 				return TaskStatus.Success;
 			}
