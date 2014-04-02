@@ -22,12 +22,16 @@ public class CheckRadius : Action
 		{
 			if(_blackboard.legsList[i]._behaviorState != LegScript.BehaviorState.Disabled)
 			{
-				//close to the target
-				if(Vector2.Distance((Vector2)_blackboard.points[i].transform.position, (Vector2)_blackboard.targetPlayer.transform.position) < _checkRadius)
+				for(int j = 0; j < GameState.players.Length; j++)
 				{
-					_blackboard.selectedLeg = _blackboard.legsList[i];
-					_blackboard.selectedPoint = _blackboard.points[i];
-					return TaskStatus.Success;
+					//close to the target
+					if(Vector2.Distance((Vector2)_blackboard.points[i].transform.position, (Vector2)GameState.players[j].transform.position) < _checkRadius)
+					{
+						_blackboard.targetPlayer = GameState.players[j];
+						_blackboard.selectedLeg = _blackboard.legsList[i];
+						_blackboard.selectedPoint = _blackboard.points[i];
+						return TaskStatus.Success;
+					}
 				}
 			}
 		}
