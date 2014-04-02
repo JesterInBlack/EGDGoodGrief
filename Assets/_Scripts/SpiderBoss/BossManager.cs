@@ -43,12 +43,13 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-			/*
-			if(allBehaviors[i].behaviorName == "Impale")
+
+			if(allBehaviors[i].group == 1)
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
+			/*
 			if(allBehaviors[i].group == 2)
 			{
 				//Debug.Log("found one");
@@ -67,7 +68,6 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			if(allBehaviors[i].group == 5)
 			{
 				//Debug.Log("found one");

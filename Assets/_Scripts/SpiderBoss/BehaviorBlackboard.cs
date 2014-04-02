@@ -6,21 +6,21 @@ public class BehaviorBlackboard : MonoBehaviour
 {
 	#region gameobject vars
 	[HideInInspector]
-	public GameObject rightLeg1;
+	public LegScript rightLeg1;
 	[HideInInspector]
-	public GameObject rightLeg2;
+	public LegScript rightLeg2;
 	[HideInInspector]
-	public GameObject rightLeg3;
+	public LegScript rightLeg3;
 	[HideInInspector]
-	public GameObject rightLeg4;
+	public LegScript rightLeg4;
 	[HideInInspector]
-	public GameObject leftLeg5;
+	public LegScript leftLeg5;
 	[HideInInspector]
-	public GameObject leftLeg6;
+	public LegScript leftLeg6;
 	[HideInInspector]
-	public GameObject leftLeg7;
+	public LegScript leftLeg7;
 	[HideInInspector]
-	public GameObject leftLeg8;
+	public LegScript leftLeg8;
 
 	[HideInInspector]
 	public GameObject point1;
@@ -40,6 +40,23 @@ public class BehaviorBlackboard : MonoBehaviour
 	public GameObject point8;
 
 	[HideInInspector]
+	public GameObject disablePoint1;
+	[HideInInspector]
+	public GameObject disablePoint2;
+	[HideInInspector]
+	public GameObject disablePoint3;
+	[HideInInspector]
+	public GameObject disablePoint4;
+	[HideInInspector]
+	public GameObject disablePoint5;
+	[HideInInspector]
+	public GameObject disablePoint6;
+	[HideInInspector]
+	public GameObject disablePoint7;
+	[HideInInspector]
+	public GameObject disablePoint8;
+
+	[HideInInspector]
 	public GameObject rightMaw;
 	[HideInInspector]
 	public GameObject leftMaw;
@@ -47,8 +64,9 @@ public class BehaviorBlackboard : MonoBehaviour
 	public GameObject eye;
 	#endregion
 
-	public GameObject[] legsList = new GameObject[8];
+	public LegScript[] legsList = new LegScript[8];
 	public GameObject[] points = new GameObject[8];
+	public GameObject[] disablePoints = new GameObject[8];
 
 	public float coopAxisRecovery;
 	public float angerAxisRecovery;
@@ -69,7 +87,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	public Vector2 moveDirection;
 
 	//impale vars
-	public GameObject selectedLeg;
+	public LegScript selectedLeg;
 	public GameObject selectedPoint;
 
 	void Start()
@@ -100,6 +118,16 @@ public class BehaviorBlackboard : MonoBehaviour
 		legsList[6] = leftLeg7;
 		leftLeg8.GetComponent<LegScript>()._id = 7;
 		legsList[7] = leftLeg8;
+
+		disablePoints[0] = disablePoint1;
+		disablePoints[1] = disablePoint2;
+		disablePoints[2] = disablePoint3;
+		disablePoints[3] = disablePoint4;
+		disablePoints[4] = disablePoint5;
+		disablePoints[5] = disablePoint6;
+		disablePoints[6] = disablePoint7;
+		disablePoints[7] = disablePoint8;
+
 	}
 
 }
