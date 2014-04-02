@@ -3,6 +3,7 @@ using System.Collections;
 
 public class LegScript : MonoBehaviour {
 
+	#region vars
 	public int _id;
 
 	public float _radius = 2.5f;
@@ -14,6 +15,9 @@ public class LegScript : MonoBehaviour {
 	public float _currentHP;
 	public float _maxHP;
 	public bool invincible; //true when the leg is immune to damage.
+
+	//color vars
+	ScheduledColor currentColor;
 
 	#region LEG BUFF VARIABLES
 	public float _currentWebbingHP;
@@ -40,6 +44,7 @@ public class LegScript : MonoBehaviour {
 	public Vector2 _startPoint;
 	[HideInInspector]
 	public float _lerpTime;
+	#endregion
 
 	//enums
 	public enum BehaviorState
@@ -85,6 +90,8 @@ public class LegScript : MonoBehaviour {
 
 		_maxBuffDuration = 30.0f;
 		_currentBuffDuration = 0.0f;
+
+		currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f), 0.0f );
 	}
 	
 	// Update is called once per frame
@@ -191,7 +198,19 @@ public class LegScript : MonoBehaviour {
 	//this handles the logic for the stats on the boss like health and buffs
 	void HandleStats()
 	{
-
+		if ( currentColor.duration > 0.0f )
+		{
+			if ( currentColor.timer >= currentColor.duration )
+			{
+				currentColor.duration = 0.0f;
+				transform.parent.GetComponent<SpriteRenderer>().color = getResetColor ();
+			}
+			else
+			{
+				transform.parent.GetComponent<SpriteRenderer>().color = currentColor.color;
+			}
+			currentColor.timer += Time.deltaTime * StaticData.t_scale;
+		}
 	}
 
 	public void ApplyBuff(int buffID)
@@ -227,6 +246,23 @@ public class LegScript : MonoBehaviour {
 		return (_currentBuffDuration > 0.0f && _poisonDPS > 0.0f);
 	}
 
+	public Color getResetColor()
+	{
+		//returns the color the leg should be, given it's current state
+		if ( _currentWebbingHP > 0.0f )
+		{
+			return new Color( 0.0f, 0.0f, 1.0f );
+		}
+		else if ( isPoisonous () )
+		{
+			return new Color( 0.0f, 1.0f, 0.0f );
+		}
+		else
+		{
+			return new Color( 1.0f, 1.0f, 1.0f );
+		}
+	}
+
 	public void Hurt( float damage, int id )
 	{
 		//Handle players doing damage to the leg.
@@ -235,6 +271,11 @@ public class LegScript : MonoBehaviour {
 		if ( invincible ) { return; } //immune to damage
 		if ( _currentHP <= 0.0f ) { return; } //already dead
 		//deal damage.
+
+		//flash red.
+		currentColor.color = new Color( 1.0f, 0.5f, 0.5f );
+		currentColor.duration = 0.10f;
+		currentColor.timer = 0.0f;
 
 		if ( _currentWebbingHP > 0.0f )
 		{
