@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6CA307E4-D8EF-736A-C67D-C431932D8748}</ProjectGuid>
+	<ProjectGuid>{8B518695-CA99-90AC-0E81-4528D131FF1E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_0;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_3;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -85,75 +85,55 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector2.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector3.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector4.cs" />
-     <Compile Include="Assets\_Scripts\AttackSystem.cs" />
-     <Compile Include="Assets\_Scripts\AuraFX.cs" />
-     <Compile Include="Assets\_Scripts\Boss.cs" />
-     <Compile Include="Assets\_Scripts\Buff.cs" />
-     <Compile Include="Assets\_Scripts\BulletTimeManager.cs" />
-     <Compile Include="Assets\_Scripts\CameraController.cs" />
-     <Compile Include="Assets\_Scripts\Character Class\Bowlista.cs" />
-     <Compile Include="Assets\_Scripts\Character Class\Chainsickle.cs" />
-     <Compile Include="Assets\_Scripts\Character Class\ClassFunctionalityInterface.cs" />
-     <Compile Include="Assets\_Scripts\Character Class\NewClassPluginTemplate.cs" />
-     <Compile Include="Assets\_Scripts\Character Class\RocketSwordFunctions.cs" />
-     <Compile Include="Assets\_Scripts\Character Class\StoneFist.cs" />
-     <Compile Include="Assets\_Scripts\CustomController.cs" />
-     <Compile Include="Assets\_Scripts\EggAnimation.cs" />
-     <Compile Include="Assets\_Scripts\EggSpawner.cs" />
-     <Compile Include="Assets\_Scripts\GameState.cs" />
-     <Compile Include="Assets\_Scripts\GameStateWatcher.cs" />
-     <Compile Include="Assets\_Scripts\HUD.cs" />
-     <Compile Include="Assets\_Scripts\HealingFountain.cs" />
-     <Compile Include="Assets\_Scripts\Initializer.cs" />
-     <Compile Include="Assets\_Scripts\Item.cs" />
-     <Compile Include="Assets\_Scripts\ItemAnimation.cs" />
-     <Compile Include="Assets\_Scripts\ItemImages.cs" />
-     <Compile Include="Assets\_Scripts\LobProjectile.cs" />
-     <Compile Include="Assets\_Scripts\Player.cs" />
-     <Compile Include="Assets\_Scripts\PlayerColor.cs" />
-     <Compile Include="Assets\_Scripts\ScoreManager.cs" />
-     <Compile Include="Assets\_Scripts\SoundStorage.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ApplyBuff.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ChasePlayer.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\CreateAOE.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\DisableBody.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\FindUnbuffedLeg.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\FireChaseBeam.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\Impale.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\LegListSelector.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\MoveToPoint.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\PauseResumeBehavior.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\PlayerTargeter.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\SetTargetLeg.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\resetSelectedLeg.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorBlackboard.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorData.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BodyScript.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BodyShadow.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BossManager.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Composites\GetPlayerPriority_Sequence.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountLeg.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountPlayer.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckLegHealth.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\EyeLaserScript.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\EyeScript.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\IsTargetAlive.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\LegScript.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\LegShadow.cs" />
-     <Compile Include="Assets\_Scripts\StaticData.cs" />
-     <Compile Include="Assets\_Scripts\VenomPool.cs" />
-     <Compile Include="Assets\_Scripts\VibrationManager.cs" />
-     <Compile Include="Assets\_Scripts\Web.cs" />
+     <Compile Include="Assets\_scripts\AttackSystem.cs" />
+     <Compile Include="Assets\_scripts\AuraFX.cs" />
+     <Compile Include="Assets\_scripts\Boss.cs" />
+     <Compile Include="Assets\_scripts\Buff.cs" />
+     <Compile Include="Assets\_scripts\BulletTimeManager.cs" />
+     <Compile Include="Assets\_scripts\CameraController.cs" />
+     <Compile Include="Assets\_scripts\Character Class\Bowlista.cs" />
+     <Compile Include="Assets\_scripts\Character Class\Chainsickle.cs" />
+     <Compile Include="Assets\_scripts\Character Class\ClassFunctionalityInterface.cs" />
+     <Compile Include="Assets\_scripts\Character Class\NewClassPluginTemplate.cs" />
+     <Compile Include="Assets\_scripts\Character Class\RocketSwordFunctions.cs" />
+     <Compile Include="Assets\_scripts\Character Class\StoneFist.cs" />
+     <Compile Include="Assets\_scripts\CustomController.cs" />
+     <Compile Include="Assets\_scripts\EggAnimation.cs" />
+     <Compile Include="Assets\_scripts\EggSpawner.cs" />
+     <Compile Include="Assets\_scripts\GameState.cs" />
+     <Compile Include="Assets\_scripts\GameStateWatcher.cs" />
+     <Compile Include="Assets\_scripts\HUD.cs" />
+     <Compile Include="Assets\_scripts\HealingFountain.cs" />
+     <Compile Include="Assets\_scripts\Initializer.cs" />
+     <Compile Include="Assets\_scripts\Item.cs" />
+     <Compile Include="Assets\_scripts\ItemAnimation.cs" />
+     <Compile Include="Assets\_scripts\ItemImages.cs" />
+     <Compile Include="Assets\_scripts\LobProjectile.cs" />
+     <Compile Include="Assets\_scripts\Player.cs" />
+     <Compile Include="Assets\_scripts\PlayerColor.cs" />
+     <Compile Include="Assets\_scripts\ScoreManager.cs" />
+     <Compile Include="Assets\_scripts\SoundStorage.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BehaviorBlackboard.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BehaviorData.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BodyScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BodyShadow.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BossManager.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\EyeLaserScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\EyeScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\IsTargetAlive.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\LegShadow.cs" />
+     <Compile Include="Assets\_scripts\StaticData.cs" />
+     <Compile Include="Assets\_scripts\VenomPool.cs" />
+     <Compile Include="Assets\_scripts\VibrationManager.cs" />
+     <Compile Include="Assets\_scripts\Web.cs" />
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{FFFCFAD6-30F6-71DF-A0F1-E38E1BD13E30}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{EC0EF657-BA39-1FD3-5170-44AD15F90765}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
