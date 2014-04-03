@@ -6,6 +6,8 @@ public enum CharacterClasses { KNIGHT, ARCHER, NINJA, DEFENDER };
 public class Player : MonoBehaviour 
 {
 	//TODO: fix throw ani for item use.
+	//TODO: add anti-cooperation for phermononing, vampire fanging other players
+	//TODO: add cooperation for aura-ing up if your aura is still active / it buffs other players.
 
 	#region vars
 	[HideInInspector]
@@ -398,6 +400,10 @@ public class Player : MonoBehaviour
 		interruptHP -= damage;
 		interruptDR++;
 
+		//TODO: scale anti-cooperation based on how oftern interruption occurs
+		//TODO: greatly improve this horrible naiieve implementation
+		GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+
 		if ( interruptHP <= 0.0f )
 		{
 			canMove = true;
@@ -422,6 +428,8 @@ public class Player : MonoBehaviour
 				aggressor.buffs.RemoveAt ( i );
 				//TODO: Play blacklist sound, do notification
 				Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
+				//Blacklisting causes additional anti-cooperation
+				GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
 			}
 		}
 	}
@@ -651,7 +659,7 @@ public class Player : MonoBehaviour
 	private void StopWatch()
 	{
 		isInBulletTime = true;
-		bulletTimeDuration = 30.0f;
+		bulletTimeDuration = 12.0f;
 		StaticData.t_scale = 0.5f;
 		StaticData.bulletTimeDuration = bulletTimeDuration;
 		//TODO: lerp in, add visual effect, play sound

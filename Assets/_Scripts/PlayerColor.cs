@@ -35,6 +35,18 @@ public class PlayerColor : MonoBehaviour
 	{
 		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 
+		//Check if player is in bullet time.
+		if ( player.isInBulletTime )
+		{
+			this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 0.5f, 0.5f, 1.0f, 1.0f );
+			this.gameObject.GetComponent<Animator>().speed = 1.0f;
+		}
+		else
+		{
+			//Set their speed to whatever time scaling should make it. (note: 1.0 t scale - normal)
+			this.gameObject.GetComponent<Animator>().speed = StaticData.t_scale;
+		}
+
 		//Check if player is poisoned.
 		for ( int i = 0; i < player.buffs.Count; i++)
 		{
