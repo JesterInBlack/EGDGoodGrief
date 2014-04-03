@@ -146,6 +146,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\IsTargetAlive.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegShadow.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\RadiusScript.cs" />
      <Compile Include="Assets\_scripts\StaticData.cs" />
      <Compile Include="Assets\_scripts\VenomPool.cs" />
      <Compile Include="Assets\_scripts\VibrationManager.cs" />
