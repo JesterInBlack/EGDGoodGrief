@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("Attack")]
 public class Impale : Action
 {
 	#region vars

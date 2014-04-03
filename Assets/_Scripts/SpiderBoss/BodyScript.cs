@@ -6,6 +6,7 @@ public class BodyScript : MonoBehaviour
 {
 
 	public float _height;
+	public bool _invincible;
 
 	[HideInInspector]
 	public enum BehaviorState
@@ -31,6 +32,7 @@ public class BodyScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		_invincible = true;
 		_height = 3.5f;
 		_behaviorState = BehaviorState.Healthy;
 		_bodyState = BodyState.floating;

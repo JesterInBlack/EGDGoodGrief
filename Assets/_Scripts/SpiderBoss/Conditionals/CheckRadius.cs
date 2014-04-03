@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("Logic")]
 public class CheckRadius : Action 
 {
 	public float _checkRadius;
@@ -12,7 +13,7 @@ public class CheckRadius : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_checkRadius = 2.0f;
+		_checkRadius = _blackboard.point1.GetComponent<CircleCollider2D>().radius * transform.lossyScale.x;
 	}
 
 	//runs the actual task
