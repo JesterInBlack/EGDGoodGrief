@@ -544,7 +544,18 @@ public class CustomController : MonoBehaviour
 				#region animation
 				if ( ! playerState.isDowned )
 				{
-					gameObject.GetComponent<Animator>().Play( "walk_" + playerState.GetAniSuffix() );
+					if ( playerState.isCarried == false && playerState.isCarrier == false ) //default
+					{
+						gameObject.GetComponent<Animator>().Play( "walk_" + playerState.GetAniSuffix() );
+					}
+					else if ( playerState.isCarrier ) //carrying another player
+					{
+						gameObject.GetComponent<Animator>().Play( "carry_" + playerState.GetAniSuffix() );
+					}
+					else if ( playerState.isCarried ) //being carried by another player
+					{
+						gameObject.GetComponent<Animator>().Play( "idle_" + playerState.GetAniSuffix() );
+					}
 				}
 				else
 				{

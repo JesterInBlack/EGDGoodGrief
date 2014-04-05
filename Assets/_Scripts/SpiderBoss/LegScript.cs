@@ -22,6 +22,10 @@ public class LegScript : MonoBehaviour {
 	//color vars
 	ScheduledColor currentColor;
 
+	//sound vars
+	private float soundDelay = 0.5f; //seconds between hurt sound being played? TODO: better solution.
+	private float soundTimer = 0.0f;
+
 	#region LEG BUFF VARIABLES
 	public float _currentWebbingHP;
 	public float _maxWebbingHP;
@@ -380,6 +384,14 @@ public class LegScript : MonoBehaviour {
 		currentColor.color = new Color( 1.0f, 0.5f, 0.5f );
 		currentColor.duration = 0.10f;
 		currentColor.timer = 0.0f;
+
+		//Play hurt sound?
+		if ( soundTimer <= 0.0f )
+		{
+			transform.parent.GetComponent<AudioSource>().PlayOneShot ( transform.parent.GetComponent<SoundStorage>().KnightSlice, 0.35f );
+			soundTimer = soundDelay;
+		}
+		soundTimer = Mathf.Max ( 0.0f, soundTimer - Time.deltaTime * StaticData.t_scale );
 
 		if ( _currentWebbingHP > 0.0f )
 		{

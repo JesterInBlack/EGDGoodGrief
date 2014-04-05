@@ -179,12 +179,33 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 		}
 
+		if ( player.state == "xcharge" || player.state == "ycharge" )
+		{
+			#region animation
+			if ( GetComponent<CustomController>().move_vec.sqrMagnitude > 0.0f ) //moving
+			{
+				gameObject.GetComponent<Animator>().Play( "shuffle_" +  player.GetAniSuffix() );
+			}
+			else //idle
+			{
+				gameObject.GetComponent<Animator>().Play( "shuffle_idle_" +  player.GetAniSuffix() );
+			}
+			#endregion
+		}
+
 		if ( player.state == "idle" )
 		{
 			#region animation
 			if ( ! player.isDowned )
 			{
-				GetComponent<Animator>().Play ( "idle_" +  player.GetAniSuffix() );
+				if ( player.isCarrier == false )
+				{
+					GetComponent<Animator>().Play ( "idle_" +  player.GetAniSuffix() );
+				}
+				else
+				{
+					GetComponent<Animator>().Play ( "carry_idle_" +  player.GetAniSuffix() );
+				}
 			}
 			else
 			{
