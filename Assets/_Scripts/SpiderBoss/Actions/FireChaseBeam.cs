@@ -30,7 +30,7 @@ public class FireChaseBeam : Action
 	public override void OnStart()
 	{
 		_targetPlayer = _blackboard.targetPlayer.GetComponent<Player>();
-		_eyesScript._behaviorState = EyeScript.BehaviorStates.chaseBeam;
+		_eyesScript._behaviorState = EyeScript.BehaviorStates.ChaseBeam;
 		_chaseTime = 0.0f;
 		_lastSpawnedTime = _chaseTime + _spawnDuration;
 		_noTargetsLeft = false;
@@ -108,6 +108,6 @@ public class FireChaseBeam : Action
 
 	public override void OnEnd()
 	{
-		_eyesScript._behaviorState = EyeScript.BehaviorStates.idle;
+		_eyesScript._behaviorState = EyeScript.BehaviorStates.Idle;
 	}
 }

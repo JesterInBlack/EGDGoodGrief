@@ -24,10 +24,10 @@ public class BodySlam : Action
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 
-		_chargeTime = 3.0f;
+		_chargeTime = 2.0f;
 		_fallTime = 0.125f;
 		_riseTime = 2.0f;
-		_slamDuration = 4.0f;
+		_slamDuration = 2.5f;
 	}
 
 	public override void OnStart()
@@ -45,6 +45,8 @@ public class BodySlam : Action
 		float groundedHeight = Vector2.Distance(_startingPos, _blackboard.body._shadowPos);
 		groundedHeight *= 0.35f;
 		_groundedPos = new Vector2(_blackboard.body._shadowPos.x, _blackboard.body._shadowPos.y + groundedHeight);
+
+		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.LookDown;
 	}
 	
 	public override TaskStatus OnUpdate ()
@@ -75,21 +77,40 @@ public class BodySlam : Action
 			}
 			else
 			{
-				transform.position = Vector2.Lerp(_startingPos, _groundedPos, _lerpTime / _fallTime);
+				transform.position = Vector2.Lerp(_chargePos, _groundedPos, _lerpTime / _fallTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 		else if(_blackboard.body._bodyState == BodyScript.BodyState.OnGound)
 		{
-			if(_slamTimer < _slamDuration)
+			if(_slamTimer >= _slamDuration)
 			{
-				_slamTimer += Time.deltaTime * StaticData.t_scale;
+				_blackboard.body._bodyState = BodyScript.BodyState.Rising;
 			}
 			else
 			{
-				//_blackboard.body._bodyState = BodyScript.BodyState.Rising;
+				_slamTimer += Time.deltaTime * StaticData.t_scale;
+			}
+		}
+		else if (_blackboard.body._bodyState == BodyScript.BodyState.Rising)
+		{
+			if(Vector2.Distance( (Vector2)transform.position, _startingPos) < 0.001f)
+			{
+				_blackboard.body._bodyState = BodyScript.BodyState.Floating;
+				_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
+				return TaskStatus.Success;
+			}
+			else
+			{
+				transform.position = Vector2.Lerp(_groundedPos, _startingPos, _lerpTime / _riseTime);
+				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 		return TaskStatus.Running;
+	}
+
+	public override void OnEnd()
+	{
+		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.Idle;
 	}
 }

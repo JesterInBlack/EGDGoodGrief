@@ -11,8 +11,9 @@ public class EyeScript : MonoBehaviour
 
 	public enum BehaviorStates
 	{
-		idle = 0,
-		chaseBeam = 1,
+		Idle = 0,
+		ChaseBeam = 1,
+		LookDown =2,
 	}
 	public BehaviorStates _behaviorState;
 
@@ -21,13 +22,13 @@ public class EyeScript : MonoBehaviour
 	{
 		// cache for quick lookup
 		_blackboard = transform.parent.GetComponent<BehaviorBlackboard>();
-		_behaviorState = BehaviorStates.idle;
+		_behaviorState = BehaviorStates.Idle;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(_behaviorState == BehaviorStates.idle)
+		if(_behaviorState == BehaviorStates.Idle)
 		{
 			if(_blackboard.targetPlayer == null)
 			{
@@ -40,9 +41,14 @@ public class EyeScript : MonoBehaviour
 				RotateToTarget(_rotationSpeed);
 			}
 		}
-		else if(_behaviorState == BehaviorStates.chaseBeam)
+		else if(_behaviorState == BehaviorStates.ChaseBeam)
 		{
 			//do nothing for now
+		}
+		else if(_behaviorState == BehaviorStates.LookDown)
+		{
+			GetTargetAngle(_blackboard.body._shadowPos);
+			RotateToTarget(_rotationSpeed);
 		}
 	}
 
