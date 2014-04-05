@@ -29,6 +29,12 @@ public class HUD : MonoBehaviour
 	public Texture2D focusTexture;  //             (set in inspector)
 	public Texture2D styleTexture;  //             (set in inspector)
 
+	//Rocket sword GUI Lerping
+	private float needlePrevVal;    //start val
+	private float needleNextVal;    //end   val
+	private float needleLerpT;      //0.0f - 1.0f
+	private float needleLerpTime;   //total time to complete 1 lerp cycle. (s)
+
 	public enum ScreenCorner { UPPER_RIGHT, UPPER_LEFT, LOWER_RIGHT, LOWER_LEFT };
 	public ScreenCorner screenCorner;
 	public Vector2 HPBarOffset;      //HP bar's offset.               (set in inspector)
@@ -76,6 +82,8 @@ public class HUD : MonoBehaviour
 		lerpHP = player.baseMaxHP;
 		prevLerpHP = player.baseMaxHP;
 		nextLerpHP = player.baseMaxHP;
+
+		needleLerpTime = 0.35f;
 	}
 	
 	// Update is called once per frame
@@ -340,7 +348,16 @@ public class HUD : MonoBehaviour
 		GUI.DrawTexture ( new Rect( pos.x, pos.y, size.x, size.y ), knightBG );
 		
 		//Draw needle
-		float angle = Mathf.Lerp( dialBaseRotation, dialFullRotation, player.resource );
+		needleLerpT += Time.deltaTime / needleLerpTime;
+		if ( needleLerpT >= 1.0f )
+		{
+			needleLerpT -= 1.0f;
+			needlePrevVal = needleNextVal;
+			needleNextVal = player.resource;
+		}
+
+		float temp = Mathf.Lerp ( needlePrevVal, needleNextVal, needleLerpT );
+		float angle = Mathf.Lerp( dialBaseRotation, dialFullRotation, temp );
 		GUIUtility.RotateAroundPivot ( angle, pos + pivot );
 		GUI.DrawTexture ( new Rect( pos.x + pivot.x - needleTexture.width / 2.0f, 
 		                           pos.y + pivot.y - needleTexture.height / 2.0f, 
