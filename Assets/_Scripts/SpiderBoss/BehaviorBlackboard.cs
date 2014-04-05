@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 //The blackboard allows tasks to chare data with each other.
 public class BehaviorBlackboard : MonoBehaviour 
 {
+	#region vars
 	#region gameobject vars
 	[HideInInspector]
 	public LegScript rightLeg1;
@@ -94,6 +95,11 @@ public class BehaviorBlackboard : MonoBehaviour
 
 	public BehaviorData _currentBehavior;
 	public bool attackPatternStopped;
+
+	public bool _invincible;
+	public float HP;
+	public float maxHP;
+	#endregion
 
 	void Start()
 	{

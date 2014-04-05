@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 0c38effaa957e764296b6a00ed98192e
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - myBlackboard: {instanceID: 0}
+  - HPBarFill: {fileID: 2800000, guid: a48ce126d1376cf4aaa1e6056c3fa58e, type: 3}
+  - HPBarBG: {fileID: 2800000, guid: 688cc2e1a5834034b9c6235326dadb91, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

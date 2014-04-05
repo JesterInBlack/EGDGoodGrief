@@ -319,7 +319,7 @@ public static class AttackSystem
 		
 		Player hitPlayer = obj.GetComponent<Player>();
 		LegScript hitLeg = obj.GetComponent<LegScript>();
-		Boss hitBoss = obj.GetComponent<Boss>();
+		BossCoreHP hitBoss = obj.GetComponent<BossCoreHP>();
 		//TODO: put a hit "add / leg / enemy" in here.
 		
 		if ( hitPlayer != null ) //hit a player
@@ -347,7 +347,7 @@ public static class AttackSystem
 		{
 			if ( IsPlayer ( id ) ) //player -> boss attack
 			{
-				hitBoss.Hurt ( damage );
+				hitBoss.Hurt ( damage, id );
 			}
 			//else: ignore it.
 		}
