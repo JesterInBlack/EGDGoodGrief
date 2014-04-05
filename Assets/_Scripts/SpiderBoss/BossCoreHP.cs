@@ -14,6 +14,9 @@ public class BossCoreHP : MonoBehaviour
 	private float alpha = 1.0f;
 	private float prevAlpha = 1.0f;
 	ScheduledColor currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f), 0.0f );
+
+	private float soundDelay = 0.5f; //seconds between hurt sound being played? TODO: better solution.
+	private float soundTimer = 0.0f;
 	#endregion
 
 	// Use this for initialization
@@ -34,6 +37,7 @@ public class BossCoreHP : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		soundTimer = Mathf.Max ( 0.0f, soundTimer - Time.deltaTime * StaticData.t_scale );
 		HandleColoration();
 	}
 
@@ -126,5 +130,12 @@ public class BossCoreHP : MonoBehaviour
 		myBlackboard.HP -= damage;
 		ScoreManager.DealtDamage( id, damage );
 		currentColor = new ScheduledColor( new Color( 1.0f, 0.5f, 0.5f), 0.25f );
+
+		//Play hurt sound?
+		if ( soundTimer <= 0.0f )
+		{
+			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 0.35f );
+			soundTimer = soundDelay;
+		}
 	}
 }
