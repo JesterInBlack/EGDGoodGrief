@@ -122,6 +122,7 @@ public class BossManager : MonoBehaviour
 		_blackboard.decisionState = BehaviorBlackboard.DecisionState.resetAllBehaviors;
 
 		_blackboard.moveDirection = new Vector2(0, 0);
+		_blackboard.attackPatternStopped = false;
 		#endregion
 	}
 	
@@ -223,14 +224,17 @@ public class BossManager : MonoBehaviour
 		
 		else if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.runningTask)
 		{
-			if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
+			if(_blackboard.attackPatternStopped == false)
 			{
-				//Debug.Log("Finished a behavior");
-				//set the priority to 0 for use
-				_behaviorList[selectedIndex].UseAction();
+				if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
+				{
+					//Debug.Log("Finished a behavior");
+					//set the priority to 0 for use
+					_behaviorList[selectedIndex].UseAction();
 
-				_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
-				_blackboard._currentBehavior = null;
+					_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+					_blackboard._currentBehavior = null;
+				}
 			}
 		}
 

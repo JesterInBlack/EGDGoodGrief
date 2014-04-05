@@ -93,6 +93,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	public GameObject selectedPoint;
 
 	public BehaviorData _currentBehavior;
+	public bool attackPatternStopped;
 
 	void Start()
 	{

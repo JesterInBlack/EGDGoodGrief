@@ -21,4 +21,5 @@ public class LegShadow : MonoBehaviour
 		_pos.z = 10.0f;
 		transform.position = _pos;
 	}
+
 }

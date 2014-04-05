@@ -10,41 +10,60 @@ public class DisableBody : Action
 	public float _disableTimer;
 
 	private Vector2 _startingPos;
+	private Vector2 _groundedPos;
+
 	private BehaviorBlackboard _blackboard;
 	
 	public override void OnAwake()
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_fallSpeed = 9.0f;
+		_fallSpeed = 8.0f;
 		_riseSpeed = 3.0f;
 	}
 
 	public override void OnStart()
 	{
 		_blackboard.body._behaviorState = BodyScript.BehaviorState.Disabled;
-		_blackboard.body._bodyState = BodyScript.BodyState.falling;
+
 		_disabledDuration = 12.0f;
 		_disableTimer = 0.0f;
 		_startingPos = (Vector2)transform.position;
+
+		if(_blackboard.body._bodyState == BodyScript.BodyState.OnGound)
+		{
+			_groundedPos = _startingPos;
+		}
+		else
+		{
+			_blackboard.body._bodyState = BodyScript.BodyState.Falling;
+
+			float groundedHeight = Vector2.Distance( _startingPos, _blackboard.body._shadowPos);
+			groundedHeight *= 0.35f;
+			_groundedPos = new Vector2(_blackboard.body._shadowPos.x, _blackboard.body._shadowPos.y + groundedHeight);
+		}
 	}
 
 	//runs the actual task
 	public override TaskStatus OnUpdate()
 	{
-		if(_blackboard.body._bodyState == BodyScript.BodyState.falling)
+		//calculate the height of the boss
+		float currentHeight = Vector2.Distance((Vector2)transform.position, _groundedPos);
+		float maxHeight = Vector2.Distance(_startingPos, _groundedPos);
+		_blackboard.body._height = (currentHeight/maxHeight) * _blackboard.body._baseHeight;
+
+		if(_blackboard.body._bodyState == BodyScript.BodyState.Falling)
 		{
-			if(Vector2.Distance( (Vector2)transform.position, (Vector2)_blackboard.body._shadowPos) > 0.03f)
+			if(Vector2.Distance( (Vector2)transform.position, _groundedPos) > 0.03f)
 			{
-				//Debug.Log(Vector2.Distance( (Vector2)transform.position, (Vector2)_blackboard.body._shadowPos));
-				transform.position = Vector2.MoveTowards((Vector2)transform.position, (Vector2)_blackboard.body._shadowPos, _fallSpeed * (Time.deltaTime* StaticData.t_scale));
+				transform.position = Vector2.MoveTowards((Vector2)transform.position, _groundedPos, _fallSpeed * (Time.deltaTime* StaticData.t_scale));
 			}
 			else
 			{
-				_blackboard.body._bodyState = BodyScript.BodyState.onGound;
+				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
 			}
 		}
-		else if(_blackboard.body._bodyState == BodyScript.BodyState.onGound)
+		else if(_blackboard.body._bodyState == BodyScript.BodyState.OnGound)
 		{
 			if(_disableTimer < _disabledDuration)
 			{
@@ -61,10 +80,10 @@ public class DisableBody : Action
 					_blackboard.legsList[i].transform.parent.transform.localScale = Legscale;
 					_blackboard.legsList[i]._behaviorState = LegScript.BehaviorState.Walking;
 				}
-				_blackboard.body._bodyState = BodyScript.BodyState.rising;
+				_blackboard.body._bodyState = BodyScript.BodyState.Rising;
 			}
 		}
-		else if(_blackboard.body._bodyState == BodyScript.BodyState.rising)
+		else if(_blackboard.body._bodyState == BodyScript.BodyState.Rising)
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _startingPos) > 0.03f)
 			{
@@ -72,7 +91,7 @@ public class DisableBody : Action
 			}
 			else
 			{
-				_blackboard.body._bodyState = BodyScript.BodyState.floating;
+				_blackboard.body._bodyState = BodyScript.BodyState.Floating;
 				return TaskStatus.Success;
 			}
 		}
@@ -83,6 +102,6 @@ public class DisableBody : Action
 	public override void OnEnd()
 	{
 		_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
-		_blackboard.body._bodyState = BodyScript.BodyState.floating;
+		_blackboard.body._bodyState = BodyScript.BodyState.Floating;
 	}
 }

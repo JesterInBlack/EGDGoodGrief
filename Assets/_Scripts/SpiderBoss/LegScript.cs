@@ -39,6 +39,8 @@ public class LegScript : MonoBehaviour {
 	public Vector2 _shadowIntermediatePoint;
 	[HideInInspector]
 	public float _shadowMoveTime;
+	private Vector2 _shadowTargetPoint;
+	private Vector2 _shadowStartPoint;
 
 	private bool _intermediatePointReached;
 	private Vector3 _intermediatePoint;
@@ -114,13 +116,18 @@ public class LegScript : MonoBehaviour {
 				_shadowPos = (Vector2)transform.position;
 				if(_blackboard.body._behaviorState != BodyScript.BehaviorState.Disabled)
 				{
-					_shadowPos.y -= 3.0f;
+					//_shadowPos.y -= 3.0f;
+					_shadowPos.y -= _blackboard.body._height;
 				}
 			}
 			else if(_state == LegState.CalculateMove)
 			{
 				_targetPoint = _disabledPoint.transform.position;
-				_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, false);
+				_shadowTargetPoint = _targetPoint;
+				_shadowTargetPoint.y -= _blackboard.body._height;
+
+				_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, -1);
+				_shadowIntermediatePoint = GetIntermediatePoint(transform.position, _shadowTargetPoint, 0);
 				_intermediatePointReached = false;
 				_startPoint = transform.position;
 				_lerpTime = 0.0f;
@@ -147,18 +154,22 @@ public class LegScript : MonoBehaviour {
 			else if(_state == LegState.CalculateMove)
 			{
 				_targetPoint = _radiusPoint.transform.position + GetMoveVector();
+				_shadowTargetPoint = _targetPoint;
 				if(_recovering)
 				{
-					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, false);
+					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, -1);
+					_shadowIntermediatePoint = GetIntermediatePoint(transform.position, _shadowTargetPoint, 0);
 					_recovering = false;
 				}
 				else
 				{
 					//TODO: FIX NULL REF ERROR
-					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, true);
+					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, 1);
+					_shadowIntermediatePoint = GetIntermediatePoint(transform.position, _shadowTargetPoint, 0);
 				}
 				_intermediatePointReached = false;
 				_startPoint = transform.position;
+				_shadowStartPoint = _startPoint;
 				_lerpTime = 0.0f;
 				_state = LegState.Move;
 			}
@@ -188,31 +199,34 @@ public class LegScript : MonoBehaviour {
 	}
 
 	//returns the midpoint of ab and sets it up a bit
-	Vector3 GetIntermediatePoint(Vector3 a, Vector3 b, bool upOffset)
+	Vector3 GetIntermediatePoint(Vector3 a, Vector3 b, int upOffset)
 	{
 		float xPoint = a.x + ((b.x - a.x)/2);
 		float yPoint = a.y + ((b.y - a.y)/2);
 		float zPoint = a.z + ((b.z - a.z)/2);
-		_shadowIntermediatePoint = new Vector3(xPoint, yPoint, zPoint);
+		//_shadowIntermediatePoint = new Vector3(xPoint, yPoint, zPoint);
 
-		if(upOffset)
+		if(upOffset == 1)
 		{
 			yPoint += _radius * 1.6f;
 		}
-		else if(!upOffset)
+		else if(upOffset == -1)
 		{
 			yPoint -= _radius;
 		}
 
-		if(_blackboard.moveDirection.y > 0.5f)
+		if(upOffset != 0)
 		{
-			yPoint = b.y + _radius;
+			if(_blackboard.moveDirection.y > 0.5f)
+			{
+				yPoint = b.y + _radius;
+			}
+			else if(_blackboard.moveDirection.y < -0.5f)
+			{
+				yPoint = a.y + _radius;
+			}
 		}
-		else if(_blackboard.moveDirection.y < -0.5f)
-		{
-			yPoint = a.y + _radius;
-		}
-		return new Vector2(xPoint, yPoint);
+		return new Vector3(xPoint, yPoint, zPoint);
 	}
 
 	//function that moves the leg and sets the leg to idle when done
@@ -228,7 +242,7 @@ public class LegScript : MonoBehaviour {
 			else
 			{
 				transform.position = Vector3.Lerp(_startPoint, _intermediatePoint, _lerpTime / _moveTime);
-				_shadowPos = Vector2.Lerp(_startPoint, _shadowIntermediatePoint, _lerpTime / _moveTime);
+				_shadowPos = Vector2.Lerp(_shadowStartPoint, _shadowIntermediatePoint, _lerpTime / _moveTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
@@ -242,7 +256,7 @@ public class LegScript : MonoBehaviour {
 			else
 			{
 				transform.position = Vector3.Lerp(_intermediatePoint, _targetPoint, _lerpTime / _moveTime);
-				_shadowPos = Vector2.Lerp(_shadowIntermediatePoint, _targetPoint, _lerpTime / _moveTime);
+				_shadowPos = Vector2.Lerp(_shadowIntermediatePoint, _shadowTargetPoint, _lerpTime / _moveTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
@@ -271,6 +285,7 @@ public class LegScript : MonoBehaviour {
 			{
 				_behaviorState = BehaviorState.Disabled;
 				_state = LegState.CalculateMove;
+				_shadowStartPoint = transform.position;
 
 				Vector3 Legscale = transform.parent.transform.localScale;
 				Legscale.x = 2.0f;

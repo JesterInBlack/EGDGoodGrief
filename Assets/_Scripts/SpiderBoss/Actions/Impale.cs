@@ -2,6 +2,7 @@
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskCategory("Attack")]
 public class Impale : Action
 {
 	#region vars
@@ -20,14 +21,14 @@ public class Impale : Action
 	public float damage = 35.0f;   //TODO: make sane
 	#endregion
 
-	private enum AttackState
+	public enum AttackState
 	{
 		Windup = 0,
 		Aim = 1,
 		Attack = 2,
 		Cooldown = 3,
 	}
-	private AttackState _state;
+	public AttackState _state;
 
 	public override void OnAwake()
 	{
@@ -40,7 +41,7 @@ public class Impale : Action
 
 		damage = 35.0f;
 	}
-
+	
 	public override void OnStart()
 	{
 		_state = AttackState.Windup;
@@ -137,7 +138,6 @@ public class Impale : Action
 			{
 
 				//Debug.Log("It still finishes fine");
-				_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
 				return TaskStatus.Success;
 			}
 			else
@@ -147,5 +147,10 @@ public class Impale : Action
 		}
 
 		return TaskStatus.Running;
+	}
+
+	public override void OnEnd()
+	{
+		_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
 	}
 }
