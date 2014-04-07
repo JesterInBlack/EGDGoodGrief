@@ -76,6 +76,8 @@ public class Player : MonoBehaviour
 	public bool isInBulletTime = false;     //Immune to the stop watch slow?
 	float bulletTimeDuration = 0.0f;        //How long (real time) until time control immunity expires.
 
+	public HeadGrabber headGrabber;   //set in inspector.
+
 	public ArrayList buffs = new ArrayList();
 
 	//items x 3

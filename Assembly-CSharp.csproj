@@ -103,6 +103,7 @@
      <Compile Include="Assets\_Scripts\GameState.cs" />
      <Compile Include="Assets\_Scripts\GameStateWatcher.cs" />
      <Compile Include="Assets\_Scripts\HUD.cs" />
+     <Compile Include="Assets\_Scripts\HeadGrabber.cs" />
      <Compile Include="Assets\_Scripts\HealingFountain.cs" />
      <Compile Include="Assets\_Scripts\Initializer.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />

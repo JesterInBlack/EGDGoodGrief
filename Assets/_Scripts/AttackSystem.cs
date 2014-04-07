@@ -12,10 +12,19 @@ public enum PLAYER_IDS { BOSS = -1, ONE = 0, TWO = 1, THREE = 2, FOUR = 3 }; //m
 
 public static class AttackSystem 
 {
+	public static int GetLayerMask( int id )
+	{
+		//Returns the correct layer mask for the object the ID belongs to.
+		//Boss : id = -1, Hits Player only
+		if ( IsEnemy ( id ) ) { return (1 << LayerMask.NameToLayer("Player") ); }
+		//Player : id 1 to 4, Hits Boss and Player
+		else {  return ( (1 << LayerMask.NameToLayer ("Boss") ) | ( 1 << LayerMask.NameToLayer ("Player") ) ); }
+	}
+
 	public static void hitCircle( Vector2 center, float radius, float damage, int id )
 	{
-		//TODO: layer mask based on id
-		Collider2D[] hits = Physics2D.OverlapCircleAll( center, radius );
+		int layerMask = GetLayerMask( id );
+		Collider2D[] hits = Physics2D.OverlapCircleAll( center, radius, layerMask );
 
 		foreach ( Collider2D hit in hits )
 		{
@@ -27,19 +36,19 @@ public static class AttackSystem
 	{
 		//Returns all colliders intersecting / overlapping the circle.
 
-		//TODO: layer mask based on id
-		return Physics2D.OverlapCircleAll( center, radius );
+		int layerMask = GetLayerMask( id );
+		return Physics2D.OverlapCircleAll( center, radius, layerMask );
 	}
 
 	public static void hitLineSegment( Vector2 start, Vector2 end, float damage, int id )
 	{
-		//TODO: layer mask based on id
+		int layerMask = GetLayerMask( id );
 
 		#region DEBUG
 		Debug.DrawLine ( start, end, new Color( 0.0f, 1.0f, 0.0f) );
 		#endregion
 
-		RaycastHit2D[] hits = Physics2D.LinecastAll( start, end );
+		RaycastHit2D[] hits = Physics2D.LinecastAll( start, end, layerMask );
 
 		foreach ( RaycastHit2D hit in hits )
 		{
@@ -51,12 +60,12 @@ public static class AttackSystem
 	{
 		//returns all hits on the line segment
 
-		//TODO: layer mask based on id
+		int layerMask = GetLayerMask( id );
 		#region DEBUG
 		Debug.DrawLine ( start, end, new Color( 0.0f, 1.0f, 0.0f) );
 		#endregion
 		
-		return Physics2D.LinecastAll( start, end );
+		return Physics2D.LinecastAll( start, end, layerMask );
 	}
 
 	public static void hitBox( Rect attackBox, float damage, int id )
@@ -76,9 +85,10 @@ public static class AttackSystem
 		                new Color( 0.0f, 1.0f, 0.0f ) );
 		#endregion
 
-		//TODO: layer mask based on id
+		int layerMask = GetLayerMask( id );
 		Collider2D[] hits = Physics2D.OverlapAreaAll( new Vector2( attackBox.x, attackBox.y ), 
-		                                              new Vector2( attackBox.x + attackBox.width, attackBox.y + attackBox.height) );
+		                                              new Vector2( attackBox.x + attackBox.width, attackBox.y + attackBox.height),
+		                                              layerMask );
 		foreach ( Collider2D hit in hits )
 		{
 			Hit ( hit.gameObject, id, damage );
@@ -89,7 +99,7 @@ public static class AttackSystem
 	{
 		//Returns all colliders in the specified box.
 
-		//TODO: layer mask based on id
+		int layerMask = GetLayerMask( id );
 		#region DEBUG
 		Debug.DrawLine ( new Vector3( box.x, box.y ), 
 		                new Vector3( box.x + box.width, box.y ), 
@@ -105,14 +115,15 @@ public static class AttackSystem
 		                new Color( 0.0f, 1.0f, 0.0f ) );
 		#endregion
 		return Physics2D.OverlapAreaAll( new Vector2( box.x, box.y ), 
-		                                 new Vector2( box.x + box.width, box.y + box.height) );
+		                                 new Vector2( box.x + box.width, box.y + box.height),
+		                                 layerMask );
 
 	}
 
 	
 	public static void hitSector( Vector2 pos, float minTheta, float maxTheta, float maxRadius, float damage, int id )
 	{
-		//TODO: layer mask this!
+		int layerMask = GetLayerMask( id );
 		
 		//NOTE: theta is an angle, in DEGREES, >= -360.0f
 		float minRadius = 0.0f;
@@ -139,7 +150,7 @@ public static class AttackSystem
 		
 		//if getcomponent player != null, do player stuff
 		//if getcomponent boss != null, do boss stuff
-		Collider2D[] potentialHits = Physics2D.OverlapCircleAll( pos, maxRadius );
+		Collider2D[] potentialHits = Physics2D.OverlapCircleAll( pos, maxRadius, layerMask );
 		foreach (Collider2D hit in potentialHits )
 		{
 			//COMMON LOGIC
@@ -225,85 +236,6 @@ public static class AttackSystem
 			}
 			//END COMMON LOGIC
 		}
-		
-		/*
-
-		#region players
-		//players
-		for ( int i = 0; i < GameState.players.Length; i++ )
-		{
-			if ( GameState.players[i] != null )
-			{
-				if ( i != id ) //no self-hitting
-				{
-					float x = GameState.players[i].transform.position.x;
-					float y = GameState.players[i].transform.position.y;
-					float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
-
-					if ( dist >= minRadius && dist <= maxRadius )
-					{
-						float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
-
-						//Debug.Log ( angle ); //DEBUG
-						Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
-
-						if ( angle >= minTheta && angle <= maxTheta )
-						{
-							//Debug.Log ( "Hit, normal" );
-							GameState.players[i].GetComponent<Player>().Hurt ( damage );
-						}
-						else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
-						{
-							//The sign on the angle changed. 
-							//So to tell if it's in the sector, 
-							//we check that it is not in the complement of the angle swept from min to max
-							//(the complement is the angle swept from max to min.)
-							if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
-							{
-								//Debug.Log ( "Hit, negative angle" );
-								GameState.players[i].GetComponent<Player>().Hurt ( damage );
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion
-		#region boss
-		//boss
-		if ( GameState.boss != null )
-		{
-			float x = GameState.boss.transform.position.x;
-			float y = GameState.boss.transform.position.y;
-			float dist = Mathf.Pow(  ( (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) ), 0.5f );
-			
-			if ( dist >= minRadius && dist <= maxRadius )
-			{
-				float angle = (Mathf.Rad2Deg * Mathf.Atan2 ( y - pos.y, x - pos.x ) + 360.0f) % 360.0f;
-
-				Debug.DrawLine( new Vector3( pos.x, pos.y, 0.0f ), new Vector3( x, y, 0.0f ), new Color(1.0f, 0.0f, 0.0f) );
-				
-				if ( angle >= minTheta && angle <= maxTheta )
-				{
-					GameState.boss.GetComponent<Boss>().Hurt ( damage );
-				}
-				else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
-				{
-					//The sign on the angle changed. 
-					//So to tell if it's in the sector, 
-					//we check that it is not in the complement of the angle swept from min to max
-					//(the complement is the angle swept from max to min.)
-					if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
-					{
-						//Debug.Log ( "Hit, negative angle" );
-						GameState.boss.GetComponent<Boss>().Hurt ( damage );
-					}
-				}
-			}
-		}
-		#endregion
-
-        */
 	}
 
 	private static void Hit( GameObject obj, int id, float damage )
