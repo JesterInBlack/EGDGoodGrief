@@ -17,6 +17,7 @@ public class HeadGrabber : MonoBehaviour
 	void Awake ()
 	{
 		player = this.gameObject.transform.parent.GetComponent<Player>();
+		player.headGrabber = this;
 	}
 
 	// Use this for initialization
