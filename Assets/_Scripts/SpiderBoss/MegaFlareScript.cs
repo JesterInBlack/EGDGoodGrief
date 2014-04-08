@@ -10,26 +10,42 @@ public class MegaFlareScript : MonoBehaviour
 	public float _travelTime = 1.5f;
 
 	private float _chargeDuration;
+	private float _cancelDuration;
 	private bool _charging;
 
 	private Vector3 _baseSize;
+	private GameObject _spawnPoint;
+
+	private enum State
+	{
+		Charging = 0,
+		Fire = 1,
+		Cancel = 2,
+	}
+	private State _state;
 
 	// Use this for initialization
 	void Start () 
 	{
 		transform.localScale = Vector3.zero;
 		_baseSize = new Vector3(1, 1, 1);
+
+		_lerpTime = 0.0f;
+		_cancelDuration = 0.2f;
+		_state = State.Charging;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(_charging)
+		if(_state == State.Charging)
 		{
+			transform.position = _spawnPoint.transform.position;
 			transform.localScale = Vector3.Lerp(Vector3.zero, _baseSize, _lerpTime / _chargeDuration);
 			_lerpTime += (Time.deltaTime * StaticData.t_scale);
+			_startPos = transform.position;
 		}
-		else
+		else if(_state == State.Fire)
 		{
 			if(Vector3.Distance(_endPos, transform.position) < 0.001f)
 			{
@@ -42,10 +58,24 @@ public class MegaFlareScript : MonoBehaviour
 				_lerpTime += (Time.deltaTime * StaticData.t_scale);
 			}
 		}
+		else if(_state == State.Cancel)
+		{
+			if(transform.localScale == Vector3.zero)
+			{
+				Destroy(this.gameObject);
+			}
+			else
+			{
+				transform.position = _spawnPoint.transform.position;
+				transform.localScale = Vector3.Lerp(_baseSize, Vector3.zero, _lerpTime / _cancelDuration);
+				_lerpTime += (Time.deltaTime * StaticData.t_scale);
+			}
+		}
 	}
 
-	public void Initializer(Vector3 startPos, Vector3 endPos, float chargeDuration)
+	public void Initializer(GameObject parent, Vector3 startPos, Vector3 endPos, float chargeDuration)
 	{
+		_spawnPoint = parent;
 		transform.position = startPos;
 		_startPos = transform.position;
 		_endPos = endPos;
@@ -55,6 +85,12 @@ public class MegaFlareScript : MonoBehaviour
 	public void Attack()
 	{
 		_lerpTime = 0.0f;
-		_charging = false;
+		_state = State.Fire;
+	}
+	public void Cancel()
+	{
+		_lerpTime = 0.0f;
+		_state = State.Cancel;
+		_baseSize = transform.localScale;
 	}
 }

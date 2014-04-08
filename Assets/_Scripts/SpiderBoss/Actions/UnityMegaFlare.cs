@@ -7,7 +7,7 @@ using BehaviorDesigner.Runtime.Tasks;
 public class UnityMegaFlare : Action
 {
 	public GameObject _megaFlareLaser;
-	public GameObject _laserSpawnPoint;
+	public EyeScript _eyeScript;
 	private GameObject _spawnedMegaFlare;
 
 	public SharedBool _sharedFinishedAttack;
@@ -34,7 +34,7 @@ public class UnityMegaFlare : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_laserSpawnPoint = GameObject.Find("EyeballObject/LaserSpawnPoint");
+		_eyeScript = _blackboard.eye.GetComponent<EyeScript>();
 
 		_bumpHeight = 1.5f;
 		_riseDuration = 2.0f;
@@ -86,6 +86,7 @@ public class UnityMegaFlare : Action
 			_chargeDuration = 18.0f;
 		}
 		_chargeTime = 0.0f;
+		_lerpTime = 0.0f;
 	}
 
 	public override TaskStatus OnUpdate()
@@ -103,8 +104,8 @@ public class UnityMegaFlare : Action
 				_lerpTime = 0.0f;
 
 				//create the megaflare!
-				_spawnedMegaFlare = Instantiate(_megaFlareLaser, _laserSpawnPoint.transform.position, Quaternion.identity) as GameObject;
-				_spawnedMegaFlare.GetComponent<MegaFlareScript>().Initializer(_laserSpawnPoint.transform.position, _blackboard.body._shadowPos, _chargeDuration);
+				_spawnedMegaFlare = Instantiate(_megaFlareLaser, _eyeScript._laserSpawnPoint.transform.position, Quaternion.identity) as GameObject;
+				_spawnedMegaFlare.GetComponent<MegaFlareScript>().Initializer(_eyeScript._laserSpawnPoint, _eyeScript._laserSpawnPoint.transform.position, _blackboard.body._shadowPos, _chargeDuration);
 			}
 			else
 			{
@@ -165,6 +166,14 @@ public class UnityMegaFlare : Action
 
 	public override void OnEnd()
 	{
+		if(_sharedFinishedAttack.Value == false)
+		{
+			_spawnedMegaFlare.GetComponent<MegaFlareScript>().Cancel();
+		}
+		else
+		{
+			_sharedFinishedAttack.Value = false;
+		}
 		shake = new Vector2(0, 0);
 		_blackboard.body._bodyState = BodyScript.BodyState.Floating;
 		_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;

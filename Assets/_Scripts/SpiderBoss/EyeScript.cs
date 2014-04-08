@@ -9,6 +9,8 @@ public class EyeScript : MonoBehaviour
 	public Vector3 _rotationVec = new Vector3(0, 0, 0);	//the current rotation vector
 	public float _targetAngle;								//target angle in degrees
 
+	public GameObject _laserSpawnPoint;
+
 	public enum BehaviorStates
 	{
 		Idle = 0,
@@ -25,6 +27,7 @@ public class EyeScript : MonoBehaviour
 		// cache for quick lookup
 		_blackboard = transform.parent.GetComponent<BehaviorBlackboard>();
 		_behaviorState = BehaviorStates.Idle;
+		_laserSpawnPoint = GameObject.Find("EyeballObject/LaserSpawnPoint");
 	}
 	
 	// Update is called once per frame
