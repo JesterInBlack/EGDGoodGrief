@@ -14,6 +14,8 @@ public class CheckPointRadius : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
+		_radiusPoint = GameObject.Find("BodyShadow");
+
 		if(_radiusValue == 0.0f)
 		{
 			Debug.Log("WARNING: Radius value in CheckPointRadius task not set");
