@@ -26,14 +26,21 @@ public class ChasePlayer : Action
 			return TaskStatus.Success;
 		}
 		*/
-
+		Vector2 offsetPos = (Vector2)_blackboard.targetPlayer.transform.position;
+		offsetPos.y += _blackboard.body._height;
 		// We haven't reached the target yet so keep moving towards it
-		transform.position = Vector2.MoveTowards((Vector2)transform.position, (Vector2)_blackboard.targetPlayer.transform.position, _speed * (Time.deltaTime* StaticData.t_scale));
+		transform.position = Vector2.MoveTowards((Vector2)transform.position, offsetPos, _speed * (Time.deltaTime* StaticData.t_scale));
 
-		Vector2 direction = (Vector2)_blackboard.targetPlayer.transform.position - (Vector2)transform.position;
+		//Vector2 direction = (Vector2)_blackboard.targetPlayer.transform.position - (Vector2)transform.position;
+		Vector2 direction = (Vector2)_blackboard.targetPlayer.transform.position - _blackboard.body._shadowPos;
 		direction.Normalize();
 		_blackboard.moveDirection = direction;
 
 		return TaskStatus.Running; 
+	}
+
+	public override void OnEnd ()
+	{
+		_blackboard.moveDirection = new Vector2(0,0);
 	}
 }

@@ -56,6 +56,7 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 40);
 				_behaviorList.Add(testBehavior);
 			}
+			/*
 			if(allBehaviors[i].group == 2)	//apply buff
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
@@ -76,6 +77,7 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
+			*/
 			/*
 			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
 			{
