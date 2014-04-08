@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
 public class LegListSelector : Action
 {
 	private BehaviorBlackboard _blackboard;
-
-	[SharedField]
+	
 	public int[] _selectedLegs = new int[4];
 
 	public override void OnAwake()
@@ -138,9 +138,6 @@ public class LegListSelector : Action
 
 	public override void OnEnd()
 	{
-		for(int i = 0; i < _selectedLegs.Length; i++)
-		{
-			//Debug.Log(_selectedLegs[i]);
-		}
+		_blackboard.selectedLegs = _selectedLegs;
 	}
 }

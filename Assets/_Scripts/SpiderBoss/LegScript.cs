@@ -65,6 +65,7 @@ public class LegScript : MonoBehaviour {
 		Impale = 1,
 		Rake = 2,
 		ApplyingBuff = 3,
+		MegaFlareUnused = 4,
 	}
 	public BehaviorState _behaviorState;
 

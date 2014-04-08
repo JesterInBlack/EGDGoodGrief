@@ -50,7 +50,7 @@ public class BossManager : MonoBehaviour
 				_behaviorList.Add(testBehavior);
 			}
 			*/
-
+			/*
 			if(allBehaviors[i].group == 1)	//Impale
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 40);
@@ -78,6 +78,11 @@ public class BossManager : MonoBehaviour
 				_behaviorList.Add(testBehavior);
 			}
 			*/
+			if(allBehaviors[i].group == 6) //UnityMegaFlare
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				_behaviorList.Add(testBehavior);
+			}
 			/*
 			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
 			{

@@ -39,7 +39,7 @@ public class DisableBody : Action
 			_blackboard.body._bodyState = BodyScript.BodyState.Falling;
 
 			float groundedHeight = Vector2.Distance( _startingPos, _blackboard.body._shadowPos);
-			groundedHeight *= 0.35f;
+			groundedHeight *= _blackboard.body._groundHeightOffset;
 			_groundedPos = new Vector2(_blackboard.body._shadowPos.x, _blackboard.body._shadowPos.y + groundedHeight);
 		}
 	}
@@ -80,10 +80,10 @@ public class DisableBody : Action
 					_blackboard.legsList[i].transform.parent.transform.localScale = Legscale;
 					_blackboard.legsList[i]._behaviorState = LegScript.BehaviorState.Walking;
 				}
-				_blackboard.body._bodyState = BodyScript.BodyState.Rising;
+				_blackboard.body._bodyState = BodyScript.BodyState.Recovery;
 			}
 		}
-		else if(_blackboard.body._bodyState == BodyScript.BodyState.Rising)
+		else if(_blackboard.body._bodyState == BodyScript.BodyState.Recovery)
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _startingPos) > 0.03f)
 			{

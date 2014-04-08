@@ -13,7 +13,9 @@ public class EyeScript : MonoBehaviour
 	{
 		Idle = 0,
 		ChaseBeam = 1,
-		LookDown =2,
+		LookDown = 2,
+		Charge = 3,
+		LookAtLeg = 4,
 	}
 	public BehaviorStates _behaviorState;
 
@@ -48,6 +50,11 @@ public class EyeScript : MonoBehaviour
 		else if(_behaviorState == BehaviorStates.LookDown)
 		{
 			GetTargetAngle(_blackboard.body._shadowPos);
+			RotateToTarget(_rotationSpeed);
+		}
+		else if(_behaviorState == BehaviorStates.LookAtLeg)
+		{
+			GetTargetAngle(_blackboard.selectedLeg.transform.position);
 			RotateToTarget(_rotationSpeed);
 		}
 	}

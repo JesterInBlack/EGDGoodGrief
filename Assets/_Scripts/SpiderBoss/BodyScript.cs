@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class BodyScript : MonoBehaviour 
 {
+	[HideInInspector]
+	public float _groundHeightOffset;
 
 	public float _baseHeight;
 	public float _height;
@@ -15,6 +17,7 @@ public class BodyScript : MonoBehaviour
 		Disabled = -1,
 		Healthy = 0,
 		BodySlam = 1,
+		MegaFlare = 2,
 	}
 	public BehaviorState _behaviorState;
 
@@ -25,7 +28,9 @@ public class BodyScript : MonoBehaviour
 		Falling = 1,
 		OnGound = 2,
 		Rising = 3,
-		Charging = 4
+		Charging = 4,
+		Recovery = 5,
+		Attacking = 6,
 	}
 	public BodyState _bodyState;
 
@@ -37,6 +42,7 @@ public class BodyScript : MonoBehaviour
 	{
 		_invincible = true;
 		_baseHeight = 3.5f;
+		_groundHeightOffset = 0.35f;
 		_height = _baseHeight;
 		_behaviorState = BehaviorState.Healthy;
 		_bodyState = BodyState.Floating;

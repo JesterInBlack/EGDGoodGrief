@@ -43,7 +43,7 @@ public class BodySlam : Action
 		_chargePos = new Vector2(_startingPos.x, _startingPos.y + _bumpHeight);
 
 		float groundedHeight = Vector2.Distance(_startingPos, _blackboard.body._shadowPos);
-		groundedHeight *= 0.35f;
+		groundedHeight *= _blackboard.body._groundHeightOffset;
 		_groundedPos = new Vector2(_blackboard.body._shadowPos.x, _blackboard.body._shadowPos.y + groundedHeight);
 
 		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.LookDown;
@@ -96,8 +96,6 @@ public class BodySlam : Action
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _startingPos) < 0.001f)
 			{
-				_blackboard.body._bodyState = BodyScript.BodyState.Floating;
-				_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
 				return TaskStatus.Success;
 			}
 			else
@@ -111,6 +109,8 @@ public class BodySlam : Action
 
 	public override void OnEnd()
 	{
+		_blackboard.body._bodyState = BodyScript.BodyState.Floating;
+		_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
 		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.Idle;
 	}
 }

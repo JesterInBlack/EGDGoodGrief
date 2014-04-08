@@ -40,23 +40,21 @@ public class ApplyBuff : Action
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 
-		if(rightLegsStart == null ||
-		   rightLegsStart == null ||
-		   rightLegsStart == null ||
-		   rightLegsStart == null)
-		{
-			Debug.Log("ERROR: no reference for buff application points on this leg");
-		}
+		rightLegsStart = GameObject.Find("BuffStartRightLeg");
+		rightLegsEnd = GameObject.Find("BuffEndRightLeg");
+		leftLegsStart = GameObject.Find("BuffStartLeftLeg");
+		leftLegsEnd = GameObject.Find("BuffEndLeftLeg");
 	}
 
 	public override void OnStart ()
 	{
 		_blackboard.selectedLeg.GetComponent<LegScript>()._state = LegScript.LegState.CalculateMove;
 		_blackboard.selectedLeg.GetComponent<LegScript>()._behaviorState = LegScript.BehaviorState.ApplyingBuff;
+		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.LookAtLeg;
 		_finished = false;
 		_goingBack = false;
-		_moveTime = 2.0f;
-		_applicationTime = 2.0f;
+		_moveTime = 1.75f;
+		_applicationTime = 1.5f;
 	}
 
 	//applies the buff to the selected leg
@@ -179,8 +177,8 @@ public class ApplyBuff : Action
 			_intermediatePoint.y -= 2;
 		}
 
-		_moveTime = 1.0f;
-		_applicationTime = 0.5f;
+		_moveTime = 0.75f;
+		_applicationTime = 0.25f;
 
 		_shadowIntermediatePoint = _intermediatePoint;
 		_shadowIntermediatePoint.y -= 2.25f;
@@ -193,5 +191,6 @@ public class ApplyBuff : Action
 	{
 		_blackboard.selectedLeg.GetComponent<LegScript>()._state = LegScript.LegState.Idle;
 		_blackboard.selectedLeg.GetComponent<LegScript>()._behaviorState = LegScript.BehaviorState.Walking;
+		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.Idle;
 	}
 }
