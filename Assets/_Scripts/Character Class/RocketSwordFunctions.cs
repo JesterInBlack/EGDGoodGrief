@@ -29,7 +29,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
-	private const float xChargeMax = 10.0f;           //maximum hold time: more than this confers no benefit.
+	private const float xChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
 	private const float xNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
 	//private const float xSmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 
@@ -50,7 +50,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	private float yHoldTime  = 0.0f;
 	private const float yChargeMin = 1.0f;            //minimum hold time to use the charged version of the y attack
-	private const float yChargeMax = 10.0f;           //maximum hold time: more than this confers no benefit.
+	private const float yChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
 	private const float yNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
 	//private const float ySmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 	#endregion
@@ -362,14 +362,14 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 				//feedback: charge reached.
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
 				//TODO: sound
-				//TODO: vibration
+				GetComponent<VibrationManager>().ScheduleVibration ( 0.25f, 0.25f, 0.25f );
 			}
 			if ( xHoldTime - dt < xChargeMax && xHoldTime >= xChargeMax )
 			{
 				//feedback: max charge reached.
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
 				//TODO: sound
-				//TODO: vibration
+				GetComponent<VibrationManager>().ScheduleVibration ( 0.5f, 0.5f, 0.25f );
 			}
 		}
 	}
@@ -442,13 +442,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			{
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
 				//TODO: sound
-				//TODO: vibration
+				GetComponent<VibrationManager>().ScheduleVibration ( 0.25f, 0.25f, 0.25f );
 			}
 			if ( yHoldTime - dt < yChargeMax && yHoldTime >= yChargeMax )
 			{
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
 				//TODO: sound
-				//TODO: vibration
+				GetComponent<VibrationManager>().ScheduleVibration ( 0.5f, 0.5f, 0.25f );
 			}
 		}
 	}
@@ -489,7 +489,6 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			GetComponent<AudioSource>().Stop ();
 		}
 		rtHoldTime = 0.0f;
-		GamePad.SetVibration ( controller.playerIndex, 0.0f, 0.0f );
 	}
 	public void RTHeld( float dt )
 	{
@@ -501,13 +500,10 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			float deltaResource = ( 0.5f - 3.0f * Mathf.Cos ( rtHoldTime * Mathf.PI * 2.0f ) ) * 0.20f * dt; //0.10f * dt;
 			player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
 			player.resourceGraceT = 0.5f;
-			GamePad.SetVibration ( controller.playerIndex, 
-			                      0.05f + 0.05f * (0.5f * ( Mathf.Sin( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) ), 
-			                      0.1f + 0.1f * (0.5f * ( Mathf.Cos( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) ) );
-		}
-		else
-		{
-			GamePad.SetVibration ( controller.playerIndex, 0.0f, 0.0f );
+
+			float vibrationL = 0.05f + 0.05f * (0.5f * ( Mathf.Sin( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) );
+			float vibrationR = 0.1f + 0.1f * (0.5f * ( Mathf.Cos( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) );
+			GetComponent<VibrationManager>().AddVibrationForThisFrame ( vibrationL, vibrationR );
 		}
 		rtHoldTime += dt;
 	}

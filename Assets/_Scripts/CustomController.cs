@@ -93,7 +93,11 @@ public class CustomController : MonoBehaviour
 					if ( playerState.isCarried )
 					{
 						//override move_vec
-						Vector2 tempVec = playerState.carryVec + playerState.Carrier.GetComponent<Player>().carryVec;
+						Vector2 tempVec = playerState.carryVec;
+						if ( playerState.Carrier.GetComponent<Player>().canMove )
+						{
+							tempVec += playerState.Carrier.GetComponent<Player>().carryVec;
+						}
 						move_vec = 0.75f * tempVec;
 					}
 					else
@@ -224,18 +228,38 @@ public class CustomController : MonoBehaviour
 				else if ( playerState.isCarried )
 				{
 					//force other player to drop you.
+					#region animation
+					playerState.Carrier.GetComponent<Animator>().Play ( "throw_" + GetComponent<Player>().GetAniSuffix() );
+					playerState.Carrier.GetComponent<Player>().canMove = false;
+					playerState.Carrier.GetComponent<Player>().state = "throw";
+					playerState.Carrier.GetComponent<Player>().stateTimer = 0.5f;
+					playerState.Carrier.GetComponent<Player>().nextState = "idle";
+					#endregion
 					//Debug.Log ( "Carried player made you drop them." );
 					playerState.Carrier.GetComponent<Player>().isCarrier = false;
 					playerState.Carrier.GetComponent<Player>().Carried = null;
+					float x = transform.position.x;
+					float y = transform.position.y;
+					transform.position = new Vector3( x, y, 0.0f ); //reset z
 					playerState.isCarried = false;
 					playerState.Carrier = null;
 				}
 				else if ( playerState.isCarrier )
 				{
 					//drop player!
+					#region animation
+					GetComponent<Animator>().Play ( "throw_" + GetComponent<Player>().GetAniSuffix() );
+					playerState.canMove = false;
+					playerState.state = "throw";
+					playerState.stateTimer = 0.5f;
+					playerState.nextState = "idle";
+					#endregion
 					//Debug.Log ( "Dropped!" );
 					playerState.Carried.GetComponent<Player>().isCarried = false;
 					playerState.Carried.GetComponent<Player>().Carrier = null;
+					float x = playerState.Carried.transform.position.x;
+					float y = playerState.Carried.transform.position.y;
+					playerState.Carried.transform.position = new Vector3( x, y, 0.0f ); //reset z
 					playerState.isCarrier = false;
 					playerState.Carried = null;
 				}
@@ -324,15 +348,19 @@ public class CustomController : MonoBehaviour
 										playerState.Carried = GameState.players[i];
 										otherState.isCarried = true;
 										otherState.Carrier = this.gameObject;
-										//TODO: lerp them / animate the pickup so the camera doesn't jump.
-										//Dispatch this to a script?
 										GameState.players[i].transform.position = 
 											new Vector3( 
 											gameObject.transform.position.x, 
-										    gameObject.transform.position.y + 1.0f, 
-										    0.0f 
+										    gameObject.transform.position.y + 0.5f, 
+										    -1.0f 
 										    );
-										//TODO: animation
+										#region animation
+										playerState.canMove = false;
+										playerState.state = "pickup";
+										playerState.stateTimer = 0.45f;
+										playerState.nextState = "idle";
+										GetComponent<Animator>().Play ( "pickup_" + GetComponent<Player>().GetAniSuffix() );
+										#endregion
 									}
 								}
 							}

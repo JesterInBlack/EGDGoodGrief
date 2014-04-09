@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d26abcd63dad71e44a714be0ce297486
+guid: 755cd716aa4f5de47b35d709855c147e
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -41,7 +41,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Rocket Knight Shuffle Down Sprite Sheet_0
+    - name: Rocket Knight Down Carry Sprite Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -50,7 +50,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_1
+    - name: Rocket Knight Down Carry Sprite Sheet_1
       rect:
         serializedVersion: 2
         x: 199
@@ -59,7 +59,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_2
+    - name: Rocket Knight Down Carry Sprite Sheet_2
       rect:
         serializedVersion: 2
         x: 398
@@ -68,7 +68,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_3
+    - name: Rocket Knight Down Carry Sprite Sheet_3
       rect:
         serializedVersion: 2
         x: 597
@@ -77,7 +77,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_4
+    - name: Rocket Knight Down Carry Sprite Sheet_4
       rect:
         serializedVersion: 2
         x: 796
@@ -86,7 +86,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_5
+    - name: Rocket Knight Down Carry Sprite Sheet_5
       rect:
         serializedVersion: 2
         x: 995
@@ -95,7 +95,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_6
+    - name: Rocket Knight Down Carry Sprite Sheet_6
       rect:
         serializedVersion: 2
         x: 1194
@@ -104,7 +104,7 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_7
+    - name: Rocket Knight Down Carry Sprite Sheet_7
       rect:
         serializedVersion: 2
         x: 1393
@@ -113,10 +113,19 @@ TextureImporter:
         height: 199
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: Rocket Knight Shuffle Down Sprite Sheet_8
+    - name: Rocket Knight Down Carry Sprite Sheet_8
       rect:
         serializedVersion: 2
         x: 1592
+        y: 0
+        width: 199
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Rocket Knight Down Carry Sprite Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 1791
         y: 0
         width: 199
         height: 199
