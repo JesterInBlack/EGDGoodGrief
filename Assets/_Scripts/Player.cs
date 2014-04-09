@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
 	public float score = 0;
 
 	public float defense = 1.0f;  //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
-	public float offense = 1.0f;  //offensive power: (2x = 2x  damage). Base: 1 = 1  damage.
+	public float offense = 1.0f;  //offensive power: (2x = 2x  damage). Base: 1 = 1x damage.
 
 	public CharacterClasses characterclass = CharacterClasses.KNIGHT; //enum
 
@@ -66,6 +66,8 @@ public class Player : MonoBehaviour
 	public GameObject Carrier;       //ref to the player carrying you.
 	[HideInInspector]
 	public Vector2 carryVec;         //unit vector representing your carry direction.
+	
+	private Vector2 knockbackVec;
 
 	//interruption
 	public float interruptHP = 0.0f;   //"interrupt hp": if this reaches 0, you get interrupted. Set by moves.
@@ -221,6 +223,15 @@ public class Player : MonoBehaviour
 			{
 				isInBulletTime = false;
 			}
+		}
+
+		if ( state == "knockback" )
+		{
+			this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
+			float x = this.gameObject.transform.position.x;
+			float y = this.gameObject.transform.position.y;
+			float z = this.gameObject.transform.position.z;
+			transform.position = new Vector3( x + (knockbackVec.x * t), y + (knockbackVec.y * t), z );
 		}
 
 		//Update items
@@ -382,7 +393,9 @@ public class Player : MonoBehaviour
 		{
 			if ( attackerId != -1 )
 			{
-				//TODO: knock them back! alot!
+				float x = this.gameObject.transform.position.x;
+				float y = this.gameObject.transform.position.y;
+				GameState.playerStates[ attackerId ].KnockBack ( 2.0f, new Vector2( x, y ) );
 			}
 			isStoneSkin = false;
 			return; 
@@ -393,12 +406,10 @@ public class Player : MonoBehaviour
 			return; 
 		}
 
-		//HP -= damage; //TODO: remove
 		//Flash red.
 		this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
 
 		//TODO: diminishing returns, thresholds for moves, move interrupt power scaling
-		//TODO: on successful interrupt, set canMove to true.
 		interruptHP -= damage;
 		interruptDR++;
 
@@ -409,11 +420,12 @@ public class Player : MonoBehaviour
 		if ( interruptHP <= 0.0f )
 		{
 			canMove = true;
-			//TODO: set ani to idle
 			//TODO: play interrupt sound
-			state = "idle";
-			stateTimer = 0.0f;
+			knockbackVec = Vector2.zero;
+			state = "knockback";
+			stateTimer = 0.5f;
 			nextState = "idle";
+			this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
 		}
 
 		//TODO: Add a threshold before auras blacklist you
@@ -442,7 +454,7 @@ public class Player : MonoBehaviour
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
-		if ( false ) { return; } //TODO: stone skin
+		if ( isStoneSkin ) { return; } //TODO: stone skin
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
@@ -451,7 +463,13 @@ public class Player : MonoBehaviour
 
 		//TODO: move knockback power scaling
 		//TODO: effects that minimize / reduce knockback. (blocking, parrying, dodging?)
-		//TODO: interrupt stuff on knockback?
+
+		knockbackVec = (new Vector2( transform.position.x, transform.position.y ) - pos ).normalized * magnitude;
+		state = "knockback";
+		stateTimer = 0.5f;
+		nextState = "idle";
+
+		//TODO: animate!
 	}
 
 	public void Poison( float duration, float degen )

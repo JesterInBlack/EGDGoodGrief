@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Initializer : MonoBehaviour 
@@ -28,6 +28,7 @@ public class Initializer : MonoBehaviour
 		for ( int i = 0; i < 4; i++ )
 		{
 			GameState.players[i] = players[i];
+			GameState.playerStates[i] = players[i].GetComponent<Player>();
 			players[i].GetComponent<Player>().id = i;
 		}
 		GameState.boss = boss;

@@ -19,44 +19,44 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float xNormalBaseDamage = 100.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
 	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
 	private const float xSmashAddDamage   = 100.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
-	private const float xSmashChainBonus  = 1.5f;    //Smash  attack: Spin2Win: damage multiplier from full chain
+	private const float xSmashChainBonus  = 1.5f;     //Smash  attack: Spin2Win: damage multiplier from full chain
 
-	private const float xNormalAngle = 115.0f;       //Normal attack: Horizontal Slash: hit sector angle.
+	private const float xNormalAngle = 115.0f;        //Normal attack: Horizontal Slash: hit sector angle.
 
-	private const float xChargeInterruptHP = 100.0f; //Charging up X: interruption damage threshold 
-	private const float xNormalInterruptHP = 100.0f; //Normal attack: Horizontal Slash: interruption damage threshold.
-	private const float xSmashInterruptHP = 10000.0f;//Smash  attack: Spin2Win: interruption damage threshold.
+	private const float xChargeInterruptHP = 100.0f;  //Charging up X: interruption damage threshold 
+	private const float xNormalInterruptHP = 100.0f;  //Normal attack: Horizontal Slash: interruption damage threshold.
+	private const float xSmashInterruptHP = 10000.0f; //Smash  attack: Spin2Win: interruption damage threshold.
 
 	private float xHoldTime  = 0.0f;
-	private const float xChargeMin = 1.0f;           //minimum hold time to use the charged version of the x attack
-	private const float xChargeMax = 10.0f;          //maximum hold time: more than this confers no benefit.
-	private const float xNormalGraceT = 1.0f;        //Grace time before chain degeneration happens.
-	//private const float xSmashGraceT = 1.0f;       //Grace time before chain degeneration happens. Moot.
+	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
+	private const float xChargeMax = 10.0f;           //maximum hold time: more than this confers no benefit.
+	private const float xNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
+	//private const float xSmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 
-	private int maxSpinToWinExtensions = 5;          //the maximum number of times spin2win can be extended
-	private int spinToWinExtensions = 0;             //the number of times spin2win has been extended
-	private float spinTime = 0.0f;			         //how long you've been spinning for.
+	private int maxSpinToWinExtensions = 5;           //the maximum number of times spin2win can be extended
+	private int spinToWinExtensions = 0;              //the number of times spin2win has been extended
+	private float spinTime = 0.0f;			          //how long you've been spinning for.
 	#endregion
 	
 	#region Y
 	private const float yNormalBaseDamage = 100.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
 	private const float ySmashBaseDamage  = 100.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
 	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
-	private const float ySmashChainBonus  = 1.5f;    //Smash  attack: Blast Off: damage multiplier from full chain
+	private const float ySmashChainBonus  = 1.5f;     //Smash  attack: Blast Off: damage multiplier from full chain
 
-	private const float yChargeInterruptHP = 100.0f; //Charging up Y: interruption damage threshold.
-	private const float yNormalInterruptHP = 100.0f; //Normal attack: Vertical Slash: interruption damage threshold.
-	private const float ySmashInterruptHP  = 100.0f; //Smash  attack: HBlast Off: interruption damage threshold.
+	private const float yChargeInterruptHP = 100.0f;  //Charging up Y: interruption damage threshold.
+	private const float yNormalInterruptHP = 100.0f;  //Normal attack: Vertical Slash: interruption damage threshold.
+	private const float ySmashInterruptHP  = 100.0f;  //Smash  attack: HBlast Off: interruption damage threshold.
 
 	private float yHoldTime  = 0.0f;
-	private const float yChargeMin = 1.0f;           //minimum hold time to use the charged version of the y attack
-	private const float yChargeMax = 10.0f;          //maximum hold time: more than this confers no benefit.
-	private const float yNormalGraceT = 1.0f;        //Grace time before chain degeneration happens.
-	//private const float ySmashGraceT = 1.0f;       //Grace time before chain degeneration happens. Moot.
+	private const float yChargeMin = 1.0f;            //minimum hold time to use the charged version of the y attack
+	private const float yChargeMax = 10.0f;           //maximum hold time: more than this confers no benefit.
+	private const float yNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
+	//private const float ySmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 	#endregion
 
 	#region Parry
-	private const float parryTime = 0.5f;            //how long the parry lasts for. (in s)
+	private const float parryTime = 0.5f;             //how long the parry lasts for. (in s)
 	#endregion
 
 	#endregion
@@ -64,7 +64,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private float bHoldTime  = 0.0f;
 	private float rtHoldTime = 0.0f;
 
-	private float attackDamage = 0.0f;               //damage the current attack will deal.
+	private float attackDamage = 0.0f;                //damage the current attack will deal.
 
 	private string prevState = "";
 	#endregion

@@ -94,8 +94,6 @@ public class HUD : MonoBehaviour
 	
 	void OnGUI ()
 	{
-		//TODO: lerp this angle a bit more.
-
 		//Vector2 size =  new Vector2( 225.0f, 125.0f ); //the size of all the HUD backgrounds.
 		Vector2 pos = new Vector2( 0.0f, 0.0f );       //the position of the HUD background's upper-left corner
 		if ( screenCorner == ScreenCorner.UPPER_LEFT )
@@ -118,6 +116,9 @@ public class HUD : MonoBehaviour
 		//Draw HP bar 1st : for all classes
 		HPBarStuff( pos );
 
+		//Draw Items under the GUI?
+		ItemStuff( pos );
+
 		//Now we draw non-common elements
 		if ( player.characterclass == CharacterClasses.KNIGHT ) 
 		{
@@ -135,9 +136,6 @@ public class HUD : MonoBehaviour
 		{
 			NinjaGUI( pos );
 		}
-
-		//Draw Items on top.
-		ItemStuff( pos );
 
 		//Draw HP threshold for revive.
 		DrawReviveThreshold( pos );
@@ -285,41 +283,41 @@ public class HUD : MonoBehaviour
 		//99% -> 75%
 		//0% -> 25%
 		//LT
-		float f = 1.0f - (player.items[0].coolDownTimer / player.items[0].coolDownDelay);
+		int itemIndex = (player.itemIndex + 2) % 3;
+		float f = 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay);
 		if ( f < 1.0f ) 
 		{ 
 			f = f * 0.65f + 0.25f; 
 		}
 		GUI.color = new Color( f, f, f, f );
-		GUI.DrawTexture ( new Rect( pos.x + itemPos1.x, pos.y + itemPos1.y, 32, 32 ), ItemImages.getImage ( player.items[0].name ) );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos1.x, pos.y + itemPos1.y, 32, 32 ), ItemImages.getImage ( player.items[itemIndex].name ) );
 
 		//Bumper?
-		f = 1.0f - (player.items[1].coolDownTimer / player.items[1].coolDownDelay);
+		itemIndex = player.itemIndex;
+		f = 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay);
 		if ( f < 1.0f ) 
 		{ 
 			f = f * 0.65f + 0.25f; 
 		}
 		GUI.color = new Color( f, f, f, f );
-		GUI.DrawTexture ( new Rect( pos.x + itemPos2.x, pos.y + itemPos2.y, 32, 32 ), ItemImages.getImage ( player.items[1].name ) );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos2.x, pos.y + itemPos2.y, 32, 32 ), ItemImages.getImage ( player.items[itemIndex].name ) );
 
 		//RT
-		f = 1.0f - (player.items[2].coolDownTimer / player.items[2].coolDownDelay);
+		itemIndex = (player.itemIndex + 1) % 3;
+		f = 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay);
 		if ( f < 1.0f ) 
 		{ 
 			f = f * 0.65f + 0.25f; 
 		}
 		GUI.color = new Color( f, f, f, f );
-		GUI.DrawTexture ( new Rect( pos.x + itemPos3.x, pos.y + itemPos3.y, 32, 32 ), ItemImages.getImage ( player.items[2].name ) );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos3.x, pos.y + itemPos3.y, 32, 32 ), ItemImages.getImage ( player.items[itemIndex].name ) );
 
 		//reset color
 		GUI.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 
 		//Draw item selector.
-		Vector2 selectorOffset = itemPos1;
-		if ( player.itemIndex == 1 ) { selectorOffset = itemPos2; }
-		else if ( player.itemIndex == 2 ) { selectorOffset = itemPos3; }
-		
-		GUI.DrawTexture ( new Rect( pos.x + selectorOffset.x, pos.y + selectorOffset.y, 32, 32 ), itemSelector );
+		//Vector2 selectorOffset = itemPos2;
+		//GUI.DrawTexture ( new Rect( pos.x + selectorOffset.x, pos.y + selectorOffset.y, 32, 32 ), itemSelector );
 	}
 
 	void DrawReviveThreshold( Vector2 pos )
