@@ -300,11 +300,13 @@ public class Player : MonoBehaviour
 		if ( isParrying ) 
 		{
 			ScoreManager.AvoidedDamage ( id, damage );
+			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			return; 
 		}
 		if ( isStoneSkin ) 
 		{ 
 			ScoreManager.AvoidedDamage ( id, damage );
+			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			isStoneSkin = false; 
 			return; 
 		}
@@ -312,6 +314,7 @@ public class Player : MonoBehaviour
 		{ 
 			ScoreManager.AvoidedDamage ( id, damage );
 			this.gameObject.GetComponent<StoneFist>().OnHitCallback( -1, damage );
+			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
 			return; 
 		}
 		//TODO: add stone skin knockback handling on hit logic (somewhere?)
@@ -350,6 +353,7 @@ public class Player : MonoBehaviour
 			#endregion
 			//Flash red.
 			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
+			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			//TODO: animation
 		}
 
@@ -391,6 +395,7 @@ public class Player : MonoBehaviour
 		if ( isParrying ) { return; }
 		if ( isStoneSkin ) 
 		{
+			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			if ( attackerId != -1 )
 			{
 				float x = this.gameObject.transform.position.x;
@@ -402,12 +407,14 @@ public class Player : MonoBehaviour
 		}
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
+			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
 			this.gameObject.GetComponent<StoneFist>().OnHitCallback( attackerId, damage );
 			return; 
 		}
 
 		//Flash red.
 		this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
+		GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 
 		//TODO: diminishing returns, thresholds for moves, move interrupt power scaling
 		interruptHP -= damage;

@@ -44,6 +44,13 @@ public class MegaFlareScript : MonoBehaviour
 			transform.localScale = Vector3.Lerp(Vector3.zero, _baseSize, _lerpTime / _chargeDuration);
 			_lerpTime += (Time.deltaTime * StaticData.t_scale);
 			_startPos = transform.position;
+
+			//Vibration
+			for ( int i = 0; i < 4; i++ )
+			{
+				GameState.players[i].GetComponent<VibrationManager>().AddVibrationForThisFrame ( 
+					_lerpTime / _chargeDuration * 0.5f, _lerpTime / _chargeDuration * 0.5f );
+			}
 		}
 		else if(_state == State.Fire)
 		{
