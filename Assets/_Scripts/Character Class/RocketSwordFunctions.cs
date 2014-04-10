@@ -543,9 +543,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "xcharge";
 			player.stateTimer = 0.05f * 7.0f; //7 frame windup
 			player.interruptHP = xChargeInterruptHP;
-			#region animation
 			GetComponent<Animator>().Play ( "xslash_" +  player.GetAniSuffix() + "_windup" );
-			#endregion
 		}
 		else if ( newState == "xcharge" )
 		{
@@ -609,6 +607,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "ycharge";
 			player.stateTimer = 0.05f * 7.0f; //7 frame windup
 			player.interruptHP = yChargeInterruptHP;
+			GetComponent<Animator>().Play ( "xslash_" +  player.GetAniSuffix() + "_windup" );
 		}
 		else if ( newState == "ycharge" )
 		{
@@ -619,23 +618,26 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//initialize the attack
 			player.canMove = false;
-			player.stateTimer = 0.05f * 5.0f; //5 frame attack
+			player.stateTimer = 0.05f * 12.0f; //10 frame attack (6 animated, rest pause)
 			player.nextState = "ywinddown";
 			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
 			player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = yNormalInterruptHP;
+			GetComponent<Animator>().Play( "yslash_" + player.GetAniSuffix() );
 			//TODO: box to box collision detection
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 1.0f );
 		}
 		else if ( newState == "ywinddown" )
 		{
 			player.nextState = "ywinddown2";
-			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
+			player.stateTimer = 0.05f * 4.0f; //4 frame recovery
+			GetComponent<Animator>().Play ( "yslash_" +  player.GetAniSuffix() + "_winddown" );
 		}
 		else if ( newState == "ywinddown2" )
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
+			GetComponent<Animator>().Play ( "xslash_" +  player.GetAniSuffix() + "_winddown2" );
 		}
 		else if ( newState == "ysmash" )
 		{
@@ -655,6 +657,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.resource = 0;
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightBlastOff, 1.0f );
 			//TODO: hitbox to hitbox collision detection.
+			GetComponent<Animator>().Play( "blastoff_" + player.GetAniSuffix() );
 		}
 		#endregion
 		else if ( newState == "revcharge" )

@@ -105,6 +105,7 @@
      <Compile Include="Assets\_Scripts\HUD.cs" />
      <Compile Include="Assets\_Scripts\HeadGrabber.cs" />
      <Compile Include="Assets\_Scripts\HealingFountain.cs" />
+     <Compile Include="Assets\_Scripts\Info_Script.cs" />
      <Compile Include="Assets\_Scripts\Initializer.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />
      <Compile Include="Assets\_Scripts\ItemAnimation.cs" />
@@ -158,6 +159,7 @@
      <Compile Include="Assets\_Scripts\VenomPool.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
      <Compile Include="Assets\_Scripts\Web.cs" />
+     <Compile Include="Assets\_Scripts\test.cs" />
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>

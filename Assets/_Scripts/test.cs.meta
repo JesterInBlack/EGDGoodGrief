@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4644cbbba1c13de4f8318416dc58ee44
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - holder: {instanceID: 0}
+  - char_back: {fileID: 2800000, guid: ace771341a9d81b4289998e9addddcc5, type: 3}
+  - item_back: {fileID: 2800000, guid: 5daf9d2fe4e66074b988b2a6f889bfb1, type: 3}
+  - player1symbol: {fileID: 2800000, guid: f4889f68073bf2144a420d129bf6ad19, type: 3}
+  - player2symbol: {fileID: 2800000, guid: a2dd064b2e9ed374180ba8f9718374a7, type: 3}
+  - player3symbol: {fileID: 2800000, guid: d04b1ed47cc257e4ba31edebc9e5b7c0, type: 3}
+  - player4symbol: {fileID: 2800000, guid: 40e1f2fb96bda6f46b30bf10c6647380, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
