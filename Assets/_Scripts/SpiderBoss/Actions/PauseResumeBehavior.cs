@@ -23,20 +23,27 @@ public class PauseResumeBehavior : Action
 
 	public override TaskStatus OnUpdate()
 	{
-		if(_pause == Pause.PauseBehavior)
+		if(_blackboard._currentBehavior != null)
 		{
-			_blackboard._currentBehavior.Action.disableBehavior(true);
+			if(_pause == Pause.PauseBehavior)
+			{
+				_blackboard._currentBehavior.Action.disableBehavior(true);
+			}
+			else if(_pause == Pause.ResumeBehavior)
+			{
+				_blackboard._currentBehavior.Action.enableBehavior();
+				_blackboard.attackPatternStopped = false;
+			}
+			else if(_pause == Pause.StopBehavior)
+			{
+				_blackboard.attackPatternStopped = true;
+				_blackboard._currentBehavior.Action.disableBehavior(false);
+			}
+			return TaskStatus.Success;
 		}
-		else if(_pause == Pause.ResumeBehavior)
+		else
 		{
-			_blackboard._currentBehavior.Action.enableBehavior();
-			_blackboard.attackPatternStopped = false;
+			return TaskStatus.Failure;
 		}
-		else if(_pause == Pause.StopBehavior)
-		{
-			_blackboard.attackPatternStopped = true;
-			_blackboard._currentBehavior.Action.disableBehavior(false);
-		}
-		return TaskStatus.Success;
 	}
 }

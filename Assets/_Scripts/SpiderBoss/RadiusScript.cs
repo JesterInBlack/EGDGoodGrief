@@ -4,6 +4,10 @@ using System.Collections;
 public class RadiusScript : MonoBehaviour 
 {
 	public GameObject _parent;
+	public float _xOffset;
+	public float _yOffset;
+	public float _zOffset;
+
 	private BodyScript _bodyScript;
 	private Vector3 _pos = new Vector3(0, 0, 0);
 	private Vector3 _offset;
@@ -11,7 +15,7 @@ public class RadiusScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_offset = transform.position;
+		_offset = new Vector3(_xOffset, _yOffset, _zOffset);
 		_bodyScript = _parent.GetComponent<BodyScript>();
 	}
 	

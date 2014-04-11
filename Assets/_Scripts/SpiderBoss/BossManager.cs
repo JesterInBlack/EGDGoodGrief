@@ -43,14 +43,8 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-			/*
-			if(allBehaviors[i].group == -1)
-			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
-				_behaviorList.Add(testBehavior);
-			}
-			*/
-			/*
+
+
 			if(allBehaviors[i].group == 1)	//Impale
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 40);
@@ -77,12 +71,17 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
+			if(allBehaviors[i].group == 7) //Dissention Suction
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				_behaviorList.Add(testBehavior);
+			}
+			*/
 			/*
 			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
 			{
