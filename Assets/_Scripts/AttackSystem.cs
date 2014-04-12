@@ -6,7 +6,6 @@ using System.Collections;
 //and it damages all appropriate objects that it intersects.
 
 //TODO: friendly fire flag?, damage attenuation?
-//TODO: get all colliders / players / enemies in a circle / box. (for vamp fang, pheromones)
 
 public enum PLAYER_IDS { BOSS = -1, ONE = 0, TWO = 1, THREE = 2, FOUR = 3 }; //makes id codes make english sense.
 
@@ -295,5 +294,20 @@ public static class AttackSystem
 	{
 		//checks if the id belongs to an enemy.
 		return ( id == -1 );
+	}
+
+	public static void Suck( Vector2 position, float speed, float dt )
+	{
+		//Sucks all players toward position at speed.
+		for ( int i = 0; i < 4; i++ )
+		{
+			float x = GameState.players[i].transform.position.x;
+			float y = GameState.players[i].transform.position.y;
+			float z = GameState.players[i].transform.position.z;
+			Vector2 moveDirection = position - new Vector2( x, y );
+			moveDirection.Normalize();
+			moveDirection = moveDirection * speed * dt;
+			GameState.players[i].transform.position = new Vector3( x + moveDirection.x, y + moveDirection.y, z );
+		}
 	}
 }
