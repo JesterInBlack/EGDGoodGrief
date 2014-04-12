@@ -128,6 +128,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FirePointLaser.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\LegListSelector.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\Lob.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\MoveToPoint.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\PauseResumeBehavior.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\PlayerTargeter.cs" />
@@ -151,8 +152,10 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckLegHealth.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckPointRadius.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedBool.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\SetSharedBool.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EyeScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\IsTargetAlive.cs" />

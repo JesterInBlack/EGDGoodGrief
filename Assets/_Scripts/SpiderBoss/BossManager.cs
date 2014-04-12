@@ -43,7 +43,11 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-
+			if(allBehaviors[i].group == 3) //AoEWeb
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
+				_behaviorList.Add(testBehavior);
+			}
 			/*
 			if(allBehaviors[i].group == 1)	//Impale
 			{
@@ -56,12 +60,12 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 3) //AoeWeb
+			if(allBehaviors[i].group == 3) //AoeVenom
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 4) //AoeVenom
+			if(allBehaviors[i].group == 4) //AoEWeb
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
 				_behaviorList.Add(testBehavior);
@@ -81,12 +85,12 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			if(allBehaviors[i].group == 8) //PointLaser
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
+			*/
 			/*
 			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
 			{

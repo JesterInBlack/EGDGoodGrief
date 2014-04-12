@@ -22,6 +22,7 @@ public class BodyScript : MonoBehaviour
 		BodySlam = 1,
 		MegaFlare = 2,
 		Suction = 3,
+		Lob = 4,
 	}
 	public BehaviorState _behaviorState;
 
