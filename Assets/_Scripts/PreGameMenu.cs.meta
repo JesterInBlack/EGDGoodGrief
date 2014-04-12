@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: f0fcda301bd240842859f633121a0c3c
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - titleBackground: {fileID: 2800000, guid: ae3a1ee72ac879647b74b433d770b9b8, type: 3}
+  - mainMenuBackground: {fileID: 2800000, guid: ae3a1ee72ac879647b74b433d770b9b8,
+      type: 3}
+  - mainMenuPlayButton: {fileID: 2800000, guid: 23f0be97a646da34c98debe52d19e3a9,
+      type: 3}
+  - mainMenuPlayButtonGray: {fileID: 2800000, guid: acff3183b7330184fbe0f1b753822252,
+      type: 3}
+  - mainMenuOptionsButton: {fileID: 2800000, guid: a2e604291d50d214d8e744a90f3d27a6,
+      type: 3}
+  - mainMenuOptionsButtonGray: {fileID: 2800000, guid: e60280c1689180549a60d79327b9ea39,
+      type: 3}
+  - mainMenuTutorialButton: {fileID: 2800000, guid: b0d0cf7489e4a1746b0ebbea4c67ca2e,
+      type: 3}
+  - mainMenuTutorialButtonGray: {fileID: 2800000, guid: dc37fe437b30a064a924dc73c803a836,
+      type: 3}
+  - characterBackground: {fileID: 2800000, guid: ace771341a9d81b4289998e9addddcc5,
+      type: 3}
+  - playerLockIcon: {fileID: 2800000, guid: f4ce5ba64aef8be40ba177e292a27099, type: 3}
+  - itemBackground: {fileID: 2800000, guid: 5daf9d2fe4e66074b988b2a6f889bfb1, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

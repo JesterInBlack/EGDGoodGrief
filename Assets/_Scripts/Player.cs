@@ -95,6 +95,32 @@ public class Player : MonoBehaviour
 	private Vector3 prevPos;             //previous position, for detecting movement. (focus degen)
 	#endregion
 
+	//Use this for pre-initialization
+	void Awake ()
+	{
+		id = (int)GetComponent<CustomController>().playerIndex;
+		MenuDataSaver temp = GameObject.Find( "MenuDataSaver" ).GetComponent<MenuDataSaver>();
+
+		//TODO: if this player is disconnected, remove them.
+		/*
+		if ( ! temp.playersConnected[ id ] ) 
+		{ 
+			Destroy( this.gameObject );
+			return; 
+		}
+		*/
+
+		//read class from menu data
+		characterclass = temp.playerClasses[ id ];
+
+		//read items from menu data.
+		for ( int i = 0; i < 3; i++ )
+		{
+			items[i] = new Item();
+			items[i].Construct ( temp.playerItems[ id, i ] );
+		}
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -106,27 +132,6 @@ public class Player : MonoBehaviour
 
 		offense = 1.0f;
 		defense = 1.0f;
-
-		//Placeholder code: replace with setter from pre-game screens.
-		//characterclass = CharacterClasses.KNIGHT;
-		for ( int i = 0; i < 3; i++ )
-		{
-			items[i] = new Item();
-		}
-
-		if ( id == 0 )
-		{
-			items[0].Construct ( ItemName.STOPWATCH );
-			items[1].Construct ( ItemName.AURA_DEFENSE );
-			items[2].Construct ( ItemName.AURA_OFFENSE );
-		}
-		else
-		{
-			items[0].Construct ( ItemName.STOPWATCH );
-			items[1].Construct ( ItemName.PHEROMONE_JAR );
-			items[2].Construct ( ItemName.VAMPIRE_FANG );
-		}
-		//END placeholder
 
 		#region Class-Specific
 		//Gets the class specific action handler for the controller.

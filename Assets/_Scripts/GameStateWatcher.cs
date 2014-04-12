@@ -50,6 +50,7 @@ public class GameStateWatcher : MonoBehaviour
 		{
 			//Exit to victory screen
 			//TODO: show won / lost GUI first.
+			Application.LoadLevel( "Score" );
 			Debug.Log( "Victory" );
 		}
 	}

@@ -105,14 +105,19 @@
      <Compile Include="Assets\_Scripts\HUD.cs" />
      <Compile Include="Assets\_Scripts\HeadGrabber.cs" />
      <Compile Include="Assets\_Scripts\HealingFountain.cs" />
-     <Compile Include="Assets\_Scripts\Info_Script.cs" />
      <Compile Include="Assets\_Scripts\Initializer.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />
      <Compile Include="Assets\_Scripts\ItemAnimation.cs" />
      <Compile Include="Assets\_Scripts\ItemImages.cs" />
      <Compile Include="Assets\_Scripts\LobProjectile.cs" />
+     <Compile Include="Assets\_Scripts\MenuDataSaver.cs" />
+     <Compile Include="Assets\_Scripts\Old\Info_Script.cs" />
+     <Compile Include="Assets\_Scripts\Old\test.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\PlayerColor.cs" />
+     <Compile Include="Assets\_Scripts\PostGameScore.cs" />
+     <Compile Include="Assets\_Scripts\PreGameMenu.cs" />
+     <Compile Include="Assets\_Scripts\ScoreDetails.cs" />
      <Compile Include="Assets\_Scripts\ScoreManager.cs" />
      <Compile Include="Assets\_Scripts\SoundStorage.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ApplyBuff.cs" />
@@ -159,7 +164,6 @@
      <Compile Include="Assets\_Scripts\VenomPool.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
      <Compile Include="Assets\_Scripts\Web.cs" />
-     <Compile Include="Assets\_Scripts\test.cs" />
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
