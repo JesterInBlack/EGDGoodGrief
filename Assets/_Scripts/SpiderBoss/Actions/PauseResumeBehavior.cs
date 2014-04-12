@@ -43,7 +43,8 @@ public class PauseResumeBehavior : Action
 		}
 		else
 		{
-			return TaskStatus.Failure;
+			Debug.Log("WARNING: no behavior to pause");
+			return TaskStatus.Success;
 		}
 	}
 }

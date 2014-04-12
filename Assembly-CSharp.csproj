@@ -125,11 +125,13 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\EyeLookDown.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FindUnbuffedLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FireChaseBeam.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\FirePointLaser.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\LegListSelector.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\MoveToPoint.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\PauseResumeBehavior.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\PlayerTargeter.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetEyeRotationSpeed.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetTargetLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetTargetLegShared.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\UnityMegaFlare.cs" />
@@ -157,6 +159,8 @@
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegShadow.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\MegaFlareScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\PointExplosion.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\PointLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\RadiusScript.cs" />
      <Compile Include="Assets\_scripts\StaticData.cs" />
      <Compile Include="Assets\_scripts\VenomPool.cs" />

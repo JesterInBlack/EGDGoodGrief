@@ -44,7 +44,7 @@ public class BossManager : MonoBehaviour
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
 
-
+			/*
 			if(allBehaviors[i].group == 1)	//Impale
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 40);
@@ -82,6 +82,11 @@ public class BossManager : MonoBehaviour
 				_behaviorList.Add(testBehavior);
 			}
 			*/
+			if(allBehaviors[i].group == 8) //PointLaser
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				_behaviorList.Add(testBehavior);
+			}
 			/*
 			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
 			{
@@ -238,7 +243,8 @@ public class BossManager : MonoBehaviour
 					//set the priority to 0 for use
 					_behaviorList[selectedIndex].UseAction();
 
-					_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+					Debug.Log("DONE");
+					//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 					_blackboard._currentBehavior = null;
 				}
 			}
