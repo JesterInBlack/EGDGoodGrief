@@ -62,7 +62,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	[HideInInspector]
 	public GameObject leftMaw;
 	[HideInInspector]
-	public GameObject eye;
+	public EyeScript eye;
 	[HideInInspector]
 	public BodyScript body;
 	#endregion

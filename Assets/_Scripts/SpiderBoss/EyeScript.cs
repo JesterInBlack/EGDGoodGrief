@@ -8,6 +8,7 @@ public class EyeScript : MonoBehaviour
 	public float _rotationSpeed = 75.0f;						//degrees per second
 	public Vector3 _rotationVec = new Vector3(0, 0, 0);	//the current rotation vector
 	public float _targetAngle;								//target angle in degrees
+	public float _defaultRotationSpeed = 75.0f;
 
 	public GameObject _laserSpawnPoint;
 

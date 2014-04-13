@@ -27,8 +27,8 @@ public class UnityMegaFlare : Action
 	private Vector2 _attackPos;
 	private Vector2 _groundedPos;
 
-	private Vector2 shake;
-	private float shakeMagnitude;
+	private Vector2 _shake;
+	private float _shakeMagnitude;
 
 	public override void OnAwake()
 	{
@@ -40,6 +40,7 @@ public class UnityMegaFlare : Action
 		_riseDuration = 2.0f;
 		_attackDuration = 0.1f;
 		_recoveryDuration = 4.0f;
+		_shakeMagnitude = 0.1f;
 	}
 
 	public override void OnStart()
@@ -57,8 +58,7 @@ public class UnityMegaFlare : Action
 		groundedHeight *= _blackboard.body._groundHeightOffset;
 		_groundedPos = new Vector2(_blackboard.body._shadowPos.x, _blackboard.body._shadowPos.y + groundedHeight);
 
-		shake = new Vector3( 0.0f, 0.0f, 0.0f );
-		shakeMagnitude = 0.1f;
+		_shake = new Vector3( 0.0f, 0.0f, 0.0f );
 
 		//sets the charge time. The more legs are alive, the longer the charge
 		int legsAlive = 0;
@@ -158,10 +158,10 @@ public class UnityMegaFlare : Action
 	//make the boss shake harder over time
 	void ShakeBoss(float time)
 	{
-		float x = Random.Range ( -shakeMagnitude * time, shakeMagnitude * time);
-		float y = Random.Range ( -shakeMagnitude * time, shakeMagnitude * time);
-		shake = new Vector2( x, y );
-		transform.position = _chargePos + shake;
+		float x = Random.Range ( -_shakeMagnitude * time, _shakeMagnitude * time);
+		float y = Random.Range ( -_shakeMagnitude * time, _shakeMagnitude * time);
+		_shake = new Vector2( x, y );
+		transform.position = _chargePos + _shake;
 	}
 
 	public override void OnEnd()
@@ -174,7 +174,7 @@ public class UnityMegaFlare : Action
 		{
 			_sharedFinishedAttack.Value = false;
 		}
-		shake = new Vector2(0, 0);
+		_shake = new Vector2(0, 0);
 		_blackboard.body._bodyState = BodyScript.BodyState.Floating;
 		_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
 	}

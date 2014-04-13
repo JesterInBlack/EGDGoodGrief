@@ -11,7 +11,6 @@ public class MegaFlareScript : MonoBehaviour
 
 	private float _chargeDuration;
 	private float _cancelDuration;
-	private bool _charging;
 
 	private Vector3 _baseSize;
 	private GameObject _spawnPoint;
@@ -86,7 +85,6 @@ public class MegaFlareScript : MonoBehaviour
 		transform.position = startPos;
 		_startPos = transform.position;
 		_endPos = endPos;
-		_charging = true;
 		_chargeDuration = chargeDuration;
 	}
 	public void Attack()

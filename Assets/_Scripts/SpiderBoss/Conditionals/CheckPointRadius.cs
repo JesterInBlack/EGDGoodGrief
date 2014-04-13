@@ -5,6 +5,7 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("Logic")]
 public class CheckPointRadius : Action
 {
+	public bool _getTarget;
 	public GameObject _radiusPoint;
 	public float _radiusValue;
 
@@ -21,6 +22,11 @@ public class CheckPointRadius : Action
 			Debug.Log("WARNING: Radius value in CheckPointRadius task not set");
 		}
 	}
+
+	public override void OnStart()
+	{
+
+	}
 	
 	//runs the actual task
 	public override TaskStatus OnUpdate()
@@ -33,6 +39,10 @@ public class CheckPointRadius : Action
 			{
 				if(Vector2.Distance((Vector2)_radiusPoint.transform.position, (Vector2)GameState.players[j].transform.position) < _radiusValue)
 				{
+					if(_getTarget == true)
+					{
+						_blackboard.targetPlayer = GameState.players[j];
+					}
 					return TaskStatus.Success;
 				}
 			}

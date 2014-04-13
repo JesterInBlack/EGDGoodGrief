@@ -7,6 +7,9 @@ public class BodyScript : MonoBehaviour
 	[HideInInspector]
 	public float _groundHeightOffset;
 
+	[HideInInspector]
+	public GameObject _neutralPoint;
+
 	public float _baseHeight;
 	public float _height;
 	public bool _invincible;
@@ -18,6 +21,9 @@ public class BodyScript : MonoBehaviour
 		Healthy = 0,
 		BodySlam = 1,
 		MegaFlare = 2,
+		Suction = 3,
+		Lob = 4,
+		CrouchingCharge = 5,
 	}
 	public BehaviorState _behaviorState;
 

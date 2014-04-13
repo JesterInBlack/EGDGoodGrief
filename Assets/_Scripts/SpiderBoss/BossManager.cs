@@ -43,13 +43,11 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-			/*
-			if(allBehaviors[i].group == -1)
+			if(allBehaviors[i].group == 9) //WebTether
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			/*
 			if(allBehaviors[i].group == 1)	//Impale
 			{
@@ -62,12 +60,12 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 3) //AoeWeb
+			if(allBehaviors[i].group == 3) //AoeVenom
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 4) //AoeVenom
+			if(allBehaviors[i].group == 4) //AoEWeb
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
 				_behaviorList.Add(testBehavior);
@@ -77,12 +75,22 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
 				_behaviorList.Add(testBehavior);
 			}
+			if(allBehaviors[i].group == 7) //Dissention Suction
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				_behaviorList.Add(testBehavior);
+			}
+			if(allBehaviors[i].group == 8) //PointLaser
+			{
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				_behaviorList.Add(testBehavior);
+			}
+			*/
 			/*
 			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
 			{
@@ -239,7 +247,8 @@ public class BossManager : MonoBehaviour
 					//set the priority to 0 for use
 					_behaviorList[selectedIndex].UseAction();
 
-					_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+					Debug.Log("DONE");
+					//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 					_blackboard._currentBehavior = null;
 				}
 			}

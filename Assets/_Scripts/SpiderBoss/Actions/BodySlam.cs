@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
 [TaskCategory("Attack")]
 public class BodySlam : Action
 {
+	public SharedGameObject _optionalObjectToDestroy;
+
 	public float _bumpHeight;
 	public float _chargeTime;
 	public float _fallTime;
@@ -16,6 +19,7 @@ public class BodySlam : Action
 	private Vector2 _chargePos;
 	private Vector2 _startingPos;
 	private Vector2 _groundedPos;
+	private Vector2 _endingPos;
 
 	private BehaviorBlackboard _blackboard;
 	
@@ -41,6 +45,7 @@ public class BodySlam : Action
 		_bumpHeight = 1.5f;
 		_startingPos = (Vector2)transform.position;
 		_chargePos = new Vector2(_startingPos.x, _startingPos.y + _bumpHeight);
+		_endingPos = (Vector2)_blackboard.body._neutralPoint.transform.position;
 
 		float groundedHeight = Vector2.Distance(_startingPos, _blackboard.body._shadowPos);
 		groundedHeight *= _blackboard.body._groundHeightOffset;
@@ -72,6 +77,13 @@ public class BodySlam : Action
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _groundedPos) < 0.001f)
 			{
+				//destory the optional object if there is one
+				if(_optionalObjectToDestroy != null)
+				{
+					Destroy(_optionalObjectToDestroy.Value);
+				}
+
+				//TODO make this deal damage
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
 				_lerpTime = 0.0f;
 			}
@@ -94,13 +106,13 @@ public class BodySlam : Action
 		}
 		else if (_blackboard.body._bodyState == BodyScript.BodyState.Rising)
 		{
-			if(Vector2.Distance( (Vector2)transform.position, _startingPos) < 0.001f)
+			if(Vector2.Distance( (Vector2)transform.position, _endingPos) < 0.001f)
 			{
 				return TaskStatus.Success;
 			}
 			else
 			{
-				transform.position = Vector2.Lerp(_groundedPos, _startingPos, _lerpTime / _riseTime);
+				transform.position = Vector2.Lerp(_groundedPos, _endingPos, _lerpTime / _riseTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}

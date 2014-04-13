@@ -26,7 +26,8 @@ public class CreateAOE : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		
+		_startingPosition = GameObject.Find("ProjectileStartPoint");
+
 		if(_venomShot == null ||
 		   _webShot == null)
 		{
@@ -52,13 +53,13 @@ public class CreateAOE : Action
 
 		if(_aoeType == AoeType.venom)
 		{
-			GameObject shot = Instantiate(_venomShot) as GameObject;
+			GameObject shot = Instantiate(_venomShot, _startingPosition.transform.position, Quaternion.identity) as GameObject;
 			shot.GetComponent<LobProjectile>().Initializer((Vector2)_startingPosition.transform.position, _shadowStartPos, _targetPosition);
 			return TaskStatus.Success;
 		}
 		else if(_aoeType == AoeType.web)
 		{
-			GameObject shot = Instantiate(_webShot) as GameObject;
+			GameObject shot = Instantiate(_webShot, _startingPosition.transform.position, Quaternion.identity) as GameObject;
 			shot.GetComponent<LobProjectile>().Initializer((Vector2)_startingPosition.transform.position, _shadowStartPos, _targetPosition);
 			return TaskStatus.Success;
 		}
