@@ -39,4 +39,18 @@ public class ScoreDetails
 	{
 		return downs.score + damageDealt.score + damageTaken.score + damageAvoided.score + lastHit.score;
 	}
+
+	public float[] GetObjectiveScores()
+	{
+		//iterate through each subscore, and return its score.
+		float[] objectiveScores = new float[5];
+
+		objectiveScores[0] = damageDealt.score;
+		objectiveScores[1] = damageAvoided.score;
+		objectiveScores[2] = damageTaken.score;
+		objectiveScores[3] = downs.score;
+		objectiveScores[4] = lastHit.score;
+
+		return objectiveScores;
+	}
 }
