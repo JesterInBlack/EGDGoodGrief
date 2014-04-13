@@ -99,25 +99,46 @@ public class Player : MonoBehaviour
 	void Awake ()
 	{
 		id = (int)GetComponent<CustomController>().playerIndex;
-		MenuDataSaver temp = GameObject.Find( "MenuDataSaver" ).GetComponent<MenuDataSaver>();
-
-		//TODO: if this player is disconnected, remove them.
-		/*
-		if ( ! temp.playersConnected[ id ] ) 
-		{ 
-			Destroy( this.gameObject );
-			return; 
-		}
-		*/
-
-		//read class from menu data
-		characterclass = temp.playerClasses[ id ];
-
-		//read items from menu data.
-		for ( int i = 0; i < 3; i++ )
+		GameObject tempObj = GameObject.Find( "MenuDataSaver" );
+		MenuDataSaver temp = null;
+		if ( tempObj != null )
 		{
-			items[i] = new Item();
-			items[i].Construct ( temp.playerItems[ id, i ] );
+			temp = tempObj.GetComponent<MenuDataSaver>();
+		}
+
+		#region default
+		if ( temp == null ) //Fix errors from skipping the main menu.
+		{
+			characterclass = CharacterClasses.KNIGHT; //default
+			//read items from menu data.
+			for ( int i = 0; i < 3; i++ )
+			{
+				items[i] = new Item();
+				items[i].Construct ( ItemName.STOPWATCH ); //default
+			}
+		}
+		#endregion
+
+		else
+		{
+			//TODO: if this player is disconnected, remove them.
+			/*
+			if ( ! temp.playersConnected[ id ] ) 
+			{ 
+				Destroy( this.gameObject );
+				return; 
+			}
+			*/
+
+			//read class from menu data
+			characterclass = temp.playerClasses[ id ];
+
+			//read items from menu data.
+			for ( int i = 0; i < 3; i++ )
+			{
+				items[i] = new Item();
+				items[i].Construct ( temp.playerItems[ id, i ] );
+			}
 		}
 	}
 
