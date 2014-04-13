@@ -120,12 +120,14 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\BodySlamNoCharge.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ChasePlayer.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\CreateAOE.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\CrouchingCharge.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\DisableBody.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\DissentionSuction.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\EyeLookDown.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FindUnbuffedLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FireChaseBeam.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FirePointLaser.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\FireTetherProjectile.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\LegListSelector.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Lob.cs" />
@@ -153,6 +155,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckPointRadius.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedBool.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedGameObject.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\SetSharedBool.cs" />
@@ -165,6 +168,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\PointExplosion.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\PointLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\RadiusScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\TetherProjectileScript.cs" />
      <Compile Include="Assets\_scripts\StaticData.cs" />
      <Compile Include="Assets\_scripts\VenomPool.cs" />
      <Compile Include="Assets\_scripts\VibrationManager.cs" />

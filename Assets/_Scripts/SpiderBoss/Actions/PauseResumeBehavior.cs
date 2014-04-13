@@ -31,7 +31,8 @@ public class PauseResumeBehavior : Action
 			}
 			else if(_pause == Pause.ResumeBehavior)
 			{
-				_blackboard._currentBehavior.Action.enableBehavior();
+				//disabling this so that we don't restart the same behavior but pick a new one.
+				//_blackboard._currentBehavior.Action.enableBehavior();
 				_blackboard.attackPatternStopped = false;
 			}
 			else if(_pause == Pause.StopBehavior)

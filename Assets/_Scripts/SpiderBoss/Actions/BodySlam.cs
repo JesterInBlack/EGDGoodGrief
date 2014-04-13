@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
 [TaskCategory("Attack")]
 public class BodySlam : Action
 {
+	public SharedGameObject _optionalObjectToDestroy;
+
 	public float _bumpHeight;
 	public float _chargeTime;
 	public float _fallTime;
@@ -74,6 +77,13 @@ public class BodySlam : Action
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _groundedPos) < 0.001f)
 			{
+				//destory the optional object if there is one
+				if(_optionalObjectToDestroy != null)
+				{
+					Destroy(_optionalObjectToDestroy.Value);
+				}
+
+				//TODO make this deal damage
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
 				_lerpTime = 0.0f;
 			}
