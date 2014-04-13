@@ -296,6 +296,7 @@ public static class AttackSystem
 		return ( id == -1 );
 	}
 
+	//Utility functions for special boss attacks.
 	public static void Suck( Vector2 position, float speed, float dt )
 	{
 		//Sucks all players toward position at speed.
@@ -309,5 +310,26 @@ public static class AttackSystem
 			moveDirection = moveDirection * speed * dt;
 			GameState.players[i].transform.position = new Vector3( x + moveDirection.x, y + moveDirection.y, z );
 		}
+	}
+
+	public static void Tether( GameObject player, Vector2 point, float dt )
+	{
+		float PLAYER_BASE_SPEED = 2.0f; //TODO: make global const? (at present must be synched with customcontroller.speed)
+		float x = player.transform.position.x;
+		float y = player.transform.position.y;
+		float z = player.transform.position.z;
+		Vector2 pos = new Vector2( x, y );
+		Vector2 moveDirection = point - pos;
+		float dist = moveDirection.magnitude;
+
+		//We want it to pull a diminishing amount (> 100% speed outside range -> 100% speed at edge -> 0% speed at center)
+		//We'll cap it if way outside range.
+		float maxRange = 2.0f; //maximum range.
+		float multiplier = dist / maxRange;
+		if ( multiplier > 3.0f ) { multiplier = 3.0f; } //to help prevent overcompensation.
+
+		float xMove = moveDirection.normalized.x * multiplier * PLAYER_BASE_SPEED * dt;
+		float yMove = moveDirection.normalized.y * multiplier * PLAYER_BASE_SPEED * dt;
+		player.transform.position = new Vector3( x + xMove, y + yMove, z );
 	}
 }
