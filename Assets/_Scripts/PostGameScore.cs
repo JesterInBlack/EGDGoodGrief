@@ -27,10 +27,18 @@ public class PostGameScore : MonoBehaviour
 	//Use this for pre-initialization
 	void Awake ()
 	{
-		//pull data from passed score object.
-		//pull SCORES
 		//pull PLAYER COUNT (+ center scorebars appropriately)
 		//pull PLAYER CLASS (+ set animators + sprites appropriately) (copy from pre-game)
+
+		playerScoreDetails[0] = GameObject.Find ( "P1ScoreData" ).GetComponent<ScorePasser>().scoreDetails;
+		playerScoreDetails[1] = GameObject.Find ( "P2ScoreData" ).GetComponent<ScorePasser>().scoreDetails;
+		playerScoreDetails[2] = GameObject.Find ( "P3ScoreData" ).GetComponent<ScorePasser>().scoreDetails;
+		playerScoreDetails[3] = GameObject.Find ( "P4ScoreData" ).GetComponent<ScorePasser>().scoreDetails;
+
+		objectiveScoresP1 = playerScoreDetails[0].GetObjectiveScores();
+		objectiveScoresP2 = playerScoreDetails[1].GetObjectiveScores();
+		objectiveScoresP3 = playerScoreDetails[2].GetObjectiveScores();
+		objectiveScoresP4 = playerScoreDetails[3].GetObjectiveScores();
 
 		for ( int i = 0; i < 4; i++ )
 		{
@@ -51,10 +59,7 @@ public class PostGameScore : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		objectiveScoresP1 = playerScoreDetails[0].GetObjectiveScores();
-		objectiveScoresP2 = playerScoreDetails[1].GetObjectiveScores();
-		objectiveScoresP3 = playerScoreDetails[2].GetObjectiveScores();
-		objectiveScoresP4 = playerScoreDetails[3].GetObjectiveScores();
+
 		//---------------------------
 		//Main cycle:
 		//Get max score from current totals + next
