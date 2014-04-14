@@ -99,6 +99,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	public bool _invincible;
 	public float HP;
 	public float maxHP;
+	public bool _moveToEndScreen;
 
 	public int[] selectedLegs;
 	#endregion

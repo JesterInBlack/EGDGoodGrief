@@ -12,11 +12,12 @@ public class BodyScript : MonoBehaviour
 
 	public float _baseHeight;
 	public float _height;
-	public bool _invincible;
 
 	[HideInInspector]
 	public enum BehaviorState
 	{
+		Dead = -3,
+		Dying = -2,
 		Disabled = -1,
 		Healthy = 0,
 		BodySlam = 1,
@@ -46,7 +47,6 @@ public class BodyScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_invincible = true;
 		_baseHeight = 3.5f;
 		_groundHeightOffset = 0.35f;
 		_height = _baseHeight;
