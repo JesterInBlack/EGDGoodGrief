@@ -11,6 +11,7 @@ public class PostGameScore : MonoBehaviour
 	public GameObject[] objScoreText = new GameObject[4];           //set in inspector
 	public ScoreDetails[] playerScoreDetails = new ScoreDetails[4]; //pulled from objects?
 	public GameObject[] confettiEmitters = new GameObject[5];       //set in inspector
+	public TextMesh objectiveText;                                  //set in inspector
 
 	private float[] currentBarPercent = new float[4];
 	private float[] nextBarPercent = new float[4];
@@ -62,12 +63,10 @@ public class PostGameScore : MonoBehaviour
 
 		//We are finished reading the data.
 		//We need to destroy the score objects. (so that when we start a new game, we don't run into issues)
-		GameObject tempParent = GameObject.Find ( "P1ScoreData" ).transform.parent.gameObject;
 		Destroy ( GameObject.Find ( "P1ScoreData" ) );
 		Destroy ( GameObject.Find ( "P2ScoreData" ) );
 		Destroy ( GameObject.Find ( "P3ScoreData" ) );
 		Destroy ( GameObject.Find ( "P4ScoreData" ) );
-		Destroy ( tempParent );
 
 		/*
 		#region FakeData
@@ -220,6 +219,7 @@ public class PostGameScore : MonoBehaviour
 					//so that losing points made you go down, and getting points made you go up. (intuitive, no?)
 					//When it was relative, gaining points slower than the leader could make you go down.
 					state = 1;
+					objectiveText.text = objectiveScoresP1[ objectiveScoreIndex ].name;
 					GetNextObjectiveScores();
 					//float max = GetMaxScore ();
 					//float nextMax = GetNextMaxScore();
