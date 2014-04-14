@@ -69,6 +69,7 @@ public class PostGameScore : MonoBehaviour
 		Destroy ( GameObject.Find ( "P4ScoreData" ) );
 		Destroy ( tempParent );
 
+		/*
 		#region FakeData
 		objectiveScoresP1[0].score = 10;
 		objectiveScoresP2[0].score = 5;
@@ -95,6 +96,7 @@ public class PostGameScore : MonoBehaviour
 		objectiveScoresP3[4].score = 10;
 		objectiveScoresP4[4].score = 0;
 		#endregion
+		*/
 	}
 
 	// Use this for initialization
