@@ -84,7 +84,7 @@ public class TetherProjectileScript : MonoBehaviour
 			{
 				Destroy(this.gameObject);
 			}
-			AttackSystem.Tether(_targetPlayer, transform.position, 3.0f);
+			AttackSystem.Tether(_targetPlayer, transform.position, 3.0f, Time.deltaTime * StaticData.t_scale );
 		}
 
 	}

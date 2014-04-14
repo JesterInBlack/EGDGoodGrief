@@ -312,7 +312,7 @@ public static class AttackSystem
 		}
 	}
 
-	public static void Tether( GameObject player, Vector2 point, float dt )
+	public static void Tether( GameObject player, Vector2 point, float maxRange, float dt )
 	{
 		float PLAYER_BASE_SPEED = 2.0f; //TODO: make global const? (at present must be synched with customcontroller.speed)
 		float x = player.transform.position.x;
@@ -324,7 +324,7 @@ public static class AttackSystem
 
 		//We want it to pull a diminishing amount (> 100% speed outside range -> 100% speed at edge -> 0% speed at center)
 		//We'll cap it if way outside range.
-		float maxRange = 2.0f; //maximum range.
+		//float maxRange = 2.0f; //maximum range.
 		float multiplier = dist / maxRange;
 		if ( multiplier > 3.0f ) { multiplier = 3.0f; } //to help prevent overcompensation.
 
