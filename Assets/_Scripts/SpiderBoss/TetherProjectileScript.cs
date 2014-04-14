@@ -9,6 +9,7 @@ public class TetherProjectileScript : MonoBehaviour
 	public GameObject _tetherShot;
 	public GameObject _webTether;
 	public GameObject _targetPlayer;
+	public GameObject _tetherHook;
 
 	private Vector2 _startPos;
 	private Vector2 _playerPos;
@@ -47,6 +48,7 @@ public class TetherProjectileScript : MonoBehaviour
 				//tether.GetComponent<TetherScript>().Initializer(_targetPlayer, _directionVector);
 				_tetherShot.SetActive(false);
 				_webTether.SetActive(true);
+				_tetherHook.GetComponent<TetherHook>()._parent = _targetPlayer;
 				_endPos = _playerPos + _directionVector * _tetherDistance;
 				_lerpTime = 0.0f;
 				//TODO knock the player down on contact
@@ -82,6 +84,7 @@ public class TetherProjectileScript : MonoBehaviour
 			{
 				Destroy(this.gameObject);
 			}
+			AttackSystem.Tether(_targetPlayer, transform.position, 3.0f);
 		}
 
 	}
