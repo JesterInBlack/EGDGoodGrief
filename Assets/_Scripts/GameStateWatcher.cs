@@ -34,7 +34,8 @@ public class GameStateWatcher : MonoBehaviour
 
 		#region Win Check
 		bool won = false;
-		if ( GameState.boss.GetComponent<BossCoreHP>().myBlackboard.HP <= 0 )
+		//if ( GameState.boss.GetComponent<BossCoreHP>().myBlackboard.HP <= 0 )
+		if ( GameState.boss.GetComponent<BossCoreHP>().myBlackboard._moveToEndScreen )
 		{
 			won = true;
 		}
