@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using BehaviorDesigner.Runtime.Tasks;
 
 public class Death : Action
 {
 	public float _chargeTime;
 	public float _chargeDuration;
+	public float _recoveryDuration;
 
 	private Vector2 _startingPos;
 
 	private Vector2 _shake;
 	private float _shakeMagnitude;
+
+	public GameObject[] _legParts;
+	public GameObject[] _legShadows;
+
+	private bool _addWeight;
 
 	private BehaviorBlackboard _blackboard;
 	
@@ -21,6 +28,14 @@ public class Death : Action
 
 		_shakeMagnitude = 0.1f;
 		_chargeDuration = 4.0f;
+		_recoveryDuration = 10.0f;
+
+		//_legParts = new List<GameObject>();
+		_legParts = GameObject.FindGameObjectsWithTag("LegSegment");
+		_legShadows = GameObject.FindGameObjectsWithTag("LegShadow");
+
+		_addWeight = false;
+
 	}
 
 	public override void OnStart()
@@ -49,6 +64,57 @@ public class Death : Action
 			else
 			{
 				ShakeBoss(_chargeTime / _chargeDuration);
+				_chargeTime += Time.deltaTime * StaticData.t_scale;
+			}
+		}
+
+		else if(_blackboard.body._bodyState == BodyScript.BodyState.Attacking)
+		{
+			if(_addWeight == false)
+			{
+				foreach(GameObject x in _legShadows)
+				{
+					Destroy(x);
+				}
+
+				foreach(GameObject x in _legParts)
+				{
+					x.GetComponent<HingeJoint2D>().enabled = false;
+					x.GetComponent<Rigidbody2D>().fixedAngle = false;
+					x.GetComponent<Rigidbody2D>().gravityScale = 3.0f;
+					if(x.transform.localPosition.x < 0)
+					{
+						//x.GetComponent<Rigidbody2D>().AddForce(Vector2.right * -0.02f + Vector2.up * 0.09f);
+						x.GetComponent<Rigidbody2D>().AddForce(Vector2.right * Random.Range(-0.01f, -0.03f) + Vector2.up * Random.Range(0.03f, 0.09f));
+						x.GetComponent<Rigidbody2D>().AddTorque(Random.Range(0.05f, 0.12f));
+					}
+					else if(x.transform.localPosition.x > 0)
+					{
+						x.GetComponent<Rigidbody2D>().AddForce(Vector2.right * Random.Range(0.01f, 0.03f) + Vector2.up * Random.Range(0.03f, 0.09f));
+						x.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-0.01f, -0.12f));
+					}
+				}
+				_addWeight = true;
+			}
+			else
+			{
+				foreach(GameObject x in _legParts)
+				{
+
+					x.GetComponent<Rigidbody2D>().mass = 1.0f;
+				}
+				_blackboard.body._bodyState = BodyScript.BodyState.Recovery;
+			}
+		}
+		else if(_blackboard.body._bodyState == BodyScript.BodyState.Recovery)
+		{
+			if(_chargeTime >= _recoveryDuration)
+			{
+				_chargeTime = 0.0f;
+				return TaskStatus.Success;
+			}
+			else
+			{
 				_chargeTime += Time.deltaTime * StaticData.t_scale;
 			}
 		}
