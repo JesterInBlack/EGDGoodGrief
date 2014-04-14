@@ -6,6 +6,9 @@ public class PostGameScore : MonoBehaviour
 	#region vars
 	public GameObject[] scorebars = new GameObject[4];              //set in inspector
 	public GameObject[] playerSprites = new GameObject[4];          //set in inspector (need to set sprite renderer, + animate it, + jump, + move with scorebar)
+	public GameObject[] spotLights = new GameObject[4];             //set in inspector
+	public GameObject[] totalScoreText = new GameObject[4];         //set in inspector
+	public GameObject[] objScoreText = new GameObject[4];           //set in inspector
 	public ScoreDetails[] playerScoreDetails = new ScoreDetails[4]; //pulled from objects?
 	public GameObject[] confettiEmitters = new GameObject[5];       //set in inspector
 
@@ -214,6 +217,19 @@ public class PostGameScore : MonoBehaviour
 					{
 						currentBarPercent[i] = totalScores[i] / absMax; //max;
 						nextBarPercent[i] = ( totalScores[i] + currentObjectiveScores[i] ) / absMax; //nextMax;
+						//Set text.
+						totalScoreText[i].GetComponent<TextMesh>().text = ( (int)totalScores[i] ).ToString();
+						objScoreText[i].GetComponent<TextMesh>().text = ( (int) currentObjectiveScores[i] ).ToString();
+						if ( currentObjectiveScores[i] >= 0 )
+						{
+							objScoreText[i].GetComponent<TextMesh>().text = "+" + objScoreText[i].GetComponent<TextMesh>().text;
+							objScoreText[i].GetComponent<TextMesh>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+						}
+						else
+						{
+							objScoreText[i].GetComponent<TextMesh>().text = objScoreText[i].GetComponent<TextMesh>().text;
+							objScoreText[i].GetComponent<TextMesh>().color = new Color( 0.9f, 0.0f, 0.0f, 1.0f );
+						}
 					}
 				}
 				else
@@ -250,6 +266,21 @@ public class PostGameScore : MonoBehaviour
 			{
 				state = 0;
 				AddObjectiveScoresToTotals (); 
+				for ( int i = 0; i < 4; i++ )
+				{
+					totalScoreText[i].GetComponent<TextMesh>().text = ( (int)totalScores[i] ).ToString();
+					objScoreText[i].GetComponent<TextMesh>().text = "";
+				}
+			}
+		}
+
+		//Lerp text
+		if ( state == 1 )
+		{
+			for ( int i = 0; i < 4; i++ )
+			{
+				int j = (int) Mathf.Lerp ( totalScores[i], totalScores[i] + currentObjectiveScores[i], stateTimer );
+				totalScoreText[i].GetComponent<TextMesh>().text = j.ToString();
 			}
 		}
 	}
@@ -286,6 +317,7 @@ public class PostGameScore : MonoBehaviour
 			{
 				playerSprites[i].GetComponent<Animator>().Play ( "pickup_down" );
 				playerSprites[i].transform.position = playerSprites[i].transform.position + new Vector3( 0.0f, jump, 0.0f);
+				spotLights[i].GetComponent<SpriteRenderer>().enabled = true;
 			}
 		}
 	}
