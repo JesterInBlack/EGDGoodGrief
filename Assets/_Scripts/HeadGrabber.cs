@@ -29,7 +29,12 @@ public class HeadGrabber : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if ( ! on ) { return; } //TODO: show/hide sprite renderer
+		if ( ! on ) 
+		{ 
+			GetComponent<SpriteRenderer>().enabled = false;
+			return; 
+		} 
+		GetComponent<SpriteRenderer>().enabled = true;
 
 		float dt = Time.deltaTime;
 		if ( player.isInBulletTime == false ) { dt = dt * StaticData.t_scale; }
