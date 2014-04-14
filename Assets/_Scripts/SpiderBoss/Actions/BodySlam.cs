@@ -86,6 +86,7 @@ public class BodySlam : Action
 				//TODO make this deal damage
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
 				_lerpTime = 0.0f;
+				_blackboard._invincible = true;
 			}
 			else
 			{
@@ -98,6 +99,7 @@ public class BodySlam : Action
 			if(_slamTimer >= _slamDuration)
 			{
 				_blackboard.body._bodyState = BodyScript.BodyState.Rising;
+				_blackboard._invincible = false;
 			}
 			else
 			{

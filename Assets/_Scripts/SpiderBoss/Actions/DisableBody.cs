@@ -61,6 +61,7 @@ public class DisableBody : Action
 			else
 			{
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
+				_blackboard._invincible = false;
 			}
 		}
 		else if(_blackboard.body._bodyState == BodyScript.BodyState.OnGound)
@@ -81,6 +82,7 @@ public class DisableBody : Action
 					_blackboard.legsList[i]._behaviorState = LegScript.BehaviorState.Walking;
 				}
 				_blackboard.body._bodyState = BodyScript.BodyState.Recovery;
+				_blackboard._invincible = true;
 			}
 		}
 		else if(_blackboard.body._bodyState == BodyScript.BodyState.Recovery)

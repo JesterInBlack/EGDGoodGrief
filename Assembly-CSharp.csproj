@@ -127,6 +127,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ChasePlayer.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\CreateAOE.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\CrouchingCharge.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\Death.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\DisableBody.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\DissentionSuction.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\EyeLookDown.cs" />
@@ -141,6 +142,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\MoveToPoint.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\PauseResumeBehavior.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\PlayerTargeter.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetDyingToDead.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetEyeRotationSpeed.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetTargetLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\SetTargetLegShared.cs" />
@@ -157,6 +159,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Composites\GetPlayerPriority_Sequence.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\AliveCountLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\AliveCountPlayer.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckForDeath.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckForDisabledBody.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckLegHealth.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckPointRadius.cs" />

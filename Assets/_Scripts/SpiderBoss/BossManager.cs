@@ -138,6 +138,9 @@ public class BossManager : MonoBehaviour
 
 		_blackboard.moveDirection = new Vector2(0, 0);
 		_blackboard.attackPatternStopped = false;
+
+		_blackboard._invincible = true;
+		_blackboard._moveToEndScreen = false;
 		#endregion
 	}
 	
