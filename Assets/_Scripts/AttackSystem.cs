@@ -251,7 +251,6 @@ public static class AttackSystem
 		Player hitPlayer = obj.GetComponent<Player>();
 		LegScript hitLeg = obj.GetComponent<LegScript>();
 		BossCoreHP hitBoss = obj.GetComponent<BossCoreHP>();
-		TetherProjectileScript hitTether = obj.GetComponent<TetherProjectileScript>(); //TODO: replace this with a common add class?
 		//TODO: put a hit "add / leg / enemy" in here.
 		
 		if ( hitPlayer != null ) //hit a player
@@ -282,13 +281,6 @@ public static class AttackSystem
 				hitBoss.Hurt ( damage, id );
 			}
 			//else: ignore it.
-		}
-		else if ( hitTether != null )
-		{
-			if ( IsPlayer ( id ) )
-			{
-				hitTether.Hurt ( damage, id );
-			}
 		}
 	}
 
