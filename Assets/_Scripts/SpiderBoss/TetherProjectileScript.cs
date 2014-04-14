@@ -22,6 +22,9 @@ public class TetherProjectileScript : MonoBehaviour
 	public float _settingDuration = 0.1f;
 	public float _lerpTime = 0.0f;
 
+	private ScheduledColor scheduledColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
+	private float colorT = 0.0f;
+
 	public enum BehaviorState
 	{
 		Moving = 0,
@@ -87,6 +90,18 @@ public class TetherProjectileScript : MonoBehaviour
 			AttackSystem.Tether(_targetPlayer, transform.position, 3.0f, Time.deltaTime * StaticData.t_scale );
 		}
 
+		//Color handling logic.
+		colorT = Mathf.Max ( 0.0f, colorT - Time.deltaTime * StaticData.t_scale );
+		if ( colorT == 0.0f && scheduledColor.duration != 0.0f )
+		{
+			scheduledColor.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+			scheduledColor.duration = 0.0f;
+			SpriteRenderer[] temp = GetComponentsInChildren<SpriteRenderer>();
+			foreach ( SpriteRenderer s in temp )
+			{
+				s.color = scheduledColor.color;
+			}
+		}
 	}
 	
 	public void Initializer(Vector2 startPos, GameObject targetPlayer)
@@ -104,5 +119,34 @@ public class TetherProjectileScript : MonoBehaviour
 		//calcualte the end point of the tether
 		_directionVector = new Vector2(xDiff, yDiff);
 		_directionVector.Normalize();
+	}
+
+	public void Hurt( float damage, int id )
+	{
+		if ( id == 0 ) //TODO: assign this script the id of the player it's tethering, replace 0 with that var.
+		{
+			//tethered player attacking, take ~ no damage.
+			_moundHP -= damage * 0.1f;
+		}
+		else
+		{
+			//a player assists the tethered player.
+			_moundHP -= _moundHPMax;
+		}
+
+		//Color handling logic.
+		scheduledColor.color = new Color( 1.0f, 0.5f, 0.5f, 1.0f );
+		scheduledColor.duration = 0.20f;
+		colorT = scheduledColor.duration;
+		SpriteRenderer[] temp = GetComponentsInChildren<SpriteRenderer>();
+		foreach ( SpriteRenderer s in temp )
+		{
+			s.color = scheduledColor.color;
+		}
+
+		if ( _moundHP <= 0 )
+		{
+			Destroy(this.gameObject);
+		}
 	}
 }
