@@ -3,9 +3,18 @@
 	//A lightweight class for storing data for a particular score objective
 	public float score; //points for the objective
 	public float count; //associated numerical data: usually # of times
+	public string name; //name of the objective
 
 	public SubScore ()
 	{
+		name = "";
+		score = 0;
+		count = 0;
+	}
+
+	public SubScore ( string pName )
+	{
+		name = pName;
 		score = 0;
 		count = 0;
 	}
@@ -28,11 +37,11 @@ public class ScoreDetails
 
 	public ScoreDetails()
 	{
-		downs = new SubScore();
-		damageDealt = new SubScore();
-		damageTaken = new SubScore();
-		damageAvoided = new SubScore();
-		lastHit = new SubScore();
+		downs = new SubScore( "Downs" );
+		damageDealt = new SubScore( "Damage Dealt" );
+		damageTaken = new SubScore( "Damage Taken" );
+		damageAvoided = new SubScore( "Dodge / Block" );
+		lastHit = new SubScore( "Boss Killer" );
 	}
 
 	public float GetGrandTotal()
@@ -40,16 +49,17 @@ public class ScoreDetails
 		return downs.score + damageDealt.score + damageTaken.score + damageAvoided.score + lastHit.score;
 	}
 
-	public float[] GetObjectiveScores()
+	public SubScore[] GetObjectiveScores()
 	{
 		//iterate through each subscore, and return its score.
-		float[] objectiveScores = new float[5];
+		//TODO: return subscore object
+		SubScore[] objectiveScores = new SubScore[5];
 
-		objectiveScores[0] = damageDealt.score;
-		objectiveScores[1] = damageAvoided.score;
-		objectiveScores[2] = damageTaken.score;
-		objectiveScores[3] = downs.score;
-		objectiveScores[4] = lastHit.score;
+		objectiveScores[0] = damageDealt; //damageDealt.score;
+		objectiveScores[1] = damageAvoided; //damageAvoided.score;
+		objectiveScores[2] = damageTaken; //damageTaken.score;
+		objectiveScores[3] = downs; //downs.score;
+		objectiveScores[4] = lastHit; //lastHit.score;
 
 		return objectiveScores;
 	}
