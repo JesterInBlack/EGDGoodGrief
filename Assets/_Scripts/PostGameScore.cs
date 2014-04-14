@@ -25,7 +25,7 @@ public class PostGameScore : MonoBehaviour
 
 	private int objectiveScoreIndex = 0;
 	private const int NUMBER_OF_OBJECTIVES = 5; //# of subscores that go into the total score.
-	private float t;                            //periodic timer for jumping animation
+	private float t;                            //periodic timer for jumping animation, also counts seconds since "done".
 	private float stateTimer = 0.0f;            //timer for state transitions
 	private int state = 0;                      //state tracker
 	private bool done = false;                  //if the state loop is done
@@ -98,10 +98,12 @@ public class PostGameScore : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		t += Time.deltaTime;
+		if ( done ) { t += Time.deltaTime; }
 		DoStateStuff();
 		MoveScoreBars();
 		MakeWinnersJump();
+
+		if ( t > 6.0f ) { Application.LoadLevel( "MainMenu" ); };
 	}
 
 	private float GetMaxScore ()
