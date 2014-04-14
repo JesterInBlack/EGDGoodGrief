@@ -8,32 +8,47 @@ public static class ScoreManager
 	public static void Death( int id )
 	{
 		//Take 25% of thier points.
-		GameState.players[id].GetComponent<Player>().score -= GameState.players[id].GetComponent<Player>().score * 0.25f;
+		float amount = GameState.players[id].GetComponent<Player>().score * 0.25f;
+		GameState.players[id].GetComponent<Player>().score -= amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.downs.count++;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.downs.score += amount;
 	}
 
 	public static void DealtDamage( int id, float damage )
 	{
 		//give them points ~ damage
-		GameState.players[id].GetComponent<Player>().score += damage;
+		float amount = damage;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageDealt.count += damage;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageDealt.score += amount;
 	}
 
 	public static void TookDamage( int id, float damage )
 	{
 		//take away points (~ damage?)
-		GameState.players[id].GetComponent<Player>().score -= damage;
+		float amount = -1.0f * damage;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageTaken.count += damage;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageTaken.score += amount;
 	}
 
 	public static void AvoidedDamage( int id, float damage )
 	{
 		//give them points ~ damage
-		GameState.players[id].GetComponent<Player>().score += damage / 2.0f;
+		float amount = damage / 2.0f;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageAvoided.count += damage;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageAvoided.score += amount;
 	}
 
 	//BONUS OBJECTIVES
 	public static void LastHit( int id )
 	{
 		//bonus points for last hitting boss.
-		GameState.players[id].GetComponent<Player>().score += 1000.0f;
+		float amount = 1000.0f;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.lastHit.count ++;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.lastHit.score += amount;
 	}
 
 	public static void KilledLeg( int id )

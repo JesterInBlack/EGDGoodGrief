@@ -60,6 +60,15 @@ public class PostGameScore : MonoBehaviour
 			currentBarPercent[i] = 0.0f;
 		}
 
+		//We are finished reading the data.
+		//We need to destroy the score objects. (so that when we start a new game, we don't run into issues)
+		GameObject tempParent = GameObject.Find ( "P1ScoreData" ).transform.parent.gameObject;
+		Destroy ( GameObject.Find ( "P1ScoreData" ) );
+		Destroy ( GameObject.Find ( "P2ScoreData" ) );
+		Destroy ( GameObject.Find ( "P3ScoreData" ) );
+		Destroy ( GameObject.Find ( "P4ScoreData" ) );
+		Destroy ( tempParent );
+
 		#region FakeData
 		objectiveScoresP1[0].score = 10;
 		objectiveScoresP2[0].score = 5;

@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public float baseMaxHP = 100.0f;
 
+	public ScorePasser scorePasser; //set in inspector.
 	public float score = 0;
 
 	public float defense = 1.0f;  //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
