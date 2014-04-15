@@ -193,6 +193,8 @@ public class LegScript : MonoBehaviour {
 			//do nothing for now
 		}
 
+		//get the rotation
+		transform.rotation = transform.parent.localRotation;
 
 		HandleStats();
 	}

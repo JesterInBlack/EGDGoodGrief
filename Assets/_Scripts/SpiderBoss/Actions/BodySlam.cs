@@ -30,10 +30,10 @@ public class BodySlam : Action
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 		_pointOfDamage = GameObject.Find("ProjectileStartPoint");
 
-		_chargeTime = 2.0f;
+		_chargeTime = 1.0f;
 		_fallTime = 0.125f;
-		_riseTime = 2.0f;
-		_slamDuration = 2.5f;
+		_riseTime = 1.25f;
+		_slamDuration = 1.5f;
 	}
 
 	public override void OnStart()
@@ -86,7 +86,7 @@ public class BodySlam : Action
 				}
 
 				//TODO make this deal damage
-				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 1.5f, 30.0f, -1);
+				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 3f, 30.0f, -1);
 				GameState.cameraController.Shake (0.1f, 0.25f );
 
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;

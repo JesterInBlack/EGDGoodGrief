@@ -26,8 +26,8 @@ public class BodySlamNoCharge : Action
 		_pointOfDamage = GameObject.Find("ProjectileStartPoint");
 
 		_fallTime = 0.15f;
-		_riseTime = 2.0f;
-		_slamDuration = 2.5f;
+		_riseTime = 1.25f;
+		_slamDuration = 1.5f;
 	}
 
 	public override void OnStart()
@@ -56,7 +56,7 @@ public class BodySlamNoCharge : Action
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _groundedPos) < 0.001f)
 			{
-				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 1.5f, 30.0f, -1);
+				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 3f, 30.0f, -1);
 				GameState.cameraController.Shake (0.1f, 0.25f );
 
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
