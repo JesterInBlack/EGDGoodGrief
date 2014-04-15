@@ -119,8 +119,6 @@
      <Compile Include="Assets\_Scripts\ScorePasser.cs" />
      <Compile Include="Assets\_Scripts\SoundStorage.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ApplyBuff.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\BodySlam.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\BodySlamNoCharge.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\ChasePlayer.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\CreateAOE.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\CrouchingCharge.cs" />
@@ -133,7 +131,6 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\FireExplodingEggProjectile.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\FirePointLaser.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\FireTetherProjectile.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\LegListSelector.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\Lob.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\MoveToPoint.cs" />
@@ -147,12 +144,9 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\UnityMegaFlareEye.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\UnityMegaFlareSharedLegs.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\resetSelectedLeg.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorBlackboard.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorData.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BodyScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BodyShadow.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BossCoreHP.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BossManager.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Composites\GetPlayerPriority_Sequence.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountLeg.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountPlayer.cs" />
@@ -166,11 +160,9 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\SetSharedBool.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\ExplodingSacProjectileScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\EyeScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\IsTargetAlive.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\LegShadow.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\MegaFlareScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\PointExplosion.cs" />
@@ -185,6 +177,15 @@
      <Compile Include="Assets\_scripts\AttackSystem.cs" />
      <Compile Include="Assets\_scripts\Player.cs" />
      <Compile Include="Assets\_scripts\PostGameScore.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\BodySlam.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\BodySlamNoCharge.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BehaviorBlackboard.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BehaviorData.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BossManager.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\AttackWasSuccesful.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\ExplodingSacProjectileScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\TetherProjectileScript.cs" />
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>

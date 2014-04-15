@@ -96,8 +96,24 @@ public class BehaviorData
 
 	}
 
-	public void UseAction()
+	public void UseAction(bool attackWasSuccessful)
 	{
-		_priority = 0.0f;
+		//Debug.Log("ATTACK WAS SUCCESS: " + attackWasSuccessful);
+
+		if(attackWasSuccessful == true)
+		{
+			GameState.angerAxis += Mathf.Min(_successAngerDelta, 1.0f - GameState.angerAxis);
+			GameState.cooperationAxis += Mathf.Min(_successCoopDelta, 1.0f - GameState.cooperationAxis);
+			_priority = 0.0f;
+		}
+		else
+		{
+			//GameState.angerAxis -= Mathf.Min(_failAngerDelta, 1.0f + GameState.angerAxis);
+			//GameState.cooperationAxis -= Mathf.Min(_failCoopDelta, 1.0f + GameState.cooperationAxis);
+			GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - _failCoopDelta );
+			GameState.angerAxis = Mathf.Max ( -1.0f,  GameState.angerAxis - _failAngerDelta );
+
+			_priority = _priority / 2.0f;
+		}
 	}
 }

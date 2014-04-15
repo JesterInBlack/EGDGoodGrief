@@ -3,7 +3,6 @@ using System.Collections;
 
 public class BossCoreHP : MonoBehaviour 
 {
-
 	#region vars
 	[HideInInspector]
 	public BehaviorBlackboard myBlackboard;
@@ -137,5 +136,7 @@ public class BossCoreHP : MonoBehaviour
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 0.35f );
 			soundTimer = soundDelay;
 		}
+
+		GameState.angerAxis += Mathf.Min(0.015f , 1.0f - GameState.angerAxis);
 	}
 }

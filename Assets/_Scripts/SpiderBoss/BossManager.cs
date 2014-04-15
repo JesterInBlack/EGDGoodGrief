@@ -151,6 +151,7 @@ public class BossManager : MonoBehaviour
 
 		_blackboard._invincible = true;
 		_blackboard._moveToEndScreen = false;
+		_blackboard._attackWasSuccess = false;
 		#endregion
 	}
 	
@@ -203,6 +204,10 @@ public class BossManager : MonoBehaviour
 		{
 			GameState.angerAxis += Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
 		}
+
+		GameState.angerAxis = Mathf.Clamp(GameState.angerAxis, -1.0f, 1.0f);
+		GameState.cooperationAxis = Mathf.Clamp(GameState.cooperationAxis, -1.0f, 1.0f);
+
 	}
 
 	void UpdateBehaviors()
@@ -258,9 +263,9 @@ public class BossManager : MonoBehaviour
 				{
 					//Debug.Log("Finished a behavior");
 					//set the priority to 0 for use
-					_behaviorList[selectedIndex].UseAction();
+					_behaviorList[selectedIndex].UseAction(_blackboard._attackWasSuccess);
+					_blackboard._attackWasSuccess = false;
 
-					Debug.Log("DONE");
 					//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 					_blackboard._currentBehavior = null;
 				}

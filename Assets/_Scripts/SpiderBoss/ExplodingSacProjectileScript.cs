@@ -25,8 +25,7 @@ public class ExplodingSacProjectileScript : MonoBehaviour
 		if(Vector3.Distance(_playerPos, transform.position) < 0.001f)
 		{
 			_lerpTime = 0.0f;
-			//TODO knock the player down on contact
-			//_targetPlayer.GetComponent<Player>()
+			_targetPlayer.GetComponent<Player>().KnockBack(0.0f, Vector2.zero);
 			Destroy(this.gameObject);
 		}
 		else
