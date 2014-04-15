@@ -285,6 +285,12 @@ public class Player : MonoBehaviour
 				buffs.RemoveAt ( i );
 			}
 		}
+
+		//Check if player died (from a lethal DoT)
+		if ( HP <= 0.0f && ! isDowned )
+		{
+			Die();
+		}
 		#endregion
 
 		//trap state changes
@@ -362,30 +368,11 @@ public class Player : MonoBehaviour
 		HP -= finalDamage;
 		if ( HP <= 0.0f )
 		{
-			//deadz.
-			//Go into downed state.
-			isDowned = true;
-			//interrupt any attacks or actions. Force state change.
-			state = "idle";
-			stateTimer = 0.0f;
-			nextState = "idle";
-			//deduct points
-			score -= score * 0.25f; //25%
-			#region remove buffs
-			//remove all buffs
-			for ( int i = buffs.Count - 1; i >= 0; i-- )
-			{
-				Buff tempBuff = (Buff)buffs[i];
-				tempBuff.End();
-				//buffs.RemoveAt( i ); //If we want some to not vanish on going down.
-			}
-			buffs.Clear ();
-			#endregion
-			//Flash red.
-			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
-			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
-			//TODO: animation
+			Die();
 		}
+
+		//ASSUMPTION: hurt is only called by the boss' attacks.
+		GameState.angerAxis = Mathf.Max ( 0.0f,  GameState.angerAxis - 0.015f );
 
 		#region resource deduction
 		//resource deduction. (chain, sediment)
@@ -549,6 +536,33 @@ public class Player : MonoBehaviour
 		}
 		buffs.Add ( myBuff );
 		myBuff.Start ();
+	}
+
+	private void Die()
+	{
+		//deadz.
+		//Go into downed state.
+		isDowned = true;
+		//interrupt any attacks or actions. Force state change.
+		state = "idle";
+		stateTimer = 0.0f;
+		nextState = "idle";
+		//deduct points
+		ScoreManager.Death ( id );
+		#region remove buffs
+		//remove all buffs
+		for ( int i = buffs.Count - 1; i >= 0; i-- )
+		{
+			Buff tempBuff = (Buff)buffs[i];
+			tempBuff.End();
+			//buffs.RemoveAt( i ); //If we want some to not vanish on going down.
+		}
+		buffs.Clear ();
+		#endregion
+		//Flash red.
+		this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
+		GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
+		GetComponent<Animator>().Play ( "downed_" + GetAniSuffix() );
 	}
 
 	//-------------------------------------------------------------------------------------------------------
