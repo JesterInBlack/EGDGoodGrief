@@ -140,6 +140,10 @@ public class Player : MonoBehaviour
 				items[i] = new Item();
 				items[i].Construct ( temp.playerItems[ id, i ] );
 			}
+
+			//Delete the menu data to prevent clashing + buildup
+			//TODO: check if in tutorial.
+			//GameObject.Destroy ( tempObj ); //? but need to read all 4 first.
 		}
 	}
 

@@ -87,7 +87,7 @@ public class TetherProjectileScript : MonoBehaviour
 			{
 				Destroy(this.gameObject);
 			}
-			AttackSystem.Tether(_targetPlayer, transform.position, 3.0f, Time.deltaTime * StaticData.t_scale );
+			AttackSystem.Tether(_targetPlayer, transform.position, 0.5f, 3.0f, Time.deltaTime * StaticData.t_scale );
 		}
 
 		//Color handling logic.
