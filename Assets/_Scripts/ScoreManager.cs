@@ -69,4 +69,37 @@ public static class ScoreManager
 	//TODO: dissension bonus for not getting screwed by the dissension attack.
 
 	//TODO: "GLORIOUS" indicator.
+	public static void UpdateScores()
+	{
+		float sum = 0.0f;
+		float mean = 0.0f;
+		float variance = 0.0f;
+		float stdev = 0.0f;
+		for ( int i = 0; i < 4; i++ )
+		{
+			sum += GameState.players[i].GetComponent<Player>().score;
+		}
+		mean = sum / 4; //TODO: base on # of players
+
+		//Calculate the variance
+		for ( int i = 0; i < 4; i++ )
+		{
+			float difference = ( GameState.players[i].GetComponent<Player>().score - mean );
+			variance += difference * difference;
+		}
+		variance = variance / 4; //TODO: base on # of players
+
+		//Calculate the standard deviation
+		stdev = Mathf.Pow ( variance, 0.5f );
+
+		//calculate player's glory ( or # of standard deviations from the mean)
+		//TODO: exponential distribution rather than a linear one.
+		for ( int i = 0; i < 4; i++ )
+		{
+			float glory = 0.0f;
+			if ( stdev != 0.0f ) { glory = (GameState.players[i].GetComponent<Player>().score - mean) / stdev; }
+			GameState.players[i].GetComponent<Player>().glory = glory;
+			//Debug.Log ( glory );
+		}
+	}
 }

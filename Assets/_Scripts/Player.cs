@@ -19,8 +19,10 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public float baseMaxHP = 100.0f;
 
-	public ScorePasser scorePasser; //set in inspector.
-	public float score = 0;
+	public ScorePasser scorePasser; //loaded on awake
+	public float score = 0.0f;
+	public float glory = 0.0f;
+	public ParticleSystem gloryParticles;
 
 	public float defense = 1.0f;  //defensive power: (2x = 1/2 damage). Base: 1 = 1x damage.
 	public float offense = 1.0f;  //offensive power: (2x = 2x  damage). Base: 1 = 1x damage.
@@ -144,6 +146,7 @@ public class Player : MonoBehaviour
 			//Set read flag (to delete the menu data to prevent clashing + buildup)
 			temp.read[ id ] = true;
 		}
+		scorePasser = GameObject.Find ( "P" + (id + 1) + "ScoreData" ).GetComponent<ScorePasser>();
 	}
 
 	// Use this for initialization
@@ -151,6 +154,8 @@ public class Player : MonoBehaviour
 	{
 		//initialize stats
 		//GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f ); //Change this to alter colors per player
+
+		score = 100.0f;
 
 		maxHP = baseMaxHP;
 		HP = maxHP;
@@ -290,6 +295,24 @@ public class Player : MonoBehaviour
 		if ( HP <= 0.0f && ! isDowned )
 		{
 			Die();
+		}
+
+		//Handle glory particles
+		if ( glory > 0.0f )
+		{
+			gloryParticles.enableEmission = true;
+			//gloryParticles.Play ();
+			if ( gloryParticles != null )
+			{
+				gloryParticles.emissionRate = 40.0f * (1.0f + glory / 2.0f) * (1.0f + glory / 2.0f);
+				gloryParticles.startLifetime = 1.0f / (1.0f + glory / 2.0f);
+				gloryParticles.startSpeed = -1.0f * (1.0f + glory / 2.0f);
+			}
+		}
+		else
+		{
+			gloryParticles.enableEmission = false;
+			//gloryParticles.Stop ();
 		}
 		#endregion
 

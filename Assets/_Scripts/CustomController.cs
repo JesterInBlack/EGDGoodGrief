@@ -36,13 +36,21 @@ public class CustomController : MonoBehaviour
 	GamePadState prevGamePadState;
 
 	private const float min_trigger_value = 0.10f; //minimum value a trigger must exceed to be considered pressed.
+
+	private GameObject overheadArrow;
 	#endregion
+
+	// Use this for pre-initialization
+	void Awake()
+	{
+		overheadArrow = transform.Find ( "Arrow" ).gameObject;
+		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
+		playerState = this.gameObject.GetComponent<Player>();
+	}
 
 	// Use this for initialization
 	void Start () 
 	{
-		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
-		playerState = this.gameObject.GetComponent<Player>();
 		//actionHandler = (ClassFunctionalityInterface)this.gameObject.GetComponent( typeof( ClassFunctionalityInterface ) );
 
 		#region codes
@@ -483,6 +491,11 @@ public class CustomController : MonoBehaviour
 			#endregion
 
 			#endregion
+
+			if ( gamePadState.Buttons.Back == ButtonState.Pressed && prevGamePadState.Buttons.Back == ButtonState.Released )
+			{
+				overheadArrow.SetActive( ! overheadArrow.activeInHierarchy );
+			}
 		}
 
 		//save previous gamepad state (to check for button up/down events)

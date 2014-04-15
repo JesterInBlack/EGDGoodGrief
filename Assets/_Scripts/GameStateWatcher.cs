@@ -18,6 +18,7 @@ public class GameStateWatcher : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		ScoreManager.UpdateScores();
 		if ( GameState.boss == null ) { return; } //tutorial
 
 		#region Lose Check

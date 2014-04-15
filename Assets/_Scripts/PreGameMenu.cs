@@ -441,7 +441,14 @@ public class PreGameMenu : MonoBehaviour
 					}
 				}
 				playerClasses.CopyTo( menuDataSaver.playerClasses, 0 );
-				Application.LoadLevel( "Master" );
+				if ( tutorial )
+				{
+					Application.LoadLevel( "Tutorial" );
+				}
+				else
+				{
+					Application.LoadLevel( "Master" );
+				}
 			}
 			#endregion
 		}
