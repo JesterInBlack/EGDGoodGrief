@@ -106,6 +106,7 @@ public class PostGameScore : MonoBehaviour
 		scorebars[2].GetComponent<SpriteRenderer>().color = new Color( 0.0f, 1.0f, 0.0f, 0.5f );
 		scorebars[3].GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 0.0f, 0.5f );
 		InitializeScoreBars (); //initialize them.
+		GetComponent<AudioSource>().Play ();
 	}
 	
 	// Update is called once per frame
