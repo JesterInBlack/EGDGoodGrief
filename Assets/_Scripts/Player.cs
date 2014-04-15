@@ -483,7 +483,7 @@ public class Player : MonoBehaviour
 					( (Buff) aggressor.buffs[i] ).End();
 					aggressor.buffs.RemoveAt ( i );
 					//TODO: Play blacklist sound, do notification
-					Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
+					//Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
 					//Blacklisting causes additional anti-cooperation
 					GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
 				}

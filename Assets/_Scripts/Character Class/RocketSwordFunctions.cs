@@ -85,7 +85,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		#endregion
 		UpdateResource ( dt ); //update "chain"
 
-		if ( player.state != "idle" ) { Debug.Log ( player.state ); }
+		//if ( player.state != "idle" ) { Debug.Log ( player.state ); }
 		//TODO: charging states, tracking charge % and previous charge percent
 		//TODO: feedback on charge breakpoints being reached.
 		if ( player.state == "xnormal" )

@@ -33,7 +33,7 @@ public class PlayerColor : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		Debug.Log ( this.gameObject.GetComponent<SpriteRenderer>().sprite.name );
+		//Debug.Log ( this.gameObject.GetComponent<SpriteRenderer>().sprite.name );
 		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 
 		//Check if player is in bullet time.
