@@ -85,6 +85,7 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector2.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector3.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector4.cs" />
+     <Compile Include="Assets\ObjectivesGUIText.cs" />
      <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\AuraFX.cs" />
      <Compile Include="Assets\_Scripts\Boss.cs" />
@@ -184,6 +185,8 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\TetherHookScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\TetherProjectileScript.cs" />
      <Compile Include="Assets\_Scripts\StaticData.cs" />
+     <Compile Include="Assets\_Scripts\Tutorial.cs" />
+     <Compile Include="Assets\_Scripts\TutorialExit.cs" />
      <Compile Include="Assets\_Scripts\VenomPool.cs" />
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
      <Compile Include="Assets\_Scripts\Web.cs" />

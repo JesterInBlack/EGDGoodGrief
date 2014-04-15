@@ -27,6 +27,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float xNormalInterruptHP = 100.0f;  //Normal attack: Horizontal Slash: interruption damage threshold.
 	private const float xSmashInterruptHP = 10000.0f; //Smash  attack: Spin2Win: interruption damage threshold.
 
+	public bool xCharged = false;                     //for external scripts to access
+	public bool xCharged2 = false;                    //for external scripts to access
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
 	private const float xChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
@@ -48,6 +50,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float yNormalInterruptHP = 100.0f;  //Normal attack: Vertical Slash: interruption damage threshold.
 	private const float ySmashInterruptHP  = 100.0f;  //Smash  attack: HBlast Off: interruption damage threshold.
 
+	public bool yCharged = false;                     //for external scripts to access
 	private float yHoldTime  = 0.0f;
 	private const float yChargeMin = 1.0f;            //minimum hold time to use the charged version of the y attack
 	private const float yChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
@@ -222,6 +225,10 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		prevState = player.state;
 		//Debug.Log ( player.state ); //DEBUG
+
+		xCharged = player.state == "xcharge" && xHoldTime >= xChargeMin;
+		xCharged2 = player.state == "xcharge" && xHoldTime >= xChargeMax;
+		yCharged = player.state == "ycharge" & yHoldTime >= yChargeMin;
 	}
 
 	#region B

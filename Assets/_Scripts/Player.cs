@@ -335,6 +335,7 @@ public class Player : MonoBehaviour
 
 	public void ChangeItemIndex( int increment )
 	{
+		GetComponent<Tutorial>().swappedItem = true;
 		//increment: +1 or -1
 		//check to make sure we're not currently charging an item.
 		if ( ! (state == "item windup" || 
@@ -636,6 +637,7 @@ public class Player : MonoBehaviour
 	{
 		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
 		{
+			GetComponent<Tutorial>().usedItem = true;
 			if ( items[ itemIndex ].itemType == ItemType.ITEM_FAST )
 			{
 				//Do the effect. NOW!

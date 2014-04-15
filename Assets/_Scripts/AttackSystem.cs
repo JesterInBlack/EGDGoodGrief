@@ -177,7 +177,7 @@ public static class AttackSystem
 			if ( angle >= minTheta && angle <= maxTheta )
 			{
 				//In sector angle range.
-				Debug.Log ( "Hit, normal" );
+				//Debug.Log ( "Hit, normal" );
 				Hit( hit.gameObject, id, damage );
 			}
 			else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
@@ -188,7 +188,7 @@ public static class AttackSystem
 				//(the complement is the angle swept from max to min.)
 				if ( ! (angle >= ( (maxTheta + 360.0f) % 360.0f) && angle <= ( (minTheta + 360.0f) % 360.0f) ) )
 				{
-					Debug.Log ( "Hit, negative angle" );
+					//Debug.Log ( "Hit, negative angle" );
 					Hit ( hit.gameObject, id, damage );
 				}
 			}
@@ -214,7 +214,7 @@ public static class AttackSystem
 				{
 					if ( lastHit.collider.gameObject.Equals ( hit.gameObject ) )
 					{
-						Debug.Log ( "Hit, edge case (min)." ); //does not ignore self hits
+						//Debug.Log ( "Hit, edge case (min)." ); //does not ignore self hits
 						Hit( hit.gameObject, id, damage );
 						isHit = true;
 					}
@@ -226,7 +226,7 @@ public static class AttackSystem
 					{
 						if ( lastHit.collider.gameObject.Equals ( hit.gameObject ) )
 						{
-							Debug.Log ( "Hit, edge case (max)." );
+							//Debug.Log ( "Hit, edge case (max)." );
 							Hit( hit.gameObject, id, damage );
 							isHit = true;
 						}

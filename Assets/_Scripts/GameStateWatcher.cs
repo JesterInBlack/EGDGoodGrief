@@ -19,7 +19,7 @@ public class GameStateWatcher : MonoBehaviour
 	void Update () 
 	{
 		ScoreManager.UpdateScores();
-		if ( GameState.boss == null ) { return; } //tutorial
+		if ( GameState.boss == null || GameState.isTutorial ) { return; } //tutorial
 
 		#region Lose Check
 		bool lost = true;

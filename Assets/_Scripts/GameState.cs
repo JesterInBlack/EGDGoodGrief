@@ -11,6 +11,7 @@ public static class GameState //: MonoBehaviour
 	public static GameObject boss;                           //assign in pre-game screens
 	public static GameObject[] bossLegs = new GameObject[8]; //assign in pre-game screens
 	public static CameraController cameraController;         //set in inspector.
+	public static bool isTutorial;                           //assig in pre-game screens
 	#endregion
 
 	#region BossVars
@@ -21,6 +22,5 @@ public static class GameState //: MonoBehaviour
 	//This is the axis that the boss 
 	public static float cooperationAxis; //affects the usage of Dissention/Cooperation attacks
 	public static float angerAxis; //affects more powerful moves to use/aggression
-
 	#endregion
 }
