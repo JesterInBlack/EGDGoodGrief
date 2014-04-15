@@ -18,6 +18,8 @@ public class GameStateWatcher : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if ( GameState.boss == null ) { return; } //tutorial
+
 		#region Lose Check
 		bool lost = true;
 		for ( int i = 0; i < GameState.players.Length; i++ )

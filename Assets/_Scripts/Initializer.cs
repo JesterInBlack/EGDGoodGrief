@@ -31,11 +31,15 @@ public class Initializer : MonoBehaviour
 			GameState.playerStates[i] = players[i].GetComponent<Player>();
 			players[i].GetComponent<Player>().id = i;
 		}
-		GameState.boss = boss;
-		for ( int i = 0; i < 8; i++ )
+
+		if ( boss != null )
 		{
-			GameState.bossLegs[i] = bossLegs[i];
-			//TODO: set ids?
+			GameState.boss = boss;
+			for ( int i = 0; i < 8; i++ )
+			{
+				GameState.bossLegs[i] = bossLegs[i];
+				//TODO: set ids?
+			}
 		}
 		GameState.cameraController = cameraController.GetComponent<CameraController>();
 
