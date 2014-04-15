@@ -14,7 +14,7 @@ public class LobProjectile : MonoBehaviour {
 	public Vector2 _targetPosition;
 
 	public bool _readyToStart = false;
-	private float _totalTime = 2.0f;
+	private float _totalTime = 1.25f;
 	public float _currentTime;
 
 	// Use this for initialization
@@ -72,7 +72,7 @@ public class LobProjectile : MonoBehaviour {
 		float yPoint = a.y + ((b.y - a.y)/2);
 		
 		//yPoint += (b.y - a.y) * 2.0f;
-		yPoint = Mathf.Max(b.y, a.y) + Mathf.Abs(b.y - a.y);
+		yPoint = Mathf.Max(b.y, a.y) + 5.0f;
 
 		return new Vector2(xPoint, yPoint);
 	}

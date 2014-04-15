@@ -74,12 +74,12 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.5f, 0.5f, 1f, 60.0f, 0.5f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.5f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, 0.15f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 7) //Dissention Suction
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 8) //PointLaser
@@ -89,12 +89,12 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 9) //WebTether
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 0.5f, 0.5f, 1f, 50.0f, 0.6f);
+				testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 0.5f, 0.75f, 1f, 50.0f, 0.6f, -0.2f, 0f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 10) //DissentionEggSac
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 
@@ -114,8 +114,8 @@ public class BossManager : MonoBehaviour
 		#region Blackboard Variables
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 
-		_blackboard.coopAxisRecovery = 0.005f;
-		_blackboard.angerAxisRecovery = 0.015f;
+		_blackboard.coopAxisRecovery = 0.0025f;
+		_blackboard.angerAxisRecovery = 0.01f;
 
 		_blackboard.decisionState = BehaviorBlackboard.DecisionState.resetAllBehaviors;
 
@@ -184,13 +184,17 @@ public class BossManager : MonoBehaviour
 		{
 			GameState.angerAxis += Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
 		}
+		else if(GameState.cooperationAxis > 0.0f)
+		{
+			GameState.angerAxis -= Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery/3.0f), Mathf.Abs(GameState.angerAxis));
+		}
 
 		GameState.angerAxis = Mathf.Clamp(GameState.angerAxis, -1.0f, 1.0f);
 		GameState.cooperationAxis = Mathf.Clamp(GameState.cooperationAxis, -1.0f, 1.0f);
 
 		for(int i= 0; i < GameState.playerThreats.Length; i++)
 		{
-			GameState.playerThreats[i] -= Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard._naturalThreatRecovery), GameState.playerThreats[i]);
+			GameState.playerThreats[i] -= Mathf.Min(( (Time.deltaTime * StaticData.t_scale) * _blackboard._naturalThreatRecovery), GameState.playerThreats[i]);
 			//Debug.Log("THREAT: " + GameState.playerThreats[i]);
 		}
 

@@ -34,10 +34,10 @@ public class Impale : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_windupTime = 0.4f;
-		_aimTime = 1.5f;
+		_windupTime = 0.3f;
+		_aimTime = 1.0f;
 		_attackTime = 0.1f;
-		_cooldownTime = 2.0f;
+		_cooldownTime = 1.25f;
 
 		damage = 35.0f;
 	}
@@ -81,6 +81,8 @@ public class Impale : Action
 		}
 		else if(_state == AttackState.Aim)
 		{
+			TrackPlayer();
+
 			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _intermediatePoint) < 0.001f)
 			{
 				_state = AttackState.Attack;
@@ -147,6 +149,12 @@ public class Impale : Action
 		}
 
 		return TaskStatus.Running;
+	}
+
+	public void TrackPlayer()
+	{
+		_targetPoint = Vector2.MoveTowards(_targetPoint, (Vector2)_blackboard.targetPlayer.transform.position, 2.0f * (Time.deltaTime* StaticData.t_scale));
+		_blackboard.selectedLeg._shadowIntermediatePoint = _targetPoint;
 	}
 
 	public override void OnEnd()

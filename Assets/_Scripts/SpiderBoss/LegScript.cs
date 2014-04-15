@@ -99,7 +99,7 @@ public class LegScript : MonoBehaviour {
 		_maxHP = 200.0f;
 		_currentHP = _maxHP;
 
-		_maxWebbingHP = 75.0f;
+		_maxWebbingHP = 150.0f;
 		_currentWebbingHP = 0.0f;
 
 		_maxBuffDuration = 30.0f;
@@ -301,7 +301,7 @@ public class LegScript : MonoBehaviour {
 				transform.parent.transform.localScale = Legscale;
 
 				//set the cooperation Valance
-				GameState.cooperationAxis += Mathf.Min(0.075f , 1.0f - GameState.cooperationAxis);
+				GameState.cooperationAxis += Mathf.Min(0.1f , 1.0f - GameState.cooperationAxis);
 			}
 		}
 		else if(_behaviorState == BehaviorState.Disabled)
@@ -334,7 +334,7 @@ public class LegScript : MonoBehaviour {
 		if(_buffState == BuffState.venom)
 		{
 			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
-			_poisonDPS = 1.0f;
+			_poisonDPS = 1.25f;
 			_poisonDuration = 5.0f;
 		}
 		else if(_buffState == BuffState.web)
@@ -438,6 +438,6 @@ public class LegScript : MonoBehaviour {
 		#endregion
 
 		//sets the anger vallence
-		GameState.angerAxis += Mathf.Min(0.01f , 1.0f - GameState.angerAxis);
+		GameState.angerAxis += Mathf.Min(0.0025f , 1.0f - GameState.angerAxis);
 	}
 }

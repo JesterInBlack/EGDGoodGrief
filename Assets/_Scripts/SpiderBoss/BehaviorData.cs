@@ -101,8 +101,12 @@ public class BehaviorData
 
 		if(attackWasSuccessful == true)
 		{
-			GameState.angerAxis += Mathf.Min(_successAngerDelta, 1.0f - GameState.angerAxis);
-			GameState.cooperationAxis += Mathf.Min(_successCoopDelta, 1.0f - GameState.cooperationAxis);
+			//GameState.angerAxis += Mathf.Min(_successAngerDelta, 1.0f - GameState.angerAxis);
+			//GameState.cooperationAxis += Mathf.Min(_successCoopDelta, 1.0f - GameState.cooperationAxis);
+			GameState.angerAxis += _successAngerDelta;
+			GameState.cooperationAxis += _successCoopDelta;
+			Mathf.Clamp(GameState.angerAxis, -1.0f, 1.0f);
+			Mathf.Clamp(GameState.cooperationAxis, -1.0f, 1.0f);
 			_priority = 0.0f;
 		}
 		else

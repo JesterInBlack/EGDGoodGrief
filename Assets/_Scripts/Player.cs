@@ -396,7 +396,7 @@ public class Player : MonoBehaviour
 		}
 
 		//ASSUMPTION: hurt is only called by the boss' attacks.
-		GameState.angerAxis = Mathf.Max ( 0.0f,  GameState.angerAxis - 0.015f );
+		GameState.angerAxis = Mathf.Max ( 0.0f,  GameState.angerAxis - 0.05f );
 
 		#region resource deduction
 		//resource deduction. (chain, sediment)
@@ -496,7 +496,7 @@ public class Player : MonoBehaviour
 					//TODO: Play blacklist sound, do notification
 					//Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
 					//Blacklisting causes additional anti-cooperation
-					GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+					GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
 				}
 			}
 		}

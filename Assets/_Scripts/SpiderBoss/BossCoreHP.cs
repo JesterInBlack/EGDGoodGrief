@@ -143,7 +143,7 @@ public class BossCoreHP : MonoBehaviour
 			soundTimer = soundDelay;
 		}
 
-		GameState.angerAxis += Mathf.Min(0.015f , 1.0f - GameState.angerAxis);
+		GameState.angerAxis += Mathf.Min(0.0075f , 1.0f - GameState.angerAxis);
 
 		//increase player threat for dealing damage
 		GameState.playerThreats[id] += 1.5f;
