@@ -71,7 +71,8 @@ public class LobProjectile : MonoBehaviour {
 		float xPoint = a.x + ((b.x - a.x)/2);
 		float yPoint = a.y + ((b.y - a.y)/2);
 		
-		yPoint += ((b.y - a.y)/2);
+		//yPoint += (b.y - a.y) * 2.0f;
+		yPoint = Mathf.Max(b.y, a.y) + Mathf.Abs(b.y - a.y);
 
 		return new Vector2(xPoint, yPoint);
 	}

@@ -27,6 +27,7 @@ public class BossManager : MonoBehaviour
 	public int _currentBehavior;
 	public float _coopAxis;
 	public float _angerAxis;
+	private bool _foundMove;
 
 	public void Awake()
 	{
@@ -63,7 +64,7 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 4) //AoEWeb
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, -1f, 0.4f, 25.0f, 1.2f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 0.4f, 25.0f, 1.2f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 5) //EyeLaser
@@ -113,8 +114,8 @@ public class BossManager : MonoBehaviour
 		#region Blackboard Variables
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 
-		_blackboard.coopAxisRecovery = 0.01f;
-		_blackboard.angerAxisRecovery = 0.01f;
+		_blackboard.coopAxisRecovery = 0.005f;
+		_blackboard.angerAxisRecovery = 0.015f;
 
 		_blackboard.decisionState = BehaviorBlackboard.DecisionState.resetAllBehaviors;
 
@@ -123,8 +124,12 @@ public class BossManager : MonoBehaviour
 
 		_blackboard._invincible = true;
 		_blackboard._moveToEndScreen = false;
+
+		_blackboard._naturalThreatRecovery = 1.0f;
 		_blackboard._attackWasSuccess = false;
 		#endregion
+
+		_foundMove = false;
 	}
 	
 	// Update is called once per frame
@@ -183,6 +188,12 @@ public class BossManager : MonoBehaviour
 		GameState.angerAxis = Mathf.Clamp(GameState.angerAxis, -1.0f, 1.0f);
 		GameState.cooperationAxis = Mathf.Clamp(GameState.cooperationAxis, -1.0f, 1.0f);
 
+		for(int i= 0; i < GameState.playerThreats.Length; i++)
+		{
+			GameState.playerThreats[i] -= Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard._naturalThreatRecovery), GameState.playerThreats[i]);
+			//Debug.Log("THREAT: " + GameState.playerThreats[i]);
+		}
+
 	}
 
 	void UpdateBehaviors()
@@ -207,27 +218,36 @@ public class BossManager : MonoBehaviour
 			for(int i = 0; i < _behaviorList.Count; i++)
 			{
 				//find all moves that can be used with the current mood
-				if(_behaviorList[i].AngerUpperBound > GameState.angerAxis && GameState.angerAxis > _behaviorList[i].AngerLowerBound && 
-				   _behaviorList[i].CoopUpperBound > GameState.cooperationAxis && GameState.cooperationAxis > _behaviorList[i].CoopLowerBound)
+				if(_behaviorList[i].AngerUpperBound >= GameState.angerAxis && GameState.angerAxis >= _behaviorList[i].AngerLowerBound && 
+				   _behaviorList[i].CoopUpperBound >= GameState.cooperationAxis && GameState.cooperationAxis >= _behaviorList[i].CoopLowerBound)
 				{
 					if(_behaviorList[i].Priority > selectedPriority)
 					{
 						selectedIndex = i;
 						selectedPriority = _behaviorList[i].Priority;
+						_foundMove = true;
 					}
 				}
 			}
-	
-			//enable and start up the behavior
-			_behaviorManager.enableBehavior(_behaviorList[selectedIndex].Action);
-			_behaviorManager.restartBehavior(_behaviorList[selectedIndex].Action);
-			
-			//picked a task
-			_blackboard.decisionState = BehaviorBlackboard.DecisionState.runningTask;
-			
-			//set the dummy variable to see it in the inspector
-			_currentBehavior = _behaviorList[selectedIndex].Action.group;
-			_blackboard._currentBehavior = _behaviorList[selectedIndex];
+
+			if(_foundMove == true)
+			{
+				//enable and start up the behavior
+				_behaviorManager.enableBehavior(_behaviorList[selectedIndex].Action);
+				_behaviorManager.restartBehavior(_behaviorList[selectedIndex].Action);
+				
+				//picked a task
+				_blackboard.decisionState = BehaviorBlackboard.DecisionState.runningTask;
+				
+				//set the dummy variable to see it in the inspector
+				_currentBehavior = _behaviorList[selectedIndex].Action.group;
+				_blackboard._currentBehavior = _behaviorList[selectedIndex];
+				_foundMove = false;
+			}
+			else
+			{
+				Debug.Log("WARNING NO MOVE FOUND IN THIS AREA");
+			}
 		}
 		
 		else if(_blackboard.decisionState == BehaviorBlackboard.DecisionState.runningTask)
@@ -236,7 +256,7 @@ public class BossManager : MonoBehaviour
 			{
 				if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 				{
-					Debug.Log("Finished a behavior");
+					//Debug.Log("Finished a behavior");
 					//set the priority to 0 for use
 					_behaviorList[selectedIndex].UseAction(_blackboard._attackWasSuccess);
 					_blackboard._attackWasSuccess = false;

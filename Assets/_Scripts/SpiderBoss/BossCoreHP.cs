@@ -28,7 +28,7 @@ public class BossCoreHP : MonoBehaviour
 	void Start()
 	{
 		//TODO: scale max HP with number of players
-		myBlackboard.maxHP = 1000.0f;
+		myBlackboard.maxHP = 10000.0f;
 		//heal to full.
 		myBlackboard.HP = myBlackboard.maxHP;
 	}
@@ -144,5 +144,8 @@ public class BossCoreHP : MonoBehaviour
 		}
 
 		GameState.angerAxis += Mathf.Min(0.015f , 1.0f - GameState.angerAxis);
+
+		//increase player threat for dealing damage
+		GameState.playerThreats[id] += 1.5f;
 	}
 }

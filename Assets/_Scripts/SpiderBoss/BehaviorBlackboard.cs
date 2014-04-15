@@ -74,6 +74,8 @@ public class BehaviorBlackboard : MonoBehaviour
 	public float coopAxisRecovery;
 	public float angerAxisRecovery;
 
+	public float _naturalThreatRecovery;
+
 	//public bool needsNewTask;
 	public enum DecisionState
 	{
