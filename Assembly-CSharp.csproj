@@ -165,6 +165,7 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AttackWasSuccesful.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckForDeath.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckForDisabledBody.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckForDisabledLeg.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckLegHealth.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckPointRadius.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
