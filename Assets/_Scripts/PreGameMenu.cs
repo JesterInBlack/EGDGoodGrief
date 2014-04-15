@@ -392,6 +392,21 @@ public class PreGameMenu : MonoBehaviour
 				}
 				if ( onBPressed ( currentGamePadState[i], prevState[i] ) )
 				{
+					//if this player has selected no items, go back a screen.
+					bool goBack = true;
+					for ( int j = 0; j < 3; j++ )
+					{
+						if ( itemSelection[ i, j ] != -1 )
+						{
+							goBack = false;
+						}
+					}
+					if ( goBack )
+					{
+						currentScreen = MenuScreens.CHARACTER_SELECTION;
+						return;
+					}
+
 					//if this item has been selected, free it.
 					for ( int j = 0; j < 3; j++ )
 					{

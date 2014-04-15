@@ -18,7 +18,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	#region X
 	private const float xNormalBaseDamage = 100.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
 	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
-	private const float xSmashAddDamage   = 100.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
+	private const float xSmashAddDamage   = 150.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
 	private const float xSmashChainBonus  = 1.5f;     //Smash  attack: Spin2Win: damage multiplier from full chain
 
 	private const float xNormalAngle = 115.0f;        //Normal attack: Horizontal Slash: hit sector angle.
@@ -41,8 +41,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	#endregion
 	
 	#region Y
-	private const float yNormalBaseDamage = 100.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
-	private const float ySmashBaseDamage  = 100.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
+	private const float yNormalBaseDamage = 150.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
+	private const float ySmashBaseDamage  = 150.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
 	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
 	private const float ySmashChainBonus  = 1.5f;     //Smash  attack: Blast Off: damage multiplier from full chain
 

@@ -115,6 +115,7 @@
      <Compile Include="Assets\_Scripts\Old\Info_Script.cs" />
      <Compile Include="Assets\_Scripts\Old\test.cs" />
      <Compile Include="Assets\_Scripts\Oscillate.cs" />
+     <Compile Include="Assets\_Scripts\OverHeadText.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\PlayerColor.cs" />
      <Compile Include="Assets\_Scripts\PostGameScore.cs" />
