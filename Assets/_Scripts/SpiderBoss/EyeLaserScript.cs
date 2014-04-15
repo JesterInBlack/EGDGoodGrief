@@ -29,25 +29,6 @@ public class EyeLaserScript : MonoBehaviour
 		{
 			transform.position += transform.right * _speed * Time.deltaTime * StaticData.t_scale;
 		}
-		/*
-		foreach ( Collider2D hit in AttackSystem.getHitsInCircle( (Vector2)transform.position, _hitRadius, -1) )
-		{
-			Player tempPlayer = hit.collider.gameObject.GetComponent<Player>();
-			if ( tempPlayer != null ) //this is a player.
-			{
-				if ( ! tempPlayer.isCarried ) //if the player is not being carried
-				{
-					if ( ! tempPlayer.isDowned )
-					{
-						float dt = Time.deltaTime;
-						//Degenerate health!
-						if ( ! tempPlayer.isInBulletTime ) { dt = dt * StaticData.t_scale; }
-						tempPlayer.HP = Mathf.Max ( player.HP - (_degenRate * dt / tempPlayer.defense), 0.0f );
-					}
-				}
-			}
-		}
-		*/
 
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
@@ -60,8 +41,10 @@ public class EyeLaserScript : MonoBehaviour
 			float xdist = ( (myPos.x + circle.center.x) - (theirPos.x + box.center.x) );
 			float ydist = ( (myPos.y + circle.center.y) - (theirPos.y + box.center.y) );
 			float dist = Mathf.Pow(  xdist * xdist + ydist * ydist, 0.5f );
-			
-			if ( dist <= circle.radius ) //if player is in the region (collider center point in radius)
+
+			float boxRadius = (Mathf.Min(box.size.y, box.size.x) / 2.0f); //approximation of hitbox by inscribed circle
+
+			if ( dist <= circle.radius + boxRadius ) //if player is in the region (collider center point in radius)
 			{
 				if ( ! player.isCarried ) //if the player is not being carried
 				{

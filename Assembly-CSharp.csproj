@@ -146,7 +146,6 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\resetSelectedLeg.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BodyScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BodyShadow.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BossCoreHP.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Composites\GetPlayerPriority_Sequence.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountLeg.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountPlayer.cs" />
@@ -160,7 +159,6 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\SetSharedBool.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\EyeScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\IsTargetAlive.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\LegShadow.cs" />
@@ -182,9 +180,11 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\Impale.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BehaviorBlackboard.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BehaviorData.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BossCoreHP.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BossManager.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\AttackWasSuccesful.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\ExplodingSacProjectileScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\TetherProjectileScript.cs" />
  <Reference Include="XInputDotNetPure">

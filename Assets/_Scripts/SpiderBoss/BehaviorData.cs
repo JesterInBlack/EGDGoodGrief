@@ -43,9 +43,8 @@ public class BehaviorData
 	public float FailCoopDelta { get { return _failCoopDelta; } }
 	private float _failCoopDelta;
 
-	public BehaviorData(BehaviorTree action, float aub, float alb, float cub, float clb, float priorityMax )
+	public BehaviorData(BehaviorTree action, float clb, float cub, float alb, float aub, float priorityMax, float priorityRec )
 	{
-		float priorityRec = 1;
 		float sad = 0;
 		float scd = 0;
 		float fad = 0;
@@ -64,7 +63,7 @@ public class BehaviorData
 		_failCoopDelta = fcd;
 	}
 
-	public BehaviorData(BehaviorTree action, float aub, float alb, float cub, float clb, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
+	public BehaviorData(BehaviorTree action, float clb, float cub, float alb, float aub, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
 	{
 		_action = action;
 		_angerUpperBound = aub;
@@ -112,8 +111,8 @@ public class BehaviorData
 			//GameState.cooperationAxis -= Mathf.Min(_failCoopDelta, 1.0f + GameState.cooperationAxis);
 			GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - _failCoopDelta );
 			GameState.angerAxis = Mathf.Max ( -1.0f,  GameState.angerAxis - _failAngerDelta );
-
-			_priority = _priority / 2.0f;
+			_priority = 0.0f;
+			//_priority = _priority / 2.0f;
 		}
 	}
 }
