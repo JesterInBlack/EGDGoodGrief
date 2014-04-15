@@ -43,9 +43,8 @@ public class BehaviorData
 	public float FailCoopDelta { get { return _failCoopDelta; } }
 	private float _failCoopDelta;
 
-	public BehaviorData(BehaviorTree action, float aub, float alb, float cub, float clb, float priorityMax )
+	public BehaviorData(BehaviorTree action, float clb, float cub, float alb, float aub, float priorityMax, float priorityRec )
 	{
-		float priorityRec = 1;
 		float sad = 0;
 		float scd = 0;
 		float fad = 0;
@@ -64,7 +63,7 @@ public class BehaviorData
 		_failCoopDelta = fcd;
 	}
 
-	public BehaviorData(BehaviorTree action, float aub, float alb, float cub, float clb, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
+	public BehaviorData(BehaviorTree action, float clb, float cub, float alb, float aub, float priorityMax, float priorityRec, float sad, float scd, float fad, float fcd )
 	{
 		_action = action;
 		_angerUpperBound = aub;
@@ -96,8 +95,24 @@ public class BehaviorData
 
 	}
 
-	public void UseAction()
+	public void UseAction(bool attackWasSuccessful)
 	{
-		_priority = 0.0f;
+		//Debug.Log("ATTACK WAS SUCCESS: " + attackWasSuccessful);
+
+		if(attackWasSuccessful == true)
+		{
+			GameState.angerAxis += Mathf.Min(_successAngerDelta, 1.0f - GameState.angerAxis);
+			GameState.cooperationAxis += Mathf.Min(_successCoopDelta, 1.0f - GameState.cooperationAxis);
+			_priority = 0.0f;
+		}
+		else
+		{
+			//GameState.angerAxis -= Mathf.Min(_failAngerDelta, 1.0f + GameState.angerAxis);
+			//GameState.cooperationAxis -= Mathf.Min(_failCoopDelta, 1.0f + GameState.cooperationAxis);
+			GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - _failCoopDelta );
+			GameState.angerAxis = Mathf.Max ( -1.0f,  GameState.angerAxis - _failAngerDelta );
+			_priority = 0.0f;
+			//_priority = _priority / 2.0f;
+		}
 	}
 }

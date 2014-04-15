@@ -193,6 +193,8 @@ public class LegScript : MonoBehaviour {
 			//do nothing for now
 		}
 
+		//get the rotation
+		transform.rotation = transform.parent.localRotation;
 
 		HandleStats();
 	}
@@ -296,7 +298,9 @@ public class LegScript : MonoBehaviour {
 				Legscale.x = 2.0f;
 				Legscale.y = 1.5f;
 				transform.parent.transform.localScale = Legscale;
-				//_disabled = true;
+
+				//set the cooperation Valance
+				GameState.cooperationAxis += Mathf.Min(0.075f , 1.0f - GameState.cooperationAxis);
 			}
 		}
 		else if(_behaviorState == BehaviorState.Disabled)
@@ -428,5 +432,8 @@ public class LegScript : MonoBehaviour {
 			}
 		}
 		#endregion
+
+		//sets the anger vallence
+		GameState.angerAxis += Mathf.Min(0.01f , 1.0f - GameState.angerAxis);
 	}
 }

@@ -25,6 +25,8 @@ public class BossManager : MonoBehaviour
 	//this is just a dummy variable to see what behavior is running in the inspector window
 	//for debug purposes only
 	public int _currentBehavior;
+	public float _coopAxis;
+	public float _angerAxis;
 
 	public void Awake()
 	{
@@ -43,87 +45,57 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-			if(allBehaviors[i].group == 9) //WebTether
-			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
-				_behaviorList.Add(testBehavior);
-			}
-			/*
+
 			if(allBehaviors[i].group == 1)	//Impale
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 40);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 1f, 55.0f, 0.75f);
 				_behaviorList.Add(testBehavior);
 			}
-			/*
 			if(allBehaviors[i].group == 2)	//apply buff
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
+				testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 1f, -0.5f, 0.5f, 25.0f, 0.75f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 3) //AoeVenom
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 20);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -0.2f, 1f, 30.0f, 1.2f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 4) //AoEWeb
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
+				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, -1f, 0.4f, 25.0f, 1.2f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 5) //EyeLaser
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.3f, -0.1f, 1f, 40.0f, 0.6f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.5f, 0.5f, 1f, 60.0f, 0.5f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 7) //Dissention Suction
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 8) //PointLaser
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0f, 1f, 40.0f, 1.3f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 9) //WebTether
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
+				testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 0.5f, 0.5f, 1f, 50.0f, 0.6f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 10) //DissentionEggSac
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 25);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f);
 				_behaviorList.Add(testBehavior);
 			}
-			*/
-			/*
-			if(allBehaviors[i].behaviorName == "MegaFlareUnity")
-			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
-				_behaviorList.Add(testBehavior);
-			}
-			/*
-			else if(allBehaviors[i].behaviorName == "TestBehavior")
-			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 35);
-				_behaviorList.Add(testBehavior);
-			}
-			else if(allBehaviors[i].behaviorName == "TestBehavior2")
-			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 30);
-				_behaviorList.Add(testBehavior);
-			}
-			else if(allBehaviors[i].behaviorName == "TestBehavior3")
-			{
-				testBehavior = new BehaviorData(allBehaviors[i], 1f, -1f, 1f, -1f, 23);
-				_behaviorList.Add(testBehavior);
-			}
-			*/
 
 		}
 		#endregion
@@ -151,6 +123,7 @@ public class BossManager : MonoBehaviour
 
 		_blackboard._invincible = true;
 		_blackboard._moveToEndScreen = false;
+		_blackboard._attackWasSuccess = false;
 		#endregion
 	}
 	
@@ -186,6 +159,9 @@ public class BossManager : MonoBehaviour
 				_behaviorManager.disableBehavior(_behaviorList[i].Action);
 			}
 		}
+
+		_coopAxis = GameState.cooperationAxis;
+		_angerAxis = GameState.angerAxis;
 	}
 
 	void UpdateValences()
@@ -203,6 +179,10 @@ public class BossManager : MonoBehaviour
 		{
 			GameState.angerAxis += Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
 		}
+
+		GameState.angerAxis = Mathf.Clamp(GameState.angerAxis, -1.0f, 1.0f);
+		GameState.cooperationAxis = Mathf.Clamp(GameState.cooperationAxis, -1.0f, 1.0f);
+
 	}
 
 	void UpdateBehaviors()
@@ -256,12 +236,12 @@ public class BossManager : MonoBehaviour
 			{
 				if(_behaviorManager.isBehaviorEnabled(_behaviorList[selectedIndex].Action) == false)
 				{
-					//Debug.Log("Finished a behavior");
+					Debug.Log("Finished a behavior");
 					//set the priority to 0 for use
-					_behaviorList[selectedIndex].UseAction();
+					_behaviorList[selectedIndex].UseAction(_blackboard._attackWasSuccess);
+					_blackboard._attackWasSuccess = false;
 
-					Debug.Log("DONE");
-					//_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
+					_blackboard.decisionState = BehaviorBlackboard.DecisionState.needsNewTask;
 					_blackboard._currentBehavior = null;
 				}
 			}

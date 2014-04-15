@@ -70,7 +70,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	public LegScript[] legsList = new LegScript[8];
 	public GameObject[] points = new GameObject[8];
 	public GameObject[] disablePoints = new GameObject[8];
-
+	
 	public float coopAxisRecovery;
 	public float angerAxisRecovery;
 
@@ -83,6 +83,8 @@ public class BehaviorBlackboard : MonoBehaviour
 	}
 	[HideInInspector]
 	public DecisionState decisionState;
+	[HideInInspector]
+	public bool _attackWasSuccess;
 
 	public GameObject targetPlayer;
 
@@ -102,6 +104,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	public bool _moveToEndScreen;
 
 	public int[] selectedLegs;
+
 	#endregion
 
 	void Start()

@@ -54,7 +54,8 @@ public class TetherProjectileScript : MonoBehaviour
 				_tetherHook.GetComponent<TetherHook>()._parent = _targetPlayer;
 				_endPos = _playerPos + _directionVector * _tetherDistance;
 				_lerpTime = 0.0f;
-				//TODO knock the player down on contact
+
+				_targetPlayer.GetComponent<Player>().KnockBack(0.0f, Vector2.zero);
 				_state = BehaviorState.Setting;
 			}
 			else

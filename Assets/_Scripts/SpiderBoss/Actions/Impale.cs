@@ -103,7 +103,7 @@ public class Impale : Action
 
 				//THIS IS THE MOMENT WHERE THE ATTACK DAMAGE IS DEALT TO THE TARGET AREA!
 				//USE THE ATTACHED CIRCLE COLLIDER
-				//Not until you give me a good way to access it.
+				//Not until you give me a good way to access it
 				AttackSystem.hitCircle ( _targetPoint, radius, damage, -1 );
 				GameState.cameraController.Shake ( 0.1f, 0.25f );
 
