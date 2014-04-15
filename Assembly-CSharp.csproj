@@ -162,6 +162,7 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Composites\GetPlayerPriority_Sequence.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountLeg.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountPlayer.cs" />
+     <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AttackWasSuccesful.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckForDeath.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckForDisabledBody.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\CheckLegHealth.cs" />

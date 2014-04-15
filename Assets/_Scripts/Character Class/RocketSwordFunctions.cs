@@ -95,7 +95,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//do sector based on time in state + direction
 			float angle = 90.0f * GetComponent<CustomController>().facing;
-			float damage = xNormalBaseDamage;
+			float damage = xNormalBaseDamage * player.offense;
 			AttackSystem.hitSector ( new Vector2( transform.position.x, transform.position.y ), xNormalAngle * -0.5f + angle, xNormalAngle * 0.5f + angle, 2.0f, damage * dt, player.id );
 		}
 		if ( player.state == "xsmash" )
@@ -125,7 +125,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "ynormal" )
 		{
 			//hit objects in the hitbox
-			float damage = yNormalBaseDamage;
+			float damage = yNormalBaseDamage * player.offense;
 			float angle = 90.0f * GetComponent<CustomController>().facing;
 			float x = transform.position.x;
 			float y = transform.position.y;

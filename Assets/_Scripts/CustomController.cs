@@ -22,7 +22,7 @@ public class CustomController : MonoBehaviour
 	public Vector2 aimPoint; //point used for aiming at a position.
 
 	[HideInInspector]
-	public float speed = 2.0f; //unity units per second (we're using Tile Size pixels per unit (64) )
+	public float speed = 2.5f; //unity units per second (we're using Tile Size pixels per unit (64) )
 	
 	BoxCollider2D my_collider;
 	[HideInInspector]
@@ -44,6 +44,7 @@ public class CustomController : MonoBehaviour
 	// Use this for pre-initialization
 	void Awake()
 	{
+		speed = 2.5f;
 		overheadArrow = transform.Find ( "Arrow" ).gameObject;
 		reticle = transform.Find ( "Reticle" ).gameObject;
 		my_collider = this.gameObject.GetComponent<BoxCollider2D>();

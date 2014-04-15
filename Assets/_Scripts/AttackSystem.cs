@@ -322,7 +322,7 @@ public static class AttackSystem
 
 	public static void Tether( GameObject player, Vector2 point, float minRange, float maxRange, float dt )
 	{
-		float PLAYER_BASE_SPEED = 2.0f; //TODO: make global const? (at present must be synched with customcontroller.speed)
+		float PLAYER_BASE_SPEED = 2.5f; //TODO: make global const? (at present must be synched with customcontroller.speed)
 		float x = player.transform.position.x;
 		float y = player.transform.position.y;
 		float z = player.transform.position.z;
