@@ -21,7 +21,6 @@ public class PostGameScore : MonoBehaviour
 	private float[] nextTotalScores = new float[4];
 
 	//2D arrays don't want to be jagged, ergo this badness.
-	//TODO: change to subscore
 	private SubScore[] objectiveScoresP1 = new SubScore[5];
 	private SubScore[] objectiveScoresP2 = new SubScore[5];
 	private SubScore[] objectiveScoresP3 = new SubScore[5];
@@ -35,8 +34,6 @@ public class PostGameScore : MonoBehaviour
 	private bool done = false;                  //if the state loop is done
 	private bool[] winner = {false, false, false, false};               
 	#endregion
-	//TODO: add text: total numbers under them, subtotals for each round.
-	//TODO: add "Winner" confetti + effects
 
 	//Use this for pre-initialization
 	void Awake ()
@@ -67,35 +64,6 @@ public class PostGameScore : MonoBehaviour
 		Destroy ( GameObject.Find ( "P2ScoreData" ) );
 		Destroy ( GameObject.Find ( "P3ScoreData" ) );
 		Destroy ( GameObject.Find ( "P4ScoreData" ) );
-
-		/*
-		#region FakeData
-		objectiveScoresP1[0].score = 10;
-		objectiveScoresP2[0].score = 5;
-		objectiveScoresP3[0].score = 7;
-		objectiveScoresP4[0].score = 3;
-
-		objectiveScoresP1[1].score = 0;
-		objectiveScoresP2[1].score = -2;
-		objectiveScoresP3[1].score = 0;
-		objectiveScoresP4[1].score = -1;
-
-		objectiveScoresP1[2].score = 1;
-		objectiveScoresP2[2].score = 2;
-		objectiveScoresP3[2].score = 3;
-		objectiveScoresP4[2].score = 4;
-
-		objectiveScoresP1[3].score = -1;
-		objectiveScoresP2[3].score = -1;
-		objectiveScoresP3[3].score = -1;
-		objectiveScoresP4[3].score = -1;
-
-		objectiveScoresP1[4].score = 0;
-		objectiveScoresP2[4].score = 0;
-		objectiveScoresP3[4].score = 10;
-		objectiveScoresP4[4].score = 0;
-		#endregion
-		*/
 	}
 
 	// Use this for initialization
@@ -249,6 +217,7 @@ public class PostGameScore : MonoBehaviour
 					//DONE. (all scores tallied)
 					done = true;
 					t = 0.0f; //reset timer.
+					objectiveText.GetComponent<TextMesh>().text = "";
 					for ( int i = 0; i < confettiEmitters.Length; i++ )
 					{
 						confettiEmitters[i].GetComponent<ParticleSystem>().Emit( 100 );

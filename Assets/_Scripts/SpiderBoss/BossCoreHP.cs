@@ -127,9 +127,15 @@ public class BossCoreHP : MonoBehaviour
 		//Handles the main body taking damage.
 		if ( id == -1 ) { return; } //Boss can't hurt itself
 		if ( myBlackboard._invincible ) { return; } //Boss can't be hurt if invincible.
+		float prevHP = myBlackboard.HP;
 		myBlackboard.HP -= damage;
 		ScoreManager.DealtDamage( id, damage );
 		currentColor = new ScheduledColor( new Color( 1.0f, 0.5f, 0.5f), 0.25f );
+
+		if ( prevHP > 0.0f && myBlackboard.HP <= 0.0f )
+		{
+			ScoreManager.LastHit ( id );
+		}
 
 		//Play hurt sound?
 		if ( soundTimer <= 0.0f )
