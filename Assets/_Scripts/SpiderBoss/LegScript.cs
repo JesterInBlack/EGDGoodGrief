@@ -96,7 +96,7 @@ public class LegScript : MonoBehaviour {
 
 		_regenRate = 10.0f;
 		_moveTime = 0.25f;
-		_maxHP = 100.0f;
+		_maxHP = 200.0f;
 		_currentHP = _maxHP;
 
 		_maxWebbingHP = 75.0f;
@@ -258,6 +258,7 @@ public class LegScript : MonoBehaviour {
 			if( Vector2.Distance((Vector2)transform.position, _targetPoint) < 0.01f)
 			{
 				AttackSystem.hitCircle((Vector2)transform.position, 0.4f, 5.0f, -1);
+				GameState.cameraController.Shake (0.01f, 0.1f );
 				_state = LegState.Idle;
 			}
 			else
@@ -430,6 +431,9 @@ public class LegScript : MonoBehaviour {
 			{
 				ScoreManager.KilledLeg( id );
 			}
+
+			//increase player threat for dealing damage
+			GameState.playerThreats[id] += 1.0f;
 		}
 		#endregion
 

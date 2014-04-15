@@ -183,6 +183,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\BossCoreHP.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\BossManager.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\AttackWasSuccesful.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckForDisabledLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\ExplodingSacProjectileScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
