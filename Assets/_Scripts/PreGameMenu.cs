@@ -215,7 +215,8 @@ public class PreGameMenu : MonoBehaviour
 				}
 				else if ( mainMenuIndex == 1 ) //TUTORIAL
 				{
-					tutorial = true; //TODO: write
+					tutorial = true;
+					menuDataSaver.tutorial = tutorial; //write
 					currentScreen = MenuScreens.CHARACTER_SELECTION;
 					for ( int i = 0; i < 4; i++ )
 					{

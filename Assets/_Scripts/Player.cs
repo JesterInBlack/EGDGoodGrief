@@ -141,9 +141,8 @@ public class Player : MonoBehaviour
 				items[i].Construct ( temp.playerItems[ id, i ] );
 			}
 
-			//Delete the menu data to prevent clashing + buildup
-			//TODO: check if in tutorial.
-			//GameObject.Destroy ( tempObj ); //? but need to read all 4 first.
+			//Set read flag (to delete the menu data to prevent clashing + buildup)
+			temp.read[ id ] = true;
 		}
 	}
 
@@ -453,7 +452,10 @@ public class Player : MonoBehaviour
 
 		//TODO: scale anti-cooperation based on how oftern interruption occurs
 		//TODO: greatly improve this horrible naiieve implementation
-		GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+		if ( attackerId != -1 )
+		{
+			GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+		}
 
 		if ( interruptHP <= 0.0f )
 		{
@@ -468,20 +470,23 @@ public class Player : MonoBehaviour
 
 		//TODO: Add a threshold before auras blacklist you
 		//Go through the player's buffs, and remove any you have given them
-		Player aggressor = GameState.players[attackerId].GetComponent<Player>();
-		for ( int i = aggressor.buffs.Count - 1; i >= 0; i-- )
+		if ( attackerId != -1 ) 
 		{
-			Buff tempBuff = (Buff) aggressor.buffs[i];
-			//if it's a blacklist buff, you gave it to them, and you're not hitting yourself
-			if ( tempBuff.blacklist && tempBuff.giverId == id && id != attackerId)
+			Player aggressor = GameState.players[attackerId].GetComponent<Player>();
+			for ( int i = aggressor.buffs.Count - 1; i >= 0; i-- )
 			{
-				//remove the buff
-				( (Buff) aggressor.buffs[i] ).End();
-				aggressor.buffs.RemoveAt ( i );
-				//TODO: Play blacklist sound, do notification
-				Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
-				//Blacklisting causes additional anti-cooperation
-				GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+				Buff tempBuff = (Buff) aggressor.buffs[i];
+				//if it's a blacklist buff, you gave it to them, and you're not hitting yourself
+				if ( tempBuff.blacklist && tempBuff.giverId == id && id != attackerId)
+				{
+					//remove the buff
+					( (Buff) aggressor.buffs[i] ).End();
+					aggressor.buffs.RemoveAt ( i );
+					//TODO: Play blacklist sound, do notification
+					Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
+					//Blacklisting causes additional anti-cooperation
+					GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+				}
 			}
 		}
 	}
@@ -503,11 +508,12 @@ public class Player : MonoBehaviour
 		//TODO: effects that minimize / reduce knockback. (blocking, parrying, dodging?)
 
 		knockbackVec = (new Vector2( transform.position.x, transform.position.y ) - pos ).normalized * magnitude;
+		canMove = false;
 		state = "knockback";
 		stateTimer = 0.5f;
 		nextState = "idle";
 
-		//TODO: animate!
+		this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
 	}
 
 	public void Poison( float duration, float degen )
