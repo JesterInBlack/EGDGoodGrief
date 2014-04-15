@@ -310,18 +310,23 @@ public static class AttackSystem
 		//Sucks all players toward position at speed.
 		for ( int i = 0; i < 4; i++ )
 		{
-			float x = GameState.players[i].transform.position.x;
-			float y = GameState.players[i].transform.position.y;
-			float z = GameState.players[i].transform.position.z;
-			Vector2 moveDirection = position - new Vector2( x, y );
-			moveDirection.Normalize();
-			moveDirection = moveDirection * speed * dt;
-			GameState.players[i].transform.position = new Vector3( x + moveDirection.x, y + moveDirection.y, z );
+			if ( ! GameState.players[i].GetComponent<Player>().isDowned ) //don't draw in the downed.
+			{
+				float x = GameState.players[i].transform.position.x;
+				float y = GameState.players[i].transform.position.y;
+				float z = GameState.players[i].transform.position.z;
+				Vector2 moveDirection = position - new Vector2( x, y );
+				moveDirection.Normalize();
+				moveDirection = moveDirection * speed * dt;
+				GameState.players[i].transform.position = new Vector3( x + moveDirection.x, y + moveDirection.y, z );
+			}
 		}
 	}
 
 	public static void Tether( GameObject player, Vector2 point, float minRange, float maxRange, float dt )
 	{
+		if ( player.GetComponent<Player>().isDowned ) { return; } //don't pull downed players.
+
 		float PLAYER_BASE_SPEED = 2.5f; //TODO: make global const? (at present must be synched with customcontroller.speed)
 		float x = player.transform.position.x;
 		float y = player.transform.position.y;
