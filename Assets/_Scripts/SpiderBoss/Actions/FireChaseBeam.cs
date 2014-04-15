@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
 
@@ -25,6 +25,7 @@ public class FireChaseBeam : Action
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 		_eyesScript = _blackboard.eye.GetComponent<EyeScript>();
+		_laserSpawnPoint = _eyesScript._laserSpawnPoint;
 	}
 
 	public override void OnStart()
@@ -34,6 +35,7 @@ public class FireChaseBeam : Action
 		_chaseTime = 0.0f;
 		_lastSpawnedTime = _chaseTime + _spawnDuration;
 		_noTargetsLeft = false;
+		GameState.cameraController.Shake (0.01f, _chaseDuration);
 	}
 	
 	//runs the actual task
@@ -78,6 +80,7 @@ public class FireChaseBeam : Action
 		}
 		else
 		{
+			GameState.cameraController.Shake (0.0f, 0.0f);
 			return TaskStatus.Failure;
 		}
 	}

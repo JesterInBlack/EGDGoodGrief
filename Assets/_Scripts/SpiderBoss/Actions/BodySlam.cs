@@ -7,6 +7,7 @@ using BehaviorDesigner.Runtime.Tasks;
 public class BodySlam : Action
 {
 	public SharedGameObject _optionalObjectToDestroy;
+	public GameObject _pointOfDamage;
 
 	public float _bumpHeight;
 	public float _chargeTime;
@@ -27,6 +28,7 @@ public class BodySlam : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
+		_pointOfDamage = GameObject.Find("ProjectileStartPoint");
 
 		_chargeTime = 2.0f;
 		_fallTime = 0.125f;
@@ -84,9 +86,12 @@ public class BodySlam : Action
 				}
 
 				//TODO make this deal damage
+				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 1.5f, 30.0f, -1);
+				GameState.cameraController.Shake (0.1f, 0.25f );
+
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
 				_lerpTime = 0.0f;
-				_blackboard._invincible = true;
+				_blackboard._invincible = false;
 			}
 			else
 			{
@@ -99,7 +104,7 @@ public class BodySlam : Action
 			if(_slamTimer >= _slamDuration)
 			{
 				_blackboard.body._bodyState = BodyScript.BodyState.Rising;
-				_blackboard._invincible = false;
+				_blackboard._invincible = true;
 			}
 			else
 			{

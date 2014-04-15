@@ -5,6 +5,8 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("Attack")]
 public class BodySlamNoCharge : Action
 {
+	public GameObject _pointOfDamage;
+
 	public float _fallTime;
 	public float _riseTime;
 	public float _slamDuration;
@@ -21,6 +23,7 @@ public class BodySlamNoCharge : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
+		_pointOfDamage = GameObject.Find("ProjectileStartPoint");
 
 		_fallTime = 0.15f;
 		_riseTime = 2.0f;
@@ -53,6 +56,9 @@ public class BodySlamNoCharge : Action
 		{
 			if(Vector2.Distance( (Vector2)transform.position, _groundedPos) < 0.001f)
 			{
+				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 1.5f, 30.0f, -1);
+				GameState.cameraController.Shake (0.1f, 0.25f );
+
 				_blackboard.body._bodyState = BodyScript.BodyState.OnGound;
 				_lerpTime = 0.0f;
 				_blackboard._invincible = false;

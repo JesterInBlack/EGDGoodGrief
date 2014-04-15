@@ -55,7 +55,8 @@ public class MegaFlareScript : MonoBehaviour
 		{
 			if(Vector3.Distance(_endPos, transform.position) < 0.001f)
 			{
-				//TODO Make this damage people
+				AttackSystem.hitCircle((Vector2)transform.position, 1000.0f, 75.0f, -1);
+				GameState.cameraController.Shake (0.4f, 2.0f );
 				Destroy(this.gameObject);
 			}
 			else

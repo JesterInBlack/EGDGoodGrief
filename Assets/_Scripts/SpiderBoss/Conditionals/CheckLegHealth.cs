@@ -5,6 +5,8 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("Logic")]
 public class CheckLegHealth : Action
 {
+	public int _legNumber;
+
 	private BehaviorBlackboard _blackboard;
 	private LegScript _legScript;
 
@@ -15,7 +17,7 @@ public class CheckLegHealth : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_legScript = _leg.GetComponent<LegScript>();
+		_legScript = _blackboard.legsList[_legNumber];
 	}
 
 	//runs the actual task
