@@ -38,12 +38,14 @@ public class CustomController : MonoBehaviour
 	private const float min_trigger_value = 0.10f; //minimum value a trigger must exceed to be considered pressed.
 
 	private GameObject overheadArrow;
+	private GameObject reticle;
 	#endregion
 
 	// Use this for pre-initialization
 	void Awake()
 	{
 		overheadArrow = transform.Find ( "Arrow" ).gameObject;
+		reticle = transform.Find ( "Reticle" ).gameObject;
 		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
 		playerState = this.gameObject.GetComponent<Player>();
 	}
@@ -565,6 +567,12 @@ public class CustomController : MonoBehaviour
 		if ( playerState.state == "item aim point" )
 		{
 			Debug.DrawLine( transform.position, aimPoint, new Color( 0.0f, 0.0f, 1.0f, 1.0f ) );
+			reticle.GetComponent<SpriteRenderer>().enabled = true;
+			reticle.transform.position = new Vector3( aimPoint.x, aimPoint.y, 2.0f );
+		}
+		else
+		{
+			reticle.GetComponent<SpriteRenderer>().enabled = false;
 		}
 		//Debug.Log ( angle + " : " + facing ); //DEBUG LINE
 		
