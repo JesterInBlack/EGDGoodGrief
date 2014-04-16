@@ -21,7 +21,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float xNormalBaseDamage = 100.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
 	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
 	private const float xSmashAddDamage   = 150.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
-	private const float xSmashChainBonus  = 1.5f;     //Smash  attack: Spin2Win: damage multiplier from full chain
+	private const float xSmashChainBonus  = 3.0f;     //Smash  attack: Spin2Win: damage multiplier from full chain
 
 	private const float xNormalAngle = 115.0f;        //Normal attack: Horizontal Slash: hit sector angle.
 
@@ -46,7 +46,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float yNormalBaseDamage = 150.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
 	private const float ySmashBaseDamage  = 150.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
 	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
-	private const float ySmashChainBonus  = 1.5f;     //Smash  attack: Blast Off: damage multiplier from full chain
+	private const float ySmashChainBonus  = 3.0f;     //Smash  attack: Blast Off: damage multiplier from full chain
 
 	private const float yChargeInterruptHP = 100.0f;  //Charging up Y: interruption damage threshold.
 	private const float yNormalInterruptHP = 100.0f;  //Normal attack: Vertical Slash: interruption damage threshold.
@@ -615,7 +615,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( (xHoldTime - xChargeMin), (xChargeMax - xChargeMin) ) / (xChargeMax - xChargeMin); //0.0f - 1.0f
-			float chainPercent = player.resource; //0.0f - 1.0f
+			float chainPercent = player.resource * player.resource; //0.0f - 1.0f, non-linear scaling
 			//multiplicative stacking?
 			float baseDamage = (xSmashBaseDamage + (xSmashAddDamage * chargePercent) );
 			float multiplier = player.offense * (1.0f + xSmashChainBonus * chainPercent);
@@ -683,7 +683,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( (yHoldTime - yChargeMin), (yChargeMax - yChargeMin) ) / (yChargeMax - yChargeMin); //0.0f - 1.0f
-			float chainPercent = player.resource; //0.0f - 1.0f
+			float chainPercent = player.resource * player.resource; //0.0f - 1.0f, non-linear scaling
 			//multiplicative stacking?
 			float baseDamage = (ySmashBaseDamage + (ySmashAddDamage * chargePercent) );
 			float multiplier = player.offense * (1.0f + ySmashChainBonus * chainPercent);
