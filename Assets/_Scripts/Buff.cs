@@ -25,7 +25,7 @@ public class Buff
 		t = duration;
 		player.offense += offense;
 		player.defense += defense;
-		player.speedMultiplier += speed;
+		player.speedMultiplier2 += speed;
 	}
 
 	//Use for cleanup
@@ -33,7 +33,7 @@ public class Buff
 	{
 		player.offense -= offense;
 		player.defense -= defense;
-		player.speedMultiplier -= speed;
+		player.speedMultiplier2 -= speed;
 	}
 
 	public bool isTheSameAs( Buff buff )

@@ -728,5 +728,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkStoneSkinOn, 1.0f );
 		}
 		#endregion
+		else if ( newState == "idle" )
+		{
+			//for interruption
+			/*
+			bHoldTime = 0.0f;
+			xHoldTime = 0.0f;
+			yHoldTime = 0.0f;
+			rtHoldTime = 0.0f;
+			*/
+			player.speedMultiplier = 1.0f; //redundant.
+		}
 	}
 }
