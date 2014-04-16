@@ -28,7 +28,7 @@ public class BossCoreHP : MonoBehaviour
 	void Start()
 	{
 		//TODO: scale max HP with number of players
-		myBlackboard.maxHP = 10000.0f;
+		myBlackboard.maxHP = 8500.0f;
 		//heal to full.
 		myBlackboard.HP = myBlackboard.maxHP;
 	}

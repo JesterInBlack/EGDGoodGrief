@@ -439,5 +439,6 @@ public class LegScript : MonoBehaviour {
 
 		//sets the anger vallence
 		GameState.angerAxis += Mathf.Min(0.0025f , 1.0f - GameState.angerAxis);
+		GameState.cooperationAxis += Mathf.Min(0.001f , 1.0f - GameState.cooperationAxis);
 	}
 }

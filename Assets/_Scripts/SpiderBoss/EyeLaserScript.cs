@@ -3,12 +3,12 @@ using System.Collections;
 
 public class EyeLaserScript : MonoBehaviour 
 {
-	private const float _degenRate = 5.0f;       
+	private const float _degenRate = 8.0f;       
 
 	private Vector3 _startPos;
 	//private float _rotationAngle;
-	public float _travelDistance = 20.0f;
-	public float _speed = 3.5f;
+	public float _travelDistance = 25.0f;
+	public float _speed = 5f;
 	public float _hitRadius;
 
 	// Use this for initialization

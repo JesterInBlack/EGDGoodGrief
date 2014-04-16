@@ -69,7 +69,7 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 5) //EyeLaser
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.3f, -0.1f, 1f, 40.0f, 0.6f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.3f, -0.1f, 1f, 40.0f, 0.5f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
@@ -79,22 +79,22 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 7) //Dissention Suction
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 8) //PointLaser
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0f, 1f, 40.0f, 1.3f);
+				testBehavior = new BehaviorData(allBehaviors[i], -0.3f, 1f, 0f, 1f, 45.0f, 1.3f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 9) //WebTether
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 0.5f, 0.75f, 1f, 50.0f, 0.6f, -0.2f, 0f, 0.0f, 0.0f);
+				testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 0.5f, 0.5f, 1f, 50.0f, 0.6f, -0.2f, 0f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 10) //DissentionEggSac
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.5f, 1f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 

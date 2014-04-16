@@ -465,7 +465,7 @@ public class Player : MonoBehaviour
 		//TODO: greatly improve this horrible naiieve implementation
 		if ( attackerId != -1 )
 		{
-			GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.01f );
+			GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.0025f );
 		}
 
 		if ( interruptHP <= 0.0f )
