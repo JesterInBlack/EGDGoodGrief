@@ -51,6 +51,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float yChargeInterruptHP = 100.0f;  //Charging up Y: interruption damage threshold.
 	private const float yNormalInterruptHP = 100.0f;  //Normal attack: Vertical Slash: interruption damage threshold.
 	private const float ySmashInterruptHP  = 100.0f;  //Smash  attack: HBlast Off: interruption damage threshold.
+	private bool ySmashHalted = false;                //set to true if the y smash connects. It stops the motion.
 
 	public bool yCharged = false;                     //for external scripts to access
 	private float yHoldTime  = 0.0f;
@@ -148,6 +149,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//charge until duration runs out / you hit something (other than another player?)
 			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2;
 			float speed = 13.0f * dt;
+			if ( ySmashHalted ) { speed = 0.0f; }
 			float x = transform.position.x;
 			float y = transform.position.y;
 			float min = 0.5f; //minimum or base width & height of the hitbox
@@ -247,6 +249,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 		//don't charge multiple times for a multihit move.
 		ignoreOnHitCallback = true;
+
+		//Halt y smash.
+		ySmashHalted = true;
 	}
 
 	#region B
@@ -524,9 +529,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//1.0f * dt = 100% per second
 			float deltaResource = ( 0.5f - 3.0f * Mathf.Cos ( rtHoldTime * Mathf.PI * 2.0f ) ) * 0.20f * dt; //0.10f * dt;
 
-			ignoreOnHitCallback = false;
-			//player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
-			//player.resourceGraceT = 0.5f;
+			player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
+			player.resourceGraceT = 0.5f;
 
 			float vibrationL = 0.05f + 0.05f * (0.5f * ( Mathf.Sin( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) );
 			float vibrationR = 0.1f + 0.1f * (0.5f * ( Mathf.Cos( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) );
@@ -623,6 +627,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			GetComponent<Animator>().Play( "hurricane_spin" );
 			maxSpinToWinExtensions = 1 + ( (int) (2.0f * chargePercent) ); //Scale with charge
 			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
+			ignoreOnHitCallback = false;
 		}
 		#endregion
 		#region y
@@ -674,6 +679,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.canMove = false;
 			player.nextState = "ywinddown";
 			player.interruptHP = ySmashInterruptHP;
+			ySmashHalted = false;
 
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( (yHoldTime - yChargeMin), (yChargeMax - yChargeMin) ) / (yChargeMax - yChargeMin); //0.0f - 1.0f
@@ -687,6 +693,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightBlastOff, 1.0f );
 			//TODO: hitbox to hitbox collision detection.
 			GetComponent<Animator>().Play( "blastoff_" + player.GetAniSuffix() );
+			ignoreOnHitCallback = false;
 		}
 		#endregion
 		else if ( newState == "revcharge" )
