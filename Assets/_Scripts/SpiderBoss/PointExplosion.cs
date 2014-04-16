@@ -6,6 +6,7 @@ public class PointExplosion : MonoBehaviour
 	public float _damageValue = 15.0f;
 	public float _chargeDuration = 1.5f;
 	public float _chargeTime;
+	public GameObject lavaPrefab;
 
 	private float _damageRadius;
 	
@@ -38,6 +39,7 @@ public class PointExplosion : MonoBehaviour
 			//TODO add explosion effect and damage function
 			AttackSystem.hitCircle (transform.position, _damageRadius, _damageValue, -1 );
 			GameState.cameraController.Shake (0.1f, 0.25f );
+			Instantiate ( lavaPrefab, this.gameObject.transform.position, Quaternion.identity );
 			Destroy(this.gameObject);
 		}
 		_spriteRenderer.color = new Color(1.0f, 0.0f, 0.0f, _alphaValue);

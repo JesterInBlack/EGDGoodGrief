@@ -48,14 +48,15 @@ public class GameStateWatcher : MonoBehaviour
 		{
 			//Exit to loss screen
 			//TODO: show won / lost GUI first.
-			Debug.Log ( "Total Party Kill" );
+			//Debug.Log ( "Total Party Kill" );
+			Application.LoadLevel ( "MainMenu" );
 		}
 		if ( won )
 		{
 			//Exit to victory screen
 			//TODO: show won / lost GUI first.
+			//Debug.Log( "Victory" );
 			Application.LoadLevel( "Score" );
-			Debug.Log( "Victory" );
 		}
 	}
 }
