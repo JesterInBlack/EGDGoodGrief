@@ -28,7 +28,7 @@ public class Death : Action
 
 		_shakeMagnitude = 0.1f;
 		_chargeDuration = 4.0f;
-		_recoveryDuration = 10.0f;
+		_recoveryDuration = 5.0f;
 
 		//_legParts = new List<GameObject>();
 		_legParts = GameObject.FindGameObjectsWithTag("LegSegment");
