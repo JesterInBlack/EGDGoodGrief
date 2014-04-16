@@ -12,6 +12,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private Player player;
 	private CustomController controller;
 
+	private bool ignoreOnHitCallback = true;
+
 	//button hold times + move stats
 	#region move data
 
@@ -32,7 +34,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
 	private const float xChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
-	private const float xNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
+	//private const float xNormalGraceT = 1.0f;       //Grace time before chain degeneration happens.
 	//private const float xSmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 
 	private int maxSpinToWinExtensions = 5;           //the number of times spin2win can be extended (based on charge)
@@ -54,7 +56,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private float yHoldTime  = 0.0f;
 	private const float yChargeMin = 1.0f;            //minimum hold time to use the charged version of the y attack
 	private const float yChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
-	private const float yNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
+	//private const float yNormalGraceT = 1.0f;       //Grace time before chain degeneration happens.
 	//private const float ySmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 	#endregion
 
@@ -68,6 +70,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private float rtHoldTime = 0.0f;
 
 	private float attackDamage = 0.0f;                //damage the current attack will deal.
+	private const float GraceT = 1.0f;                //how long you have after an attack (in s) before resource degen starts.
 
 	private string prevState = "";
 	#endregion
@@ -229,6 +232,21 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		xCharged = player.state == "xcharge" && xHoldTime >= xChargeMin;
 		xCharged2 = player.state == "xcharge" && xHoldTime >= xChargeMax;
 		yCharged = player.state == "ycharge" & yHoldTime >= yChargeMin;
+	}
+
+	public void OnHitCallback()
+	{
+		//If you hit an enemy, charge up your resource.
+		GetComponent<VibrationManager>().AddVibrationForThisFrame( 0.0f, 0.35f);
+
+		if ( ignoreOnHitCallback ) { return; }
+
+		float deltaResource = 1.0f / 8.0f;
+		player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
+		player.resourceGraceT = GraceT;
+
+		//don't charge multiple times for a multihit move.
+		ignoreOnHitCallback = true;
 	}
 
 	#region B
@@ -505,8 +523,10 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//1.0f * dt = 100% per second
 			float deltaResource = ( 0.5f - 3.0f * Mathf.Cos ( rtHoldTime * Mathf.PI * 2.0f ) ) * 0.20f * dt; //0.10f * dt;
-			player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
-			player.resourceGraceT = 0.5f;
+
+			ignoreOnHitCallback = false;
+			//player.resource = Mathf.Min ( player.resource + deltaResource, 1.0f );
+			//player.resourceGraceT = 0.5f;
 
 			float vibrationL = 0.05f + 0.05f * (0.5f * ( Mathf.Sin( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) );
 			float vibrationR = 0.1f + 0.1f * (0.5f * ( Mathf.Cos( rtHoldTime * Mathf.PI * 2.0f ) + 1.0f ) );
@@ -564,8 +584,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.05f * 5.0f;
 			player.nextState = "xwinddown";//"idle";
 			player.canMove = false;
-			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
-			player.resourceGraceT = xNormalGraceT;
+			ignoreOnHitCallback = false;
+			//player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
+			//player.resourceGraceT = xNormalGraceT;
 			player.interruptHP = xNormalInterruptHP;
 			#region animation
 			gameObject.GetComponent<Animator>().Play( "xslash_" + player.GetAniSuffix() );
@@ -600,7 +621,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			spinToWinExtensions = 0;
 			player.interruptHP = xSmashInterruptHP; //uninterruptable, for all intents and purposes.
 			GetComponent<Animator>().Play( "hurricane_spin" );
-			maxSpinToWinExtensions = 3 + ( (int) (2.0f * chargePercent) ); //Scale with charge
+			maxSpinToWinExtensions = 1 + ( (int) (2.0f * chargePercent) ); //Scale with charge
 			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
 		}
 		#endregion
@@ -627,8 +648,9 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.canMove = false;
 			player.stateTimer = 0.05f * 12.0f; //10 frame attack (6 animated, rest pause)
 			player.nextState = "ywinddown";
-			player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
-			player.resourceGraceT = yNormalGraceT;
+			ignoreOnHitCallback = false;
+			//player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
+			//player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = yNormalInterruptHP;
 			GetComponent<Animator>().Play( "yslash_" + player.GetAniSuffix() );
 			//TODO: box to box collision detection

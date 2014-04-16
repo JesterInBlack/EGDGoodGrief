@@ -31,4 +31,6 @@ public interface ClassFunctionalityInterface
 	void RTPressed();
 	void RTReleased();
 	void RTHeld( float dt );
+
+	void OnHitCallback();
 }

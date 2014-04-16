@@ -91,6 +91,8 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		prevState = player.state;
 	}
 
+	public void OnHitCallback() {}
+
 	#region B
 	//"Dodge" type ability
 	public void BPressed()

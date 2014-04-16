@@ -377,7 +377,9 @@ public class Player : MonoBehaviour
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
 			return; 
 		}
-		//TODO: add stone skin knockback handling on hit logic (somewhere?)
+
+		float vibration = Mathf.Min( 0.67f, (damage / maxHP) * 0.67f );
+		GetComponent<VibrationManager>().ScheduleVibration ( vibration, vibration, 0.10f );
 
 		//deal damage
 		float finalDamage = damage / defense;
@@ -745,7 +747,9 @@ public class Player : MonoBehaviour
 				if ( tempPlayer != null )
 				{
 					//Max out player threat!
-					GameState.playerThreats[ tempPlayer.id ] += 1000.0f;
+					float maxThreat = 0.0f;
+					for ( int i = 0; i < 4; i++ ) { maxThreat = Mathf.Max ( maxThreat, GameState.playerThreats[i] ); }
+					GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
 				}
 			}
 			//State stuff
@@ -829,5 +833,11 @@ public class Player : MonoBehaviour
 		}
 		//default
 		return "error";
+	}
+
+	public void OnHitCallback()
+	{
+		//this function is called when an enemy was hit by this player's attack.
+		GetComponent<CustomController>().actionHandler.OnHitCallback();
 	}
 }

@@ -96,6 +96,8 @@ public class Bowlista : MonoBehaviour, ClassFunctionalityInterface
 		prevState = player.state;
 	}
 
+	public void OnHitCallback() {}
+
 	#region B
 	//"Dodge" type ability
 	public void BPressed()

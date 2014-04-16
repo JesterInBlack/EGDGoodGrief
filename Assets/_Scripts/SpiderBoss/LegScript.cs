@@ -334,7 +334,7 @@ public class LegScript : MonoBehaviour {
 		if(_buffState == BuffState.venom)
 		{
 			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
-			_poisonDPS = 1.25f;
+			_poisonDPS = 2.5f;
 			_poisonDuration = 5.0f;
 		}
 		else if(_buffState == BuffState.web)
@@ -437,8 +437,11 @@ public class LegScript : MonoBehaviour {
 		}
 		#endregion
 
-		//sets the anger vallence
+		//sets the anger valence
 		GameState.angerAxis += Mathf.Min(0.0025f , 1.0f - GameState.angerAxis);
 		GameState.cooperationAxis += Mathf.Min(0.001f , 1.0f - GameState.cooperationAxis);
+
+		//callback player
+		GameState.playerStates[id].OnHitCallback();
 	}
 }

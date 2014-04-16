@@ -147,5 +147,8 @@ public class BossCoreHP : MonoBehaviour
 
 		//increase player threat for dealing damage
 		GameState.playerThreats[id] += 1.5f;
+
+		//callback player
+		GameState.playerStates[id].OnHitCallback();
 	}
 }

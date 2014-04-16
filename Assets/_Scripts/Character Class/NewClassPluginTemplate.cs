@@ -17,6 +17,8 @@ public class NewClassPluginTemplate : MonoBehaviour, ClassFunctionalityInterface
 	{
 
 	}
+
+	public void OnHitCallback() {}
 	
 	//"Dodge" type ability
 	public void BPressed()
