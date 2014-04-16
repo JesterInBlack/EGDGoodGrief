@@ -67,19 +67,19 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 0.4f, 25.0f, 1.2f);
 				_behaviorList.Add(testBehavior);
 			}
-			if(allBehaviors[i].group == 5) //EyeLaser
+			if(allBehaviors[i].group == 5) //ChaseBeam
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.3f, -0.1f, 1f, 40.0f, 0.5f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 0.0f, -0.1f, 1f, 45.0f, 0.5f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.5f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, 0.15f, 0.0f, 0.0f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.5f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, 0.25f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 7) //Dissention Suction
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.25f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 8) //PointLaser
@@ -94,7 +94,7 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 10) //DissentionEggSac
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.15f, 0.0f, 0.0f);
+				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 65.0f, 0.5f, -0.1f, -0.25f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
 
@@ -114,7 +114,7 @@ public class BossManager : MonoBehaviour
 		#region Blackboard Variables
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 
-		_blackboard.coopAxisRecovery = 0.0025f;
+		_blackboard.coopAxisRecovery = 0.01f;
 		_blackboard.angerAxisRecovery = 0.01f;
 
 		_blackboard.decisionState = BehaviorBlackboard.DecisionState.resetAllBehaviors;
@@ -125,7 +125,7 @@ public class BossManager : MonoBehaviour
 		_blackboard._invincible = true;
 		_blackboard._moveToEndScreen = false;
 
-		_blackboard._naturalThreatRecovery = 1.0f;
+		_blackboard._naturalThreatRecovery = 1.25f;
 		_blackboard._attackWasSuccess = false;
 		#endregion
 

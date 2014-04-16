@@ -399,6 +399,7 @@ public class Player : MonoBehaviour
 
 		//ASSUMPTION: hurt is only called by the boss' attacks.
 		GameState.angerAxis = Mathf.Max ( 0.0f,  GameState.angerAxis - 0.05f );
+		GameState.playerThreats[id] = Mathf.Max ( 0.0f,  GameState.playerThreats[id] - 10.0f );
 
 		#region resource deduction
 		//resource deduction. (chain, sediment)

@@ -85,7 +85,7 @@ public class BehaviorBlackboard : MonoBehaviour
 	}
 	[HideInInspector]
 	public DecisionState decisionState;
-	[HideInInspector]
+
 	public bool _attackWasSuccess;
 
 	public GameObject targetPlayer;

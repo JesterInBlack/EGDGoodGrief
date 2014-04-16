@@ -433,7 +433,7 @@ public class LegScript : MonoBehaviour {
 			}
 
 			//increase player threat for dealing damage
-			GameState.playerThreats[id] += 1.0f;
+			GameState.playerThreats[id] += 0.4f;
 		}
 		#endregion
 

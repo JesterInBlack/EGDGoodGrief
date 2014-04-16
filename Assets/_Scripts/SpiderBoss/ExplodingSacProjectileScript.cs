@@ -26,6 +26,10 @@ public class ExplodingSacProjectileScript : MonoBehaviour
 		{
 			_lerpTime = 0.0f;
 			_targetPlayer.GetComponent<Player>().KnockBack(0.0f, Vector2.zero);
+
+			//turns on the head grabber
+			_targetPlayer.GetComponent<Player>().headGrabber.on = true;
+			_targetPlayer.GetComponent<Player>().headGrabber.timeLeft = 20.0f;
 			Destroy(this.gameObject);
 		}
 		else

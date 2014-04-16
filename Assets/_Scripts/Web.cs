@@ -6,12 +6,13 @@ public class Web : MonoBehaviour
 	#region vars
 	private float debuffRate = 0.25f; //seconds between applications of the slow debuff
 	private float lifespan = 10.0f;
+	private float maxSize = 5.0f;
 
 	private float lifeTimer = 0.0f;
 	private float timer = 0.0f;
 	
-	private float growInTime = 1.0f;
-	private float fadeOutTime = 1.0f;
+	private float growInTime = 0.25f;
+	private float fadeOutTime = 0.75f;
 	#endregion
 
 	// Use this for initialization
@@ -24,7 +25,7 @@ public class Web : MonoBehaviour
 	void Update () 
 	{
 		//grow in.
-		float temp = Mathf.Lerp ( 0.0f, 2.0f, Mathf.Min( 1.0f, lifeTimer / growInTime) );
+		float temp = Mathf.Lerp ( 0.0f, maxSize, Mathf.Min( 1.0f, lifeTimer / growInTime) );
 		transform.localScale = new Vector3( temp, temp, temp );
 
 		//fade out
@@ -35,10 +36,13 @@ public class Web : MonoBehaviour
 		bool applySlow = false;
 		timer += Time.deltaTime * StaticData.t_scale;
 		lifeTimer += Time.deltaTime * StaticData.t_scale;
-		if ( timer > debuffRate )
+		if(lifeTimer <= lifespan - fadeOutTime )
 		{
-			timer -= debuffRate;
-			applySlow = true;
+			if ( timer > debuffRate )
+			{
+				timer -= debuffRate;
+				applySlow = true;
+			}
 		}
 		if ( lifeTimer >= lifespan )
 		{
@@ -60,12 +64,12 @@ public class Web : MonoBehaviour
 			float ydist = ( (myPos.y + circle.center.y) - (theirPos.y + box.center.y) );
 			float dist = Mathf.Pow(  xdist * xdist + ydist * ydist, 0.5f );
 			
-			if ( dist <= circle.radius ) //if player is in the region (collider center point in radius)
+			if ( dist <= circle.radius * (transform.localScale.x * 0.9f)) //if player is in the region (collider center point in radius)
 			{
 				if ( ! player.isCarried ) //if the player is not being carried
 				{
 					//Slow them!
-					player.Slow ( 1.0f, 0.60f );
+					player.Slow ( 1.0f, 0.65f );
 				}
 			}
 		}

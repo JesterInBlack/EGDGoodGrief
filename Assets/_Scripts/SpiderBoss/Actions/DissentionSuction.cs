@@ -79,6 +79,7 @@ public class DissentionSuction : Action
 			ShakeBoss(_chargeTime / _chargeDuration);
 
 			//TODO make the suction thing
+			AttackSystem.Suck(_blackboard.body._shadowPos, _chargeTime, Time.deltaTime * StaticData.t_scale);
 			//DoSuction(_chargeTime, directedPoint);
 			
 		}
