@@ -111,6 +111,7 @@
      <Compile Include="Assets\_Scripts\ItemAnimation.cs" />
      <Compile Include="Assets\_Scripts\ItemImages.cs" />
      <Compile Include="Assets\_Scripts\LobProjectile.cs" />
+     <Compile Include="Assets\_Scripts\LobbedProjectile.cs" />
      <Compile Include="Assets\_Scripts\MenuDataSaver.cs" />
      <Compile Include="Assets\_Scripts\ObjectivesGUIText.cs" />
      <Compile Include="Assets\_Scripts\Old\Info_Script.cs" />
