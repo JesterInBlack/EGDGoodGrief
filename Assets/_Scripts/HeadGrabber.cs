@@ -7,6 +7,7 @@ public class HeadGrabber : MonoBehaviour
 
 	public bool on = false;                       //are you infected?
 	public float timeLeft = 0.0f;                 //time left until it explodes
+	private const float duration = 10.0f;         //base duration of the headgrabber
 	public float nonTransferrableTimeLeft = 0.0f; //time left until it can be transferred again.
 	private const float transferCooldown = 1.0f;  //wait time between transfers
 	private const float burstDamage = 30.0f;      //amount of damage dealt when it expires
@@ -44,7 +45,11 @@ public class HeadGrabber : MonoBehaviour
 
 		timeLeft = Mathf.Max ( 0.0f, timeLeft - dt );
 		nonTransferrableTimeLeft = Mathf.Max ( 0.0f, nonTransferrableTimeLeft - dt );
-		if ( timeLeft <= 0.0f )
+		if ( GetComponent<Player>().isDowned )
+		{
+			on = false;
+		}
+		else if ( timeLeft <= 0.0f )
 		{
 			//YOUR HEAD ASLPODE!
 			player.Hurt ( burstDamage );
@@ -66,17 +71,26 @@ public class HeadGrabber : MonoBehaviour
 				{
 					if ( hit.gameObject.GetComponent<Player>().id != player.id ) //not self
 					{
-						//their on = true, copy stats over.
-						HeadGrabber theirs = hit.gameObject.GetComponent<Player>().headGrabber;
-						theirs.on = true;
-						theirs.nonTransferrableTimeLeft = transferCooldown;
-						theirs.timeLeft = timeLeft;
+						if ( ! hit.gameObject.GetComponent<Player>().isDowned ) //not downed
+						{
+							//their on = true, copy stats over.
+							HeadGrabber theirs = hit.gameObject.GetComponent<Player>().headGrabber;
+							theirs.on = true;
+							theirs.nonTransferrableTimeLeft = transferCooldown;
+							theirs.timeLeft = timeLeft;
 
-						on = false;
-						return; //force break.
+							on = false;
+							return; //force break.
+						}
 					}
 				}
 			}
 		}
+	}
+
+	public void GrabHead ()
+	{
+		on = true;
+		timeLeft = duration;
 	}
 }

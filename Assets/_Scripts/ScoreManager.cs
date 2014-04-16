@@ -8,8 +8,8 @@ public static class ScoreManager
 	public static void Death( int id )
 	{
 		//Take 25% of thier points.
-		float amount = GameState.players[id].GetComponent<Player>().score * 0.25f;
-		GameState.players[id].GetComponent<Player>().score -= amount;
+		float amount = GameState.players[id].GetComponent<Player>().score * -0.25f;
+		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.downs.count++;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.downs.score += amount;
 	}
