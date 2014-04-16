@@ -31,6 +31,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	public bool xCharged = false;                     //for external scripts to access
 	public bool xCharged2 = false;                    //for external scripts to access
+	private bool xSmashUsed = false;                  //set to reset speed proper-like
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
 	private const float xChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
@@ -328,11 +329,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//use combo timing to shorten animation cycle between attacks.
 			//pressing x or y while the attack / recovery is going -> queues up a 0 windup attack.
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "xcharge"; //queue up.
 		}
 		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
 		{
 			//you missed the recovery, but queue it up.
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "xwindup"; //queue up.
 			//state after this -> charge / normal
 		}
@@ -361,16 +364,17 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		if ( player.state == "xcharge" )
 		{
-			player.speedMultiplier = player.speedMultiplier * 2.0f;
 			if ( xHoldTime < xChargeMin )
 			{
 				//Horizontal attack
 				ChangeState( "xnormal" );
+				player.speedMultiplier = player.speedMultiplier * 2.0f;
 			}
 			else
 			{
 				//Spin2Win
 				ChangeState( "xsmash" );
+				player.speedMultiplier = player.speedMultiplier * 2.0f * 0.75f;
 			}
 		}
 		xHoldTime = 0.0f;
@@ -431,11 +435,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "ycharge"; //queue up.
 		}
 		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
 		{
 			//you missed the recovery, but queue it up.
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "ywindup"; //queue up
 		}
 	}
@@ -601,6 +607,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "xwinddown2";
 			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
+
+			if ( xSmashUsed == true )
+			{
+				player.speedMultiplier = player.speedMultiplier / 0.75f; //TODO: move this to a float.
+				xSmashUsed = false;
+			}
 		}
 		else if ( newState == "xwinddown2" )
 		{
@@ -628,6 +640,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			maxSpinToWinExtensions = 1 + ( (int) (2.0f * chargePercent) ); //Scale with charge
 			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
 			ignoreOnHitCallback = false;
+			xSmashUsed = true;
 		}
 		#endregion
 		#region y
