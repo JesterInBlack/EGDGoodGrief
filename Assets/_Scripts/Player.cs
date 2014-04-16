@@ -41,7 +41,9 @@ public class Player : MonoBehaviour
 
 	public bool canMove = true;           //disable moving while attacking?
 	[HideInInspector]
-	public float speedMultiplier = 1.0f;  //able to move, but at a slower pace?
+	public float speedMultiplier = 1.0f;  //able to move, but at a slower pace? Volatile, constantly set + reset.
+	[HideInInspector]
+	public float speedMultiplier2 = 1.0f; //non-volatile speed multiplier
 	//bool overrideMoveAni;
 
 	[HideInInspector]

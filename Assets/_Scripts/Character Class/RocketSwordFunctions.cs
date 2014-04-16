@@ -21,7 +21,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float xNormalBaseDamage = 100.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
 	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
 	private const float xSmashAddDamage   = 150.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
-	private const float xSmashChainBonus  = 1.5f;     //Smash  attack: Spin2Win: damage multiplier from full chain
+	private const float xSmashChainBonus  = 3.0f;     //Smash  attack: Spin2Win: damage multiplier from full chain
 
 	private const float xNormalAngle = 115.0f;        //Normal attack: Horizontal Slash: hit sector angle.
 
@@ -31,6 +31,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	public bool xCharged = false;                     //for external scripts to access
 	public bool xCharged2 = false;                    //for external scripts to access
+	private bool xSmashUsed = false;                  //set to reset speed proper-like
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
 	private const float xChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
@@ -46,7 +47,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float yNormalBaseDamage = 150.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
 	private const float ySmashBaseDamage  = 150.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
 	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
-	private const float ySmashChainBonus  = 1.5f;     //Smash  attack: Blast Off: damage multiplier from full chain
+	private const float ySmashChainBonus  = 3.0f;     //Smash  attack: Blast Off: damage multiplier from full chain
 
 	private const float yChargeInterruptHP = 100.0f;  //Charging up Y: interruption damage threshold.
 	private const float yNormalInterruptHP = 100.0f;  //Normal attack: Vertical Slash: interruption damage threshold.
@@ -328,11 +329,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//use combo timing to shorten animation cycle between attacks.
 			//pressing x or y while the attack / recovery is going -> queues up a 0 windup attack.
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "xcharge"; //queue up.
 		}
 		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
 		{
 			//you missed the recovery, but queue it up.
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "xwindup"; //queue up.
 			//state after this -> charge / normal
 		}
@@ -361,16 +364,17 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		if ( player.state == "xcharge" )
 		{
-			player.speedMultiplier = player.speedMultiplier * 2.0f;
 			if ( xHoldTime < xChargeMin )
 			{
 				//Horizontal attack
 				ChangeState( "xnormal" );
+				player.speedMultiplier = player.speedMultiplier * 2.0f;
 			}
 			else
 			{
 				//Spin2Win
 				ChangeState( "xsmash" );
+				player.speedMultiplier = player.speedMultiplier * 2.0f * 0.75f;
 			}
 		}
 		xHoldTime = 0.0f;
@@ -431,11 +435,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		}
 		else if ( player.state == "xwinddown" || player.state == "ywinddown" ) //cut off frames if you attack during recovery
 		{
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "ycharge"; //queue up.
 		}
 		else if ( player.state == "xwinddown2" || player.state == "ywinddown2" )
 		{
 			//you missed the recovery, but queue it up.
+			player.speedMultiplier = player.speedMultiplier * 0.5f;
 			player.nextState = "ywindup"; //queue up
 		}
 	}
@@ -601,6 +607,12 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "xwinddown2";
 			player.stateTimer = 0.05f * 5.0f; //5 frame recovery
+
+			if ( xSmashUsed == true )
+			{
+				player.speedMultiplier = player.speedMultiplier / 0.75f; //TODO: move this to a float.
+				xSmashUsed = false;
+			}
 		}
 		else if ( newState == "xwinddown2" )
 		{
@@ -615,7 +627,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( (xHoldTime - xChargeMin), (xChargeMax - xChargeMin) ) / (xChargeMax - xChargeMin); //0.0f - 1.0f
-			float chainPercent = player.resource; //0.0f - 1.0f
+			float chainPercent = player.resource * player.resource; //0.0f - 1.0f, non-linear scaling
 			//multiplicative stacking?
 			float baseDamage = (xSmashBaseDamage + (xSmashAddDamage * chargePercent) );
 			float multiplier = player.offense * (1.0f + xSmashChainBonus * chainPercent);
@@ -628,6 +640,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			maxSpinToWinExtensions = 1 + ( (int) (2.0f * chargePercent) ); //Scale with charge
 			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
 			ignoreOnHitCallback = false;
+			xSmashUsed = true;
 		}
 		#endregion
 		#region y
@@ -683,7 +696,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 			//get power based on charge and resource.
 			float chargePercent = Mathf.Min ( (yHoldTime - yChargeMin), (yChargeMax - yChargeMin) ) / (yChargeMax - yChargeMin); //0.0f - 1.0f
-			float chainPercent = player.resource; //0.0f - 1.0f
+			float chainPercent = player.resource * player.resource; //0.0f - 1.0f, non-linear scaling
 			//multiplicative stacking?
 			float baseDamage = (ySmashBaseDamage + (ySmashAddDamage * chargePercent) );
 			float multiplier = player.offense * (1.0f + ySmashChainBonus * chainPercent);
@@ -728,5 +741,16 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkStoneSkinOn, 1.0f );
 		}
 		#endregion
+		else if ( newState == "idle" )
+		{
+			//for interruption
+			/*
+			bHoldTime = 0.0f;
+			xHoldTime = 0.0f;
+			yHoldTime = 0.0f;
+			rtHoldTime = 0.0f;
+			*/
+			player.speedMultiplier = 1.0f; //redundant.
+		}
 	}
 }
