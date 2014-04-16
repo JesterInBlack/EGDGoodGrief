@@ -339,7 +339,7 @@ public static class AttackSystem
 		//We'll cap it if way outside range.
 		//float maxRange = 2.0f; //maximum range.
 		float multiplier = Mathf.Max ( 0.0f, dist - minRange) / ( maxRange - minRange );
-		if ( multiplier > 3.0f ) { multiplier = 3.0f; } //to help prevent overcompensation.
+		if ( multiplier > 10.0f ) { multiplier = 10.0f; } //to help prevent overcompensation.
 
 		float xMove = moveDirection.normalized.x * multiplier * PLAYER_BASE_SPEED * dt;
 		float yMove = moveDirection.normalized.y * multiplier * PLAYER_BASE_SPEED * dt;

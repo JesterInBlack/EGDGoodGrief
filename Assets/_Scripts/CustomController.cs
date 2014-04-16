@@ -30,7 +30,6 @@ public class CustomController : MonoBehaviour
 	private Player playerState;
 
 	//gamepad stuff
-	bool playerIndexSet = false;
 	public PlayerIndex playerIndex = PlayerIndex.One;
 	GamePadState gamePadState;
 	GamePadState prevGamePadState;
@@ -58,11 +57,13 @@ public class CustomController : MonoBehaviour
 
 		#region codes
 		//TODO: remove this snippet, replace with actual working code.
+		/*
 		GamePadState testState = GamePad.GetState ( playerIndex );
 		if ( testState.IsConnected )
 		{
 			playerIndexSet = true;
 		}
+		*/
 		#endregion
 	}
 	

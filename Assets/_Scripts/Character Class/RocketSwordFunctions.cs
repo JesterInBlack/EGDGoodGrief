@@ -35,7 +35,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private const float xNormalGraceT = 1.0f;         //Grace time before chain degeneration happens.
 	//private const float xSmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 
-	private int maxSpinToWinExtensions = 5;           //the maximum number of times spin2win can be extended
+	private int maxSpinToWinExtensions = 5;           //the number of times spin2win can be extended (based on charge)
 	private int spinToWinExtensions = 0;              //the number of times spin2win has been extended
 	private float spinTime = 0.0f;			          //how long you've been spinning for.
 	#endregion
@@ -600,7 +600,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			spinToWinExtensions = 0;
 			player.interruptHP = xSmashInterruptHP; //uninterruptable, for all intents and purposes.
 			GetComponent<Animator>().Play( "hurricane_spin" );
-			//maxSpinToWinExtensions = 5; //Scale with charge?
+			maxSpinToWinExtensions = 3 + ( (int) (2.0f * chargePercent) ); //Scale with charge
 			//Mathf.Min ( xHoldTime, xChargeMax ) / xChargeMax;
 		}
 		#endregion

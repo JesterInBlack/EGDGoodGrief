@@ -56,9 +56,9 @@ public class HUD : MonoBehaviour
 	
 	private Vector2 size =  new Vector2( 225.0f, 125.0f ); //the size of all the HUD backgrounds.
 
-	private float lerpHP; //?
-	private float prevLerpHP;
-	private float nextLerpHP;
+	//private float lerpHP; //?
+	//private float prevLerpHP;
+	//private float nextLerpHP;
 	private float lerpT;
 	private float aniT; //animation time
 
@@ -79,9 +79,9 @@ public class HUD : MonoBehaviour
 			upsideDown = true;
 		}
 		
-		lerpHP = player.baseMaxHP;
-		prevLerpHP = player.baseMaxHP;
-		nextLerpHP = player.baseMaxHP;
+		//lerpHP = player.baseMaxHP;
+		//prevLerpHP = player.baseMaxHP;
+		//nextLerpHP = player.baseMaxHP;
 
 		needleLerpTime = 0.35f;
 	}

@@ -133,11 +133,12 @@ public class TetherProjectileScript : MonoBehaviour
 		{
 			//a player assists the tethered player.
 			_moundHP -= _moundHPMax;
+			GameState.cooperationAxis = Mathf.Min ( 1.0f, GameState.cooperationAxis + 0.05f );
 		}
 
 		//Color handling logic.
 		scheduledColor.color = new Color( 1.0f, 0.5f, 0.5f, 1.0f );
-		scheduledColor.duration = 0.20f;
+		scheduledColor.duration = 0.15f;
 		colorT = scheduledColor.duration;
 		SpriteRenderer[] temp = GetComponentsInChildren<SpriteRenderer>();
 		foreach ( SpriteRenderer s in temp )

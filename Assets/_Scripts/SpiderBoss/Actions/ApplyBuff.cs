@@ -60,7 +60,7 @@ public class ApplyBuff : Action
 	//applies the buff to the selected leg
 	public override TaskStatus OnUpdate()
 	{
-		if(_buffType != null)
+		if (_buffType != null)
 		{
 			//the animation to apply the buff! 
 			if(_blackboard.selectedLeg.GetComponent<LegScript>()._state == LegScript.LegState.CalculateMove)

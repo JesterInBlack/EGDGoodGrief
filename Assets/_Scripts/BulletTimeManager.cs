@@ -21,7 +21,7 @@ public class BulletTimeManager : MonoBehaviour
 	{
 		if ( StaticData.t_scale != 1.0f )
 		{
-			float percent = StaticData.bulletTimeDuration / 12.0f; //TODO: rip duration from something else.
+			float percent = StaticData.bulletTimeDuration / 6.0f; //TODO: rip duration from something else.
 			GUI.color = new Color( 0.0f, 0.0f, 1.0f, 0.10f * percent + 0.10f );
 			float angle = -360.0f * percent;
 			GUIUtility.RotateAroundPivot ( angle, new Vector2( (Screen.width  - 900.0f) / 2.0f + 450.0f, 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XInputDotNetPure; // Required in C#
 
 public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface 
 {
@@ -11,6 +12,8 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 
 	private bool isSpinning = false; //whether or not the ninja is spinning his chain
 	private const float spinInterruptHP = 1.0f;
+
+	private bool thumbstickNeutral = false;
 
 	#region move data
 
@@ -65,6 +68,10 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
 		#endregion
 		UpdateResource ( dt );
+
+		thumbstickNeutral = ( Mathf.Abs( GamePad.GetState( controller.playerIndex ).ThumbSticks.Right.X ) + 
+			Mathf.Abs ( GamePad.GetState( controller.playerIndex ).ThumbSticks.Right.Y ) )
+			<= 0.1f;
 
 		if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
 
@@ -234,7 +241,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 		{
 			if ( player.state == "spin" )
 			{
-				if ( true )
+				if ( ! thumbstickNeutral )
 				{
 					//TODO: hook
 					//isSpinning = false;
@@ -247,7 +254,7 @@ public class Chainsickle : MonoBehaviour, ClassFunctionalityInterface
 			else if ( player.state == "spinup" )
 			{
 				//enqueue hook / spindown
-				if ( true )
+				if ( ! thumbstickNeutral )
 				{
 					//TODO: hook
 					//isSpinning = false;

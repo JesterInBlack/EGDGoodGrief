@@ -745,7 +745,7 @@ public class Player : MonoBehaviour
 				if ( tempPlayer != null )
 				{
 					//Max out player threat!
-					GameState.playerThreats[ tempPlayer.id ] = 1.0f;
+					GameState.playerThreats[ tempPlayer.id ] += 1000.0f;
 				}
 			}
 			//State stuff
@@ -762,7 +762,7 @@ public class Player : MonoBehaviour
 	private void StopWatch()
 	{
 		isInBulletTime = true;
-		bulletTimeDuration = 12.0f;
+		bulletTimeDuration = 6.0f;
 		StaticData.t_scale = 0.5f;
 		StaticData.bulletTimeDuration = bulletTimeDuration;
 		//TODO: lerp in, add visual effect, play sound
