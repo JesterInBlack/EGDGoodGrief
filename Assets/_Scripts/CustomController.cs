@@ -97,7 +97,7 @@ public class CustomController : MonoBehaviour
 				playerState.carryVec = new Vector2( move_vec.x, move_vec.y ); //store normalized vec as carry vector.
 
 				//speed stuff.
-				move_vec = move_vec * (playerState.speedMultiplier + playerState.speedMultiplier2 - 1.0f);
+				move_vec = move_vec * (playerState.speedMultiplier * playerState.speedMultiplier2);
 
 				//Downed movement logic
 				if ( playerState.isDowned )
