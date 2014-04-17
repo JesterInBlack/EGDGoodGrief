@@ -2,7 +2,12 @@ fileFormatVersion: 2
 guid: 7f948da71f1639948a02a6a6ee8f37d5
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _disabledPoint: {instanceID: 0}
+  - _radiusPoint: {instanceID: 0}
+  - _bodyScript: {instanceID: 0}
+  - _blackboard: {instanceID: 0}
+  - bloodPrefab: {fileID: 100000, guid: 34b369b17117f6b4aa9bfcb3d859f2e9, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
