@@ -477,7 +477,16 @@ public class Player : MonoBehaviour
 		{
 			canMove = true;
 			//TODO: play interrupt sound
-			knockbackVec = Vector2.zero;
+
+			//TESTING: knockback on interrupt
+			if ( attackerId != -1 )
+			{
+				float x = GameState.players[attackerId].transform.position.x;
+				float y = GameState.players[attackerId].transform.position.y;
+				GameState.playerStates[ attackerId ].KnockBack ( 2.0f, new Vector2( x, y ) );
+			}
+
+			//knockbackVec = Vector2.zero;
 			state = "knockback";
 			stateTimer = 0.5f;
 			nextState = "idle";
@@ -495,7 +504,7 @@ public class Player : MonoBehaviour
 
 	public void KnockBack( float magnitude, Vector2 pos )
 	{
-		//Knock the player back? (based on where the attack come from)
+		//Knock the player back? (based on where the attack comes from)
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
