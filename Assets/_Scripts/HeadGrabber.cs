@@ -96,6 +96,12 @@ public class HeadGrabber : MonoBehaviour
 
 							on = false;
 							stacks = 0;
+
+							//transferring the head grabber is a dick move
+							GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
+
+							//remove any blacklist buffs that the player you just infected gave you.
+							player.RemoveBuffsGivenByPlayer( hit.gameObject.GetComponent<Player>().id );
 							return; //force break.
 						}
 					}

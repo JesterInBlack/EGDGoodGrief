@@ -489,21 +489,7 @@ public class Player : MonoBehaviour
 		if ( attackerId != -1 ) 
 		{
 			Player aggressor = GameState.players[attackerId].GetComponent<Player>();
-			for ( int i = aggressor.buffs.Count - 1; i >= 0; i-- )
-			{
-				Buff tempBuff = (Buff) aggressor.buffs[i];
-				//if it's a blacklist buff, you gave it to them, and you're not hitting yourself
-				if ( tempBuff.blacklist && tempBuff.giverId == id && id != attackerId)
-				{
-					//remove the buff
-					( (Buff) aggressor.buffs[i] ).End();
-					aggressor.buffs.RemoveAt ( i );
-					//TODO: Play blacklist sound, do notification
-					//Debug.Log ( "Player " + attackerId + " was blacklisted by Player " + id );
-					//Blacklisting causes additional anti-cooperation
-					GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
-				}
-			}
+			aggressor.RemoveBuffsGivenByPlayer( id );
 		}
 	}
 
@@ -753,6 +739,12 @@ public class Player : MonoBehaviour
 					float maxThreat = 0.0f;
 					for ( int i = 0; i < 4; i++ ) { maxThreat = Mathf.Max ( maxThreat, GameState.playerThreats[i] ); }
 					GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
+
+					if ( tempPlayer.id != id )
+					{
+						//hitting another player with the pheromone jar is not a cooperative move.
+						GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
+					}
 				}
 			}
 			//State stuff
@@ -842,5 +834,24 @@ public class Player : MonoBehaviour
 	{
 		//this function is called when an enemy was hit by this player's attack.
 		GetComponent<CustomController>().actionHandler.OnHitCallback();
+	}
+
+	public void RemoveBuffsGivenByPlayer( int giverID )
+	{
+		//removes all buffs given to you by the player with ID.
+		for ( int i = buffs.Count - 1; i >= 0; i-- )
+		{
+			Buff tempBuff = (Buff) buffs[i];
+			//if it's a blacklist buff, they gave it to you, and you're not hitting yourself
+			if ( tempBuff.blacklist && tempBuff.giverId == giverID && id != giverID )
+			{
+				//remove the buff
+				( (Buff) buffs[i] ).End();
+				buffs.RemoveAt ( i );
+				//TODO: Play blacklist sound, do notification
+				//Blacklisting causes additional anti-cooperation
+				GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
+			}
+		}
 	}
 }
