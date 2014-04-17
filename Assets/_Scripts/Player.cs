@@ -81,9 +81,10 @@ public class Player : MonoBehaviour
 
 	//Buff / Debuff data?
 	public bool isInBulletTime = false;     //Immune to the stop watch slow?
-	float bulletTimeDuration = 0.0f;        //How long (real time) until time control immunity expires.
+	[HideInInspector]
+	public float bulletTimeDuration = 0.0f; //How long (real time) until time control immunity expires.
 
-	public HeadGrabber headGrabber;   //set in inspector.
+	public HeadGrabber headGrabber;         //set in inspector.
 
 	public ArrayList buffs = new ArrayList();
 
@@ -97,7 +98,7 @@ public class Player : MonoBehaviour
 	public float resource = 0.0f;        //chain / focus / style / sediment. Ranges from 0 to 1
 	[HideInInspector]
 	public float resourceGraceT = 0.0f;  //at 0, resource begins degeneration
-	private Vector3 prevPos;             //previous position, for detecting movement. (focus degen)
+	//private Vector3 prevPos;           //previous position, for detecting movement. (focus degen) //removed because unused.
 	#endregion
 
 	//Use this for pre-initialization
@@ -325,7 +326,7 @@ public class Player : MonoBehaviour
 		}
 		prevState = state;
 
-		prevPos = this.gameObject.transform.position;
+		//prevPos = this.gameObject.transform.position; //removed because unused.
 	}
 
 	void Respawn()
@@ -483,7 +484,7 @@ public class Player : MonoBehaviour
 			{
 				float x = GameState.players[attackerId].transform.position.x;
 				float y = GameState.players[attackerId].transform.position.y;
-				GameState.playerStates[ attackerId ].KnockBack ( 2.0f, new Vector2( x, y ) );
+				KnockBack ( 2.0f, new Vector2( x, y ) );
 			}
 
 			//knockbackVec = Vector2.zero;
@@ -627,191 +628,6 @@ public class Player : MonoBehaviour
 			nextState = "item aim point";
 			this.gameObject.GetComponent<CustomController>().aimPoint = this.gameObject.transform.position;
 			//TODO: animation
-		}
-	}
-
-	//-------------------------------------------------------------------------------------------------------
-	//ITEMS?
-	//-------------------------------------------------------------------------------------------------------
-	public void BeginUseItem()
-	{
-		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
-		{
-			GetComponent<Tutorial>().usedItem = true;
-			if ( items[ itemIndex ].itemType == ItemType.ITEM_FAST )
-			{
-				//Do the effect. NOW!
-				//TODO: freeze item scrolling / use during item use animation / charging
-				state = "item windup";
-				stateTimer = 0.05f * 12.0f; //frames
-				nextState = "idle";
-				UseItem2 ( itemIndex );
-			}
-			else if ( items[ itemIndex ].itemType == ItemType.ITEM_CHARGE_AND_RELEASE )
-			{
-				//Set up holding state, do the effect on release.
-				state = "item windup";
-				stateTimer = 0.05f * 2.0f; //frames
-				nextState = "item charge";
-			}
-			else if ( items[ itemIndex ].itemType == ItemType.ITEM_AIM_RAY)
-			{
-				//Set up aiming state, do the effect on release.
-				state = "item windup";
-				stateTimer = 0.05f * 2.0f; //frames
-				nextState = "item aim ray";
-			}
-			else if ( items[ itemIndex ].itemType == ItemType.ITEM_AIM_POINT )
-			{
-				//Set up aiming state, do the effect on release.
-				state = "item windup";
-				stateTimer = 0.05f * 2.0f; //frames
-				nextState = "item aim point";
-			}
-		}
-		else
-		{
-			//Still on cooldown.
-		}
-	}
-
-	public void EndUseItem()
-	{
-		if ( items[ itemIndex ].coolDownTimer <= 0.0f )
-		{
-			UseItem2 ( itemIndex );
-		}
-	}
-
-	public void UseItem2( int index )
-	{
-		//This function is called when an item's effect is to take place.
-		//IE: this comes after the charging / aiming junk
-		//it does the effect + sets the cooldown
-
-		items[ index ].coolDownTimer = items[ index ].coolDownDelay; //set cooldown
-		#region effects
-		//DO EFFECT:
-		if ( items[index].name == ItemName.STOPWATCH )
-		{
-			StopWatch ();
-		}
-		else if ( items[index].name == ItemName.AURA_DEFENSE )
-		{
-			const float duration = 60.0f;
-			Aura ( id, duration, 0.0f, 1.0f, 0.0f );
-		}
-		else if ( items[index].name == ItemName.AURA_OFFENSE )
-		{
-			const float duration = 60.0f;
-			Aura ( id, duration, 1.0f, 0.0f, 0.0f );
-		}
-		else if ( items[index].name == ItemName.AURA_REGEN )
-		{
-			const float duration = 60.0f;
-			Aura ( id, duration, 0.0f, 0.0f, 1.0f );
-		}
-		else if ( items[index].name == ItemName.VAMPIRE_FANG )
-		{
-			//TODO: charge
-			//TODO: hit detection box at position after animating:
-			//on success: trigger suck life
-			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2.0f;
-			float x = transform.position.x;
-			float y = transform.position.y;
-			float min = 0.5f; //minimum or base width & height of the hitbox
-			float r = 1.0f;   //factor applied to cos / sin to extend hitbox
-			//
-			float xmin = Mathf.Min ( x - min, x - min + r * Mathf.Cos ( angle ) );
-			float ymin = Mathf.Min ( y - min, y - min + r * Mathf.Sin ( angle ) );
-			float xmax = Mathf.Max ( x + min, x + min + r * Mathf.Cos ( angle ) );
-			float ymax = Mathf.Max ( y + min, y + min + r * Mathf.Sin ( angle ) );
-			if ( AttackSystem.getHitsInBox( new Rect( xmin, ymin, (xmax - xmin), (ymax - ymin) ), id ).Length > 0 )
-			{
-				state = "vampire";
-				stateTimer = 1.5f;
-				nextState = "idle";
-				canMove = false;
-			}
-		}
-		else if ( items[index].name == ItemName.PHEROMONE_JAR )
-		{
-			//TODO: hit detection circle at point after animating
-			//TODO: animate
-			//TODO: put gas + glass prefab
-			foreach (Collider2D hit in AttackSystem.getHitsInCircle( GetComponent<CustomController>().aimPoint, 1.0f, id ) )
-			{
-				Player tempPlayer = hit.gameObject.GetComponent<Player>();
-				if ( tempPlayer != null )
-				{
-					//Max out player threat!
-					float maxThreat = 0.0f;
-					for ( int i = 0; i < 4; i++ ) { maxThreat = Mathf.Max ( maxThreat, GameState.playerThreats[i] ); }
-					GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
-
-					if ( tempPlayer.id != id )
-					{
-						//hitting another player with the pheromone jar is not a cooperative move.
-						GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
-					}
-				}
-			}
-			//State stuff
-			state = "item windown"; //item wind down?
-			stateTimer = 0.05f * 12.0f; //frames for animation.
-			nextState = "idle";
-		}
-		#endregion
-		#region animation
-		gameObject.GetComponent<Animator>().Play( "throw_" +  GetAniSuffix() );
-		#endregion
-	}
-
-	private void StopWatch()
-	{
-		isInBulletTime = true;
-		bulletTimeDuration = 6.0f;
-		StaticData.t_scale = 0.5f;
-		StaticData.bulletTimeDuration = bulletTimeDuration;
-		//TODO: lerp in, add visual effect, play sound
-		//TODO: duration on t scale, lerp back in, remove visual effect, play sound
-	}
-
-	private void Aura( int id, float duration, float offense, float defense, float regen )
-	{
-		//Give all players the blacklist buff.
-		//TODO: sound?
-		//TODO: don't allow players to stack the same buff from the same source multiple times on themselves.
-		//      instead, refresh it.
-		for ( int i = 0; i < GameState.players.Length; i++ )
-		{
-			Player targetPlayer = GameState.players[i].GetComponent<Player>();
-			Buff myBuff = new Buff();
-			myBuff.player = targetPlayer;
-			myBuff.giverId = id;
-			myBuff.blacklist = true;
-			myBuff.offense = offense;
-			myBuff.defense = defense;
-			myBuff.regen = regen;
-			myBuff.duration = duration;
-			//add to player and apply effect
-			//FIRST: change stacking from the same source -> refresh 
-			//remove any old buffs that match it with the same source
-			//(so you can't multi-stack the same aura on yourself from yourself 3 times,
-			// 12x of the same aura buffs is a scaling nightmare, and would require nerfing auras to obsolescence)
-			//Also, this lets us make the CD shorter than the duration
-			for ( int j = targetPlayer.buffs.Count - 1; j >= 0; j-- )
-			{
-				if ( ( (Buff) targetPlayer.buffs[j] ).isTheSameAs( myBuff ) )
-				{
-					( (Buff) targetPlayer.buffs[j] ).End();
-					//Debug.Log ( "Buff refreshed on player " + (i + 1) );
-					targetPlayer.buffs.RemoveAt ( j );
-				}
-			}
-			GameState.players[i].GetComponent<Player>().buffs.Add ( myBuff );
-			myBuff.Start ();
-			//Debug.Log ( "Buff started on player " + (i + 1) );
 		}
 	}
 

@@ -431,7 +431,7 @@ public class CustomController : MonoBehaviour
 			{
 				//initialize charging
 				//use un-charge-able items.
-				playerState.BeginUseItem(); //use un-charge-ables, begin charging charge-ables
+				GetComponent<ItemHandler>().BeginUseItem(); //use un-charge-ables, begin charging charge-ables
 			}
 			
 			//LT is being held
@@ -446,7 +446,7 @@ public class CustomController : MonoBehaviour
 			{
 				//release charges, have effect
 				//use chargeable items
-				playerState.EndUseItem(); //use charge-ables.
+				GetComponent<ItemHandler>().EndUseItem(); //use charge-ables.
 			}
 			#endregion
 			#region left bumper

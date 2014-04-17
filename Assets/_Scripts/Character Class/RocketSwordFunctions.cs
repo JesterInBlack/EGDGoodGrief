@@ -10,7 +10,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	#region vars
 	private Player player;
-	private CustomController controller;
+	//private CustomController controller; //Removed because unused.
 
 	private bool ignoreOnHitCallback = true;
 
@@ -81,7 +81,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	void Start () 
 	{
 		player = GetComponent<Player>();
-		controller = GetComponent<CustomController>();
+		//controller = GetComponent<CustomController>(); //removed because unused.
 	}
 	
 	// Update is called once per frame

@@ -4,6 +4,9 @@ using System.Collections;
 public class LobbedProjectile : MonoBehaviour 
 {
 	#region vars
+	public int id = 0;       //set when setup.
+	public Vector2 aimPoint; //set when setup.
+
 	private float virtualZ = 0.0f;
 	private float virtualY = 0.0f;
 	private float virtualX = 0.0f;
@@ -12,12 +15,6 @@ public class LobbedProjectile : MonoBehaviour
 	private const float gravity = -10.0f; //units / s^2
 	#endregion
 
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
 	// Update is called once per frame
 	void Update () 
 	{
@@ -29,7 +26,11 @@ public class LobbedProjectile : MonoBehaviour
 
 		if ( virtualZ < 0.0f )
 		{
-			//?
+			//TODO: place gas cloud
+			//TODO: put gas + glass prefab
+			//TODO: pheromone jar hit detection.
+			Explode ();
+			Destroy ( this.gameObject );
 		}
 	}
 
@@ -48,5 +49,26 @@ public class LobbedProjectile : MonoBehaviour
 		//45 degrees: max range
 		float dist = (end - start).magnitude;
 		return 0.5f * Mathf.Asin ( gravity * dist / (velocity * velocity) );
+	}
+
+	private void Explode()
+	{
+		foreach (Collider2D hit in AttackSystem.getHitsInCircle( aimPoint, 1.0f, id ) )
+		{
+			Player tempPlayer = hit.gameObject.GetComponent<Player>();
+			if ( tempPlayer != null )
+			{
+				//Max out player threat!
+				float maxThreat = 0.0f;
+				for ( int i = 0; i < 4; i++ ) { maxThreat = Mathf.Max ( maxThreat, GameState.playerThreats[i] ); }
+				GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
+				
+				if ( tempPlayer.id != id )
+				{
+					//hitting another player with the pheromone jar is not a cooperative move.
+					GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
+				}
+			}
+		}
 	}
 }

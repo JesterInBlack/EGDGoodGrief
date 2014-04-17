@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f2b51c45c617ffc4aae5122662a06138
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - jarPrefab: {fileID: 100000, guid: 69f8ef62b584e3a458c3b03ab285d9ef, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

@@ -109,6 +109,7 @@
      <Compile Include="Assets\_Scripts\Initializer.cs" />
      <Compile Include="Assets\_Scripts\Item.cs" />
      <Compile Include="Assets\_Scripts\ItemAnimation.cs" />
+     <Compile Include="Assets\_Scripts\ItemHandler.cs" />
      <Compile Include="Assets\_Scripts\ItemImages.cs" />
      <Compile Include="Assets\_Scripts\Lifetime.cs" />
      <Compile Include="Assets\_Scripts\LobProjectile.cs" />
