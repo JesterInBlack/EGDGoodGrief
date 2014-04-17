@@ -27,7 +27,7 @@ public class PostGameScore : MonoBehaviour
 	private SubScore[] objectiveScoresP4 = new SubScore[5];
 
 	private int objectiveScoreIndex = 0;
-	private const int NUMBER_OF_OBJECTIVES = 5; //# of subscores that go into the total score.
+	private const int NUMBER_OF_OBJECTIVES = 6; //# of subscores that go into the total score.
 	private float t;                            //periodic timer for jumping animation, also counts seconds since "done".
 	private float stateTimer = 0.0f;            //timer for state transitions
 	private int state = 0;                      //state tracker

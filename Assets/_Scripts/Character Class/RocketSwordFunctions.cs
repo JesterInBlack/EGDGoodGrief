@@ -149,7 +149,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//charge until duration runs out / you hit something (other than another player?)
 			float angle = GetComponent<CustomController>().facing * Mathf.PI / 2;
-			float speed = 13.0f * dt;
+			float speed = 11.0f * dt;
 			if ( ySmashHalted ) { speed = 0.0f; }
 			float x = transform.position.x;
 			float y = transform.position.y;

@@ -54,13 +54,17 @@ public static class ScoreManager
 	public static void KilledLeg( int id )
 	{
 		//bonus points for last hitting leg.
-		GameState.players[id].GetComponent<Player>().score += 25.0f;
+		float amount = 25.0f;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
 	}
 
 	public static void BrokeArmor( int id )
 	{
 		//bonus points for last hitting leg armor.
-		GameState.players[id].GetComponent<Player>().score += 5.0f;
+		float amount = 5.0f;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
 	}
 
 	//TODO: helped revive?

@@ -29,6 +29,7 @@ public class ScoreDetails
 	public SubScore damageTaken;
 	public SubScore damageAvoided;
 	public SubScore lastHit;
+	public SubScore misc;
 	//public SubScore revives;
 	//public SubScore griefs;
 	//public SubScore unity;
@@ -42,6 +43,7 @@ public class ScoreDetails
 		damageTaken = new SubScore( "Damage Taken" );
 		damageAvoided = new SubScore( "Dodge / Block" );
 		lastHit = new SubScore( "Boss Killer" );
+		misc = new SubScore( "Objective Bonus" );
 	}
 
 	public float GetGrandTotal()
@@ -53,13 +55,14 @@ public class ScoreDetails
 	{
 		//iterate through each subscore, and return its score.
 		//TODO: return subscore object
-		SubScore[] objectiveScores = new SubScore[5];
+		SubScore[] objectiveScores = new SubScore[6];
 
-		objectiveScores[0] = damageDealt; //damageDealt.score;
-		objectiveScores[1] = damageAvoided; //damageAvoided.score;
-		objectiveScores[2] = damageTaken; //damageTaken.score;
-		objectiveScores[3] = downs; //downs.score;
-		objectiveScores[4] = lastHit; //lastHit.score;
+		objectiveScores[0] = damageDealt;
+		objectiveScores[1] = damageAvoided;
+		objectiveScores[2] = damageTaken;
+		objectiveScores[3] = downs;
+		objectiveScores[4] = misc;
+		objectiveScores[5] = lastHit;
 
 		return objectiveScores;
 	}
