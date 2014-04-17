@@ -4,8 +4,9 @@ using System.Collections;
 public class LobbedProjectile : MonoBehaviour 
 {
 	#region vars
-	public int id = 0;       //set when setup.
-	public Vector2 aimPoint; //set when setup.
+	public int id = 0;        //set when setup.
+	public Vector2 aimPoint;  //set when setup.
+	public GameObject shadow; //set in inspector
 
 	private float virtualZ = 0.0f;
 	private float virtualY = 0.0f;
@@ -18,6 +19,7 @@ public class LobbedProjectile : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		shadow.transform.localPosition = new Vector3( 0.0f, -virtualZ, 0.0f );
 		velocityVector.z += gravity * Time.deltaTime * StaticData.t_scale;
 		virtualZ += velocityVector.z * Time.deltaTime * StaticData.t_scale;
 		virtualY += velocityVector.y * Time.deltaTime * StaticData.t_scale;
@@ -37,7 +39,10 @@ public class LobbedProjectile : MonoBehaviour
 	public void Fire( Vector2 start, Vector2 end, float velocity )
 	{
 		float theta = GetAngleOfReach ( start, end, velocity );
-		velocityVector = new Vector3( Mathf.Cos ( theta ), Mathf.Sin ( theta ), 0.0f );
+		float angle = Mathf.Atan2 ( end.y - start.y, end.x - start.x );
+		velocityVector = new Vector3( Mathf.Cos ( theta ) * Mathf.Cos ( angle ) * velocity, 
+		                              Mathf.Cos ( theta ) * Mathf.Sin ( angle ) * velocity, 
+		                              Mathf.Sin( theta ) * -1.0f * velocity );
 		transform.position = new Vector3( start.x, start.y, 0.0f );
 		virtualX = start.x;
 		virtualY = start.y;

@@ -142,7 +142,7 @@ public class ItemHandler : MonoBehaviour
 			jar.GetComponent<LobbedProjectile>().Fire ( 
 			                                           new Vector2( transform.position.x, transform.position.y ), 
 			                                           new Vector2( GetComponent<CustomController>().aimPoint.x, GetComponent<CustomController>().aimPoint.y ), 
-			                                           14.50f );
+			                                           11.0f );
 			//State stuff
 			player.state = "item windown"; //item wind down?
 			player.stateTimer = 0.05f * 12.0f; //frames for animation.
