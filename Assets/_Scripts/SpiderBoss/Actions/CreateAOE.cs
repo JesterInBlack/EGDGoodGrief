@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
 [TaskCategory("Attack")]
@@ -8,7 +9,9 @@ public class CreateAOE : Action
 	public GameObject _startingPosition;
 	public GameObject _venomShot;
 	public GameObject _webShot;
-	
+
+	public SharedVector2 _optionalTargetPos;
+
 	private Vector2 _targetPosition;
 	private Vector2 _shadowStartPos;
 	private float _offsetRadius = 2.0f;
@@ -37,12 +40,18 @@ public class CreateAOE : Action
 
 	public override void OnStart()
 	{
-		//set the target position
-		Vector2 randomPoint = Random.insideUnitCircle;
-		_targetPosition = (Vector2)_blackboard.targetPlayer.transform.position;
-		_targetPosition.x += randomPoint.x * _offsetRadius;
-		_targetPosition.y += randomPoint.y * _offsetRadius;
-
+		if(_optionalTargetPos.IsShared == false)
+		{
+			//set the target position
+			Vector2 randomPoint = Random.insideUnitCircle;
+			_targetPosition = (Vector2)_blackboard.targetPlayer.transform.position;
+			_targetPosition.x += randomPoint.x * _offsetRadius;
+			_targetPosition.y += randomPoint.y * _offsetRadius;
+		}
+		else
+		{
+			_targetPosition = _optionalTargetPos.Value;
+		}
 		_shadowStartPos = (Vector2)_startingPosition.transform.position;
 		_shadowStartPos.y -= 2.5f;
 	}
