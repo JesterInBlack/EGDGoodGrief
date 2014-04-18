@@ -27,7 +27,7 @@ public class ConsecutiveAoe : Action
 	{
 		Vector2 rand = Random.insideUnitCircle;
 		rand.Normalize();
-		_offsetVector = _offsetVector + rand * _offsetMagnitude; 
+		//_offsetVector = _offsetVector + rand * _offsetMagnitude; 
 		return TaskStatus.Success;
 	}
 }
