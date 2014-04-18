@@ -5,29 +5,27 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class ConsecutiveAoe : Action
 {
-	public GameObject _aoeObject;
-
+	public SharedVector2 _inputVector;
 	public SharedVector2 _offsetVector;
 
-	private float _offsetMagnitude;
-	private BehaviorBlackboard _blackboard;
+	public float _offsetMagnitude;
 	
 	public override void OnAwake()
 	{
 		// cache for quick lookup
-		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
+		_offsetMagnitude = 3.0f;
 	}
 
 	public override void OnStart()
 	{
-		_offsetMagnitude = _aoeObject.GetComponent<CircleCollider2D>().radius * _aoeObject.transform.lossyScale.x;
+
 	}
 
 	public override TaskStatus OnUpdate()
 	{
 		Vector2 rand = Random.insideUnitCircle;
 		rand.Normalize();
-		//_offsetVector = _offsetVector + rand * _offsetMagnitude; 
+		_offsetVector.Value = _inputVector.Value + rand * _offsetMagnitude; 
 		return TaskStatus.Success;
 	}
 }

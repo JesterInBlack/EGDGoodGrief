@@ -4,7 +4,7 @@ using System.Collections;
 public class VenomPool : MonoBehaviour 
 {
 	#region vars
-	private const float degenRate = 2.5f;       //health per second from standing in the pool.
+	private const float degenRate = 3f;       //health per second from standing in the pool.
 	private const float poisonRate = 0.5f;      //how many seconds pass between each debuff stack application.
 	private const float poisonDamage = 0.125f;  //Secondary effect DPS
 	private const float poisonDuration = 8.0f;  //Secondary effect duration

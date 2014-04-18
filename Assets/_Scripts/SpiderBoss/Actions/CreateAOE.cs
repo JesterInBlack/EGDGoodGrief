@@ -11,6 +11,7 @@ public class CreateAOE : Action
 	public GameObject _webShot;
 
 	public SharedVector2 _optionalTargetPos;
+	public SharedVector2 _optionaltargetedPos;
 
 	private Vector2 _targetPosition;
 	private Vector2 _shadowStartPos;
@@ -52,6 +53,7 @@ public class CreateAOE : Action
 		{
 			_targetPosition = _optionalTargetPos.Value;
 		}
+		_optionaltargetedPos.Value = _targetPosition;
 		_shadowStartPos = (Vector2)_startingPosition.transform.position;
 		_shadowStartPos.y -= 2.5f;
 	}

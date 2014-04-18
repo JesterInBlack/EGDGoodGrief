@@ -6,7 +6,7 @@ public class Web : MonoBehaviour
 	#region vars
 	private float debuffRate = 0.25f; //seconds between applications of the slow debuff
 	private float lifespan = 10.0f;
-	private float maxSize = 5.0f;
+	private float maxSize = 4.25f;
 
 	private float lifeTimer = 0.0f;
 	private float timer = 0.0f;

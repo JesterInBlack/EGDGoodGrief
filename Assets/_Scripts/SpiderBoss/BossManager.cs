@@ -59,7 +59,7 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 3) //AoeVenom
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -0.2f, 1f, 30.0f, 1.2f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -0.5f, 1f, 30.0f, 1.2f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 4) //AoEWeb
