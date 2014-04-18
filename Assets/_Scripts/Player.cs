@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
 			for ( int i = 0; i < 3; i++ )
 			{
 				items[i] = new Item();
-				items[i].Construct ( ItemName.STOPWATCH ); //default
+				items[i].Construct ( ItemName.PHEROMONE_JAR ); //default
 			}
 		}
 		#endregion

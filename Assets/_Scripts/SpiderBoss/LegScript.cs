@@ -396,8 +396,9 @@ public class LegScript : MonoBehaviour {
 		GameObject obj = (GameObject)Instantiate ( bloodPrefab, this.transform.position, Quaternion.identity );
 		float x = GameState.players[id].transform.position.x - transform.position.x;
 		float y = GameState.players[id].transform.position.y - transform.position.y;
-		float angle = Mathf.Atan2 ( y, x );
+		float angle = Mathf.Atan2 ( y, x ) * Mathf.Rad2Deg - 90.0f;
 		obj.transform.Rotate ( 0.0f, 0.0f, angle );
+		obj.transform.parent = transform;
 
 		//Play hurt sound?
 		if ( soundTimer <= 0.0f )
