@@ -17,34 +17,23 @@ public class ItemHandler : MonoBehaviour
 		player = GetComponent<Player>();
 	}
 
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
-
 	//-------------------------------------------------------------------------------------------------------
 	//ITEMS?
 	//-------------------------------------------------------------------------------------------------------
-	public void BeginUseItem()
+	public void ItemButtonPressed()
 	{
+		//called on use item button pressed.
+		if ( player.isDowned ) { return; } //Can't use items while downed.
 		if ( player.items[ player.itemIndex ].coolDownTimer <= 0.0f )
 		{
 			GetComponent<Tutorial>().usedItem = true;
 			if ( player.items[ player.itemIndex ].itemType == ItemType.ITEM_FAST )
 			{
 				//Do the effect. NOW!
-				//TODO: freeze item scrolling / use during item use animation / charging
 				player.state = "item windup";
 				player.stateTimer = 0.05f * 12.0f; //frames
 				player.nextState = "idle";
-				UseItem2 ( player.itemIndex );
+				UseItem ( player.itemIndex );
 			}
 			else if ( player.items[ player.itemIndex ].itemType == ItemType.ITEM_CHARGE_AND_RELEASE )
 			{
@@ -74,15 +63,17 @@ public class ItemHandler : MonoBehaviour
 		}
 	}
 	
-	public void EndUseItem()
+	public void ItemButtonReleased()
 	{
+		//called on use item button released.
+		if ( player.isDowned ) { return; } //Can't use items while downed.
 		if ( player.items[ player.itemIndex ].coolDownTimer <= 0.0f )
 		{
-			UseItem2 ( player.itemIndex );
+			UseItem ( player.itemIndex );
 		}
 	}
 	
-	public void UseItem2( int index )
+	public void UseItem( int index )
 	{
 		//This function is called when an item's effect is to take place.
 		//IE: this comes after the charging / aiming junk
@@ -137,6 +128,7 @@ public class ItemHandler : MonoBehaviour
 		{
 			//TODO: animate
 			GameObject jar = (GameObject)Instantiate ( jarPrefab, transform.position, Quaternion.identity );
+			jar = jar.GetComponent<JarLink>().jar;
 			jar.GetComponent<LobbedProjectile>().id = player.id;
 			jar.GetComponent<LobbedProjectile>().aimPoint = GetComponent<CustomController>().aimPoint;
 			jar.GetComponent<LobbedProjectile>().Fire ( 

@@ -14,17 +14,20 @@ public class LobbedProjectile : MonoBehaviour
 	private Vector3 velocityVector;
 
 	private const float gravity = -10.0f; //units / s^2
+	private float t = 0.0f;
 	#endregion
 
 	// Update is called once per frame
 	void Update () 
 	{
+		t += Time.deltaTime * StaticData.t_scale;
 		shadow.transform.localPosition = new Vector3( 0.0f, -virtualZ, 0.0f );
 		velocityVector.z += gravity * Time.deltaTime * StaticData.t_scale;
 		virtualZ += velocityVector.z * Time.deltaTime * StaticData.t_scale;
 		virtualY += velocityVector.y * Time.deltaTime * StaticData.t_scale;
 		virtualX += velocityVector.x * Time.deltaTime * StaticData.t_scale;
-		transform.position = new Vector3( virtualX, virtualY + virtualZ, 0.0f );
+		transform.parent.position = new Vector3( virtualX, virtualY + virtualZ, 0.0f );
+		transform.Rotate ( 0.0f, 0.0f, 360.0f * 2.5f * Time.deltaTime * StaticData.t_scale );
 
 		if ( virtualZ < 0.0f )
 		{
@@ -32,7 +35,7 @@ public class LobbedProjectile : MonoBehaviour
 			//TODO: put gas + glass prefab
 			//TODO: pheromone jar hit detection.
 			Explode ();
-			Destroy ( this.gameObject );
+			Destroy ( transform.parent.gameObject );
 		}
 	}
 
