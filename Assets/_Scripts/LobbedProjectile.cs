@@ -4,9 +4,10 @@ using System.Collections;
 public class LobbedProjectile : MonoBehaviour 
 {
 	#region vars
-	public int id = 0;        //set when setup.
-	public Vector2 aimPoint;  //set when setup.
-	public GameObject shadow; //set in inspector
+	public int id = 0;            //set when setup.
+	public Vector2 aimPoint;      //set when setup.
+	public GameObject shadow;     //set in inspector
+	public GameObject gasPrefab;  //set in inspector
 
 	private float virtualZ = 0.0f;
 	private float virtualY = 0.0f;
@@ -61,6 +62,7 @@ public class LobbedProjectile : MonoBehaviour
 
 	private void Explode()
 	{
+		Instantiate ( gasPrefab, transform.position, Quaternion.identity );
 		foreach (Collider2D hit in AttackSystem.getHitsInCircle( aimPoint, 1.0f, id ) )
 		{
 			Player tempPlayer = hit.gameObject.GetComponent<Player>();
