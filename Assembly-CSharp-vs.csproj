@@ -205,6 +205,7 @@
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
      <Compile Include="Assets\_Scripts\VibrationResetter.cs" />
      <Compile Include="Assets\_Scripts\Web.cs" />
+     <Compile Include="Assets\_Scripts\WhiteOut.cs" />
  <Reference Include="XInputDotNetPure">
  <HintPath>Assets\Plugins\XInputDotNetPure.dll</HintPath>
  </Reference>
