@@ -75,7 +75,7 @@ public class ApplyBuff : Action
 					_targetPoint = leftLegsEnd.transform.position;
 					_intermediatePoint = leftLegsStart.transform.position;
 				}
-				_startPoint = _blackboard.selectedLeg.GetComponent<LegScript>().transform.position;
+				_startPoint = _blackboard.selectedLeg.transform.position;
 				_shadowStartPoint = _startPoint;
 
 				_shadowIntermediatePoint = _intermediatePoint;
@@ -88,7 +88,7 @@ public class ApplyBuff : Action
 				
 				_lerpTime = 0.0f;
 				_intermediatePointReached = false;
-				_blackboard.selectedLeg.GetComponent<LegScript>()._state = LegScript.LegState.Move;
+				_blackboard.selectedLeg._state = LegScript.LegState.Move;
 				return TaskStatus.Running;
 			}
 			else if(_blackboard.selectedLeg.GetComponent<LegScript>()._state == LegScript.LegState.Move)
@@ -114,6 +114,10 @@ public class ApplyBuff : Action
 			{
 				_intermediatePointReached = true;
 				_lerpTime = 0.0f;
+				if(_goingBack == false)
+				{
+					StartBuffApplication();
+				}
 			}
 			else
 			{
@@ -142,6 +146,21 @@ public class ApplyBuff : Action
 				_blackboard.selectedLeg.GetComponent<LegScript>()._shadowPos = Vector3.Lerp(_shadowIntermediatePoint, _shadowFinalPoint, _lerpTime / _applicationTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
+		}
+	}
+
+	void StartBuffApplication()
+	{
+		if(_buffType == BuffType.venom)
+		{
+			//Debug.Log("applying venom");
+			//have the selected leg move over to the mouth so that it can apply the buff and then return success
+			_blackboard.selectedLeg.GetComponent<LegScript>().StartBuff(1, _applicationTime);
+		}
+		else if(_buffType == BuffType.web)
+		{
+			//Debug.Log("applying web");
+			_blackboard.selectedLeg.GetComponent<LegScript>().StartBuff(2, _applicationTime);
 		}
 	}
 

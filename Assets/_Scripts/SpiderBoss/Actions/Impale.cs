@@ -47,6 +47,7 @@ public class Impale : Action
 		_state = AttackState.Windup;
 		_blackboard.selectedLeg._state = LegScript.LegState.Idle;
 		_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Impale;
+		_blackboard.selectedLeg._invincible = true;
 
 		_startPoint = (Vector2)_blackboard.selectedLeg.transform.position;
 		_targetPoint = (Vector2)_blackboard.targetPlayer.transform.position;
@@ -99,7 +100,7 @@ public class Impale : Action
 		{
 			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _targetPoint) < 0.005f)
 			{
-				//Debug.Log("Start the attack!");
+				_blackboard.selectedLeg._invincible = false;
 				_state = AttackState.Cooldown;
 				_lerpTime = 0.0f;
 

@@ -75,11 +75,13 @@ public class DisableBody : Action
 				for(int i = 0; i < _blackboard.legsList.Length; i++)
 				{
 					_blackboard.legsList[i]._currentHP = _blackboard.legsList[i]._maxHP;
+					/*
 					Vector3 Legscale = _blackboard.legsList[i].transform.parent.transform.localScale;
 					Legscale.x = 2.25f;
 					Legscale.y = 2.25f;
 					_blackboard.legsList[i].transform.parent.transform.localScale = Legscale;
 					_blackboard.legsList[i]._behaviorState = LegScript.BehaviorState.Walking;
+					*/
 				}
 				_blackboard.body._bodyState = BodyScript.BodyState.Recovery;
 				_blackboard._invincible = true;

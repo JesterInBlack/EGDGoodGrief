@@ -97,7 +97,6 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 65.0f, 0.5f, -0.1f, -0.25f, 0.0f, 0.0f);
 				_behaviorList.Add(testBehavior);
 			}
-
 		}
 		#endregion
 
@@ -108,7 +107,7 @@ public class BossManager : MonoBehaviour
 		}
 
 		GameState.cooperationAxis = 0.0f; //initialized at 0
-		GameState.angerAxis = -1.0f; //initialized at -1
+		GameState.angerAxis = 0.0f; //initialized at -1
 		#endregion
 
 		#region Blackboard Variables

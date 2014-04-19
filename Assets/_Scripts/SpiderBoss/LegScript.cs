@@ -17,7 +17,7 @@ public class LegScript : MonoBehaviour {
 	public float _currentHP;
 	public float _maxHP;
 	public float _regenRate;
-	public bool invincible; //true when the leg is immune to damage.
+	public bool _invincible; //true when the leg is immune to damage.
 
 	//color vars
 	ScheduledColor currentColor;
@@ -27,6 +27,7 @@ public class LegScript : MonoBehaviour {
 	private float soundTimer = 0.0f;
 
 	#region LEG BUFF VARIABLES
+	public GameObject _webBuff;
 	public float _currentWebbingHP;
 	public float _maxWebbingHP;
 
@@ -85,7 +86,7 @@ public class LegScript : MonoBehaviour {
 		venom= 1,
 		web = 2,
 	}
-	[HideInInspector]
+	//[HideInInspector]
 	public BuffState _buffState;
 
 	// Use this for initialization
@@ -154,6 +155,7 @@ public class LegScript : MonoBehaviour {
 				{
 					_state = LegState.CalculateMove;
 				}
+				_invincible = false;
 				_shadowPos = (Vector2)transform.position;
 			}
 			//This picks the next area to move to
@@ -177,6 +179,7 @@ public class LegScript : MonoBehaviour {
 				_startPoint = transform.position;
 				_shadowStartPoint = _startPoint;
 				_lerpTime = 0.0f;
+				_invincible = true;
 				_state = LegState.Move;
 			}
 			else if(_state == LegState.Move)
@@ -191,7 +194,7 @@ public class LegScript : MonoBehaviour {
 		}
 		else if(_behaviorState == BehaviorState.ApplyingBuff)
 		{
-			//do nothing for now
+			_invincible = true;
 		}
 
 		//get the rotation
@@ -279,22 +282,38 @@ public class LegScript : MonoBehaviour {
 			if ( currentColor.timer >= currentColor.duration )
 			{
 				currentColor.duration = 0.0f;
-				transform.parent.GetComponent<SpriteRenderer>().color = getResetColor ();
+				if(_buffState == BuffState.web)
+				{
+					_webBuff.GetComponent<SpriteRenderer>().color = getResetColor();
+				}
+				else
+				{
+					transform.parent.GetComponent<SpriteRenderer>().color = getResetColor ();
+				}
 			}
 			else
 			{
-				transform.parent.GetComponent<SpriteRenderer>().color = currentColor.color;
+				if(_buffState == BuffState.web)
+				{
+					_webBuff.GetComponent<SpriteRenderer>().color = currentColor.color;
+				}
+				else
+				{
+					transform.parent.GetComponent<SpriteRenderer>().color = currentColor.color;
+				}
 			}
 			currentColor.timer += Time.deltaTime * StaticData.t_scale;
 		}
 
 		if (_behaviorState != BehaviorState.Disabled)
 		{
+			//is the leg dead?
 			if(_currentHP <= 0.0f)
 			{
 				_behaviorState = BehaviorState.Disabled;
 				_state = LegState.CalculateMove;
 				_shadowStartPoint = transform.position;
+				_invincible = true;
 
 				Vector3 Legscale = transform.parent.transform.localScale;
 				Legscale.x = 2.0f;
@@ -303,6 +322,21 @@ public class LegScript : MonoBehaviour {
 
 				//set the cooperation Valance
 				GameState.cooperationAxis += Mathf.Min(0.1f , 1.0f - GameState.cooperationAxis);
+			}
+			//if not, do other things
+			else
+			{
+				if(_buffState != BuffState.unbuffed)
+				{
+					if(_currentBuffDuration > 0.0f)
+					{
+						_currentBuffDuration -= Time.deltaTime * StaticData.t_scale;
+					}
+					else
+					{
+						RemoveBuff();
+					}
+				}
 			}
 		}
 		else if(_behaviorState == BehaviorState.Disabled)
@@ -317,15 +351,35 @@ public class LegScript : MonoBehaviour {
 				transform.parent.transform.localScale = Legscale;
 				_behaviorState = BehaviorState.Walking;
 			}
+			/*
 			else if(_currentHP < _maxHP)
 			{
 				if(_blackboard.body._behaviorState != BodyScript.BehaviorState.Disabled)
 				{
-					//Removed passive regeneration from the legs.
-					//TODO: Make it so that legs heal to full when the boss gets back up from being  vulnerable.
-					//_currentHP += Mathf.Min(_regenRate * Time.deltaTime * StaticData.t_scale, _maxHP - _currentHP);
+				
 				}
 			}
+			*/
+		}
+	}
+
+	public void StartBuff(int buffID, float transitTime)
+	{
+		BuffState _state = (BuffState)buffID;
+		if(_state == BuffState.venom)
+		{
+			if(_buffState == BuffState.web)
+			{
+				//TODO make the web buff unapply now
+			}
+		}
+		else if(_state == BuffState.web)
+		{
+			if(_buffState == BuffState.venom)
+			{
+				//TODO make the venom buff unapply right now
+			}
+			_webBuff.GetComponent<WebBuffScript>().StartApplication(transitTime);
 		}
 	}
 
@@ -337,21 +391,32 @@ public class LegScript : MonoBehaviour {
 			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
 			_poisonDPS = 2.5f;
 			_poisonDuration = 5.0f;
+			_currentBuffDuration = _maxBuffDuration;
 		}
 		else if(_buffState == BuffState.web)
 		{
-			transform.parent.GetComponent<SpriteRenderer>().color = Color.blue;
+			//transform.parent.GetComponent<SpriteRenderer>().color = Color.blue;
 			_currentWebbingHP = _maxWebbingHP;
+			_currentBuffDuration = _maxBuffDuration;
 		}
-
 	}
 	void RemoveBuff()
 	{
+		if(_buffState == BuffState.venom)
+		{
+			//TODO venombuff.getcomponent<VenomBuffScript>().Unapply
+		}
+		else if(_buffState == BuffState.web)
+		{
+			_webBuff.GetComponent<WebBuffScript>().Unapply();
+		}
+
 		_buffState = BuffState.unbuffed;
 		//reset vars (bookkeeping)
 		_currentWebbingHP = 0.0f;
 		_poisonDPS = 0.0f;
 		_poisonDuration = 0.0f;
+		_currentBuffDuration = 0.0f;
 		transform.parent.GetComponent<SpriteRenderer>().color = Color.white;
 	}
 
@@ -366,7 +431,8 @@ public class LegScript : MonoBehaviour {
 		//returns the color the leg should be, given it's current state
 		if ( _currentWebbingHP > 0.0f )
 		{
-			return new Color( 0.0f, 0.0f, 1.0f );
+			return new Color( 1.0f, 1.0f, 1.0f );
+			//return new Color( 0.0f, 0.0f, 1.0f );
 		}
 		else if ( isPoisonous () )
 		{
@@ -383,7 +449,7 @@ public class LegScript : MonoBehaviour {
 		//Handle players doing damage to the leg.
 		//TODO: flash on taking HP damage.
 		//TODO: sound.
-		if ( invincible ) { return; } //immune to damage
+		if ( _invincible ) { return; } //immune to damage
 		if ( _currentHP <= 0.0f ) { return; } //already dead
 		//deal damage.
 
@@ -419,6 +485,7 @@ public class LegScript : MonoBehaviour {
 			//Edge case check: if armor was broken, deal the excess damage
 			if ( _currentWebbingHP < 0.0f )
 			{
+				RemoveBuff();
 				_currentHP += _currentWebbingHP;
 				_currentWebbingHP = 0.0f;
 				//ScoreManager.DealtDamage ( id, _currentWebbingHP ); //if armor damage doesn't give score
@@ -438,6 +505,7 @@ public class LegScript : MonoBehaviour {
 			//Give the player bonus score for killing blow
 			if ( _currentHP <= 0.0f )
 			{
+				RemoveBuff();
 				ScoreManager.KilledLeg( id );
 			}
 
