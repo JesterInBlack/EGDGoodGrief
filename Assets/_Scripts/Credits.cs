@@ -3,80 +3,155 @@ using System.Collections;
 
 public class Credits : MonoBehaviour 
 {
+	public TextMesh names;
+	public TextMesh headings;
 
 	// Use this for initialization
 	void Start () 
 	{
-		GetComponent<TextMesh>().text = 
+		names.text = 
 			"CREDITS\n" +
-			"\tProduction:\n" +
-			"\t\tExecutive Producer:\n" +
-			"\t\t\tMarcus 'Dough Puncher' Baker\n" +
 			"\n" +
 			"\n" +
-			"\tDesign:\n" +
-			"\t\tLead Designers:\n" +
-			"\t\t\tJay Ree\n" +
-			"\t\t\tGabriel Violette\n" +
 			"\n" +
-			"\t\tHUD Designer:\n" +
-			"\t\t\tPj Castracucco\n" +
-			"\n" +
-			"\t\tDesigners:\n" +
-			"\t\t\tMarcus Baker\n" +
-			"\t\t\tVictor Ariel Cortes\n" +
+			"PRODUCTION\n" +
+			"Executive Producer:\n" +
+			"Marcus 'Dough Puncher' Baker\n" +
 			"\n" +
 			"\n" +
-			"\tProgramming:\n" +
-			"\t\tPlayer Programming:\n" +
-			"\t\t\tGabriel Violette\n" +
+			"DESIGN\n" +
+			"Lead Designers:\n" +
+			"Jay Ree\n" +
+			"Allen Smithee\n" +
 			"\n" +
-			"\t\tBoss Programming:\n" +
-			"\t\t\tJay Lee\n" +
+			"HUD Designer:\n" +
+			"Pj 'PJ' Castracucco\n" +
 			"\n" +
-			"\t\tMenu Programming:\n" +
-			"\t\t\tAndrew Ryther\n" +
-			"\n" +
-			"\n" +
-			"\tArt:\n" +
-			"\t\tSuper Artist:\n" +
-			"\t\t\tVictor Cortes\n" +
-			"\n" +
-			"\t\tArtists:\n" +
-			"\t\t\tPj Castracucco\n" +
-			"\t\t\tJay Lee\n" +
-			"\t\t\tGabriel Violette\n" +
+			"Designers:\n" +
+			"Marcus Baker\n" +
+			"Victor Ariel Corteszszszszszsz\n" +
 			"\n" +
 			"\n" +
-			"\tFoley:\n" +
-			"\t\tAndrew Ryther\n" +
+			"PROGRAMMING\n" +
+			"Character Programming:\n" +
+			"Gabriel Violette\n" +
+			"\n" +
+			"Boss Programming:\n" +
+			"Jay Lee\n" +
+			"\n" +
+			"Menu Programming:\n" +
+			"Andrew Ryther\n" +
 			"\n" +
 			"\n" +
-			"\tMusic:\n" +
-			"\t\tComposers:\n" +
-			"\t\t\tJames Ross\n" +
-			"\t\t\tThat Other Guy\n" +
+			"ART\n" +
+			"Super Artist:\n" +
+			"Victor Cortes\n" +
+			"\n" +
+			"Artists:\n" +
+			"Pj Castracucco\n" +
+			"Jay Lee\n" +
+			"Gabriel Violette\n" +
 			"\n" +
 			"\n" +
-			"\tQuality Assurance:\n" +
-			"\t\tQuality Assurance Leads:\n" +
-			"\t\t\tMarcus Baker\n"+
-			"\t\t\tPj Castracucco \n" +
-			"\n" +
-			"\t\tQuality Assurance:\n" +
-			"\t\t\t<insert playtester names>\n" +
+			"FOLEY\n" +
+			"Andrew Ryther\n" +
 			"\n" +
 			"\n" +
-			"\tSPECIAL THANKS\n" +
-			"\t\tAll 360 No Scope Fans\n" +
+			"MUSIC\n" +
+			"Composers:\n" +
+			"James Ross\n" +
+			"That Other Guy\n" +
+			"\n" +
+			"\n" +
+			"QUALITY ASSURANCE\n" +
+			"Quality Assurance Leads:\n" +
+			"Marcus Baker\n"+
+			"Pj Castracucco \n" +
+			"\n" +
+			"Quality Assurance:\n" +
+			"<insert playtester names>\n" +
+			"\n" +
+			"\n" +
+			"SPECIAL THANKS\n" +
+			"All 360 No Scope Fans\n" +
 			"\n" +
 			"\n" +
 			"Grief for Glory copyright 2014 Team 360 No Scope";
+
+		headings.text = 
+			"CREDITS\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"PRODUCTION\n" +
+			"Executive Producer:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"DESIGN\n" +
+			"Lead Designers:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"HUD Designer:\n" +
+			"\n" +
+			"\n" +
+			"Designers:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"PROGRAMMING\n" +
+			"Character Programming:\n" +
+			"\n" +
+			"\n" +
+			"Boss Programming:\n" +
+			"\n" +
+			"\n" +
+			"Menu Programming:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"ART\n" +
+			"Super Artist:\n" +
+			"\n" +
+			"\n" +
+			"Artists:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"FOLEY\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"MUSIC\n" +
+			"Composers:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"QUALITY ASSURANCE\n" +
+			"Quality Assurance Leads:\n" +
+			"\n"+
+			"\n" +
+			"\n" +
+			"Quality Assurance:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"SPECIAL THANKS";
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		transform.position += new Vector3( 0.0f, Time.deltaTime, 0.0f );
+
+		if ( transform.position.y > 47.0f ) //credits are done.
+		{
+			Application.LoadLevel ( "MainMenu" );
+		}
 	}
 }
