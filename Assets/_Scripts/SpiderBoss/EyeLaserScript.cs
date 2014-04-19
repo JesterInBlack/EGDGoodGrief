@@ -28,6 +28,10 @@ public class EyeLaserScript : MonoBehaviour
 		else
 		{
 			transform.position += transform.right * _speed * Time.deltaTime * StaticData.t_scale;
+			float percentDist = Vector3.Distance(_startPos, transform.position) / _travelDistance;
+			//scale so only the last 20% blends out.
+			float lerpT = 0.0f;
+			GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, 1.0f - percentDist );
 		}
 
 		for ( int i = 0; i < GameState.players.Length; i++ )
