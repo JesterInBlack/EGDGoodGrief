@@ -89,7 +89,6 @@
      <Compile Include="Assets\_Scripts\AuraFX.cs" />
      <Compile Include="Assets\_Scripts\BeamCharge.cs" />
      <Compile Include="Assets\_Scripts\BeamWidener.cs" />
-     <Compile Include="Assets\_Scripts\Boss.cs" />
      <Compile Include="Assets\_Scripts\Buff.cs" />
      <Compile Include="Assets\_Scripts\BulletTimeManager.cs" />
      <Compile Include="Assets\_Scripts\CameraController.cs" />
@@ -99,6 +98,7 @@
      <Compile Include="Assets\_Scripts\Character Class\NewClassPluginTemplate.cs" />
      <Compile Include="Assets\_Scripts\Character Class\RocketSwordFunctions.cs" />
      <Compile Include="Assets\_Scripts\Character Class\StoneFist.cs" />
+     <Compile Include="Assets\_Scripts\Credits.cs" />
      <Compile Include="Assets\_Scripts\CustomController.cs" />
      <Compile Include="Assets\_Scripts\Debug\BossDebugHelper.cs" />
      <Compile Include="Assets\_Scripts\EggAnimation.cs" />
@@ -119,6 +119,7 @@
      <Compile Include="Assets\_Scripts\LobbedProjectile.cs" />
      <Compile Include="Assets\_Scripts\MenuDataSaver.cs" />
      <Compile Include="Assets\_Scripts\ObjectivesGUIText.cs" />
+     <Compile Include="Assets\_Scripts\Old\Boss.cs" />
      <Compile Include="Assets\_Scripts\Old\Info_Script.cs" />
      <Compile Include="Assets\_Scripts\Old\test.cs" />
      <Compile Include="Assets\_Scripts\Oscillate.cs" />
