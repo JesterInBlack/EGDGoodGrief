@@ -14,6 +14,7 @@ MonoImporter:
   - aRevive: {fileID: 21300000, guid: b382300d674108c4ebd13fe7ed24dc60, type: 3}
   - aCarry: {fileID: 21300000, guid: 90e7faebfd60aee488bf302f53ab5201, type: 3}
   - aDrop: {fileID: 21300000, guid: 9630a4364313fcb45a71cf12e85b2b03, type: 3}
+  - aHeal: {fileID: 21300000, guid: a66e1c004221fb24eaace036175723b7, type: 3}
   - aim: {fileID: 21300000, guid: 7fa4e35ca5bca14439f1b7386b86a7ef, type: 3}
   - mashA: {fileID: 21300000, guid: e449d92a7524c72419857393dc311b03, type: 3}
   - rtCharge: {fileID: 21300000, guid: e80e0614c75fc394bab47889ed5975d6, type: 3}

@@ -339,6 +339,7 @@ public class CustomController : MonoBehaviour
 				#region pickup logic
 				else
 				{
+					bool pickedup = false;
 					for ( int i = 0; i < GameState.players.Length; i++ )
 					{
 						if ( GameState.players[i].GetComponent<Player>().id != playerState.id ) //no self-carrying!
@@ -362,9 +363,9 @@ public class CustomController : MonoBehaviour
 										otherState.Carrier = this.gameObject;
 										GameState.players[i].transform.position = 
 											new Vector3( 
-											gameObject.transform.position.x, 
-										    gameObject.transform.position.y + 0.5f, 
-										    -1.0f 
+											gameObject.transform.position.x,
+										    gameObject.transform.position.y + 0.5f,
+										    -1.0f
 										    );
 										#region animation
 										playerState.canMove = false;
@@ -373,9 +374,17 @@ public class CustomController : MonoBehaviour
 										playerState.nextState = "idle";
 										GetComponent<Animator>().Play ( "pickup_" + GetComponent<Player>().GetAniSuffix() );
 										#endregion
+										pickedup = true;
 									}
 								}
 							}
+						}
+					}
+					if ( ! pickedup ) //hold A to channel healing.
+					{
+						if ( playerState.channellingHealingCooldown <= 0.0f ) //off cooldown
+						{
+							playerState.isChannellingHealing = true;
 						}
 					}
 				}
@@ -394,6 +403,10 @@ public class CustomController : MonoBehaviour
 			{
 				//release charges, have effect
 				//define?
+				if ( playerState.isChannellingHealing )
+				{
+					playerState.isChannellingHealing = false;
+				}
 			}
 			#endregion
 

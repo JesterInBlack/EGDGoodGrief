@@ -4,9 +4,11 @@ using System.Collections;
 public class OverHeadText : MonoBehaviour {
 
 	#region vars
-	Player player;
-	Tutorial imageSource; //TODO: reclassify this.
-	SpriteRenderer spriteRenderer;
+	private Player player;
+	private Tutorial imageSource; //TODO: reclassify this.
+	private SpriteRenderer spriteRenderer;
+
+	private bool defer = false; //set to true to defer the normal update draw for 1 frame.
 	#endregion
 
 	// Use this for pre-initialization
@@ -26,8 +28,18 @@ public class OverHeadText : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if ( GameState.isTutorial && ! imageSource.completed ) { return; } //don't conflict with tutorial messages
+		if ( defer == false )
+		{
+			SetOverheadText();
+		}
+		defer = false;
+	}
 
+	public void SetOverheadText()
+	{
+		defer = true;
+		if ( GameState.isTutorial && ! imageSource.completed ) { return; } //don't conflict with tutorial messages
+		
 		spriteRenderer.enabled = true;
 		if ( player.isDowned && player.HP >= player.maxHP * StaticData.percentHPNeededToRevive )
 		{
@@ -48,6 +60,10 @@ public class OverHeadText : MonoBehaviour {
 		else if ( player.state == "vampire" ) //oh the badness, it hurts.
 		{
 			spriteRenderer.sprite = imageSource.mashA;
+		}
+		else if ( player.contextualHealingAvailable )
+		{
+			spriteRenderer.sprite = imageSource.aHeal;
 		}
 		else
 		{

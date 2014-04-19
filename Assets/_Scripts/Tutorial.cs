@@ -18,6 +18,7 @@ public class Tutorial : MonoBehaviour
 	public Sprite aRevive;
 	public Sprite aCarry;
 	public Sprite aDrop;
+	public Sprite aHeal;
 
 	public Sprite aim;
 	public Sprite mashA;

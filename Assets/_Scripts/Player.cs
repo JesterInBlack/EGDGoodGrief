@@ -99,6 +99,16 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public float resourceGraceT = 0.0f;  //at 0, resource begins degeneration
 	//private Vector3 prevPos;           //previous position, for detecting movement. (focus degen) //removed because unused.
+
+	//Healing while up.
+	[HideInInspector]
+	public bool contextualHealingAvailable = false;  //set to true when healing context command is available
+	[HideInInspector]
+	public bool isChannellingHealing = false;        //"handshake" flag
+	[HideInInspector]
+	public bool isActuallyHealing = false;           //confirmation flag
+	[HideInInspector]
+	public float channellingHealingCooldown = 0.0f;  //cooldown
 	#endregion
 
 	//Use this for pre-initialization
@@ -263,6 +273,11 @@ public class Player : MonoBehaviour
 			}
 		}
 
+		if ( ! isChannellingHealing ) //reduce cooldown. (on a pressed if in range of heal fountain, reset cd + set flag + set state)
+		{
+			channellingHealingCooldown -= t;
+		}
+
 		if ( state == "knockback" )
 		{
 			this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
@@ -403,6 +418,7 @@ public class Player : MonoBehaviour
 		//ASSUMPTION: hurt is only called by the boss' attacks.
 		GameState.angerAxis = Mathf.Max ( -1.0f,  GameState.angerAxis - 0.05f );
 		GameState.playerThreats[id] = Mathf.Max ( 0.0f,  GameState.playerThreats[id] - 10.0f );
+		isChannellingHealing = false; //interrupt healing on taking damage.
 
 		#region resource deduction
 		//resource deduction. (chain, sediment)
@@ -547,7 +563,7 @@ public class Player : MonoBehaviour
 		myBuff.player = this;
 		myBuff.giverId = -1;
 		myBuff.blacklist = false;
-		myBuff.speed = -1.0f * percent;
+		myBuff.speed = percent;
 		myBuff.duration = duration;
 
 		//remove any other slows.
