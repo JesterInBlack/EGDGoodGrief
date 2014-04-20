@@ -53,19 +53,10 @@ public class Item
 			coolDownDelay = 30.0f;
 		}
 	}
-
-	//TODO: add an interface for calling functions?
+	
 	// Update is called once per frame (from the player class)
 	public void Update ( float dt ) 
 	{
 		coolDownTimer = Mathf.Max ( coolDownTimer - dt, 0.0f );
 	}
-
-	//TODO: add to general input (player / controller)
-	//add states for aim point, aim ray, fast use, charge
-	//item windup, item aim point, item aim ray, item charge
-
-	//button mash war? -> input (2 players, vars for buttons mashed?)
-	//TODO: add interruption for charged / aiming?
-	//TODO: add bool to disable that interruption (static settings class)
 }

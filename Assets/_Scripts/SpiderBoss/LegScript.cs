@@ -171,7 +171,6 @@ public class LegScript : MonoBehaviour {
 				}
 				else
 				{
-					//TODO: FIX NULL REF ERROR
 					_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, 1);
 					_shadowIntermediatePoint = GetIntermediatePoint(transform.position, _shadowTargetPoint, 0);
 				}
@@ -447,8 +446,6 @@ public class LegScript : MonoBehaviour {
 	public void Hurt( float damage, int id )
 	{
 		//Handle players doing damage to the leg.
-		//TODO: flash on taking HP damage.
-		//TODO: sound.
 		if ( _invincible ) { return; } //immune to damage
 		if ( _currentHP <= 0.0f ) { return; } //already dead
 		//deal damage.

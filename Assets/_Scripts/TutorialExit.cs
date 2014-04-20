@@ -45,7 +45,7 @@ public class TutorialExit : MonoBehaviour
 				}
 			}
 
-			if ( playersInsideMe == 4 ) //TODO: replace w/ # of players.
+			if ( playersInsideMe == GameState.playerCount )
 			{
 				GameState.isTutorial = false;
 				Application.LoadLevel ( "Master" );

@@ -126,7 +126,6 @@ public class ItemHandler : MonoBehaviour
 		}
 		else if ( player.items[index].name == ItemName.PHEROMONE_JAR )
 		{
-			//TODO: animate
 			GameObject jar = (GameObject)Instantiate ( jarPrefab, transform.position, Quaternion.identity );
 			jar = jar.GetComponent<JarLink>().jar;
 			jar.GetComponent<LobbedProjectile>().id = player.id;
@@ -139,6 +138,7 @@ public class ItemHandler : MonoBehaviour
 			player.state = "item windown"; //item wind down?
 			player.stateTimer = 0.05f * 12.0f; //frames for animation.
 			player.nextState = "idle";
+			player.GetComponent<Animator>().Play ( "throw_" + player.GetAniSuffix () );
 		}
 		#endregion
 		#region animation
@@ -160,7 +160,7 @@ public class ItemHandler : MonoBehaviour
 	{
 		//Give all players the blacklist buff.
 		//TODO: sound?
-		//TODO: don't allow players to stack the same buff from the same source multiple times on themselves.
+		//don't allow players to stack the same buff from the same source multiple times on themselves.
 		//      instead, refresh it.
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{

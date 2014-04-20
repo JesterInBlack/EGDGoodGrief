@@ -101,7 +101,7 @@ public static class ScoreManager
 		{
 			sum += GameState.players[i].GetComponent<Player>().score;
 		}
-		mean = sum / 4; //TODO: base on # of players
+		mean = sum / ((float)GameState.playerCount);
 
 		//Calculate the variance
 		for ( int i = 0; i < 4; i++ )
@@ -109,7 +109,7 @@ public static class ScoreManager
 			float difference = ( GameState.players[i].GetComponent<Player>().score - mean );
 			variance += difference * difference;
 		}
-		variance = variance / 4; //TODO: base on # of players
+		variance = variance / ((float)GameState.playerCount);
 
 		//Calculate the standard deviation
 		stdev = Mathf.Pow ( variance, 0.5f );

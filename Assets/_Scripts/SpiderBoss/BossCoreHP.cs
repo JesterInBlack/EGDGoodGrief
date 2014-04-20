@@ -7,6 +7,8 @@ public class BossCoreHP : MonoBehaviour
 	[HideInInspector]
 	public BehaviorBlackboard myBlackboard;
 
+	private const float baseFourPlayerHP = 8500.0f; //hp with 4 players.
+
 	public Texture2D HPBarFill;
 	public Texture2D HPBarBG;
 
@@ -22,13 +24,12 @@ public class BossCoreHP : MonoBehaviour
 	void Awake () 
 	{
 		myBlackboard = this.gameObject.GetComponent<BehaviorBlackboard>();
-		//TODO: get player count.
 	}
 
 	void Start()
 	{
-		//TODO: scale max HP with number of players
-		myBlackboard.maxHP = 8500.0f;
+		//Scale HP with player count
+		myBlackboard.maxHP = baseFourPlayerHP * GameState.playerCount / 4.0f;
 		//heal to full.
 		myBlackboard.HP = myBlackboard.maxHP;
 	}

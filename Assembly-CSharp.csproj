@@ -114,7 +114,6 @@
      <Compile Include="Assets\_Scripts\LobbedProjectile.cs" />
      <Compile Include="Assets\_Scripts\MenuDataSaver.cs" />
      <Compile Include="Assets\_Scripts\ObjectivesGUIText.cs" />
-     <Compile Include="Assets\_Scripts\Old\Boss.cs" />
      <Compile Include="Assets\_Scripts\Old\Info_Script.cs" />
      <Compile Include="Assets\_Scripts\Old\test.cs" />
      <Compile Include="Assets\_Scripts\Oscillate.cs" />

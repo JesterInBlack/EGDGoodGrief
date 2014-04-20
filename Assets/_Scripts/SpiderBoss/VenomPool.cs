@@ -17,7 +17,6 @@ public class VenomPool : MonoBehaviour
 
 	private float growInTime = 0.5f;
 	private float fadeOutTime = 0.75f;
-	//TODO: ramp up damage over time?
 	#endregion
 
 	// Use this for initialization

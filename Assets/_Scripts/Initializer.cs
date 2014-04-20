@@ -74,6 +74,24 @@ public class Initializer : MonoBehaviour
 			obj = (GameObject)Instantiate ( wallPrefab, new Vector3( (levelSize.x /  2.0f + 1.0f) * tilesToUnits, y * tilesToUnits, 0.0f), Quaternion.identity );
 			obj.transform.parent = tileFolder.transform;
 		}
+
+		//get player count.
+		GameObject dataObj = GameObject.Find ( "MenuDataSaver" );
+		if ( dataObj != null )
+		{
+			MenuDataSaver menuData = dataObj.GetComponent<MenuDataSaver>();
+			int playerCount = 0;
+			for ( int i = 0; i < menuData.playersConnected.Length; i++ )
+			{
+				if ( menuData.playersConnected[i] ) { playerCount ++; }
+			}
+			GameState.playerCount = playerCount;
+			menuData.playerCountRead = true;
+		}
+		else
+		{
+			GameState.playerCount = 4;
+		}
 	}
 
 	// Use this for initialization

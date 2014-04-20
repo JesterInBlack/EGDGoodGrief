@@ -32,9 +32,7 @@ public class LobbedProjectile : MonoBehaviour
 
 		if ( virtualZ < 0.0f )
 		{
-			//TODO: place gas cloud
-			//TODO: put gas + glass prefab
-			//TODO: pheromone jar hit detection.
+			//TODO: put glass prefab
 			Explode ();
 			Destroy ( transform.parent.gameObject );
 		}
