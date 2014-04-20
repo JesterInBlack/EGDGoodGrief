@@ -51,6 +51,24 @@ public static class ScoreManager
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.lastHit.score += amount;
 	}
 
+	public static void LastManStanding( int id )
+	{
+		//bonus for being the last man standing
+		float amount = 100.0f;
+		GameState.playerStates[id].score += amount;
+		GameState.playerStates[id].scorePasser.scoreDetails.misc.score += amount;
+		GameState.playerStates[id].scorePasser.scoreDetails.misc.count++;
+	}
+
+	public static void Clutch( int id )
+	{
+		//bonus for being the last man standing and surviving until a teammate revives.
+		float amount = 100.0f;
+		GameState.playerStates[id].score += amount;
+		GameState.playerStates[id].scorePasser.scoreDetails.misc.score += amount;
+		GameState.playerStates[id].scorePasser.scoreDetails.misc.count++;
+	}
+
 	public static void KilledLeg( int id )
 	{
 		//bonus points for last hitting leg.

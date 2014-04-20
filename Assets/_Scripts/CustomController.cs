@@ -229,6 +229,23 @@ public class CustomController : MonoBehaviour
 				{
 					if ( playerState.HP >= StaticData.percentHPNeededToRevive * playerState.baseMaxHP )
 					{
+						#region ClutchScoreCheck
+						//Award clutch objective points.
+						int lastManStandingIndex = 0;
+						int livePlayers = 0;
+						for ( int i = 0; i < GameState.players.Length; i++ )
+						{
+							if ( ! GameState.playerStates[i].isDowned )
+							{
+								livePlayers ++;
+								lastManStandingIndex = i;
+							}
+						}
+						if ( livePlayers == 1 )
+						{
+							ScoreManager.Clutch ( lastManStandingIndex );
+						}
+						#endregion
 						//revive
 						playerState.isDowned = false;
 						//TODO: graphic

@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
 	public Vector2 carryVec;         //unit vector representing your carry direction.
 	
 	private Vector2 knockbackVec;
+	private ArrayList pushes = new ArrayList();
 
 	//interruption
 	public float interruptHP = 0.0f;   //"interrupt hp": if this reaches 0, you get interrupted. Set by moves.
@@ -306,6 +307,19 @@ public class Player : MonoBehaviour
 		for ( int i = 0; i < 3; i++ )
 		{
 			items[i].Update( t );
+		}
+
+		//Update pushes
+		for ( int i = 0; i < pushes.Count; i++ )
+		{
+			( (Push) pushes[i] ).Update( this.gameObject, t );
+		}
+		for ( int i = pushes.Count - 1; i >= 0; i-- )
+		{
+			if ( ( (Push) pushes[i] ).taggedForRemoval )
+			{
+				pushes.RemoveAt ( i );
+			}
 		}
 
 		//Update buffs
@@ -539,6 +553,21 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	public void Push( float magnitude, Vector2 pos, float duration )
+	{
+		if ( isDowned ) { return; }
+		if ( isParrying ) { return; }
+		if ( isStoneSkin ) { return; } //TODO: stone skin
+		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
+		{ 
+			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
+			return; 
+		}
+		Vector2 vec = (new Vector2( transform.position.x, transform.position.y ) - pos ).normalized * magnitude;
+		Push push = new Push( vec, duration );
+		pushes.Add ( push );
+	}
+
 	public void KnockBack( float magnitude, Vector2 pos )
 	{
 		//Knock the player back? (based on where the attack comes from)
@@ -624,6 +653,22 @@ public class Player : MonoBehaviour
 		this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
 		GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 		GetComponent<Animator>().Play ( "downed_" + GetAniSuffix() );
+
+		//?
+		int lastManStandingIndex = 0;
+		int livePlayers = 0;
+		for ( int i = 0; i < GameState.players.Length; i++ )
+		{
+			if ( ! GameState.playerStates[i].isDowned )
+			{
+				livePlayers++;
+				lastManStandingIndex = i;
+			}
+		}
+		if ( livePlayers == 1 )
+		{
+			ScoreManager.LastManStanding( lastManStandingIndex );
+		}
 	}
 
 	//-------------------------------------------------------------------------------------------------------

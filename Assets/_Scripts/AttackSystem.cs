@@ -9,6 +9,21 @@ using System.Collections;
 
 public enum PLAYER_IDS { BOSS = -1, ONE = 0, TWO = 1, THREE = 2, FOUR = 3 }; //makes id codes make english sense.
 
+public class HitOptions
+{
+	//leightweight class for options on hit.
+	public bool knockback;   //whether the attack should stun + knockback
+	public bool push;        //whether the attack should "push" the player. Like knockback sans stun.
+	public bool angerManip;  //whether the attack should have an impact on boss anger or not
+	public Vector2 attackOrigin;
+
+	public HitOptions()
+	{
+		knockback = false;
+		angerManip = false;
+	}
+}
+
 public static class AttackSystem 
 {
 	public static int GetLayerMask( int id )
@@ -52,8 +67,14 @@ public static class AttackSystem
 
 		foreach ( RaycastHit2D hit in hits )
 		{
-			Hit ( hit.collider.gameObject, id, damage );
-			Knockback( hit.collider.gameObject, id, damage, start ); //feels assume-ey.
+			HitOptions options = new HitOptions();
+			options.angerManip = false;
+			options.knockback = false;
+			options.push = true;
+			options.attackOrigin = start;
+			Hit ( hit.collider.gameObject, id, damage, options );
+			//Knockback( hit.collider.gameObject, id, damage, start ); //feels assume-ey.
+
 		}
 	}
 
@@ -245,6 +266,23 @@ public static class AttackSystem
 		}
 	}
 
+	private static void Hit( GameObject obj, int id, float damage, HitOptions options )
+	{
+		//version with options!
+		float savedAnger = GameState.angerAxis;
+
+		Hit ( obj, id, damage );
+
+		if ( options.angerManip == false )
+		{
+			GameState.angerAxis = savedAnger;
+		}
+		if ( options.push == true )
+		{
+			Push ( obj, id, damage, options.attackOrigin, 0.2f );
+		}
+	}
+
 	private static void Hit( GameObject obj, int id, float damage )
 	{
 		//Does damage to a game object (boss / player)
@@ -315,6 +353,27 @@ public static class AttackSystem
 				else
 				{
 					hitPlayer.KnockBack ( magnitude, new Vector2(GameState.boss.transform.position.x, GameState.boss.transform.position.y) );
+				}
+			}
+			//player -> player attacks can rip positions of the players from gamestate for knockback.
+		}
+	}
+
+	private static void Push( GameObject obj, int id, float damage, Vector2 attackOrigin, float duration )
+	{
+		Player hitPlayer = obj.GetComponent<Player>();
+		if ( hitPlayer != null ) //hit a player
+		{
+			if ( IsEnemy( id ) ) //enemy -> player attack
+			{
+				float magnitude = damage / 10.0f; //guess?
+				if ( attackOrigin != new Vector2( hitPlayer.transform.position.x, hitPlayer.transform.position.y ) )
+				{
+					hitPlayer.Push ( magnitude, attackOrigin, duration );
+				}
+				else
+				{
+					hitPlayer.Push ( magnitude, new Vector2(GameState.boss.transform.position.x, GameState.boss.transform.position.y), duration );
 				}
 			}
 			//player -> player attacks can rip positions of the players from gamestate for knockback.
