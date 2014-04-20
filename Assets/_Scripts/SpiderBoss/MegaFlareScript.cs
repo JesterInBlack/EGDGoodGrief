@@ -15,6 +15,9 @@ public class MegaFlareScript : MonoBehaviour
 	private Vector3 _baseSize;
 	private GameObject _spawnPoint;
 
+	public GameObject whiteoutPrefab; //set in inspector.
+	public GameObject overlayPrefab;  //set in inspector.
+
 	private enum State
 	{
 		Charging = 0,
@@ -53,11 +56,16 @@ public class MegaFlareScript : MonoBehaviour
 		}
 		else if(_state == State.Fire)
 		{
-			if(Vector3.Distance(_endPos, transform.position) < 0.001f)
+			if ( Vector3.Distance(_endPos, transform.position) < 0.001f )
 			{
-				AttackSystem.hitCircle((Vector2)transform.position, 1000.0f, 75.0f, -1);
+				//AttackSystem.hitCircle((Vector2)transform.position, 1000.0f, 75.0f, -1); //slightly more efficient my way.
+				for ( int i = 0; i < GameState.players.Length; i++ )
+				{
+					GameState.playerStates[i].Hurt ( 40.0f );
+				}
 				GameState.cameraController.Shake (0.4f, 2.0f );
-				Destroy(this.gameObject);
+				Instantiate ( whiteoutPrefab, transform.position, Quaternion.identity );
+				Destroy ( this.gameObject );
 			}
 			else
 			{

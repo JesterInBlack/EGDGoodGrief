@@ -117,6 +117,7 @@
      <Compile Include="Assets\_scripts\Lifetime.cs" />
      <Compile Include="Assets\_scripts\LobProjectile.cs" />
      <Compile Include="Assets\_scripts\LobbedProjectile.cs" />
+     <Compile Include="Assets\_scripts\MegaFlareEffect.cs" />
      <Compile Include="Assets\_scripts\MenuDataSaver.cs" />
      <Compile Include="Assets\_scripts\ObjectivesGUIText.cs" />
      <Compile Include="Assets\_scripts\Old\Boss.cs" />

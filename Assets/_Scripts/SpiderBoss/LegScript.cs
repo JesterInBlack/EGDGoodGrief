@@ -459,7 +459,10 @@ public class LegScript : MonoBehaviour {
 		currentColor.timer = 0.0f;
 
 		//Spray?
-		GameObject obj = (GameObject)Instantiate ( bloodPrefab, this.transform.position, Quaternion.identity );
+		Vector3 offset = new Vector3( 1.0f * Mathf.Cos ( (transform.eulerAngles.z + 90.0f) * Mathf.Deg2Rad), 
+		                              1.0f * Mathf.Sin ( (transform.eulerAngles.z + 90.0f) * Mathf.Deg2Rad), 
+		                              0.0f);
+		GameObject obj = (GameObject)Instantiate ( bloodPrefab, this.transform.position + offset, Quaternion.identity );
 		float x = GameState.players[id].transform.position.x - transform.position.x;
 		float y = GameState.players[id].transform.position.y - transform.position.y;
 		float angle = Mathf.Atan2 ( y, x ) * Mathf.Rad2Deg - 90.0f;

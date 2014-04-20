@@ -295,9 +295,9 @@ public class Player : MonoBehaviour
 		if ( state == "knockback" )
 		{
 			this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
-			float x = this.gameObject.transform.position.x;
-			float y = this.gameObject.transform.position.y;
-			float z = this.gameObject.transform.position.z;
+			//float x = this.gameObject.transform.position.x;
+			//float y = this.gameObject.transform.position.y;
+			//float z = this.gameObject.transform.position.z;
 			//transform.position = new Vector3( x + (knockbackVec.x * t), y + (knockbackVec.y * t), z ); //NO WALL HAX
 			GetComponent<CustomController>().MoveNaoPlz ( new Vector3( knockbackVec.x * t, knockbackVec.y * t, 0.0f ) );
 		}

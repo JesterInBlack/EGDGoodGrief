@@ -28,6 +28,7 @@ public static class AttackSystem
 		foreach ( Collider2D hit in hits )
 		{
 			Hit ( hit.gameObject, id, damage );
+			Knockback( hit.gameObject, id, damage, center ); //eh, what if we don't want it?
 		}
 	}
 
@@ -52,6 +53,7 @@ public static class AttackSystem
 		foreach ( RaycastHit2D hit in hits )
 		{
 			Hit ( hit.collider.gameObject, id, damage );
+			Knockback( hit.collider.gameObject, id, damage, start ); //feels assume-ey.
 		}
 	}
 
@@ -91,6 +93,8 @@ public static class AttackSystem
 		foreach ( Collider2D hit in hits )
 		{
 			Hit ( hit.gameObject, id, damage );
+			//the origin of a box is a nonsensical and arbitrary concept.
+			//so, the origin for a box will need to be explicitly passed for knockback.
 		}
 	}
 
@@ -179,6 +183,7 @@ public static class AttackSystem
 				//In sector angle range.
 				//Debug.Log ( "Hit, normal" );
 				Hit( hit.gameObject, id, damage );
+				Knockback( hit.gameObject, id, damage, pos );
 			}
 			else if ( (minTheta + 360.0f) % 360.0f > (maxTheta + 360.0f) % 360.0f )
 			{
@@ -190,6 +195,7 @@ public static class AttackSystem
 				{
 					//Debug.Log ( "Hit, negative angle" );
 					Hit ( hit.gameObject, id, damage );
+					Knockback( hit.gameObject, id, damage, pos );
 				}
 			}
 			else
@@ -216,6 +222,7 @@ public static class AttackSystem
 					{
 						//Debug.Log ( "Hit, edge case (min)." ); //does not ignore self hits
 						Hit( hit.gameObject, id, damage );
+						Knockback( hit.gameObject, id, damage, pos );
 						isHit = true;
 					}
 				}
@@ -228,6 +235,7 @@ public static class AttackSystem
 						{
 							//Debug.Log ( "Hit, edge case (max)." );
 							Hit( hit.gameObject, id, damage );
+							Knockback( hit.gameObject, id, damage, pos );
 							isHit = true;
 						}
 					}
@@ -289,6 +297,27 @@ public static class AttackSystem
 			{
 				hitTether.Hurt ( damage, id );
 			}
+		}
+	}
+
+	private static void Knockback( GameObject obj, int id, float damage, Vector2 attackOrigin )
+	{
+		Player hitPlayer = obj.GetComponent<Player>();
+		if ( hitPlayer != null ) //hit a player
+		{
+			if ( IsEnemy( id ) ) //enemy -> player attack
+			{
+				float magnitude = damage / 10.0f; //guess?
+				if ( attackOrigin != new Vector2( hitPlayer.transform.position.x, hitPlayer.transform.position.y ) )
+				{
+					hitPlayer.KnockBack ( magnitude, attackOrigin );
+				}
+				else
+				{
+					hitPlayer.KnockBack ( magnitude, new Vector2(GameState.boss.transform.position.x, GameState.boss.transform.position.y) );
+				}
+			}
+			//player -> player attacks can rip positions of the players from gamestate for knockback.
 		}
 	}
 
