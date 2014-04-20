@@ -85,7 +85,6 @@ public class BodySlam : Action
 					Destroy(_optionalObjectToDestroy.Value);
 				}
 
-				//TODO make this deal damage
 				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 3.5f, 30.0f, -1);
 				GameState.cameraController.Shake (0.1f, 0.25f );
 

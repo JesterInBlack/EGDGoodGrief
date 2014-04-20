@@ -10,6 +10,7 @@ public class MenuDataSaver : MonoBehaviour
 	public ItemName[,] playerItems = new ItemName[4, 3];
 
 	public bool[] read = new bool[4]; //whether or not the data has been extracted.
+	public bool playerCountRead = false;
 	#endregion
 
 	//Use this for pre-initialization
@@ -22,7 +23,7 @@ public class MenuDataSaver : MonoBehaviour
 	void Update()
 	{
 		//delete the object if all the data's been read
-		bool deleteMe = true;
+		bool deleteMe = playerCountRead;
 		for ( int i = 0; i < 4; i++ )
 		{
 			if ( ! read[i] )

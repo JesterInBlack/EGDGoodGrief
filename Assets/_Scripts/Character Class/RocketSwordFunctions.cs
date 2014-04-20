@@ -93,9 +93,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		#endregion
 		UpdateResource ( dt ); //update "chain"
 
-		//if ( player.state != "idle" ) { Debug.Log ( player.state ); }
-		//TODO: charging states, tracking charge % and previous charge percent
-		//TODO: feedback on charge breakpoints being reached.
+		//if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
 		if ( player.state == "xnormal" )
 		{
 			//do sector based on time in state + direction
@@ -671,7 +669,6 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = yNormalInterruptHP;
 			GetComponent<Animator>().Play( "yslash_" + player.GetAniSuffix() );
-			//TODO: box to box collision detection
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 1.0f );
 		}
 		else if ( newState == "ywinddown" )
@@ -704,7 +701,6 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;
 			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightBlastOff, 1.0f );
-			//TODO: hitbox to hitbox collision detection.
 			GetComponent<Animator>().Play( "blastoff_" + player.GetAniSuffix() );
 			ignoreOnHitCallback = false;
 		}

@@ -5,8 +5,6 @@ public enum CharacterClasses { KNIGHT, ARCHER, NINJA, DEFENDER };
 
 public class Player : MonoBehaviour 
 {
-	//TODO: fix throw ani for item use.
-	//TODO: add anti-cooperation for phermononing, vampire fanging other players
 	//TODO: add cooperation for aura-ing up if your aura is still active / it buffs other players.
 
 	#region vars
@@ -517,7 +515,7 @@ public class Player : MonoBehaviour
 		interruptHP -= damage;
 		interruptDR++;
 
-		//TODO: scale anti-cooperation based on how oftern interruption occurs
+		//TODO: scale anti-cooperation based on how often interruption occurs
 		//TODO: greatly improve this horrible naiieve implementation
 		if ( attackerId != -1 )
 		{
@@ -557,7 +555,7 @@ public class Player : MonoBehaviour
 	{
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
-		if ( isStoneSkin ) { return; } //TODO: stone skin
+		if ( isStoneSkin ) { return; }
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
@@ -574,7 +572,7 @@ public class Player : MonoBehaviour
 
 		if ( isDowned ) { return; }
 		if ( isParrying ) { return; }
-		if ( isStoneSkin ) { return; } //TODO: stone skin
+		if ( isStoneSkin ) { return; }
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
@@ -582,7 +580,7 @@ public class Player : MonoBehaviour
 		}
 
 		//TODO: move knockback power scaling
-		//TODO: effects that minimize / reduce knockback. (blocking, parrying, dodging?)
+		//TODO: make block/parry reduce rather than negate knockback?
 
 		knockbackVec = (new Vector2( transform.position.x, transform.position.y ) - pos ).normalized * magnitude;
 		canMove = false;
@@ -687,6 +685,7 @@ public class Player : MonoBehaviour
 		if ( newState == "item windup" )
 		{
 			//TODO: pull out animation
+			GetComponent<Animator>().Play ( "pickup_" + GetAniSuffix() );
 		}
 		else if ( newState == "item charge" )
 		{

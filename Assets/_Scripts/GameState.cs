@@ -11,7 +11,8 @@ public static class GameState //: MonoBehaviour
 	public static GameObject boss;                           //assign in pre-game screens
 	public static GameObject[] bossLegs = new GameObject[8]; //assign in pre-game screens
 	public static CameraController cameraController;         //set in inspector.
-	public static bool isTutorial;                           //assig in pre-game screens
+	public static bool isTutorial;                           //assign in pre-game screens
+	public static int playerCount;                           //assign in pre-game screens
 	#endregion
 
 	#region BossVars

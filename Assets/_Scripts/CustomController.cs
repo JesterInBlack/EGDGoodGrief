@@ -6,7 +6,6 @@ public class CustomController : MonoBehaviour
 {
 	//TODO: check for collision with other players
 	//TODO: check for collision with boss
-	//TODO: call functions in class from buttons
 
 	#region vars
 	public int facing = 3; //direction for sprites (0: Right, 1: Up, 2: Left, 3: Down)
@@ -294,11 +293,11 @@ public class CustomController : MonoBehaviour
 				}
 				#endregion
 				#region vampire logic
-				//TODO: override this if vampire.
-				//TODO: set vampire state if the item connects
+				//override this if vampire.
+				//(set vampire state if the item connects)
 				else if ( playerState.state == "vampire" )
 				{
-					//TODO: instead, do vampire things.
+					//instead, do vampire things.
 					float lifeDrain = 2.5f;
 					float tempAngle = facing * Mathf.PI / 2.0f;
 					float x = transform.position.x;
@@ -318,7 +317,7 @@ public class CustomController : MonoBehaviour
 						{
 							Player tempPlayer = hit.gameObject.GetComponent<Player>();
 							LegScript tempLeg = hit.gameObject.GetComponent<LegScript>();
-							//TODO: boss!
+							BossCoreHP tempBoss = hit.gameObject.GetComponent<BossCoreHP>();
 							bool drainConnected = false;
 							if ( tempPlayer != null ) //is a player.
 							{
@@ -327,6 +326,9 @@ public class CustomController : MonoBehaviour
 									tempPlayer.Hurt ( lifeDrain );
 									drainConnected = true;
 									anyDrainConnected = true;
+									//draining from another player counts as griefing.
+									GameState.cooperationAxis = Mathf.Max ( -1.0f, GameState.cooperationAxis - 0.02f );
+									playerState.RemoveBuffsGivenByPlayer ( tempPlayer.id );
 								}
 							}
 							else if ( tempLeg != null ) //is a boss leg
@@ -335,7 +337,12 @@ public class CustomController : MonoBehaviour
 								drainConnected = true;
 								anyDrainConnected = true;
 							}
-							//else if () {}
+							else if ( tempBoss != null ) 
+							{
+								tempBoss.Hurt ( lifeDrain, playerState.id );
+								drainConnected = true;
+								anyDrainConnected = true;
+							}
 
 							if ( drainConnected )
 							{
@@ -644,6 +651,12 @@ public class CustomController : MonoBehaviour
 				}
 				#endregion
 			}
+			else if ( playerState.state == "item charge" || 
+			          playerState.state == "item aim ray" || 
+			          playerState.state == "item aim point" )
+			{
+				gameObject.GetComponent<Animator>().Play( "carry_" + playerState.GetAniSuffix() );
+			}
 			
 			//Move.
 			//Get direction from vec.
@@ -682,6 +695,12 @@ public class CustomController : MonoBehaviour
 					gameObject.GetComponent<Animator>().Play( "idle_down" );
 				}
 				#endregion
+			}
+			else if ( playerState.state == "item charge" || 
+			         playerState.state == "item aim ray" || 
+			         playerState.state == "item aim point" )
+			{
+				gameObject.GetComponent<Animator>().Play( "carry_idle_" + playerState.GetAniSuffix() );
 			}
 			
 		}

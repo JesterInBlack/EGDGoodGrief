@@ -7,7 +7,6 @@ public class HUD : MonoBehaviour
 	//TODO: animate HP bars
 	#region vars
 	public GameObject myPlayer; //set in inspector
-	//TODO: add image list for items
 	
 	public Texture2D HPBarFill;     //HP bar       (set in inspector)
 	public Texture2D HPBarLerpFill; //HP bar lerp  (set in inspector)

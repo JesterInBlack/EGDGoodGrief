@@ -36,7 +36,6 @@ public class PointExplosion : MonoBehaviour
 		}
 		else
 		{
-			//TODO add explosion effect and damage function
 			AttackSystem.hitCircle (transform.position, _damageRadius * transform.lossyScale.x, _damageValue, -1 );
 			GameState.cameraController.Shake (0.1f, 0.25f );
 			Instantiate ( lavaPrefab, this.gameObject.transform.position, Quaternion.identity );
