@@ -8,6 +8,7 @@ public static class StaticData
 	public static float bulletTimeDuration = 0.0f; //duration of the effect
 
 	//Game options
+	public const float playerMoveSpeed = 3.0f;
 	public const float percentHPNeededToRevive = 0.5f;
 	//public const float friendlyFire = false;
 }

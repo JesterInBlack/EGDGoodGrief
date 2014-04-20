@@ -18,11 +18,14 @@ public class AliveCountPlayer : Action
 	public override TaskStatus OnUpdate()
 	{
 		int aliveCount = 0;
-		for(int i = 0; i < GameState.players.Length; i++)
+		for (int i = 0; i < GameState.players.Length; i++)
 		{
-			if(GameState.players[i].GetComponent<Player>().isDowned == false)
+			if ( GameState.players[i] != null )
 			{
-				aliveCount++;
+				if (GameState.players[i].GetComponent<Player>().isDowned == false)
+				{
+					aliveCount++;
+				}
 			}
 		}
 

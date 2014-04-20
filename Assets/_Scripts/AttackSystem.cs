@@ -415,7 +415,7 @@ public static class AttackSystem
 	{
 		if ( player.GetComponent<Player>().isDowned ) { return; } //don't pull downed players.
 
-		float PLAYER_BASE_SPEED = 2.5f; //TODO: make global const? (at present must be synched with customcontroller.speed)
+		float PLAYER_BASE_SPEED = StaticData.playerMoveSpeed;
 		float x = player.transform.position.x;
 		float y = player.transform.position.y;
 		float z = player.transform.position.z;

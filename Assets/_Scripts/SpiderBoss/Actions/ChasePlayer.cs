@@ -93,12 +93,15 @@ public class ChasePlayer : Action
 	{
 		float highestAggro = 0;
 		int aggroIndex = -1;
-		for(int i = 0; i < GameState.players.Length; i++)
+		for (int i = 0; i < GameState.players.Length; i++)
 		{
-			if(GameState.players[i].GetComponent<Player>().isDowned == false && GameState.playerThreats[i] >= highestAggro)
+			if ( GameState.players[i] != null )
 			{
-				highestAggro = GameState.playerThreats[i];
-				aggroIndex = i;
+				if (GameState.playerStates[i].isDowned == false && GameState.playerThreats[i] >= highestAggro)
+				{
+					highestAggro = GameState.playerThreats[i];
+					aggroIndex = i;
+				}
 			}
 		}
 		

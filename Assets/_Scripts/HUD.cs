@@ -63,7 +63,7 @@ public class HUD : MonoBehaviour
 
 	private Player player;
 	#endregion
-	
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -93,6 +93,8 @@ public class HUD : MonoBehaviour
 	
 	void OnGUI ()
 	{
+		if ( myPlayer == null ) { return; }
+
 		//Vector2 size =  new Vector2( 225.0f, 125.0f ); //the size of all the HUD backgrounds.
 		Vector2 pos = new Vector2( 0.0f, 0.0f );       //the position of the HUD background's upper-left corner
 		if ( screenCorner == ScreenCorner.UPPER_LEFT )

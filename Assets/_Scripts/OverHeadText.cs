@@ -76,21 +76,24 @@ public class OverHeadText : MonoBehaviour {
 		//returns true when press A to carry context command becomes available.
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			if ( GameState.players[i].GetComponent<Player>().id != player.id ) //no self-carrying!
+			if ( GameState.playerStates[i] != null )
 			{
-				float x = GameState.players[i].gameObject.transform.position.x;
-				float y = GameState.players[i].gameObject.transform.position.y;
-				float myX = gameObject.transform.position.x;
-				float myY = gameObject.transform.position.y;
-				float dist = Mathf.Pow ( (x - myX) * (x - myX) + (y - myY) * (y - myY), 0.5f);
-				if ( dist <= 1.0f ) //in range
+				if ( GameState.playerStates[i].id != player.id ) //no self-carrying!
 				{
-					if ( ! player.isCarried && ! player.isCarrier && ! player.isDowned) //you: valid state?
+					float x = GameState.players[i].gameObject.transform.position.x;
+					float y = GameState.players[i].gameObject.transform.position.y;
+					float myX = gameObject.transform.position.x;
+					float myY = gameObject.transform.position.y;
+					float dist = Mathf.Pow ( (x - myX) * (x - myX) + (y - myY) * (y - myY), 0.5f);
+					if ( dist <= 1.0f ) //in range
 					{
-						Player otherState = GameState.players[i].GetComponent<Player>();
-						if ( ! otherState.isCarried && ! otherState.isCarrier && otherState.isDowned ) //them: valid state?
+						if ( ! player.isCarried && ! player.isCarrier && ! player.isDowned) //you: valid state?
 						{
-							return true;
+							Player otherState = GameState.players[i].GetComponent<Player>();
+							if ( ! otherState.isCarried && ! otherState.isCarrier && otherState.isDowned ) //them: valid state?
+							{
+								return true;
+							}
 						}
 					}
 				}

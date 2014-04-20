@@ -21,7 +21,7 @@ public class CustomController : MonoBehaviour
 	public Vector2 aimPoint; //point used for aiming at a position.
 
 	[HideInInspector]
-	public float speed = 2.5f; //unity units per second (we're using Tile Size pixels per unit (64) )
+	public float speed; //unity units per second (we're using Tile Size pixels per unit (64) )
 	
 	BoxCollider2D my_collider;
 	[HideInInspector]
@@ -42,7 +42,7 @@ public class CustomController : MonoBehaviour
 	// Use this for pre-initialization
 	void Awake()
 	{
-		speed = 2.5f;
+		speed = StaticData.playerMoveSpeed;
 		overheadArrow = transform.Find ( "Arrow" ).gameObject;
 		reticle = transform.Find ( "Reticle" ).gameObject;
 		my_collider = this.gameObject.GetComponent<BoxCollider2D>();
@@ -234,10 +234,13 @@ public class CustomController : MonoBehaviour
 						int livePlayers = 0;
 						for ( int i = 0; i < GameState.players.Length; i++ )
 						{
-							if ( ! GameState.playerStates[i].isDowned )
+							if ( GameState.players[i] != null )
 							{
-								livePlayers ++;
-								lastManStandingIndex = i;
+								if ( ! GameState.playerStates[i].isDowned )
+								{
+									livePlayers ++;
+									lastManStandingIndex = i;
+								}
 							}
 						}
 						if ( livePlayers == 1 )
@@ -366,39 +369,42 @@ public class CustomController : MonoBehaviour
 					bool pickedup = false;
 					for ( int i = 0; i < GameState.players.Length; i++ )
 					{
-						if ( GameState.players[i].GetComponent<Player>().id != playerState.id ) //no self-carrying!
+						if ( GameState.players[i] != null )
 						{
-							float x = GameState.players[i].gameObject.transform.position.x;
-							float y = GameState.players[i].gameObject.transform.position.y;
-							float myX = gameObject.transform.position.x;
-							float myY = gameObject.transform.position.y;
-							float dist = Mathf.Pow ( (x - myX) * (x - myX) + (y - myY) * (y - myY), 0.5f);
-							if ( dist <= 1.0f ) //in range
+							if ( GameState.players[i].GetComponent<Player>().id != playerState.id ) //no self-carrying!
 							{
-								if ( ! playerState.isCarried && ! playerState.isCarrier && ! playerState.isDowned) //you: valid state?
+								float x = GameState.players[i].gameObject.transform.position.x;
+								float y = GameState.players[i].gameObject.transform.position.y;
+								float myX = gameObject.transform.position.x;
+								float myY = gameObject.transform.position.y;
+								float dist = Mathf.Pow ( (x - myX) * (x - myX) + (y - myY) * (y - myY), 0.5f);
+								if ( dist <= 1.0f ) //in range
 								{
-									Player otherState = GameState.players[i].GetComponent<Player>();
-									if ( ! otherState.isCarried && ! otherState.isCarrier && otherState.isDowned ) //them: valid state?
+									if ( ! playerState.isCarried && ! playerState.isCarrier && ! playerState.isDowned) //you: valid state?
 									{
-										//Debug.Log ( "Carry!" );
-										playerState.isCarrier = true;
-										playerState.Carried = GameState.players[i];
-										otherState.isCarried = true;
-										otherState.Carrier = this.gameObject;
-										GameState.players[i].transform.position = 
-											new Vector3( 
-											gameObject.transform.position.x,
-										    gameObject.transform.position.y + 0.5f,
-										    -1.0f
-										    );
-										#region animation
-										playerState.canMove = false;
-										playerState.state = "pickup";
-										playerState.stateTimer = 0.45f;
-										playerState.nextState = "idle";
-										GetComponent<Animator>().Play ( "pickup_" + GetComponent<Player>().GetAniSuffix() );
-										#endregion
-										pickedup = true;
+										Player otherState = GameState.players[i].GetComponent<Player>();
+										if ( ! otherState.isCarried && ! otherState.isCarrier && otherState.isDowned ) //them: valid state?
+										{
+											//Debug.Log ( "Carry!" );
+											playerState.isCarrier = true;
+											playerState.Carried = GameState.players[i];
+											otherState.isCarried = true;
+											otherState.Carrier = this.gameObject;
+											GameState.players[i].transform.position = 
+												new Vector3( 
+												gameObject.transform.position.x,
+											    gameObject.transform.position.y + 0.5f,
+											    -1.0f
+											    );
+											#region animation
+											playerState.canMove = false;
+											playerState.state = "pickup";
+											playerState.stateTimer = 0.45f;
+											playerState.nextState = "idle";
+											GetComponent<Animator>().Play ( "pickup_" + GetComponent<Player>().GetAniSuffix() );
+											#endregion
+											pickedup = true;
+										}
 									}
 								}
 							}

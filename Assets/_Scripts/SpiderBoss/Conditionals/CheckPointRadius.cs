@@ -32,18 +32,21 @@ public class CheckPointRadius : Action
 	public override TaskStatus OnUpdate()
 	{
 
-		for(int j = 0; j < GameState.players.Length; j++)
+		for (int j = 0; j < GameState.players.Length; j++)
 		{
-			//close to the target
-			if(GameState.players[j].GetComponent<Player>().isDowned == false)
+			if ( GameState.players[j] != null )
 			{
-				if(Vector2.Distance((Vector2)_radiusPoint.transform.position, (Vector2)GameState.players[j].transform.position) < _radiusValue)
+				//close to the target
+				if (GameState.players[j].GetComponent<Player>().isDowned == false)
 				{
-					if(_getTarget == true)
+					if(Vector2.Distance((Vector2)_radiusPoint.transform.position, (Vector2)GameState.players[j].transform.position) < _radiusValue)
 					{
-						_blackboard.targetPlayer = GameState.players[j];
+						if(_getTarget == true)
+						{
+							_blackboard.targetPlayer = GameState.players[j];
+						}
+						return TaskStatus.Success;
 					}
-					return TaskStatus.Success;
 				}
 			}
 		}

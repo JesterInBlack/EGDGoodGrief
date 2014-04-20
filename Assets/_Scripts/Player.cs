@@ -142,13 +142,13 @@ public class Player : MonoBehaviour
 		else
 		{
 			//TODO: if this player is disconnected, remove them.
-			/*
 			if ( ! temp.playersConnected[ id ] ) 
 			{ 
+				GameState.players[ id ] = null;
+				GameState.playerStates[ id ] = null;
 				Destroy( this.gameObject );
 				return; 
 			}
-			*/
 
 			//read class from menu data
 			characterclass = temp.playerClasses[ id ];
@@ -657,10 +657,13 @@ public class Player : MonoBehaviour
 		int livePlayers = 0;
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			if ( ! GameState.playerStates[i].isDowned )
+			if ( GameState.players[i] != null )
 			{
-				livePlayers++;
-				lastManStandingIndex = i;
+				if ( ! GameState.playerStates[i].isDowned )
+				{
+					livePlayers++;
+					lastManStandingIndex = i;
+				}
 			}
 		}
 		if ( livePlayers == 1 )

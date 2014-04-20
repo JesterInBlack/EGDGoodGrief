@@ -138,11 +138,14 @@ public class BossManager : MonoBehaviour
 	{
 		bool everyoneDead = true;
 		//check health status of all the players
-		foreach(GameObject player in GameState.players)
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			if(player.GetComponent<Player>().isDowned == false)
+			if ( GameState.playerStates[i] != null )
 			{
-				everyoneDead = false;
+				if (GameState.playerStates[i].isDowned == false)
+				{
+					everyoneDead = false;
+				}
 			}
 		}
 
