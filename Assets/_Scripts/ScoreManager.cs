@@ -97,17 +97,23 @@ public static class ScoreManager
 		float mean = 0.0f;
 		float variance = 0.0f;
 		float stdev = 0.0f;
-		for ( int i = 0; i < 4; i++ )
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			sum += GameState.players[i].GetComponent<Player>().score;
+			if ( GameState.players[i] != null )
+			{
+				sum += GameState.playerStates[i].score;
+			}
 		}
 		mean = sum / ((float)GameState.playerCount);
 
 		//Calculate the variance
-		for ( int i = 0; i < 4; i++ )
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			float difference = ( GameState.players[i].GetComponent<Player>().score - mean );
-			variance += difference * difference;
+			if ( GameState.players[i] != null )
+			{
+				float difference = ( GameState.playerStates[i].score - mean );
+				variance += difference * difference;
+			}
 		}
 		variance = variance / ((float)GameState.playerCount);
 
@@ -116,12 +122,15 @@ public static class ScoreManager
 
 		//calculate player's glory ( or # of standard deviations from the mean)
 		//TODO: exponential distribution rather than a linear one.
-		for ( int i = 0; i < 4; i++ )
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			float glory = 0.0f;
-			if ( stdev != 0.0f ) { glory = (GameState.players[i].GetComponent<Player>().score - mean) / stdev; }
-			GameState.players[i].GetComponent<Player>().glory = glory;
-			//Debug.Log ( glory );
+			if ( GameState.players[i] != null )
+			{
+				float glory = 0.0f;
+				if ( stdev != 0.0f ) { glory = (GameState.players[i].GetComponent<Player>().score - mean) / stdev; }
+				GameState.playerStates[i].glory = glory;
+				//Debug.Log ( glory );
+			}
 		}
 	}
 }

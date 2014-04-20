@@ -34,22 +34,28 @@ public class PlayerTargeter : Action
 		else if(_targetType == TargetType.random)
 		{
 			int randomIndex = Random.Range(0, 4);
-			if(GameState.players[randomIndex].GetComponent<Player>().isDowned == false)
+			if ( GameState.players[randomIndex] != null )
 			{
-				_blackboard.targetPlayer = GameState.players[randomIndex];
-				return TaskStatus.Success;
+				if (GameState.players[randomIndex].GetComponent<Player>().isDowned == false)
+				{
+					_blackboard.targetPlayer = GameState.players[randomIndex];
+					return TaskStatus.Success;
+				}
 			}
 		}
 		else if(_targetType == TargetType.highestAggro)
 		{
 			float highestAggro = 0;
 			int aggroIndex = -1;
-			for(int i = 0; i < GameState.players.Length; i++)
+			for (int i = 0; i < GameState.players.Length; i++)
 			{
-				if(GameState.players[i].GetComponent<Player>().isDowned == false && GameState.playerThreats[i] >= highestAggro)
+				if ( GameState.players[i] != null )
 				{
-					highestAggro = GameState.playerThreats[i];
-					aggroIndex = i;
+					if (GameState.players[i].GetComponent<Player>().isDowned == false && GameState.playerThreats[i] >= highestAggro)
+					{
+						highestAggro = GameState.playerThreats[i];
+						aggroIndex = i;
+					}
 				}
 			}
 			

@@ -55,28 +55,31 @@ public class VenomPool : MonoBehaviour
 
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			Player player = GameState.players[i].GetComponent<Player>();
-			//get distance from player's center to the hit circle's center
-			BoxCollider2D box = player.gameObject.GetComponent<BoxCollider2D>();
-			Vector3 theirPos = player.gameObject.transform.position;
-			CircleCollider2D circle = this.gameObject.GetComponent<CircleCollider2D>();
-			Vector3 myPos = this.gameObject.transform.position;
-			float xdist = ( (myPos.x + circle.center.x) - (theirPos.x + box.center.x) );
-			float ydist = ( (myPos.y + circle.center.y) - (theirPos.y + box.center.y) );
-			float dist = Mathf.Pow(  xdist * xdist + ydist * ydist, 0.5f );
-			
-			if ( dist <= circle.radius * transform.localScale.x ) //if player is in the region (collider center point in radius)
+			if ( GameState.players[i] != null )
 			{
-				if ( ! player.isCarried ) //if the player is not being carried
+				Player player = GameState.playerStates[i];
+				//get distance from player's center to the hit circle's center
+				BoxCollider2D box = player.gameObject.GetComponent<BoxCollider2D>();
+				Vector3 theirPos = player.gameObject.transform.position;
+				CircleCollider2D circle = this.gameObject.GetComponent<CircleCollider2D>();
+				Vector3 myPos = this.gameObject.transform.position;
+				float xdist = ( (myPos.x + circle.center.x) - (theirPos.x + box.center.x) );
+				float ydist = ( (myPos.y + circle.center.y) - (theirPos.y + box.center.y) );
+				float dist = Mathf.Pow(  xdist * xdist + ydist * ydist, 0.5f );
+				
+				if ( dist <= circle.radius * transform.localScale.x ) //if player is in the region (collider center point in radius)
 				{
-					if ( ! player.isDowned )
+					if ( ! player.isCarried ) //if the player is not being carried
 					{
-						//Degenerate health!
-						if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
-						player.HP = Mathf.Max ( player.HP - (degenRate * dt / player.defense), 0.0f );
-						if ( applyDebuff )
+						if ( ! player.isDowned )
 						{
-							player.Poison ( poisonDuration, poisonDamage );
+							//Degenerate health!
+							if ( ! player.isInBulletTime ) { dt = dt * StaticData.t_scale; }
+							player.HP = Mathf.Max ( player.HP - (degenRate * dt / player.defense), 0.0f );
+							if ( applyDebuff )
+							{
+								player.Poison ( poisonDuration, poisonDamage );
+							}
 						}
 					}
 				}
