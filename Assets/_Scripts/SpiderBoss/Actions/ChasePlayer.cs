@@ -22,7 +22,7 @@ public class ChasePlayer : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_speed = 1.0f;
+		_speed = 1.25f;
 		_everyoneDown = false;
 	}
 

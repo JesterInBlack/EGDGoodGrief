@@ -49,7 +49,7 @@ public class BossManager : MonoBehaviour
 
 			if(allBehaviors[i].group == 1)	//Impale
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 1f, 55.0f, 0.75f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 1f, 55.0f, 1.0f);
 				_behaviorList.Add(testBehavior);
 			}
 			if(allBehaviors[i].group == 2)	//apply buff
@@ -64,7 +64,7 @@ public class BossManager : MonoBehaviour
 			}
 			if(allBehaviors[i].group == 4) //AoEWeb
 			{
-				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 0.4f, 25.0f, 1.2f);
+				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 0.4f, 25.0f, 0.8f);
 				_behaviorList.Add(testBehavior);
 			}
 
