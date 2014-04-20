@@ -61,6 +61,11 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public float stoneSkinTimer = 0.0f; //time left in stone skin buff.
 
+	[HideInInspector]
+	public bool affectAxis = true; //will being damage affect the boss's axes?
+	[HideInInspector]
+	public float axisTimer = 0.0f; //time left till being damaged will affect the boss's axes
+
 	//Downed / Carrying State Stuff
 	public bool isDowned = false;    //if you're downed
 	public bool isCarrier = false;   //if you're carrying another player.
@@ -273,6 +278,15 @@ public class Player : MonoBehaviour
 			}
 		}
 
+		if ( !affectAxis )
+		{
+			axisTimer -= t;
+			if ( axisTimer <= 0)
+			{
+				affectAxis = true;
+			}
+		}
+
 		if ( ! isChannellingHealing ) //reduce cooldown. (on a pressed if in range of heal fountain, reset cd + set flag + set state)
 		{
 			channellingHealingCooldown -= t;
@@ -417,8 +431,13 @@ public class Player : MonoBehaviour
 		}
 
 		//ASSUMPTION: hurt is only called by the boss' attacks.
-		GameState.angerAxis = Mathf.Max ( -1.0f,  GameState.angerAxis - 0.05f );
-		GameState.playerThreats[id] = Mathf.Max ( 0.0f,  GameState.playerThreats[id] - 10.0f );
+		if(affectAxis)
+		{
+			GameState.angerAxis = Mathf.Max ( -1.0f,  GameState.angerAxis - 0.05f );
+			GameState.playerThreats[id] = Mathf.Max ( 0.0f,  GameState.playerThreats[id] - 10.0f );
+			axisTimer = 0.5f;
+			affectAxis = false;
+		}
 		isChannellingHealing = false; //interrupt healing on taking damage.
 
 		#region resource deduction

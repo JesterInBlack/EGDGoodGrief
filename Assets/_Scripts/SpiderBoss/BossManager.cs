@@ -67,11 +67,13 @@ public class BossManager : MonoBehaviour
 				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 0.4f, 25.0f, 1.2f);
 				_behaviorList.Add(testBehavior);
 			}
+
 			if(allBehaviors[i].group == 5) //ChaseBeam
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], -1f, 0.0f, -0.1f, 1f, 45.0f, 0.5f);
 				_behaviorList.Add(testBehavior);
 			}
+
 			if(allBehaviors[i].group == 6) //UnityMegaFlare
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], -1f, -0.5f, 0.5f, 1f, 60.0f, 0.5f, -0.1f, 0.25f, 0.0f, 0.0f);
@@ -107,7 +109,7 @@ public class BossManager : MonoBehaviour
 		}
 
 		GameState.cooperationAxis = 0.0f; //initialized at 0
-		GameState.angerAxis = 0.0f; //initialized at -1
+		GameState.angerAxis = -1.0f; //initialized at -1
 		#endregion
 
 		#region Blackboard Variables

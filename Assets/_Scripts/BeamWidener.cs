@@ -33,16 +33,17 @@ public class BeamWidener : MonoBehaviour
 		{
 			obj.transform.localScale = new Vector3( scale, 1.0f, 1.0f );
 		}
-		transform.Rotate ( new Vector3( 0.0f, 0.0f, Time.deltaTime * 45.0f ) );
+		//transform.Rotate ( new Vector3( 0.0f, 0.0f, Time.deltaTime * 45.0f ) );
+
 
 		for ( float i = -1.0f; i <= 1.0f; i+= 0.5f )
 		{
 			Vector2 start = new Vector2( transform.position.x, transform.position.y );
-			start.x += i * scale * 0.05f * Mathf.Cos ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z) );
-			start.y += i * scale * 0.05f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z) );
+			start.x += i * scale * 0.05f * Mathf.Cos ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z+ 90.0f) );
+			start.y += i * scale * 0.05f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z+ 90.0f) );
 
-			Vector2 end = new Vector2( start.x + 30.0f * Mathf.Cos ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z + 90.0f) ), 
-		                           start.y + 30.0f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z + 90.0f) ) );
+			Vector2 end = new Vector2( start.x + 30.0f * Mathf.Cos ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z ) ), 
+			                          start.y + 30.0f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z ) ) );
 			AttackSystem.hitLineSegment( start, end, 20.0f * Time.deltaTime * StaticData.t_scale, -1 );
 		}
 	}

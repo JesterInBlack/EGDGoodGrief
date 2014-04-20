@@ -6,19 +6,32 @@ using BehaviorDesigner.Runtime.Tasks;
 public class FireChaseBeam : Action
 {
 	public GameObject _laserSpawnPoint;
-	public GameObject _eyeLaser;
+	public GameObject _laserObject;
+	private GameObject _spawnedLaser;
+	public GameObject _chargeObject;
+	private GameObject _spawnedCharge;
+
 	private float _lastSpawnedTime;
 	private float _spawnDuration = 0.1f;
 
 	public float _chaseSpeed = 50.0f;
 
-	public float _chaseDuration = 10.0f;
-	public float _chaseTime;
+	public float _chargeDuration;
+	public float _laserDuration;
+	public float _timer;
 
 	private Player _targetPlayer;
 	private EyeScript _eyesScript;
 	private BehaviorBlackboard _blackboard;
 	private bool _noTargetsLeft;
+
+	private enum State
+	{
+		Charging = 0,
+		Firing = 1,
+		Done = 2,
+	}
+	private State _state;
 	
 	public override void OnAwake()
 	{
@@ -26,56 +39,74 @@ public class FireChaseBeam : Action
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 		_eyesScript = _blackboard.eye.GetComponent<EyeScript>();
 		_laserSpawnPoint = _eyesScript._laserSpawnPoint;
+		_chargeDuration = _chargeObject.GetComponent<Lifetime>().lifetime;
+		_laserDuration = _laserObject.GetComponent<Lifetime>().lifetime;
 	}
 
 	public override void OnStart()
 	{
 		_targetPlayer = _blackboard.targetPlayer.GetComponent<Player>();
 		_eyesScript._behaviorState = EyeScript.BehaviorStates.ChaseBeam;
-		_chaseTime = 0.0f;
-		_lastSpawnedTime = _chaseTime + _spawnDuration;
+		_timer = 0.0f;
+		//_lastSpawnedTime = _chaseTime + _spawnDuration;
 		_noTargetsLeft = false;
-		GameState.cameraController.Shake (0.01f, _chaseDuration);
+		GameState.cameraController.Shake (0.01f, _chargeDuration + _laserDuration);
+		_state = State.Charging;
+
+		_spawnedCharge = Instantiate(_chargeObject) as GameObject;
+		_spawnedCharge.transform.position = _laserSpawnPoint.transform.position;
 	}
 	
 	//runs the actual task
 	public override TaskStatus OnUpdate()
 	{
+		//return TaskStatus.Running;
 		if(_noTargetsLeft == false)
 		{
-			if(_chaseTime >= _chaseDuration)
+			if(_state == State.Charging)
 			{
-				return TaskStatus.Success;
-			}
-			else
-			{
-				//Spawn the laser parts and send em on their way
-				if(_chaseTime - _lastSpawnedTime >= _spawnDuration)
+				if(_timer < _chargeDuration)
 				{
-
-					Vector3 spawnPos = _laserSpawnPoint.transform.position;
-					spawnPos.z = _chaseTime;
-					GameObject lzr =  Instantiate(_eyeLaser) as GameObject;
-					lzr.GetComponent<EyeLaserScript>().Initializer(spawnPos, _eyesScript._rotationVec.z);
-
-					_lastSpawnedTime = _chaseTime;
+					_timer += Time.deltaTime;
+					_spawnedCharge.transform.position = _laserSpawnPoint.transform.position;
+					_spawnedCharge.transform.eulerAngles = _eyesScript._rotationVec;
 				}
-
-				//increment the time
-				_chaseTime += Time.deltaTime * StaticData.t_scale;
-
-				if(_targetPlayer.isDowned == false)
-				{
-					_eyesScript.GetTargetAngle(_targetPlayer.transform.position);
-					_eyesScript.RotateToTarget(_chaseSpeed);
-				}
-				//find a the next target and keep going!
 				else
 				{
-					//Debug.Log("Switching target!");
-					GetNewTarget();
+					_state = State.Firing;
+					_timer = 0.0f;
+
+					_spawnedLaser = Instantiate(_laserObject) as GameObject;
+					_spawnedLaser.transform.position = _laserSpawnPoint.transform.position;
+					_spawnedLaser.transform.eulerAngles = _eyesScript._rotationVec;
 				}
-				return TaskStatus.Running;
+			}
+			else if(_state == State.Firing)
+			{
+				if(_timer < _laserDuration)
+				{
+					_timer += Time.deltaTime;
+					_spawnedLaser.transform.position = _laserSpawnPoint.transform.position;
+					_spawnedLaser.transform.eulerAngles = _eyesScript._rotationVec;
+				}
+				else
+				{
+					_timer = 0.0f;
+					return TaskStatus.Success;
+				}
+			}
+
+
+			if(_targetPlayer.isDowned == false)
+			{
+				_eyesScript.GetTargetAngle(_targetPlayer.transform.position);
+				_eyesScript.RotateToTarget(_chaseSpeed);
+			}
+			//find a the next target and keep going!
+			else
+			{
+				//Debug.Log("Switching target!");
+				GetNewTarget();
 			}
 		}
 		else
@@ -83,6 +114,7 @@ public class FireChaseBeam : Action
 			GameState.cameraController.Shake (0.0f, 0.0f);
 			return TaskStatus.Failure;
 		}
+		return TaskStatus.Running;
 	}
 
 	void GetNewTarget()
