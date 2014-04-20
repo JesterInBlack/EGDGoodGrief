@@ -53,8 +53,8 @@ public class ApplyBuff : Action
 		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.LookAtLeg;
 		_finished = false;
 		_goingBack = false;
-		_moveTime = 1.5f;
-		_applicationTime = 1.25f;
+		_moveTime = 0.85f;
+		_applicationTime = 1.0f;
 	}
 
 	//applies the buff to the selected leg
