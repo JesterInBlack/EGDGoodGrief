@@ -16,6 +16,7 @@ public class MegaFlareScript : MonoBehaviour
 	private GameObject _spawnPoint;
 
 	public GameObject whiteoutPrefab; //set in inspector.
+	public GameObject overlayPrefab;  //set in inspector.
 
 	private enum State
 	{
