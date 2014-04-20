@@ -59,8 +59,8 @@ public class Credits : MonoBehaviour
 			"\n" +
 			"MUSIC\n" +
 			"Composers:\n" +
+			"Johnathan Reed\n" +
 			"James Ross\n" +
-			"That Other Guy\n" +
 			"\n" +
 			"\n" +
 			"QUALITY ASSURANCE\n" +
@@ -69,7 +69,15 @@ public class Credits : MonoBehaviour
 			"Pj Castracucco \n" +
 			"\n" +
 			"Quality Assurance:\n" +
-			"<insert playtester names>\n" +
+			"Kori Lutz\n" +
+			"Will Nemiroff\n" +
+			"Jack McNally\n" +
+			"Jeff Patrick\n" +
+			"Phil Zeng\n" +
+			"Chris Georgi\n" +
+			"Aesa Kamar\n" +
+			"Jacob Martin\n" +
+			"Lucas Zeratl\n" +
 			"\n" +
 			"\n" +
 			"SPECIAL THANKS\n" +
@@ -138,6 +146,14 @@ public class Credits : MonoBehaviour
 			"\n" +
 			"\n" +
 			"Quality Assurance:\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
+			"\n" +
 			"\n" +
 			"\n" +
 			"\n" +

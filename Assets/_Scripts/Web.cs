@@ -29,14 +29,14 @@ public class Web : MonoBehaviour
 		transform.localScale = new Vector3( temp, temp, temp );
 
 		//fade out
-		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, lifeTimer - (lifespan - fadeOutTime) / fadeOutTime ) );
+		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, (lifeTimer - (lifespan - fadeOutTime)) / fadeOutTime ) );
 		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, temp );
 
 		#region timer
 		bool applySlow = false;
 		timer += Time.deltaTime * StaticData.t_scale;
 		lifeTimer += Time.deltaTime * StaticData.t_scale;
-		if(lifeTimer <= lifespan - fadeOutTime )
+		if ( lifeTimer <= lifespan - fadeOutTime )
 		{
 			if ( timer > debuffRate )
 			{
@@ -44,6 +44,7 @@ public class Web : MonoBehaviour
 				applySlow = true;
 			}
 		}
+
 		if ( lifeTimer >= lifespan )
 		{
 			Destroy( this.gameObject );

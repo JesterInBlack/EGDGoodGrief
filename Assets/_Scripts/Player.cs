@@ -284,7 +284,8 @@ public class Player : MonoBehaviour
 			float x = this.gameObject.transform.position.x;
 			float y = this.gameObject.transform.position.y;
 			float z = this.gameObject.transform.position.z;
-			transform.position = new Vector3( x + (knockbackVec.x * t), y + (knockbackVec.y * t), z );
+			//transform.position = new Vector3( x + (knockbackVec.x * t), y + (knockbackVec.y * t), z ); //NO WALL HAX
+			GetComponent<CustomController>().MoveNaoPlz ( new Vector3( knockbackVec.x * t, knockbackVec.y * t, 0.0f ) );
 		}
 
 		//Update items
@@ -500,12 +501,12 @@ public class Player : MonoBehaviour
 			{
 				float x = GameState.players[attackerId].transform.position.x;
 				float y = GameState.players[attackerId].transform.position.y;
-				KnockBack ( 2.0f, new Vector2( x, y ) );
+				KnockBack ( 10.0f, new Vector2( x, y ) );
 			}
 
 			//knockbackVec = Vector2.zero;
 			state = "knockback";
-			stateTimer = 0.5f;
+			stateTimer = 0.10f;
 			nextState = "idle";
 			this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
 		}

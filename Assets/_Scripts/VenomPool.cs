@@ -34,7 +34,7 @@ public class VenomPool : MonoBehaviour
 		transform.localScale = new Vector3( temp, temp, temp );
 		
 		//fade out
-		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, lifetimer - (lifespan - fadeOutTime) / fadeOutTime ) );
+		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, (lifetimer - (lifespan - fadeOutTime)) / fadeOutTime ) );
 		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, temp );
 
 		#region timer
@@ -47,6 +47,7 @@ public class VenomPool : MonoBehaviour
 			applyDebuff = true;
 			poisonT -= poisonRate;
 		}
+
 		if ( lifetimer >= lifespan )
 		{
 			Destroy( this.gameObject );
