@@ -41,8 +41,8 @@ public class BeamWidener : MonoBehaviour
 			start.y += i * scale * 0.05f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z + 90.0f) );
 
 			Vector2 end = new Vector2( start.x + 30.0f * Mathf.Cos ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z ) ), 
-			                          start.y + 30.0f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z ) ) );
-			AttackSystem.hitLineSegment( start, end, 10.0f * Time.deltaTime * StaticData.t_scale, -1 );
+			                           start.y + 30.0f * Mathf.Sin ( Mathf.Deg2Rad * (transform.rotation.eulerAngles.z ) ) );
+			AttackSystem.hitLineSegment( start, end, 5.0f * Time.deltaTime * StaticData.t_scale, -1 );
 		}
 	}
 }

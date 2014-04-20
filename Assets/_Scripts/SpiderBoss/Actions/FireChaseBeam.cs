@@ -14,7 +14,7 @@ public class FireChaseBeam : Action
 	private float _lastSpawnedTime;
 	private float _spawnDuration = 0.1f;
 
-	public float _chaseSpeed = 25.0f;
+	public float _chaseSpeed = 6.0f;
 
 	public float _chargeDuration;
 	public float _laserDuration;
