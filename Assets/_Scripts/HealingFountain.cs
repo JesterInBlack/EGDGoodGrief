@@ -5,6 +5,9 @@ public class HealingFountain : MonoBehaviour
 {
 	//A class for reviving downed players.
 	#region vars
+	private const float maxJuice = 250.0f;           //how much power can be drained from this font before it moves?
+	private float juice;                             //how much power remains?
+
 	private const float regenRate = 20.0f;           //health per second, when down and can't revive
 	private const float regenRateTopOff = 10.0f;     //health per second, when down and can revive
 	private const float regenRateStillAlive = 10.0f; //health per second, when alive and healing
@@ -14,15 +17,20 @@ public class HealingFountain : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		
+		juice = maxJuice;	
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		//TODO: if a player enters the hit region, and they are downed, heal them!
-		//TODO: if a player enters the hit region, and they are not downed, heal them!
-		//TODO: "revival" cutoff
+		//TODO: graphical changes based on power remaining.
+		if ( juice <= 0.0f )
+		{
+			//move!
+			juice = maxJuice;
+		}
+
+		//look through players, heal those in range.
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
 			Player player = GameState.players[i].GetComponent<Player>();
@@ -52,10 +60,12 @@ public class HealingFountain : MonoBehaviour
 						player.maxHP = Mathf.Min ( player.maxHP + regenRate * dt, player.baseMaxHP );
 						if ( player.HP < player.baseMaxHP * StaticData.percentHPNeededToRevive )
 						{
+							juice -= Mathf.Min ( player.HP + regenRate * dt, player.maxHP - player.HP );
 							player.HP = Mathf.Min ( player.HP + regenRate * dt, player.maxHP );
 						}
 						else 
 						{
+							juice -= Mathf.Min ( player.HP + regenRateTopOff * dt, player.maxHP - player.HP );
 							player.HP = Mathf.Min ( player.HP + regenRateTopOff * dt, player.maxHP );
 						}
 					}
@@ -79,6 +89,7 @@ public class HealingFountain : MonoBehaviour
 							player.state = "healing";
 							player.stateTimer = 0.0f;
 							player.nextState = "healing";
+							player.GetComponent<Animator>().Play ( "pickup_" + player.GetAniSuffix() );
 						}
 						else if ( player.isActuallyHealing && ! player.isChannellingHealing )
 						{
@@ -95,6 +106,7 @@ public class HealingFountain : MonoBehaviour
 						else if ( player.isActuallyHealing )
 						{
 							//you're healing.
+							juice -= Mathf.Min ( player.HP + regenRateStillAlive * dt, player.maxHP - player.HP );
 							player.HP = Mathf.Min ( player.HP + regenRateStillAlive * dt, player.maxHP );
 							player.channellingHealingCooldown = 5.0f; //continually reset cooldown.
 							//state
