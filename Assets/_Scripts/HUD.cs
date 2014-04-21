@@ -55,7 +55,7 @@ public class HUD : MonoBehaviour
 	//Ninja
 	//public Vector2 styleOffset;
 	
-	private Vector2 size =  new Vector2( 225.0f, 125.0f ); //the size of all the HUD backgrounds.
+	private Vector2 size;  //the size of the HUD background.
 
 	//private float lerpHP; //?
 	//private float prevLerpHP;
@@ -78,6 +78,16 @@ public class HUD : MonoBehaviour
 		if ( screenCorner == ScreenCorner.LOWER_LEFT || screenCorner == ScreenCorner.LOWER_RIGHT )
 		{
 			upsideDown = true;
+		}
+
+		//Set size.
+		if ( player.characterclass == CharacterClasses.KNIGHT )
+		{
+			size = new Vector2( 265.0f, 175.0f );
+		}
+		else if ( player.characterclass == CharacterClasses.DEFENDER )
+		{
+			size = new Vector2( 265.0f, 175.0f );
 		}
 		
 		//lerpHP = player.baseMaxHP;
