@@ -27,7 +27,7 @@ public class VenomPool : MonoBehaviour
 	void Start () 
 	{
 		transform.localScale = new Vector3(0.0f, 0.0f, 0.0f); 
-		//transform.R
+		spriteObject.transform.Rotate ( new Vector3( 0.0f, 0.0f, Random.Range ( 0.0f, 360.0f ) ) );
 	}
 	
 	// Update is called once per frame

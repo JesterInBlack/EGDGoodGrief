@@ -26,6 +26,14 @@ public class CameraController : MonoBehaviour
 	private int cameraPositionOverwriteIndex = 0;
 	private float[] cameraSizes = new float[10];
 	private int cameraSizeOverwriteIndex = 0;
+
+	//define clamp region.
+	private bool clamp = true;
+	private float maxX = 20.0f;
+	private float minX = -20.0f;
+	private float maxY = 12.0f;
+	private float minY = -12.0f;
+	private float max_orthographic_size = 12.0f; //furthest out you can zoom
 	#endregion
 
 	// Use this for initialization
@@ -136,7 +144,30 @@ public class CameraController : MonoBehaviour
 			avg_size += cameraSizes[i];
 		}
 		avg_size = avg_size / ((float)cameraSizes.Length);
-		
+
+		#region clamp
+		if ( clamp )
+		{
+			if ( avg_size > max_orthographic_size ) { avg_size = max_orthographic_size; }
+			if ( avg_vec.x + avg_size > maxX )
+			{
+				avg_vec.x = maxX - avg_size;
+			}
+			if ( avg_vec.x - avg_size < minX )
+			{
+				avg_vec.x = minX + avg_size;
+			}
+			if ( avg_vec.y + avg_size > maxY )
+			{
+				avg_vec.y = maxY - avg_size;
+			}
+			if ( avg_vec.y - avg_size < minY )
+			{
+				avg_vec.y = minY + avg_size;
+			}
+		}
+		#endregion
+
 		Camera.main.transform.position = avg_vec + shake;
 		Camera.main.orthographicSize = avg_size;
 		

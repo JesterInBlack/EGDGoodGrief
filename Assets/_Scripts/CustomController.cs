@@ -350,7 +350,7 @@ public class CustomController : MonoBehaviour
 							if ( drainConnected )
 							{
 								playerState.HP = Mathf.Min ( playerState.HP + lifeDrain, playerState.maxHP );
-								//TODO: play glug glug sound.
+								GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemVampFang, 1.0f );
 							}
 						}
 						if ( ! anyDrainConnected ) //no hits!
