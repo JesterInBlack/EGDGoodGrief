@@ -19,8 +19,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 
 	#region X
 	private const float xNormalBaseDamage = 400.0f;   //Normal attack: Horizontal Slash: base damage             (DPS) (0.25s)
-	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
-	private const float xSmashAddDamage   = 150.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
+	private const float xSmashBaseDamage  = 400.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
+	private const float xSmashAddDamage   = 400.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
 	private const float xSmashChainBonus  = 3.0f;     //Smash  attack: Spin2Win: damage multiplier from full chain
 
 	private const float xNormalAngle = 115.0f;        //Normal attack: Horizontal Slash: hit sector angle.
@@ -34,7 +34,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	private bool xSmashUsed = false;                  //set to reset speed proper-like
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 1.0f;            //minimum hold time to use the charged version of the x attack
-	private const float xChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
+	private const float xChargeMax = 3.0f;            //maximum hold time: more than this confers no benefit.
 	//private const float xNormalGraceT = 1.0f;       //Grace time before chain degeneration happens.
 	//private const float xSmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 
@@ -45,8 +45,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	
 	#region Y
 	private const float yNormalBaseDamage = 300.0f;   //Normal attack: Vertical Slash: base damage                (DPS) (0.5s)
-	private const float ySmashBaseDamage  = 150.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
-	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
+	private const float ySmashBaseDamage  = 300.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
+	private const float ySmashAddDamage   = 300.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
 	private const float ySmashChainBonus  = 3.0f;     //Smash  attack: Blast Off: damage multiplier from full chain
 
 	private const float yChargeInterruptHP = 100.0f;  //Charging up Y: interruption damage threshold.
@@ -57,7 +57,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	public bool yCharged = false;                     //for external scripts to access
 	private float yHoldTime  = 0.0f;
 	private const float yChargeMin = 1.0f;            //minimum hold time to use the charged version of the y attack
-	private const float yChargeMax = 5.0f;            //maximum hold time: more than this confers no benefit.
+	private const float yChargeMax = 3.0f;            //maximum hold time: more than this confers no benefit.
 	//private const float yNormalGraceT = 1.0f;       //Grace time before chain degeneration happens.
 	//private const float ySmashGraceT = 1.0f;        //Grace time before chain degeneration happens. Moot.
 	#endregion
