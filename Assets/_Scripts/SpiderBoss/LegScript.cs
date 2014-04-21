@@ -469,7 +469,7 @@ public class LegScript : MonoBehaviour {
 		//Play hurt sound?
 		if ( soundTimer <= 0.0f )
 		{
-			transform.parent.GetComponent<AudioSource>().PlayOneShot ( transform.parent.GetComponent<SoundStorage>().KnightSlice, 0.35f );
+			transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 0.35f );
 			soundTimer = soundDelay;
 		}
 		soundTimer = Mathf.Max ( 0.0f, soundTimer - Time.deltaTime * StaticData.t_scale );

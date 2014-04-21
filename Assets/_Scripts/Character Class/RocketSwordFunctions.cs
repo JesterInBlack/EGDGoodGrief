@@ -113,7 +113,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			if ( spinTime > (0.75f / 2.0f) )
 			{
 				spinTime -= (0.75f / 2.0f);
-				GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSwoosh, 0.5f );
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSwoosh, 0.5f );
 			}
 
 			/*
@@ -169,7 +169,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			if ( GetComponent<AudioSource>().isPlaying == false )
 			{
 				GetComponent<AudioSource>().volume = 1.0f;
-				GetComponent<AudioSource>().clip = GetComponent<SoundStorage>().KnightRevLoop;
+				GetComponent<AudioSource>().clip = SoundStorage.KnightRevLoop;
 				GetComponent<AudioSource>().Play();
 			}
 			#endregion
@@ -507,7 +507,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			ChangeState ( "revcharge" );
 			player.speedMultiplier = player.speedMultiplier * 0.5f;
-			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightRevLoop, 1.0f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightRevLoop, 1.0f );
 		}
 	}
 	public void RTReleased()
@@ -599,7 +599,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			#region animation
 			gameObject.GetComponent<Animator>().Play( "xslash_" + player.GetAniSuffix() );
 			#endregion
-			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSwoosh, 1.0f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSwoosh, 1.0f );
 		}
 		else if ( newState == "xwinddown" )
 		{
@@ -669,7 +669,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = yNormalInterruptHP;
 			GetComponent<Animator>().Play( "yslash_" + player.GetAniSuffix() );
-			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 1.0f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 1.0f );
 		}
 		else if ( newState == "ywinddown" )
 		{
@@ -700,7 +700,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			attackDamage = baseDamage * multiplier;
 			player.stateTimer = 1.0f + 1.0f * chargePercent;
 			player.resource = 0;
-			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightBlastOff, 1.0f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightBlastOff, 1.0f );
 			GetComponent<Animator>().Play( "blastoff_" + player.GetAniSuffix() );
 			ignoreOnHitCallback = false;
 		}
@@ -734,7 +734,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			#region animation
 			gameObject.GetComponent<Animator>().Play( "parry_" +  player.GetAniSuffix() );
 			#endregion
-			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().MonkStoneSkinOn, 1.0f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
 		}
 		#endregion
 		else if ( newState == "idle" )

@@ -140,7 +140,7 @@ public class BossCoreHP : MonoBehaviour
 		//Play hurt sound?
 		if ( soundTimer <= 0.0f )
 		{
-			GetComponent<AudioSource>().PlayOneShot ( GetComponent<SoundStorage>().KnightSlice, 0.35f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 0.35f );
 			soundTimer = soundDelay;
 		}
 
