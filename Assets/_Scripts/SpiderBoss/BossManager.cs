@@ -46,7 +46,6 @@ public class BossManager : MonoBehaviour
 		//Debug.Log(allBehaviors.Length);
 		for(int i = 0; i < allBehaviors.Length; i++)
 		{
-
 			if(allBehaviors[i].group == 1)	//Impale
 			{
 				testBehavior = new BehaviorData(allBehaviors[i], -1f, 1f, -1f, 1f, 55.0f, 1.0f);
