@@ -80,8 +80,9 @@ public class DissentionSuction : Action
 
 			//TODO make the suction thing
 			AttackSystem.Suck(_blackboard.body._shadowPos, _chargeTime, Time.deltaTime * StaticData.t_scale);
-			//DoSuction(_chargeTime, directedPoint);
-			
+			gameObject.GetComponent<AudioSource>().loop = true;
+			gameObject.GetComponent<AudioSource>().clip = SoundStorage.BossSuction;
+			gameObject.GetComponent<AudioSource>().Play ();
 		}
 
 		return TaskStatus.Running;
@@ -100,5 +101,6 @@ public class DissentionSuction : Action
 	{
 		shake = new Vector2(0, 0);
 		transform.position = _chargePos;
+		gameObject.GetComponent<AudioSource>().Stop ();
 	}
 }

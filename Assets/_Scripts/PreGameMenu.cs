@@ -204,6 +204,7 @@ public class PreGameMenu : MonoBehaviour
 				//do stuff depending on what's selected
 				if ( mainMenuIndex == 0 ) //PLAY
 				{
+					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuConfirm );
 					currentScreen = MenuScreens.CHARACTER_SELECTION;
 					for ( int i = 0; i < 4; i++ )
 					{
@@ -215,6 +216,7 @@ public class PreGameMenu : MonoBehaviour
 				}
 				else if ( mainMenuIndex == 1 ) //TUTORIAL
 				{
+					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuConfirm );
 					tutorial = true;
 					menuDataSaver.tutorial = tutorial; //write
 					GameState.isTutorial = tutorial; //write
@@ -258,6 +260,7 @@ public class PreGameMenu : MonoBehaviour
 					else if ( ! charLockedIn[i] ) //A to confirm choice
 					{
 						charLockedIn[i] = true;
+						GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuConfirm );
 					}
 				}
 				if ( onBPressed( currentGamePadState[i], prevState[i] ) )
@@ -276,6 +279,7 @@ public class PreGameMenu : MonoBehaviour
 					else if ( ! playersConnected[i] && i == 0 ) //player 1 pressed B to go back.
 					{
 						currentScreen = MenuScreens.MAIN_MENU;
+						GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuBack );
 					}
 				}
 				if ( onLeftPressed( currentGamePadState[i], prevState[i] ) )
@@ -289,7 +293,7 @@ public class PreGameMenu : MonoBehaviour
 						}
 						else //Locked in
 						{
-							//TODO: feedback
+							GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel );
 						}
 					}
 				}
@@ -304,7 +308,7 @@ public class PreGameMenu : MonoBehaviour
 						}
 						else //Locked in
 						{
-							//TODO: feedback
+							GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel );
 						}
 					}
 				}
@@ -388,6 +392,11 @@ public class PreGameMenu : MonoBehaviour
 					{
 						itemSelection[ i, itemSelectionCount[i] ] = itemIndex[i];
 						itemSelectionCount[i]++;
+						GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuConfirm );
+					}
+					else
+					{
+						GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel );
 					}
 				}
 				if ( onBPressed ( currentGamePadState[i], prevState[i] ) )
@@ -403,6 +412,7 @@ public class PreGameMenu : MonoBehaviour
 					}
 					if ( goBack )
 					{
+						GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuBack );
 						currentScreen = MenuScreens.CHARACTER_SELECTION;
 						return;
 					}
@@ -415,6 +425,7 @@ public class PreGameMenu : MonoBehaviour
 							itemSelection[ i, j ] = itemSelection[ i, itemSelectionCount[i] - 1 ]; //swap with last element
 							itemSelection[ i, itemSelectionCount[i] - 1 ] = -1;                    //remove last element
 							itemSelectionCount[i]--;                                               //decrement tracker
+							GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuBack );
 						}
 					}
 				}

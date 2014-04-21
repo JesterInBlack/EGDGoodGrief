@@ -431,6 +431,7 @@ public static class AttackSystem
 
 		float xMove = moveDirection.normalized.x * multiplier * PLAYER_BASE_SPEED * dt;
 		float yMove = moveDirection.normalized.y * multiplier * PLAYER_BASE_SPEED * dt;
-		player.transform.position = new Vector3( x + xMove, y + yMove, z );
+		//player.transform.position = new Vector3( x + xMove, y + yMove, z );
+		player.GetComponent<CustomController>().MoveNaoPlz ( new Vector3(xMove, yMove, 0.0f) ); //respect wall collisions
 	}
 }

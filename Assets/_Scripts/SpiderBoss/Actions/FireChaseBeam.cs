@@ -79,6 +79,7 @@ public class FireChaseBeam : Action
 					_spawnedLaser = Instantiate(_laserObject) as GameObject;
 					_spawnedLaser.transform.position = _laserSpawnPoint.transform.position;
 					_spawnedLaser.transform.eulerAngles = _eyesScript._rotationVec;
+					gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossLaser );
 				}
 			}
 			else if(_state == State.Firing)

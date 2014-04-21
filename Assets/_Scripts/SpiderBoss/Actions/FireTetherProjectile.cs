@@ -35,6 +35,7 @@ public class FireTetherProjectile : Action
 		GameObject shot = Instantiate(_webTetherProjectile, _startingPosition.transform.position, Quaternion.identity) as GameObject;
 		shot.GetComponent<TetherProjectileScript>().Initializer((Vector2)_startingPosition.transform.position, _targetPlayer);
 		_spawnedTether.Value = shot;
+		gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossWeb );
 
 		return TaskStatus.Success;
 	}

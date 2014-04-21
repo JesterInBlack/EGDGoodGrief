@@ -98,7 +98,7 @@ public class LegScript : MonoBehaviour {
 
 		_regenRate = 10.0f;
 		_moveTime = 0.25f;
-		_maxHP = 200.0f;
+		_maxHP = 400.0f;
 		_currentHP = _maxHP;
 
 		_maxWebbingHP = 150.0f;
