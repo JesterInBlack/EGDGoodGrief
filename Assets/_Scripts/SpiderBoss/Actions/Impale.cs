@@ -18,7 +18,7 @@ public class Impale : Action
 	public float _cooldownTime;
 
 	public float radius = 1.0f;    //TODO: make < 1
-	public float damage = 20.0f;
+	private const float damage = 20.0f; //suck it, Unity! (I've had enough of your saving public vars Bullshit)
 	#endregion
 
 	public enum AttackState
@@ -38,8 +38,6 @@ public class Impale : Action
 		_aimTime = 1.0f;
 		_attackTime = 0.1f;
 		_cooldownTime = 1.25f;
-
-		damage = 35.0f;
 	}
 	
 	public override void OnStart()
@@ -104,10 +102,9 @@ public class Impale : Action
 				_state = AttackState.Cooldown;
 				_lerpTime = 0.0f;
 
-				//THIS IS THE MOMENT WHERE THE ATTACK DAMAGE IS DEALT TO THE TARGET AREA!
-				//USE THE ATTACHED CIRCLE COLLIDER
-				//Not until you give me a good way to access it
+				//Do damage.
 				AttackSystem.hitCircle ( _targetPoint, radius, damage, -1 );
+				gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossImpale );
 				GameState.cameraController.Shake ( 0.1f, 0.25f );
 
 				//Debug.Log("does it ever reach here?");
