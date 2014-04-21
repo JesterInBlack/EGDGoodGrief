@@ -76,22 +76,28 @@ public class HealingFountain : MonoBehaviour
 							//player is alive
 							if ( player.channellingHealingCooldown <= 0.0f || player.isChannellingHealing )
 							{
-								player.contextualHealingAvailable = true;
-								player.GetComponent<OverHeadText>().SetOverheadText ();
-								player.contextualHealingAvailable = false;
+								if ( player.HP < player.baseMaxHP )
+								{
+									player.contextualHealingAvailable = true;
+									player.GetComponent<OverHeadText>().SetOverheadText ();
+									player.contextualHealingAvailable = false;
+								}
 							}
 
 							if ( player.isChannellingHealing && ! player.isActuallyHealing )
 							{
-								//begin channelling healing
-								player.isActuallyHealing = true;
-								player.speedMultiplier2 = player.speedMultiplier2 * 0.5f;
-								player.channellingHealingCooldown = 5.0f; //reset cooldown.
-								//state
-								player.state = "healing";
-								player.stateTimer = 0.0f;
-								player.nextState = "healing";
-								player.GetComponent<Animator>().Play ( "pickup_" + player.GetAniSuffix() );
+								if ( player.HP < player.baseMaxHP )
+								{
+									//begin channelling healing
+									player.isActuallyHealing = true;
+									player.speedMultiplier2 = player.speedMultiplier2 * 0.5f;
+									player.channellingHealingCooldown = 5.0f; //reset cooldown.
+									//state
+									player.state = "healing";
+									player.stateTimer = 0.0f;
+									player.nextState = "healing";
+									player.GetComponent<Animator>().Play ( "pickup_" + player.GetAniSuffix() );
+								}
 							}
 							else if ( player.isActuallyHealing && ! player.isChannellingHealing )
 							{
@@ -108,14 +114,31 @@ public class HealingFountain : MonoBehaviour
 							else if ( player.isActuallyHealing )
 							{
 								//you're healing.
-								juice -= Mathf.Min ( player.HP + regenRateStillAlive * dt, player.maxHP - player.HP );
-								player.HP = Mathf.Min ( player.HP + regenRateStillAlive * dt, player.maxHP );
-								player.channellingHealingCooldown = 5.0f; //continually reset cooldown.
-								//state
-								player.state = "healing";
-								player.stateTimer = 0.0f;
-								player.nextState = "healing";
-								player.canMove = false;
+								if ( player.HP < player.baseMaxHP )
+								{
+									juice -= Mathf.Min ( player.HP + regenRateStillAlive * dt, player.maxHP - player.HP );
+									player.HP = Mathf.Min ( player.HP + regenRateStillAlive * dt, player.maxHP );
+									player.channellingHealingCooldown = 5.0f; //continually reset cooldown.
+									//state
+									player.state = "healing";
+									player.stateTimer = 0.0f;
+									player.nextState = "healing";
+									player.canMove = false;
+								}
+								else
+								{
+									//you're done healing.
+									//end channeling healing
+									player.isActuallyHealing = false;
+									player.speedMultiplier2 = player.speedMultiplier2 * 2.0f;
+									player.channellingHealingCooldown = 5.0f; //reset cooldown.
+									player.GetComponent<Animator>().Play ( "throw_" + player.GetAniSuffix() );
+									//state
+									player.state = "idle";
+									player.stateTimer = 0.0f;
+									player.nextState = "idle";
+									player.canMove = true;
+								}
 							}
 						}
 					}
