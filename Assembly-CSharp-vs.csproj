@@ -126,6 +126,7 @@
      <Compile Include="Assets\_scripts\ScoreDetails.cs" />
      <Compile Include="Assets\_scripts\ScoreManager.cs" />
      <Compile Include="Assets\_scripts\ScorePasser.cs" />
+     <Compile Include="Assets\_scripts\ScoreText.cs" />
      <Compile Include="Assets\_scripts\SetSortingLayer.cs" />
      <Compile Include="Assets\_scripts\SoundStorage.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ApplyBuff.cs" />
