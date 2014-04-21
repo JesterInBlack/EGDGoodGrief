@@ -161,33 +161,36 @@ public class ItemHandler : MonoBehaviour
 		//      instead, refresh it.
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			Player targetPlayer = GameState.players[i].GetComponent<Player>();
-			Buff myBuff = new Buff();
-			myBuff.player = targetPlayer;
-			myBuff.giverId = id;
-			myBuff.blacklist = true;
-			myBuff.offense = offense;
-			myBuff.defense = defense;
-			myBuff.regen = regen;
-			myBuff.duration = duration;
-			//add to player and apply effect
-			//FIRST: change stacking from the same source -> refresh 
-			//remove any old buffs that match it with the same source
-			//(so you can't multi-stack the same aura on yourself from yourself 3 times,
-			// 12x of the same aura buffs is a scaling nightmare, and would require nerfing auras to obsolescence)
-			//Also, this lets us make the CD shorter than the duration
-			for ( int j = targetPlayer.buffs.Count - 1; j >= 0; j-- )
+			if ( GameState.players[i] != null )
 			{
-				if ( ( (Buff) targetPlayer.buffs[j] ).isTheSameAs( myBuff ) )
+				Player targetPlayer = GameState.players[i].GetComponent<Player>();
+				Buff myBuff = new Buff();
+				myBuff.player = targetPlayer;
+				myBuff.giverId = id;
+				myBuff.blacklist = true;
+				myBuff.offense = offense;
+				myBuff.defense = defense;
+				myBuff.regen = regen;
+				myBuff.duration = duration;
+				//add to player and apply effect
+				//FIRST: change stacking from the same source -> refresh 
+				//remove any old buffs that match it with the same source
+				//(so you can't multi-stack the same aura on yourself from yourself 3 times,
+				// 12x of the same aura buffs is a scaling nightmare, and would require nerfing auras to obsolescence)
+				//Also, this lets us make the CD shorter than the duration
+				for ( int j = targetPlayer.buffs.Count - 1; j >= 0; j-- )
 				{
-					( (Buff) targetPlayer.buffs[j] ).End();
-					//Debug.Log ( "Buff refreshed on player " + (i + 1) );
-					targetPlayer.buffs.RemoveAt ( j );
+					if ( ( (Buff) targetPlayer.buffs[j] ).isTheSameAs( myBuff ) )
+					{
+						( (Buff) targetPlayer.buffs[j] ).End();
+						//Debug.Log ( "Buff refreshed on player " + (i + 1) );
+						targetPlayer.buffs.RemoveAt ( j );
+					}
 				}
+				GameState.players[i].GetComponent<Player>().buffs.Add ( myBuff );
+				myBuff.Start ();
+				//Debug.Log ( "Buff started on player " + (i + 1) );
 			}
-			GameState.players[i].GetComponent<Player>().buffs.Add ( myBuff );
-			myBuff.Start ();
-			//Debug.Log ( "Buff started on player " + (i + 1) );
 		}
 	}
 }
