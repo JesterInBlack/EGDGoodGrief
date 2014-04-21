@@ -7,7 +7,7 @@ public class BossCoreHP : MonoBehaviour
 	[HideInInspector]
 	public BehaviorBlackboard myBlackboard;
 
-	private const float baseFourPlayerHP = 8500.0f; //hp with 4 players.
+	private const float baseFourPlayerHP = 30000.0f; //hp with 4 players.
 
 	public Texture2D HPBarFill;
 	public Texture2D HPBarBG;

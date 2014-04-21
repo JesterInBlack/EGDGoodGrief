@@ -18,7 +18,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	#region move data
 
 	#region X
-	private const float xNormalBaseDamage = 100.0f;   //Normal attack: Horizontal Slash: base damage             (DPS)
+	private const float xNormalBaseDamage = 400.0f;   //Normal attack: Horizontal Slash: base damage             (DPS) (0.25s)
 	private const float xSmashBaseDamage  = 100.0f;   //Smash  attack: Spin2Win: base damage (0 charge)          (DPS)
 	private const float xSmashAddDamage   = 150.0f;   //Smash  attack: Spin2Win: additional damage (100% charge) (DPS)
 	private const float xSmashChainBonus  = 3.0f;     //Smash  attack: Spin2Win: damage multiplier from full chain
@@ -44,7 +44,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	#endregion
 	
 	#region Y
-	private const float yNormalBaseDamage = 150.0f;   //Normal attack: Vertical Slash: base damage                (Single Hit)
+	private const float yNormalBaseDamage = 300.0f;   //Normal attack: Vertical Slash: base damage                (DPS) (0.5s)
 	private const float ySmashBaseDamage  = 150.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
 	private const float ySmashAddDamage   = 100.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
 	private const float ySmashChainBonus  = 3.0f;     //Smash  attack: Blast Off: damage multiplier from full chain
@@ -589,7 +589,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//initialize the attack.
 			player.canMove = false;
-			player.stateTimer = 0.05f * 5.0f;
+			player.stateTimer = 0.05f * 5.0f; //5 frame attack (0.25s)
 			player.nextState = "xwinddown";//"idle";
 			player.canMove = false;
 			ignoreOnHitCallback = false;
@@ -662,7 +662,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//initialize the attack
 			player.canMove = false;
-			player.stateTimer = 0.05f * 12.0f; //10 frame attack (6 animated, rest pause)
+			player.stateTimer = 0.05f * 10.0f; //10 frame attack (6 animated, rest pause) (0.5s)
 			player.nextState = "ywinddown";
 			ignoreOnHitCallback = false;
 			//player.resource = Mathf.Min ( player.resource + 1.0f / 8.0f, 1.0f );
