@@ -20,9 +20,12 @@ public class FindUnbuffedLeg : Action
 	{
 		for(int i = 0; i < _blackboard.legsList.Length; i++)
 		{
-			if(_blackboard.legsList[i]._buffState == LegScript.BuffState.unbuffed)
+			if(_blackboard.legsList[i]._behaviorState != LegScript.BehaviorState.Disabled)
 			{
-				_unbuffedLegs.Add(i);
+				if(_blackboard.legsList[i]._buffState == LegScript.BuffState.unbuffed)
+				{
+					_unbuffedLegs.Add(i);
+				}
 			}
 		}
 

@@ -28,6 +28,8 @@ public class LegScript : MonoBehaviour {
 
 	#region LEG BUFF VARIABLES
 	public GameObject _webBuff;
+	public GameObject _venomBuff;
+
 	public float _currentWebbingHP;
 	public float _maxWebbingHP;
 
@@ -369,14 +371,15 @@ public class LegScript : MonoBehaviour {
 		{
 			if(_buffState == BuffState.web)
 			{
-				//TODO make the web buff unapply now
+				_webBuff.GetComponent<WebBuffScript>().Unapply();
 			}
+			_venomBuff.GetComponent<VenomBuffScript>().StartApplication(transitTime);
 		}
 		else if(_state == BuffState.web)
 		{
 			if(_buffState == BuffState.venom)
 			{
-				//TODO make the venom buff unapply right now
+				_venomBuff.GetComponent<VenomBuffScript>().Unapply();
 			}
 			_webBuff.GetComponent<WebBuffScript>().StartApplication(transitTime);
 		}
@@ -387,7 +390,7 @@ public class LegScript : MonoBehaviour {
 		_buffState = (BuffState)buffID;
 		if(_buffState == BuffState.venom)
 		{
-			transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
+			//transform.parent.GetComponent<SpriteRenderer>().color = Color.green;
 			_poisonDPS = 2.5f;
 			_poisonDuration = 5.0f;
 			_currentBuffDuration = _maxBuffDuration;
@@ -403,7 +406,7 @@ public class LegScript : MonoBehaviour {
 	{
 		if(_buffState == BuffState.venom)
 		{
-			//TODO venombuff.getcomponent<VenomBuffScript>().Unapply
+			_venomBuff.GetComponent<VenomBuffScript>().Unapply();
 		}
 		else if(_buffState == BuffState.web)
 		{
@@ -435,7 +438,8 @@ public class LegScript : MonoBehaviour {
 		}
 		else if ( isPoisonous () )
 		{
-			return new Color( 0.0f, 1.0f, 0.0f );
+			return new Color( 1.0f, 1.0f, 1.0f );
+			//return new Color( 0.0f, 1.0f, 0.0f );
 		}
 		else
 		{
