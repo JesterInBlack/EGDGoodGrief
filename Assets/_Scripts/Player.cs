@@ -114,6 +114,8 @@ public class Player : MonoBehaviour
 	public bool isActuallyHealing = false;           //confirmation flag
 	[HideInInspector]
 	public float channellingHealingCooldown = 0.0f;  //cooldown
+
+	public GameObject scoreTextPrefab;
 	#endregion
 
 	//Use this for pre-initialization
@@ -778,5 +780,16 @@ public class Player : MonoBehaviour
 				GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
 			}
 		}
+	}
+
+	public void ScoreText ( string name, float amount )
+	{
+		GameObject obj = (GameObject)Instantiate( scoreTextPrefab, transform.position + new Vector3( 0.0f, 1.0f, 0.0f ), Quaternion.identity );
+		obj.GetComponent<ScoreText>().scoreName.text = name;
+
+		string text;
+		if ( amount > 0.0f ) { text = "+" + ((int) amount); }
+		else { text = ((int) amount).ToString(); }
+		obj.GetComponent<ScoreText>().scorePoints.text = text;
 	}
 }

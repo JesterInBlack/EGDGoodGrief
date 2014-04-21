@@ -12,6 +12,7 @@ public static class ScoreManager
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.downs.count++;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.downs.score += amount;
+		GameState.playerStates[id].ScoreText ( "Down", amount );
 	}
 
 	public static void DealtDamage( int id, float damage )
@@ -58,6 +59,7 @@ public static class ScoreManager
 		GameState.playerStates[id].score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.count++;
+		GameState.playerStates[id].ScoreText ( "Last Man Standing", amount );
 	}
 
 	public static void Clutch( int id )
@@ -67,22 +69,25 @@ public static class ScoreManager
 		GameState.playerStates[id].score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.count++;
+		GameState.playerStates[id].ScoreText ( "Clutch", amount );
 	}
 
 	public static void KilledLeg( int id )
 	{
 		//bonus points for last hitting leg.
-		float amount = 25.0f;
+		float amount = 50.0f;
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
+		GameState.playerStates[id].ScoreText ( "Leg Breaker", amount );
 	}
 
 	public static void BrokeArmor( int id )
 	{
 		//bonus points for last hitting leg armor.
-		float amount = 5.0f;
+		float amount = 25.0f;
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
+		GameState.playerStates[id].ScoreText ( "Armor Breaker", amount );
 	}
 
 	//TODO: helped revive?
