@@ -149,11 +149,8 @@ public class ItemHandler : MonoBehaviour
 	private void StopWatch()
 	{
 		player.isInBulletTime = true;
-		player.bulletTimeDuration = 6.0f;
-		StaticData.t_scale = 0.5f;
-		StaticData.bulletTimeDuration = player.bulletTimeDuration;
-		//TODO: lerp in, add visual effect, play sound
-		//TODO: duration on t scale, lerp back in, remove visual effect, play sound
+		StaticData.bulletTimeDuration = 1.0f + 3.0f * BulletTimeManager.temporalScalingFactor; //this is in dilated time.
+		player.bulletTimeDuration = StaticData.bulletTimeDuration / BulletTimeManager.temporalScalingFactor; //this is in dilated time.
 	}
 	
 	private void Aura( int id, float duration, float offense, float defense, float regen )

@@ -60,6 +60,7 @@ public class LobbedProjectile : MonoBehaviour
 
 	private void Explode()
 	{
+		GameState.players[id].GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemJarShatter, 1.0f );
 		Instantiate ( gasPrefab, transform.position, Quaternion.identity );
 		foreach (Collider2D hit in AttackSystem.getHitsInCircle( aimPoint, 1.0f, id ) )
 		{

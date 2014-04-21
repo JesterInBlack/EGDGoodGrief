@@ -25,6 +25,18 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip ArcherArrowImpact;
 
 	public static AudioClip BossImpale;
+	public static AudioClip BossWeb;
+	public static AudioClip BossLaser;
+	public static AudioClip BossSuction;
+
+	public static AudioClip ItemJarShatter;
+	public static AudioClip ItemVampFang;
+	public static AudioClip ItemSlowMoIn;
+	public static AudioClip ItemSlowMoOut;
+
+	public static AudioClip MenuCancel;
+	public static AudioClip MenuBack;
+	public static AudioClip MenuConfirm;
 	#endregion
 
 	void Awake()
@@ -49,5 +61,17 @@ public class SoundStorage : MonoBehaviour
 		ArcherArrowImpact = Resources.Load<AudioClip>( "_Sounds/Archer/arrow_hit2" );
 
 		BossImpale = Resources.Load<AudioClip>( "_Sounds/Boss/Impale" );
+		BossWeb = Resources.Load<AudioClip>( "_Sounds/Boss/web2" );
+		BossLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser2" );
+		BossSuction = Resources.Load<AudioClip>( "_Sounds/Boss/suction2" );
+
+		ItemJarShatter = Resources.Load<AudioClip>( "_Sounds/Item/jar_shatter" );
+		ItemSlowMoIn = Resources.Load<AudioClip>( "_Sounds/Item/slomo_in" );
+		ItemSlowMoOut = Resources.Load<AudioClip>( "_Sounds/Item/slomo_out" );
+		ItemVampFang = Resources.Load<AudioClip>( "_Sounds/Item/vampire_suck" );
+
+		MenuCancel = Resources.Load<AudioClip>( "_Sounds/Menu/menu_cancel" );
+		MenuBack = Resources.Load<AudioClip>( "_Sounds/Menu/menu_back" );
+		MenuConfirm = Resources.Load<AudioClip>( "_Sounds/Menu/menu_select" );
 	}
 }

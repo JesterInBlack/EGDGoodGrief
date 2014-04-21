@@ -53,12 +53,15 @@ public class TutorialExit : MonoBehaviour
 		}
 		else
 		{
-			for ( int i = 0; i < 4; i++ )
+			for ( int i = 0; i < GameState.players.Length; i++ )
 			{
-				if ( GameState.players[i].GetComponent<Tutorial>().completed )
+				if ( GameState.players[i] != null )
 				{
-					someoneFinishedTutorial = true;
-					GetComponent<SpriteRenderer>().enabled = true;
+					if ( GameState.players[i].GetComponent<Tutorial>().completed )
+					{
+						someoneFinishedTutorial = true;
+						GetComponent<SpriteRenderer>().enabled = true;
+					}
 				}
 			}
 		}

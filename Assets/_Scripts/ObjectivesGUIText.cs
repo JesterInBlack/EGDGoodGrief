@@ -33,12 +33,15 @@ public class ObjectivesGUIText : MonoBehaviour
 			float lerpT = Mathf.Min ( 1.0f, timer / (text.Length * 0.05f) );
 			float length = lerpT * text.Length;
 			GetComponent<GUIText>().text = text.Substring ( 0, (int)length );
-			for ( int i = 0; i < 4; i++ )
+			for ( int i = 0; i < GameState.players.Length; i++ )
 			{
-				if ( GameState.players[i].GetComponent<Tutorial>().completed )
+				if ( GameState.players[i] != null )
 				{
-					timer = 0.0f; //reset
-					someoneFinishedTutorial = true;
+					if ( GameState.players[i].GetComponent<Tutorial>().completed )
+					{
+						timer = 0.0f; //reset
+						someoneFinishedTutorial = true;
+					}
 				}
 			}
 		}
