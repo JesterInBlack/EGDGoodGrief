@@ -788,8 +788,18 @@ public class Player : MonoBehaviour
 		obj.GetComponent<ScoreText>().scoreName.text = name;
 
 		string text;
-		if ( amount > 0.0f ) { text = "+" + ((int) amount); }
-		else { text = ((int) amount).ToString(); }
+		Color color;
+		if ( amount > 0.0f ) 
+		{ 
+			text = "+" + ((int) amount); 
+			color = new Color( 0.0f, 0.0f, 1.0f, 1.0f );
+		}
+		else 
+		{ 
+			text = ((int) amount).ToString();
+			color = new Color( 0.9f, 0.0f, 0.0f, 1.0f );
+		}
 		obj.GetComponent<ScoreText>().scorePoints.text = text;
+		obj.GetComponent<ScoreText>().scorePoints.color = color;
 	}
 }
