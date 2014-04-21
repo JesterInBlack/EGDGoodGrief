@@ -12,7 +12,6 @@ public class FireChaseBeam : Action
 	private GameObject _spawnedCharge;
 
 	private float _lastSpawnedTime;
-	private float _spawnDuration = 0.1f;
 
 	public float _chaseSpeed = 12.0f;
 

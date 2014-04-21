@@ -60,49 +60,43 @@ public class ApplyBuff : Action
 	//applies the buff to the selected leg
 	public override TaskStatus OnUpdate()
 	{
-		if (_buffType != null)
+		//the animation to apply the buff! 
+		if(_blackboard.selectedLeg.GetComponent<LegScript>()._state == LegScript.LegState.CalculateMove)
 		{
-			//the animation to apply the buff! 
-			if(_blackboard.selectedLeg.GetComponent<LegScript>()._state == LegScript.LegState.CalculateMove)
+			if(_blackboard.selectedLeg.GetComponent<LegScript>()._id < 4)	//these are the right legs
 			{
-				if(_blackboard.selectedLeg.GetComponent<LegScript>()._id < 4)	//these are the right legs
-				{
-					_targetPoint = rightLegsEnd.transform.position;
-					_intermediatePoint = rightLegsStart.transform.position;
-				}
-				else if(_blackboard.selectedLeg.GetComponent<LegScript>()._id >= 4)	//these are the left legs
-				{
-					_targetPoint = leftLegsEnd.transform.position;
-					_intermediatePoint = leftLegsStart.transform.position;
-				}
-				_startPoint = _blackboard.selectedLeg.transform.position;
-				_shadowStartPoint = _startPoint;
-
-				_shadowIntermediatePoint = _intermediatePoint;
-				_shadowIntermediatePoint.y -= 3;
-				_shadowIntermediatePoint.z = 0.9f;
-
-				_shadowFinalPoint = _targetPoint;
-				_shadowFinalPoint.y -= 2.5f;
-				_shadowFinalPoint.z = 0.9f;
-				
-				_lerpTime = 0.0f;
-				_intermediatePointReached = false;
-				_blackboard.selectedLeg._state = LegScript.LegState.Move;
-				return TaskStatus.Running;
+				_targetPoint = rightLegsEnd.transform.position;
+				_intermediatePoint = rightLegsStart.transform.position;
 			}
-			else if(_blackboard.selectedLeg.GetComponent<LegScript>()._state == LegScript.LegState.Move)
+			else if(_blackboard.selectedLeg.GetComponent<LegScript>()._id >= 4)	//these are the left legs
 			{
-				MoveLeg();
-				if(_finished == true)
-				{
-					return TaskStatus.Success;
-				}
-				return TaskStatus.Running;
+				_targetPoint = leftLegsEnd.transform.position;
+				_intermediatePoint = leftLegsStart.transform.position;
+			}
+			_startPoint = _blackboard.selectedLeg.transform.position;
+			_shadowStartPoint = _startPoint;
+
+			_shadowIntermediatePoint = _intermediatePoint;
+			_shadowIntermediatePoint.y -= 3;
+			_shadowIntermediatePoint.z = 0.9f;
+
+			_shadowFinalPoint = _targetPoint;
+			_shadowFinalPoint.y -= 2.5f;
+			_shadowFinalPoint.z = 0.9f;
+			
+			_lerpTime = 0.0f;
+			_intermediatePointReached = false;
+			_blackboard.selectedLeg._state = LegScript.LegState.Move;
+		}
+		else if(_blackboard.selectedLeg.GetComponent<LegScript>()._state == LegScript.LegState.Move)
+		{
+			MoveLeg();
+			if(_finished == true)
+			{
+				return TaskStatus.Success;
 			}
 		}
-		//no buff type set? return fail
-		return TaskStatus.Failure;
+		return TaskStatus.Running;
 	}
 
 	//function that moves the leg and sets the leg to idle when done

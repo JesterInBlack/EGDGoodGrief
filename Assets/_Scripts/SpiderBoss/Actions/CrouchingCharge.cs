@@ -19,7 +19,7 @@ public class CrouchingCharge : Action
 	private float _lerpTime;
 	private Vector2 _chargePos;
 	private Vector2 _startingPos;
-	private Vector2 _endingPos;
+	//private Vector2 _endingPos;
 	private Vector2 _groundedPos;
 
 	private Vector2 _shake;
@@ -53,7 +53,7 @@ public class CrouchingCharge : Action
 		
 		_startingPos = (Vector2)transform.position;
 		_chargePos = new Vector2(_startingPos.x, _startingPos.y + _chargeHeightOffset);
-		_endingPos = (Vector2)_blackboard.body._neutralPoint.transform.position;
+		//_endingPos = (Vector2)_blackboard.body._neutralPoint.transform.position;
 		
 		float groundedHeight = Vector2.Distance(_startingPos, _blackboard.body._shadowPos);
 		groundedHeight *= _blackboard.body._groundHeightOffset;
