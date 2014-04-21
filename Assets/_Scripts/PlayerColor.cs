@@ -22,6 +22,7 @@ public class PlayerColor : MonoBehaviour
 	#region vars
 	private Player player;
 	public ScheduledColor currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 1.0f), 0.0f );
+	private ArrayList scheduledColors = new ArrayList(); //ordered list of colors. Executed in-order.
 	#endregion
 
 	// Use this for initialization
@@ -58,6 +59,13 @@ public class PlayerColor : MonoBehaviour
 		}
 
 		//Check for any color overlays we should be displaying.
+		if ( currentColor.timer >= currentColor.duration && scheduledColors.Count > 0 )
+		{
+			currentColor.timer = 0.0f;
+			currentColor = (ScheduledColor) scheduledColors[0];
+			scheduledColors.RemoveAt ( 0 );
+		}
+
 		if ( currentColor.timer < currentColor.duration ) //hasn't expired
 		{
 			this.gameObject.GetComponent<SpriteRenderer>().color = currentColor.color;
@@ -67,7 +75,27 @@ public class PlayerColor : MonoBehaviour
 			if ( currentColor.timer >= currentColor.duration )
 			{
 				//We would do cleanup here if it was a list.
+				if ( scheduledColors.Count > 0 )
+				{
+					currentColor.timer = 0.0f;
+					currentColor = (ScheduledColor) scheduledColors[0];
+					scheduledColors.RemoveAt ( 0 );
+				}
 			}
+		}
+	}
+
+	public void Blink()
+	{
+		scheduledColors.Clear ();
+		const float r = 1.0f;
+		const float g = 0.5f;
+		const float b = 0.5f;
+		const float blinkAlpha = 0.35f;
+		for ( int blinks = 0; blinks < 8; blinks ++ )
+		{
+			scheduledColors.Add ( new ScheduledColor( new Color( r, g, b, 1.0f), 1.0f / 30.0f ) );
+			scheduledColors.Add ( new ScheduledColor( new Color( r, g, b, blinkAlpha), 1.0f / 30.0f ) );
 		}
 	}
 }

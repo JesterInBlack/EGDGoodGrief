@@ -423,6 +423,10 @@ public class Player : MonoBehaviour
 			return; 
 		}
 
+		//Flash red.
+		//this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
+		this.gameObject.GetComponent<PlayerColor>().Blink ();
+
 		float vibration = Mathf.Min( 0.67f, (damage / maxHP) * 0.67f );
 		GetComponent<VibrationManager>().ScheduleVibration ( vibration, vibration, 0.10f );
 
@@ -508,7 +512,8 @@ public class Player : MonoBehaviour
 		}
 
 		//Flash red.
-		this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
+		//this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 0.75f, 0.75f), 0.05f );
+		this.gameObject.GetComponent<PlayerColor>().Blink ();
 		GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 
 		//TODO: diminishing returns, thresholds for moves, move interrupt power scaling
