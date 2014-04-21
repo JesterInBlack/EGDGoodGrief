@@ -14,17 +14,20 @@ public class VenomPool : MonoBehaviour
 	//timers
 	private float poisonT = 0.0f;
 	private float lifetimer = 0.0f;
+	private float bubbletimer = 0.0f;
 
 	private float growInTime = 0.5f;
 	private float fadeOutTime = 0.75f;
 
 	public GameObject spriteObject;
+	public GameObject bubblePrefab;
 	#endregion
 
 	// Use this for initialization
 	void Start () 
 	{
 		transform.localScale = new Vector3(0.0f, 0.0f, 0.0f); 
+		//transform.R
 	}
 	
 	// Update is called once per frame
@@ -43,6 +46,22 @@ public class VenomPool : MonoBehaviour
 		float dt = Time.deltaTime * StaticData.t_scale;
 		lifetimer += dt;
 		poisonT += dt;
+		bubbletimer += dt;
+
+		if ( lifespan - lifetimer > 1.0f && bubbletimer >= 0.05f )
+		{
+			bubbletimer -= 0.05f;
+			float rPercent = Random.Range( 0.0f, 1.0f ) + Random.Range( 0.0f, 1.0f );
+			if ( rPercent > 1.0f ) { rPercent = 2.0f - rPercent; }
+			float r = this.gameObject.GetComponent<CircleCollider2D>().radius * transform.localScale.x * 0.90f;
+			float angle = Random.Range( 0.0f, Mathf.PI * 2.0f );
+			Vector3 offset = new Vector3( rPercent * r * Mathf.Cos( angle ), 
+			                              rPercent * r * Mathf.Sin( angle ), 
+			                              -1.0f );
+			GameObject obj = (GameObject)Instantiate( bubblePrefab, this.gameObject.transform.position + offset, Quaternion.identity );
+			obj.GetComponent<Animator>().speed = StaticData.t_scale;
+		}
+
 		if ( poisonT > poisonRate )
 		{
 			applyDebuff = true;
