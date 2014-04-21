@@ -36,6 +36,9 @@ public class WhiteOut : MonoBehaviour
 			Destroy ( this.gameObject );
 		}
 
-		mySpriteRenderer.color = new Color( 1.0f, 1.0f, 1.0f, lerpT );
+		float r = mySpriteRenderer.color.r;
+		float g = mySpriteRenderer.color.g;
+		float b = mySpriteRenderer.color.b;
+		mySpriteRenderer.color = new Color( r, g, b, lerpT );
 	}
 }

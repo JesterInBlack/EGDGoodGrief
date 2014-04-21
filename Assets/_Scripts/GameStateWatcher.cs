@@ -7,13 +7,10 @@ public class GameStateWatcher : MonoBehaviour
 	//(ie. all players are dead / boss is dead.)
 
 	#region vars
-	#endregion
+	public GameObject blackout;
 
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
+	private float lostT = 0.0f;
+	#endregion
 	
 	// Update is called once per frame
 	void Update () 
@@ -47,9 +44,17 @@ public class GameStateWatcher : MonoBehaviour
 		if ( lost )
 		{
 			//Exit to loss screen
-			//TODO: show won / lost GUI first.
+			//Black out first.
+			if ( lostT == 0.0f )
+			{
+				Instantiate ( blackout, this.gameObject.transform.position, Quaternion.identity );
+			}
+			else if ( lostT >= 1.5f )
+			{
+				Application.LoadLevel ( "MainMenu" );
+			}
 			//Debug.Log ( "Total Party Kill" );
-			Application.LoadLevel ( "MainMenu" );
+			lostT += Time.deltaTime * StaticData.t_scale;
 		}
 		if ( won )
 		{
