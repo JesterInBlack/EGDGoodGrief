@@ -18,7 +18,7 @@ public class Impale : Action
 	public float _cooldownTime;
 
 	public float radius = 1.0f;    //TODO: make < 1
-	public float damage = 35.0f;
+	public float damage = 20.0f;
 	#endregion
 
 	public enum AttackState

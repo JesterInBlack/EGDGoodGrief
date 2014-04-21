@@ -17,6 +17,7 @@ public class HUD : MonoBehaviour
 	public Texture2D itemSelector;  //Selector     (set in inspector)
 	public Texture2D aButton;       //A button     (set in inspector)
 	public Texture2D aButtonGray;   //A button     (set in inspector)
+	public Texture2D itemWheel;     //Item wheel   (set in inspector)
 	//Custom parts
 	public Texture2D HPBarFillGray; //HP bar       (set in inspector)
 	public Texture2D knightBG;      //Background   (set in inspector)
@@ -37,9 +38,10 @@ public class HUD : MonoBehaviour
 	public enum ScreenCorner { UPPER_RIGHT, UPPER_LEFT, LOWER_RIGHT, LOWER_LEFT };
 	public ScreenCorner screenCorner;
 	public Vector2 HPBarOffset;      //HP bar's offset.               (set in inspector)
-	public Vector2 itemPos1;         //item offset                    (set in inspector)
-	public Vector2 itemPos2;         //item offset                    (set in inspector)
-	public Vector2 itemPos3;         //item offset                    (set in inspector)
+	public Vector2 itemPos;          //item offset                    (set in inspector)
+	//public Vector2 itemPos1;         //item offset                    (set in inspector)
+	//public Vector2 itemPos2;         //item offset                    (set in inspector)
+	//public Vector2 itemPos3;         //item offset                    (set in inspector)
 	private bool flipAnchor = false; //do we flip the way HP fills?
 	private bool upsideDown = false; //is it upside down?
 	//Rocket Sword
@@ -89,6 +91,9 @@ public class HUD : MonoBehaviour
 	void Update () 
 	{
 		//HPBarStuff();
+
+		//Items: ?, ??, selected, ?, ??
+		//Rotation changes: -1 to 0. moves at speed to stabilize. -x.
 	}
 	
 	void OnGUI ()
@@ -114,11 +119,11 @@ public class HUD : MonoBehaviour
 			pos = new Vector2( Screen.width - size.x, Screen.height - size.y );
 		}
 
-		//Draw HP bar 1st : for all classes
-		HPBarStuff( pos );
-
 		//Draw Items under the GUI?
 		ItemStuff( pos );
+
+		//Draw HP bar 1st : for all classes
+		HPBarStuff( pos );
 
 		//Now we draw non-common elements
 		if ( player.characterclass == CharacterClasses.KNIGHT ) 
@@ -284,41 +289,31 @@ public class HUD : MonoBehaviour
 		//99% -> 75%
 		//0% -> 25%
 		//LT
-		int itemIndex = (player.itemIndex + 2) % 3;
-		float f = 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay);
-		if ( f < 1.0f ) 
-		{ 
-			f = f * 0.65f + 0.25f; 
+
+		int itemIndex = player.itemIndex;
+		float r = 60.0f;
+
+		GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 80.0f, pos.y + itemPos.y - 80.0f, 159.0f, 159.0f ), itemWheel );
+		for ( float angle = 90.0f; angle < 360.0f + 90.0f; angle += 360.0f / 6.0f )
+		{
+			float f = Mathf.Lerp ( 0.25f, 1.0f, 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay) );
+			GUI.color = new Color( 1.0f, 1.0f, 1.0f, f );
+			GUI.DrawTexture ( new Rect( pos.x + itemPos.x + (r * Mathf.Cos ( ( angle + 60.0f * player.itemLerp ) * Mathf.Deg2Rad ) ) - 16.0f, 
+			                            pos.y + itemPos.y + (r * Mathf.Sin ( ( angle + 60.0f * player.itemLerp )* Mathf.Deg2Rad ) ) - 16.0f, 32, 32 ), 
+			                  ItemImages.getImage ( player.items[itemIndex].name ) );
+			GUI.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+			itemIndex ++;
+			itemIndex = itemIndex % 3;
 		}
-		GUI.color = new Color( f, f, f, f );
-		GUI.DrawTexture ( new Rect( pos.x + itemPos1.x, pos.y + itemPos1.y, 32, 32 ), ItemImages.getImage ( player.items[itemIndex].name ) );
 
-		//Bumper?
-		itemIndex = player.itemIndex;
-		f = 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay);
-		if ( f < 1.0f ) 
-		{ 
-			f = f * 0.65f + 0.25f; 
+		if ( ! upsideDown )
+		{
+			GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 16.0f, pos.y + itemPos.y + r - 16.0f, 32, 32 ), itemSelector );
 		}
-		GUI.color = new Color( f, f, f, f );
-		GUI.DrawTexture ( new Rect( pos.x + itemPos2.x, pos.y + itemPos2.y, 32, 32 ), ItemImages.getImage ( player.items[itemIndex].name ) );
-
-		//RT
-		itemIndex = (player.itemIndex + 1) % 3;
-		f = 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay);
-		if ( f < 1.0f ) 
-		{ 
-			f = f * 0.65f + 0.25f; 
+		else
+		{
+			GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 16.0f, pos.y + itemPos.y - r - 16.0f, 32, 32 ), itemSelector );
 		}
-		GUI.color = new Color( f, f, f, f );
-		GUI.DrawTexture ( new Rect( pos.x + itemPos3.x, pos.y + itemPos3.y, 32, 32 ), ItemImages.getImage ( player.items[itemIndex].name ) );
-
-		//reset color
-		GUI.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
-
-		//Draw item selector.
-		//Vector2 selectorOffset = itemPos2;
-		//GUI.DrawTexture ( new Rect( pos.x + selectorOffset.x, pos.y + selectorOffset.y, 32, 32 ), itemSelector );
 	}
 
 	void DrawReviveThreshold( Vector2 pos )

@@ -96,6 +96,7 @@ public class Player : MonoBehaviour
 	//item cooldowns?
 	public Item[] items = new Item[3];
 	public int itemIndex = 0;
+	public float itemLerp = 0.0f; //for animations.
 	const int ITEM_SLOT_COUNT = 3;
 
 	//unique mechanic data
@@ -336,6 +337,16 @@ public class Player : MonoBehaviour
 			}
 		}
 
+		//Smooth item lerping.
+		if ( itemLerp > 0.0f )
+		{
+			itemLerp = Mathf.Max( 0.0f,  itemLerp - t * 5.0f );
+		}
+		else if ( itemLerp < 0.0f )
+		{
+			itemLerp = Mathf.Min ( 0.0f, itemLerp + t * 5.0f );
+		}
+
 		//Check if player died (from a lethal DoT)
 		if ( HP <= 0.0f && ! isDowned )
 		{
@@ -389,6 +400,7 @@ public class Player : MonoBehaviour
 		        state == "item aim point") )
 		{
 			itemIndex = Mod( itemIndex + increment, ITEM_SLOT_COUNT );
+			itemLerp += increment;
 		}
 	}
 
