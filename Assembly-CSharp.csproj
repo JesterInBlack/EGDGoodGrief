@@ -200,6 +200,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\TetherHook.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\TetherHookScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\TetherProjectileScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\VenomBuffScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\VenomPool.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Web.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\WebBuffScript.cs" />

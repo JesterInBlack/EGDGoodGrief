@@ -23,16 +23,9 @@ public class CheckLegHealth : Action
 	//runs the actual task
 	public override TaskStatus OnUpdate()
 	{
-		if(_legScript._behaviorState != LegScript.BehaviorState.Disabled)
+		if((float)(_legScript._currentHP / _legScript._maxHP) > _thresholdPercent)
 		{
-			if((float)(_legScript._currentHP / _legScript._maxHP) > _thresholdPercent)
-			{
-				return TaskStatus.Success;
-			}
-			else
-			{
-				return TaskStatus.Failure;
-			}
+			return TaskStatus.Success;
 		}
 		else
 		{
