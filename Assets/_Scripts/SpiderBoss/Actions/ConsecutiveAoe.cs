@@ -13,7 +13,7 @@ public class ConsecutiveAoe : Action
 	public override void OnAwake()
 	{
 		// cache for quick lookup
-		_offsetMagnitude = 3.0f;
+		_offsetMagnitude = 4.0f;
 	}
 
 	public override void OnStart()
