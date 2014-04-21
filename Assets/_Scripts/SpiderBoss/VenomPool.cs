@@ -9,7 +9,7 @@ public class VenomPool : MonoBehaviour
 	private const float poisonDamage = 0.125f;  //Secondary effect DPS
 	private const float poisonDuration = 8.0f;  //Secondary effect duration
 	private const float lifespan = 10.0f;       //lifespan (in s)
-	private const float maxSize = 1.75f;
+	private const float maxSize = 1.5f;
 
 	//timers
 	private float poisonT = 0.0f;
@@ -17,6 +17,8 @@ public class VenomPool : MonoBehaviour
 
 	private float growInTime = 0.5f;
 	private float fadeOutTime = 0.75f;
+
+	public GameObject spriteObject;
 	#endregion
 
 	// Use this for initialization
@@ -34,7 +36,7 @@ public class VenomPool : MonoBehaviour
 		
 		//fade out
 		temp = Mathf.Lerp( 1.0f, 0.0f, Mathf.Min ( 1.0f, (lifetimer - (lifespan - fadeOutTime)) / fadeOutTime ) );
-		this.gameObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, temp );
+		spriteObject.GetComponent<SpriteRenderer>().color = new Color( 1.0f, 1.0f, 1.0f, temp );
 
 		#region timer
 		bool applyDebuff = false;
