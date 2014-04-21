@@ -21,7 +21,7 @@ public class ScoreText : MonoBehaviour
 	void Update () 
 	{
 		scoreName.color = new Color( scoreName.color.r, scoreName.color.g, scoreName.color.b, 1.0f - t );
-		scorePoints.color = new Color( scoreName.color.r, scoreName.color.g, scoreName.color.b, 1.0f - t );
+		scorePoints.color = new Color( scorePoints.color.r, scorePoints.color.g, scorePoints.color.b, 1.0f - t );
 		transform.position += new Vector3( 0.0f, Time.deltaTime * StaticData.t_scale, 0.0f );
 
 		t += Time.deltaTime * StaticData.t_scale;
