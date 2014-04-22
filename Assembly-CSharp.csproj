@@ -85,7 +85,6 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector2.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector3.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector4.cs" />
-     <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\AuraFX.cs" />
      <Compile Include="Assets\_Scripts\Buff.cs" />
      <Compile Include="Assets\_Scripts\BulletTimeManager.cs" />
@@ -98,7 +97,6 @@
      <Compile Include="Assets\_Scripts\Character Class\StoneFist.cs" />
      <Compile Include="Assets\_Scripts\Credits.cs" />
      <Compile Include="Assets\_Scripts\CustomController.cs" />
-     <Compile Include="Assets\_Scripts\Debug\BossDebugHelper.cs" />
      <Compile Include="Assets\_Scripts\GameState.cs" />
      <Compile Include="Assets\_Scripts\GameStateWatcher.cs" />
      <Compile Include="Assets\_Scripts\HUD.cs" />
@@ -117,7 +115,6 @@
      <Compile Include="Assets\_Scripts\Old\test.cs" />
      <Compile Include="Assets\_Scripts\Oscillate.cs" />
      <Compile Include="Assets\_Scripts\OverHeadText.cs" />
-     <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\PlayerColor.cs" />
      <Compile Include="Assets\_Scripts\PostGameScore.cs" />
      <Compile Include="Assets\_Scripts\PreGameMenu.cs" />
@@ -155,14 +152,10 @@
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\UnityMegaFlareEye.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\UnityMegaFlareSharedLegs.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Actions\resetSelectedLeg.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BeamCharge.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BeamWidener.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorBlackboard.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BehaviorData.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BodyScript.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\BodyShadow.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BossCoreHP.cs" />
-     <Compile Include="Assets\_Scripts\SpiderBoss\BossManager.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Composites\GetPlayerPriority_Sequence.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountLeg.cs" />
      <Compile Include="Assets\_Scripts\SpiderBoss\Conditionals\AliveCountPlayer.cs" />
@@ -204,10 +197,17 @@
      <Compile Include="Assets\_Scripts\VibrationManager.cs" />
      <Compile Include="Assets\_Scripts\VibrationResetter.cs" />
      <Compile Include="Assets\_Scripts\WhiteOut.cs" />
+     <Compile Include="Assets\_scripts\AttackSystem.cs" />
+     <Compile Include="Assets\_scripts\Debug\BossDebugHelper.cs" />
      <Compile Include="Assets\_scripts\ItemHandler.cs" />
+     <Compile Include="Assets\_scripts\Player.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ApplyBuff.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\CrouchingCharge.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\FireChaseBeam.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BeamCharge.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BeamWidener.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BossCoreHP.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\BossManager.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
  <Reference Include="XInputDotNetPure">

@@ -38,7 +38,7 @@ public class FireChaseBeam : Action
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 		_eyesScript = _blackboard.eye.GetComponent<EyeScript>();
 		_laserSpawnPoint = _eyesScript._laserSpawnPoint;
-		_chargeDuration = _chargeObject.GetComponent<Lifetime>().lifetime;
+		_chargeDuration = 2.0f; //_chargeObject.GetComponent<Lifetime>().lifetime;
 		_laserDuration = _laserObject.GetComponent<Lifetime>().lifetime;
 	}
 
