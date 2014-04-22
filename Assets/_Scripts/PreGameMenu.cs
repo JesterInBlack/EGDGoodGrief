@@ -38,7 +38,7 @@ public class PreGameMenu : MonoBehaviour
 	public Texture2D mainMenuCreditsButtonGray;                             //Button image (gray) set in inspector
 	private float creditsButtonLerp = 0.0f;                                 //Lerp
 	private int mainMenuIndex = 0;
-	private const int MAIN_MENU_BUTTON_COUNT = 3;
+	private const int MAIN_MENU_BUTTON_COUNT = 4;
 
 	public Texture2D characterBackground;
 	public Texture2D[] playerHoverIcons = new Texture2D[4];                 //"hover" selector icons
@@ -201,6 +201,8 @@ public class PreGameMenu : MonoBehaviour
 			else {                      tutorialButtonLerp = Mathf.Max ( 0.0f, tutorialButtonLerp - Time.deltaTime * 3.0f ); }
 			if ( mainMenuIndex == 2 ) { optionsButtonLerp = Mathf.Min ( 1.0f, optionsButtonLerp + Time.deltaTime * 3.0f ); }
 			else {                      optionsButtonLerp = Mathf.Max ( 0.0f, optionsButtonLerp - Time.deltaTime * 3.0f ); }
+			if ( mainMenuIndex == 3 ) { creditsButtonLerp = Mathf.Min ( 1.0f, creditsButtonLerp + Time.deltaTime * 3.0f ); }
+			else {                      creditsButtonLerp = Mathf.Max ( 0.0f, creditsButtonLerp - Time.deltaTime * 3.0f ); }
 
 			if ( onAPressed( currentGamePadState[0], prevState[0] ) )
 			{
@@ -234,6 +236,11 @@ public class PreGameMenu : MonoBehaviour
 				}
 				else if ( mainMenuIndex == 2 ) //OPTIONS
 				{
+				}
+				else if ( mainMenuIndex == 3 ) //CREDITS
+				{
+					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuConfirm );
+					Application.LoadLevel ( "Credits" );
 				}
 			}
 			if ( onDownPressed ( currentGamePadState[0], prevState[0] ) )
@@ -516,7 +523,7 @@ public class PreGameMenu : MonoBehaviour
 			GUI.DrawTexture ( new Rect( 0.0f, 0.0f, 1440.0f * xScale, 900.0f * yScale), mainMenuBackground );
 
 			float x = (Screen.width - 200.0f) / 2.0f;
-			float y = (Screen.height - 60.0f) / 2.0f - 80.0f;
+			float y = (Screen.height - 60.0f) / 2.0f - 160.0f;
 			GUI.DrawTexture ( new Rect( x, y, 200.0f, 60.0f ), mainMenuPlayButtonGray );
 			GUI.color = new Color( 1.0f, 1.0f, 1.0f, playButtonLerp );
 			GUI.DrawTexture ( new Rect( x, y, 200.0f, 60.0f ), mainMenuPlayButton );
@@ -532,6 +539,12 @@ public class PreGameMenu : MonoBehaviour
 			GUI.DrawTexture ( new Rect( x, y, 200.0f, 60.0f ), mainMenuOptionsButtonGray );
 			GUI.color = new Color( 1.0f, 1.0f, 1.0f, optionsButtonLerp );
 			GUI.DrawTexture ( new Rect( x, y, 200.0f, 60.0f ), mainMenuOptionsButton );
+			GUI.color = Color.white;
+
+			y += 80.0f;
+			GUI.DrawTexture ( new Rect( x, y, 200.0f, 60.0f ), mainMenuCreditsButtonGray );
+			GUI.color = new Color( 1.0f, 1.0f, 1.0f, creditsButtonLerp );
+			GUI.DrawTexture ( new Rect( x, y, 200.0f, 60.0f ), mainMenuCreditsButton );
 			GUI.color = Color.white;
 			#endregion
 		}
