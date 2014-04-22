@@ -128,6 +128,7 @@
      <Compile Include="Assets\_scripts\ScorePasser.cs" />
      <Compile Include="Assets\_scripts\ScoreText.cs" />
      <Compile Include="Assets\_scripts\SetSortingLayer.cs" />
+     <Compile Include="Assets\_scripts\ShockwaveSpawner.cs" />
      <Compile Include="Assets\_scripts\SoundStorage.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\ApplyBuff.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Actions\BodySlam.cs" />
