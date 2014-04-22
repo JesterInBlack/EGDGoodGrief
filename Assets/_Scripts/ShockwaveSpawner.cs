@@ -13,19 +13,39 @@ public class ShockwaveSpawner : MonoBehaviour
 	public float _innerRadius = 0.5f;
 	public float _outterRadius = 1.5f;
 
+	private float _lifeTime;
+	private float _timer;
+
 	// Use this for initialization
 	void Start ()
 	{
-	
+		_timer = 0.0f;
+		_lifeTime = _ringEffect.GetComponent<ParticleEmitter>().maxEnergy;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		/*
 		if(Input.GetKeyDown(KeyCode.A))
 		{
 			SpawnShockwave(transform.position);
 		}
+		*/
+		if(_timer == 0.0f)
+		{
+			Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, 0.0f);
+			SpawnShockwave(targetPos);
+		}
+		if(_timer < _lifeTime)
+		{
+			_timer += Time.deltaTime * StaticData.t_scale;
+		}
+		else
+		{
+			Destroy(this.gameObject);
+		}
+
 	}
 
 	//this function creates a shockwave at the target vector each time it's called
@@ -45,7 +65,7 @@ public class ShockwaveSpawner : MonoBehaviour
 		//loop through particles giving intial vel and pos
 		for(int i = 0; i < p.Length; i++)
 		{
-			Vector3 ruv = RandomUnitInVectorPlane(effectObject.transform, effectObject.transform.up);
+			Vector3 ruv = RandomUnitInVectorPlane(effectObject.transform, effectObject.transform.forward);
 
 			// Calc the initial position of the particle accounting for the specified ring radii.  Note the use of Range
 			// to get a random distance distribution within the ring.
