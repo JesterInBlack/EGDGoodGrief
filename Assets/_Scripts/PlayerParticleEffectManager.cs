@@ -5,6 +5,7 @@ public class PlayerParticleEffectManager : MonoBehaviour
 {
 	#region vars
 	private Player player;
+	private bool enableHealingThisFrame;
 
 	public ParticleSystem healingEffect;
 	public ParticleSystem poisonEffect;
@@ -15,6 +16,7 @@ public class PlayerParticleEffectManager : MonoBehaviour
 	void Awake () 
 	{
 		player = this.gameObject.GetComponent<Player>();
+		enableHealingThisFrame = false;
 
 		if ( player.characterclass != CharacterClasses.DEFENDER )
 		{
@@ -50,7 +52,7 @@ public class PlayerParticleEffectManager : MonoBehaviour
 		#endregion
 
 		#region healing
-		if ( player.isActuallyHealing )
+		if ( player.isActuallyHealing || enableHealingThisFrame )
 		{
 			healingEffect.enableEmission = true;
 		}
@@ -76,5 +78,13 @@ public class PlayerParticleEffectManager : MonoBehaviour
 			}
 		}
 		#endregion
+
+		enableHealingThisFrame = false;
+	}
+
+	public void EnableHealingThisFrame()
+	{
+		healingEffect.enableEmission = true;
+		enableHealingThisFrame = true;
 	}
 }
