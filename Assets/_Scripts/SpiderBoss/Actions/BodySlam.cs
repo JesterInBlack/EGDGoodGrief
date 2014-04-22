@@ -8,6 +8,7 @@ public class BodySlam : Action
 {
 	public SharedGameObject _optionalObjectToDestroy;
 	public GameObject _pointOfDamage;
+	public GameObject _shockwaveSpawner;
 
 	public float _bumpHeight;
 	public float _chargeTime;
@@ -85,6 +86,7 @@ public class BodySlam : Action
 					Destroy(_optionalObjectToDestroy.Value);
 				}
 
+				Instantiate(_shockwaveSpawner, _pointOfDamage.transform.position, Quaternion.identity);
 				AttackSystem.hitCircle((Vector2)_pointOfDamage.transform.position, 3.5f, 30.0f, -1);
 				GameState.cameraController.Shake (0.125f, 0.3f );
 
