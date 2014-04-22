@@ -418,7 +418,7 @@ public static class AttackSystem
 		float PLAYER_BASE_SPEED = StaticData.playerMoveSpeed;
 		float x = player.transform.position.x;
 		float y = player.transform.position.y;
-		float z = player.transform.position.z;
+		//float z = player.transform.position.z;
 		Vector2 pos = new Vector2( x, y );
 		Vector2 moveDirection = point - pos;
 		float dist = moveDirection.magnitude;
