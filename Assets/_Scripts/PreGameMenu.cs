@@ -34,6 +34,9 @@ public class PreGameMenu : MonoBehaviour
 	public Texture2D mainMenuTutorialButton;                                //Button image        set in inspector
 	public Texture2D mainMenuTutorialButtonGray;                            //Button image (gray) set in inspector
 	private float tutorialButtonLerp = 0.0f;                                //Lerp
+	public Texture2D mainMenuCreditsButton;                                 //Button image        set in inspector
+	public Texture2D mainMenuCreditsButtonGray;                             //Button image (gray) set in inspector
+	private float creditsButtonLerp = 0.0f;                                 //Lerp
 	private int mainMenuIndex = 0;
 	private const int MAIN_MENU_BUTTON_COUNT = 3;
 

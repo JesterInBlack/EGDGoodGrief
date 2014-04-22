@@ -120,6 +120,7 @@
      <Compile Include="Assets\_Scripts\OverHeadText.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\PlayerColor.cs" />
+     <Compile Include="Assets\_Scripts\PlayerParticleEffectManager.cs" />
      <Compile Include="Assets\_Scripts\PostGameScore.cs" />
      <Compile Include="Assets\_Scripts\PreGameMenu.cs" />
      <Compile Include="Assets\_Scripts\Push.cs" />

@@ -13,9 +13,11 @@ public class HeadGrabber : MonoBehaviour
 	private const float duration = 10.0f;         //base duration of the headgrabber
 	public float nonTransferrableTimeLeft = 0.0f; //time left until it can be transferred again.
 	private const float transferCooldown = 1.0f;  //wait time between transfers
-	private const float burstDamage = 30.0f;      //amount of damage dealt when it expires
+	private const float burstDamage = 20.0f;      //amount of damage dealt when it expires
 	private const bool burstExplodes = false;     //whether or not the burst explodes, dealing AoE rather than single target damage.
-	private const float dotDamage = 1.0f;         //DPS while you're infected.
+	private const float dotDamage = 2.0f;         //DPS while you're infected.
+	private float dotTimer = 0.0f;                //Timer for DoT ticks.
+	private const float dotDelay = 1.0f;          //How often the dot ticks (in s).
 	#endregion
 
 	//Use this for pre-initialization
@@ -45,8 +47,14 @@ public class HeadGrabber : MonoBehaviour
 		float dt = Time.deltaTime;
 		if ( player.isInBulletTime == false ) { dt = dt * StaticData.t_scale; }
 
-		//DoT tick.
-		player.HP = Mathf.Max ( 1.0f, ( player.HP - stacks * dotDamage * dt ) / player.defense );
+		dotTimer += dt;
+		if ( dotTimer >= dotDelay )
+		{
+			//DoT tick.
+			dotTimer -= dotDelay;
+			player.HP = Mathf.Max ( 1.0f, ( player.HP - stacks * dotDamage * dotDelay ) / player.defense );
+			player.GetComponent<PlayerColor>().Blink ();
+		}
 
 		timeLeft = Mathf.Max ( 0.0f, timeLeft - dt );
 		nonTransferrableTimeLeft = Mathf.Max ( 0.0f, nonTransferrableTimeLeft - dt );

@@ -3,6 +3,7 @@ guid: f0fcda301bd240842859f633121a0c3c
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
+  - menuDataSaver: {instanceID: 0}
   - titleBackground: {fileID: 2800000, guid: ae3a1ee72ac879647b74b433d770b9b8, type: 3}
   - mainMenuBackground: {fileID: 2800000, guid: ae3a1ee72ac879647b74b433d770b9b8,
       type: 3}
@@ -17,6 +18,10 @@ MonoImporter:
   - mainMenuTutorialButton: {fileID: 2800000, guid: b0d0cf7489e4a1746b0ebbea4c67ca2e,
       type: 3}
   - mainMenuTutorialButtonGray: {fileID: 2800000, guid: dc37fe437b30a064a924dc73c803a836,
+      type: 3}
+  - mainMenuCreditsButton: {fileID: 2800000, guid: 4739f5a4ef9f325408fc032f5458ed49,
+      type: 3}
+  - mainMenuCreditsButtonGray: {fileID: 2800000, guid: 08922af78d4740446863842e92e6ae7d,
       type: 3}
   - characterBackground: {fileID: 2800000, guid: ace771341a9d81b4289998e9addddcc5,
       type: 3}
