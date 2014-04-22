@@ -18,6 +18,9 @@ public class HUD : MonoBehaviour
 	public Texture2D aButton;       //A button     (set in inspector)
 	public Texture2D aButtonGray;   //A button     (set in inspector)
 	public Texture2D itemWheel;     //Item wheel   (set in inspector)
+	public Texture2D leftBumper;    //LB           (set in inspector)
+	public Texture2D rightBumper;   //RB           (set in inspector)
+	public Texture2D leftTrigger;   //LT           (set in inspector)
 	//Custom parts
 	public Texture2D HPBarFillGray; //HP bar       (set in inspector)
 	public Texture2D knightBG;      //Background   (set in inspector)
@@ -39,9 +42,7 @@ public class HUD : MonoBehaviour
 	public ScreenCorner screenCorner;
 	public Vector2 HPBarOffset;      //HP bar's offset.               (set in inspector)
 	public Vector2 itemPos;          //item offset                    (set in inspector)
-	//public Vector2 itemPos1;         //item offset                    (set in inspector)
-	//public Vector2 itemPos2;         //item offset                    (set in inspector)
-	//public Vector2 itemPos3;         //item offset                    (set in inspector)
+	public Vector2 bumperOffset;     //bumper offset                  (set in inspector)
 	private bool flipAnchor = false; //do we flip the way HP fills?
 	private bool upsideDown = false; //is it upside down?
 	//Rocket Sword
@@ -303,7 +304,20 @@ public class HUD : MonoBehaviour
 		int itemIndex = player.itemIndex;
 		float r = 60.0f;
 
+		//Background Wheel
 		GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 80.0f, pos.y + itemPos.y - 80.0f, 159.0f, 159.0f ), itemWheel );
+
+		//LT
+		if ( ! upsideDown )
+		{
+			GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 13.0f, pos.y + itemPos.y + r - 13.0f, 26, 26 ), leftTrigger );
+		}
+		else
+		{
+			GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 13.0f, pos.y + itemPos.y - r - 13.0f, 26, 26 ), leftTrigger );
+		}
+
+		//Item icons
 		for ( float angle = 90.0f; angle < 360.0f + 90.0f; angle += 360.0f / 6.0f )
 		{
 			float f = Mathf.Lerp ( 0.25f, 1.0f, 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay) );
@@ -312,10 +326,15 @@ public class HUD : MonoBehaviour
 			                            pos.y + itemPos.y + (r * Mathf.Sin ( ( angle + 60.0f * player.itemLerp )* Mathf.Deg2Rad ) ) - 16.0f, 32, 32 ), 
 			                  ItemImages.getImage ( player.items[itemIndex].name ) );
 			GUI.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
-			itemIndex ++;
-			itemIndex = itemIndex % 3;
+			itemIndex --;
+			itemIndex = (itemIndex + 3) % 3;
 		}
 
+		//Bumper icons
+		GUI.DrawTexture ( new Rect( pos.x + itemPos.x + bumperOffset.x, pos.y + itemPos.y + bumperOffset.y, 32.0f, 24.0f ),leftBumper );
+		GUI.DrawTexture ( new Rect( pos.x + itemPos.x + bumperOffset.x + 88.0f, pos.y + itemPos.y + bumperOffset.y, 32.0f, 24.0f ),rightBumper );
+
+		//Item selector
 		if ( ! upsideDown )
 		{
 			GUI.DrawTexture ( new Rect( pos.x + itemPos.x - 16.0f, pos.y + itemPos.y + r - 16.0f, 32, 32 ), itemSelector );

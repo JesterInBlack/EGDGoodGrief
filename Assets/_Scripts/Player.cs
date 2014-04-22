@@ -408,7 +408,7 @@ public class Player : MonoBehaviour
 		        state == "item aim point") )
 		{
 			itemIndex = Mod( itemIndex + increment, ITEM_SLOT_COUNT );
-			itemLerp += increment;
+			itemLerp -= increment;
 		}
 	}
 

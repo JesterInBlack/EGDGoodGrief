@@ -16,7 +16,7 @@ public class BossCoreHP : MonoBehaviour
 	private float prevAlpha = 1.0f;
 	ScheduledColor currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f), 0.0f );
 
-	private float soundDelay = 0.5f; //seconds between hurt sound being played? TODO: better solution.
+	private float soundDelay = 0.2f; //seconds between hurt sound being played? TODO: better solution.
 	private float soundTimer = 0.0f;
 	#endregion
 
@@ -144,7 +144,7 @@ public class BossCoreHP : MonoBehaviour
 			if ( myBlackboard.HP <= 0.0f )
 			{
 				//play dead sound
-				transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
 			}
 			else
 			{
@@ -153,11 +153,11 @@ public class BossCoreHP : MonoBehaviour
 				float possibilities = 2.0f;
 				if ( rng <= 1.0f * 100.0f / possibilities )
 				{
-					transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit1, 1.0f );
+					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit1, 1.0f );
 				}
 				else //if ( rng <= 2.0f * 100.0f / possibilities )
 				{
-					transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
+					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
 				}
 			}
 			soundTimer = soundDelay;
