@@ -60,6 +60,7 @@ public class ItemHandler : MonoBehaviour
 		else
 		{
 			//Still on cooldown.
+			this.gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel, 1.0f );
 		}
 	}
 	
@@ -159,6 +160,7 @@ public class ItemHandler : MonoBehaviour
 		//TODO: sound?
 		//don't allow players to stack the same buff from the same source multiple times on themselves.
 		//      instead, refresh it.
+		this.gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemBuff, 1.0f );
 		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
 			if ( GameState.players[i] != null )

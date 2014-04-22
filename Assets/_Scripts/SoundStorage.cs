@@ -28,15 +28,26 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip BossWeb;
 	public static AudioClip BossLaser;
 	public static AudioClip BossSuction;
+	public static AudioClip BossLegHit;
+	public static AudioClip BossHit1;
+	public static AudioClip BossHit2;
+	public static AudioClip BossLegBreak;
 
 	public static AudioClip ItemJarShatter;
 	public static AudioClip ItemVampFang;
 	public static AudioClip ItemSlowMoIn;
 	public static AudioClip ItemSlowMoOut;
+	public static AudioClip ItemBuff;
+	public static AudioClip ItemDebuff;
 
 	public static AudioClip MenuCancel;
 	public static AudioClip MenuBack;
 	public static AudioClip MenuConfirm;
+
+	public static AudioClip PlayerHurt1;
+	public static AudioClip PlayerHurt2;
+	public static AudioClip PlayerBlock1;
+	public static AudioClip PlayerBlock2;
 	#endregion
 
 	void Awake()
@@ -60,15 +71,26 @@ public class SoundStorage : MonoBehaviour
 		ArcherBlowback = Resources.Load<AudioClip>( "_Sounds/Archer/Wind_Gust" );
 		ArcherArrowImpact = Resources.Load<AudioClip>( "_Sounds/Archer/arrow_hit2" );
 
+		PlayerHurt1 = Resources.Load<AudioClip>( "_Sounds/player_hit" );
+		PlayerHurt2 = Resources.Load<AudioClip>( "_Sounds/player_hit2" );
+		PlayerBlock1 = Resources.Load<AudioClip>( "_Sounds/block1" );
+		PlayerBlock2 = Resources.Load<AudioClip>( "_Sounds/block2" );
+
 		BossImpale = Resources.Load<AudioClip>( "_Sounds/Boss/Impale" );
 		BossWeb = Resources.Load<AudioClip>( "_Sounds/Boss/web2" );
 		BossLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser2" );
 		BossSuction = Resources.Load<AudioClip>( "_Sounds/Boss/suction2" );
+		BossLegHit = Resources.Load<AudioClip>( "_Sounds/Boss/leg_impact" );
+		BossLegBreak = Resources.Load<AudioClip>( "_Sounds/Boss/leg_break" );
+		BossHit1 = Resources.Load<AudioClip>( "_Sounds/stab_squish_heavy" );
+		BossHit1 = Resources.Load<AudioClip>( "_Sounds/stab_squish_light" );
 
 		ItemJarShatter = Resources.Load<AudioClip>( "_Sounds/Item/jar_shatter" );
 		ItemSlowMoIn = Resources.Load<AudioClip>( "_Sounds/Item/slomo_in" );
 		ItemSlowMoOut = Resources.Load<AudioClip>( "_Sounds/Item/slomo_out" );
 		ItemVampFang = Resources.Load<AudioClip>( "_Sounds/Item/vampire_suck" );
+		ItemBuff = Resources.Load<AudioClip>( "_Sounds/Item/powerup" );
+		ItemDebuff = Resources.Load<AudioClip>( "_Sounds/Item/debuff" );
 
 		MenuCancel = Resources.Load<AudioClip>( "_Sounds/Menu/menu_cancel" );
 		MenuBack = Resources.Load<AudioClip>( "_Sounds/Menu/menu_back" );

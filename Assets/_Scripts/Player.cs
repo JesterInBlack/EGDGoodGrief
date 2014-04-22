@@ -116,6 +116,9 @@ public class Player : MonoBehaviour
 	public float channellingHealingCooldown = 0.0f;  //cooldown
 
 	public GameObject scoreTextPrefab;
+
+	private float soundSpamTimer = 0.0f;
+	private float soundSpamDelay = 0.1f;
 	#endregion
 
 	//Use this for pre-initialization
@@ -294,6 +297,9 @@ public class Player : MonoBehaviour
 			channellingHealingCooldown -= t;
 		}
 
+		//sound spam timer
+		soundSpamTimer -= t;
+
 		if ( state == "knockback" )
 		{
 			this.gameObject.GetComponent<Animator>().Play ( "knocked_" + GetAniSuffix() );
@@ -420,6 +426,7 @@ public class Player : MonoBehaviour
 		{
 			ScoreManager.AvoidedDamage ( id, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
+			PlayBlockSound();
 			return; 
 		}
 		if ( isStoneSkin ) 
@@ -427,6 +434,7 @@ public class Player : MonoBehaviour
 			ScoreManager.AvoidedDamage ( id, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			isStoneSkin = false; 
+			PlayBlockSound();
 			return; 
 		}
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
@@ -434,6 +442,7 @@ public class Player : MonoBehaviour
 			ScoreManager.AvoidedDamage ( id, damage );
 			this.gameObject.GetComponent<StoneFist>().OnHitCallback( -1, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
+			PlayBlockSound();
 			return; 
 		}
 
@@ -443,6 +452,7 @@ public class Player : MonoBehaviour
 
 		float vibration = Mathf.Min( 0.67f, (damage / maxHP) * 0.67f );
 		GetComponent<VibrationManager>().ScheduleVibration ( vibration, vibration, 0.10f );
+		PlayHurtSound();
 
 		//deal damage
 		float finalDamage = damage / defense;
@@ -645,6 +655,36 @@ public class Player : MonoBehaviour
 		myBuff.Start ();
 	}
 
+	private void PlayBlockSound()
+	{
+		if ( soundSpamTimer > 0.0f ) { return; }
+		soundSpamTimer = soundSpamDelay;
+		float rng = Random.Range ( 0.0f, 100.0f );
+		if ( rng <= 50.0f )
+		{
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerBlock1, 1.0f );
+		}
+		else
+		{
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerBlock2, 1.0f );
+		}
+	}
+
+	private void PlayHurtSound()
+	{
+		if ( soundSpamTimer > 0.0f ) { return; }
+		soundSpamTimer = soundSpamDelay;
+		float rng = Random.Range ( 0.0f, 100.0f );
+		if ( rng <= 50.0f )
+		{
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerHurt1, 1.0f );
+		}
+		else
+		{
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerHurt2, 1.0f );
+		}
+	}
+
 	private void Die()
 	{
 		//deadz.
@@ -766,6 +806,7 @@ public class Player : MonoBehaviour
 	public void RemoveBuffsGivenByPlayer( int giverID )
 	{
 		//removes all buffs given to you by the player with ID.
+		bool removed = false;
 		for ( int i = buffs.Count - 1; i >= 0; i-- )
 		{
 			Buff tempBuff = (Buff) buffs[i];
@@ -778,7 +819,13 @@ public class Player : MonoBehaviour
 				//TODO: Play blacklist sound, do notification
 				//Blacklisting causes additional anti-cooperation
 				GameState.cooperationAxis = Mathf.Max ( -1.0f,  GameState.cooperationAxis - 0.025f );
+				removed = true;
 			}
+		}
+
+		if ( removed )
+		{
+			this.gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemDebuff, 1.0f );
 		}
 	}
 
