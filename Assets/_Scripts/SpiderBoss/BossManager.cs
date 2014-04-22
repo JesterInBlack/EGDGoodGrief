@@ -55,7 +55,7 @@ public class BossManager : MonoBehaviour
 				}
 				if(allBehaviors[i].group == 2)	//apply buff
 				{
-					testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 1f, -0.75f, 0.5f, 25.0f, 0.75f);
+					testBehavior = new BehaviorData(allBehaviors[i], -0.5f, 1f, -0.75f, 0.75f, 25.0f, 0.75f);
 					_behaviorList.Add(testBehavior);
 				}
 				if(allBehaviors[i].group == 3) //AoeVenom
