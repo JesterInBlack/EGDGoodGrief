@@ -27,11 +27,13 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip BossImpale;
 	public static AudioClip BossWeb;
 	public static AudioClip BossLaser;
+	public static AudioClip BossPointLaser;
 	public static AudioClip BossSuction;
 	public static AudioClip BossLegHit;
 	public static AudioClip BossHit1;
 	public static AudioClip BossHit2;
 	public static AudioClip BossLegBreak;
+	public static AudioClip BossDeathScream;
 
 	public static AudioClip ItemJarShatter;
 	public static AudioClip ItemVampFang;
@@ -79,11 +81,13 @@ public class SoundStorage : MonoBehaviour
 		BossImpale = Resources.Load<AudioClip>( "_Sounds/Boss/Impale" );
 		BossWeb = Resources.Load<AudioClip>( "_Sounds/Boss/web2" );
 		BossLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser2" );
+		BossPointLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser3" );
 		BossSuction = Resources.Load<AudioClip>( "_Sounds/Boss/suction2" );
 		BossLegHit = Resources.Load<AudioClip>( "_Sounds/Boss/leg_impact" );
 		BossLegBreak = Resources.Load<AudioClip>( "_Sounds/Boss/leg_break" );
 		BossHit1 = Resources.Load<AudioClip>( "_Sounds/stab_squish_heavy" );
 		BossHit1 = Resources.Load<AudioClip>( "_Sounds/stab_squish_light" );
+		BossDeathScream = Resources.Load<AudioClip>( "_Sounds/Boss/what_have_i_done_final_bellow" );
 
 		ItemJarShatter = Resources.Load<AudioClip>( "_Sounds/Item/jar_shatter" );
 		ItemSlowMoIn = Resources.Load<AudioClip>( "_Sounds/Item/slomo_in" );

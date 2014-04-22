@@ -125,8 +125,9 @@ public class BossCoreHP : MonoBehaviour
 	public void Hurt( float damage, int id )
 	{
 		//Handles the main body taking damage.
-		if ( id == -1 ) { return; } //Boss can't hurt itself
+		if ( id == -1 ) { return; } //Boss can't hurt itself.
 		if ( myBlackboard._invincible ) { return; } //Boss can't be hurt if invincible.
+		if ( myBlackboard.HP <= 0.0f ) { return; } //Boss is dead.
 		float prevHP = myBlackboard.HP;
 		myBlackboard.HP -= damage;
 		ScoreManager.DealtDamage( id, damage );
@@ -140,7 +141,25 @@ public class BossCoreHP : MonoBehaviour
 		//Play hurt sound?
 		if ( soundTimer <= 0.0f )
 		{
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 0.35f );
+			if ( myBlackboard.HP <= 0.0f )
+			{
+				//play dead sound
+				transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
+			}
+			else
+			{
+				//play random hurt sound
+				float rng = Random.Range ( 0.0f, 100.0f );
+				float possibilities = 2.0f;
+				if ( rng <= 1.0f * 100.0f / possibilities )
+				{
+					transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit1, 1.0f );
+				}
+				else //if ( rng <= 2.0f * 100.0f / possibilities )
+				{
+					transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
+				}
+			}
 			soundTimer = soundDelay;
 		}
 
