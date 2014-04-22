@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
 		float avg_y = 0.0f;
 		float playercount = 0.0f;
 		
-		for ( int i = 0; i < 4; i++ )
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
 			if ( GameState.players[i] != null )
 			{
@@ -79,6 +79,13 @@ public class CameraController : MonoBehaviour
 				avg_y += GameState.players[i].transform.position.y;
 				playercount ++;
 			}
+		}
+		//throw boss into the avg.
+		if ( GameState.boss != null )
+		{
+			avg_x += GameState.boss.transform.position.x;
+			avg_y += GameState.boss.transform.position.y;
+			playercount ++;
 		}
 		avg_x = avg_x / playercount;
 		avg_y = avg_y / playercount;
@@ -99,7 +106,7 @@ public class CameraController : MonoBehaviour
 		float max_dist_x = 0.0f;
 		float max_dist_y = 0.0f;
 		
-		for ( int i = 0; i < 4; i++ )
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
 			if ( GameState.players[i] != null )
 			{
@@ -112,6 +119,18 @@ public class CameraController : MonoBehaviour
 				                        max_dist_y 
 				                        );
 			}
+		}
+		//throw boss in.
+		if ( GameState.boss != null )
+		{
+			max_dist_x = Mathf.Max ( 
+			                        Mathf.Abs( Camera.main.transform.position.x - GameState.boss.transform.position.x ) / ratio, 
+			                        max_dist_x 
+			                        );
+			max_dist_y = Mathf.Max ( 
+			                        Mathf.Abs( Camera.main.transform.position.y - GameState.boss.transform.position.y ), 
+			                        max_dist_y 
+			                        );
 		}
 		float max_dist = Mathf.Max ( max_dist_x, max_dist_y );
 		
