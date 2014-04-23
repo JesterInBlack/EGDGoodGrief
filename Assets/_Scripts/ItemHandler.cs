@@ -90,17 +90,17 @@ public class ItemHandler : MonoBehaviour
 		else if ( player.items[index].name == ItemName.AURA_DEFENSE )
 		{
 			const float duration = 60.0f;
-			Aura ( player.id, duration, 0.0f, 1.0f, 0.0f );
+			Aura ( player.id, duration, 0.0f, 0.5f, 0.0f );
 		}
 		else if ( player.items[index].name == ItemName.AURA_OFFENSE )
 		{
 			const float duration = 60.0f;
-			Aura ( player.id, duration, 1.0f, 0.0f, 0.0f );
+			Aura ( player.id, duration, 0.5f, 0.0f, 0.0f );
 		}
 		else if ( player.items[index].name == ItemName.AURA_REGEN )
 		{
 			const float duration = 60.0f;
-			Aura ( player.id, duration, 0.0f, 0.0f, 1.0f );
+			Aura ( player.id, duration, 0.0f, 0.0f, 2.0f );
 		}
 		else if ( player.items[index].name == ItemName.VAMPIRE_FANG )
 		{

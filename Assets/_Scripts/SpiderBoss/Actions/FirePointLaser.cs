@@ -27,6 +27,7 @@ public class FirePointLaser : Action
 
 	public override TaskStatus OnUpdate()
 	{
+		gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossPointLaser, 1.0f );
 		_spawnedPointLaser = Instantiate(_pointLaser, _blackboard.eye._laserSpawnPoint.transform.position, Quaternion.identity) as GameObject;
 		_spawnedPointLaser.GetComponent<PointLaserScript>().Initializer((Vector2)_blackboard.eye._laserSpawnPoint.transform.position, _targetPoint);
 		return TaskStatus.Success;
