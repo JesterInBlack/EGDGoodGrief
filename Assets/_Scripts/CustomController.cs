@@ -351,6 +351,7 @@ public class CustomController : MonoBehaviour
 							{
 								playerState.HP = Mathf.Min ( playerState.HP + lifeDrain, playerState.maxHP );
 								GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemVampFang, 1.0f );
+								GetComponent<PlayerParticleEffectManager>().EnableHealingThisFrame();
 							}
 						}
 						if ( ! anyDrainConnected ) //no hits!
