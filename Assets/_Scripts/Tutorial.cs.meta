@@ -29,6 +29,8 @@ MonoImporter:
   - xCharge: {fileID: 21300000, guid: 5c9a7dcedf0ff924abf1e3f0a55a5ea8, type: 3}
   - xSpin: {fileID: 21300000, guid: 5fa11445fc70f1345ab49244b4dcb382, type: 3}
   - xSpin2: {fileID: 21300000, guid: 2ea65a4c100ba5b418512973311c7d00, type: 3}
+  - xPunch: {fileID: 21300000, guid: fd62bbd92cf52d7439e96d822f23fa1d, type: 3}
+  - xPunch2: {fileID: 21300000, guid: 047f5809b770e44438ea749ac6aa6c01, type: 3}
   - ySlash: {fileID: 21300000, guid: 6d64168cea084a546bc4fb18ddd56af0, type: 3}
   - yCharge: {fileID: 21300000, guid: 27cced36e27b75e45af3a5bfc5444290, type: 3}
   - yBlastOff: {fileID: 21300000, guid: c5a8d8c94988c284dad72cf0ed0c5c8b, type: 3}

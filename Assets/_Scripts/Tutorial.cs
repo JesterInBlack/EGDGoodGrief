@@ -37,7 +37,8 @@ public class Tutorial : MonoBehaviour
 	public Sprite xCharge;
 	public Sprite xSpin;
 	public Sprite xSpin2;
-	//public Sprite xPunch;
+	public Sprite xPunch;
+	public Sprite xPunch2;
 	//public Sprite xBlowback;
 
 	public Sprite ySlash;
@@ -267,7 +268,7 @@ public class Tutorial : MonoBehaviour
 		}
 		else if ( state == 1 ) //X: punch
 		{
-			spriteRenderer.sprite = xSlash; //xPunch;
+			spriteRenderer.sprite = xPunch;
 			if ( player.state == "xwinddown" ) //oh god, the badness!
 			{
 				state++;

@@ -36,6 +36,7 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip BossDeathScream;
 	public static AudioClip BossStep;
 	public static AudioClip BossFall;
+	public static AudioClip BossCrunch;
 
 	public static AudioClip ItemJarShatter;
 	public static AudioClip ItemVampFang;
@@ -90,8 +91,9 @@ public class SoundStorage : MonoBehaviour
 		BossHit1 = Resources.Load<AudioClip>( "_Sounds/stab_squish_heavy" );
 		BossHit2 = Resources.Load<AudioClip>( "_Sounds/stab_squish_light" );
 		BossDeathScream = Resources.Load<AudioClip>( "_Sounds/Boss/what_have_i_done_final_bellow" );
-		BossStep = Resources.Load<AudioClip>("_Sounds/Boss/step");
-		BossFall = Resources.Load<AudioClip>("_Sounds/Boss/fall");
+		BossStep = Resources.Load<AudioClip>( "_Sounds/Boss/step" );
+		BossFall = Resources.Load<AudioClip>( "_Sounds/Boss/fall" );
+		BossCrunch = Resources.Load<AudioClip>( "_Sounds/Boss/crunch" );
 
 
 		ItemJarShatter = Resources.Load<AudioClip>( "_Sounds/Item/jar_shatter" );

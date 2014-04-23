@@ -80,9 +80,12 @@ public class DissentionSuction : Action
 
 			//TODO make the suction thing
 			AttackSystem.Suck(_blackboard.body._shadowPos, _chargeTime, Time.deltaTime * StaticData.t_scale);
-			gameObject.GetComponent<AudioSource>().loop = true;
-			gameObject.GetComponent<AudioSource>().clip = SoundStorage.BossSuction;
-			gameObject.GetComponent<AudioSource>().Play ();
+			if ( ! gameObject.GetComponent<AudioSource>().isPlaying )
+			{
+				gameObject.GetComponent<AudioSource>().loop = true;
+				gameObject.GetComponent<AudioSource>().clip = SoundStorage.BossSuction;
+				gameObject.GetComponent<AudioSource>().Play ();
+			}
 		}
 
 		return TaskStatus.Running;

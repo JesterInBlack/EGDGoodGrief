@@ -11,6 +11,7 @@ public class BossCoreHP : MonoBehaviour
 
 	public Texture2D HPBarFill;
 	public Texture2D HPBarBG;
+	public Texture2D HPBarHolder;
 
 	private float alpha = 1.0f;
 	private float prevAlpha = 1.0f;
@@ -117,9 +118,10 @@ public class BossCoreHP : MonoBehaviour
 		//Handles the drawing of the boss HP bar, and move names
 		//TODO:
 		float percentHP = Mathf.Max( myBlackboard.HP / myBlackboard.maxHP, 0.0f );
-		float HPBarWidth = 900.0f;
-		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 32.0f, HPBarWidth, 32.0f ), HPBarBG );
-		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 32.0f, HPBarWidth * percentHP, 32.0f ), HPBarFill );
+		float HPBarWidth = 800.0f;
+		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 48.0f, HPBarWidth, 32.0f ), HPBarBG );
+		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 48.0f, HPBarWidth * percentHP, 32.0f ), HPBarFill );
+		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth - 32.0f) / 2.0f, Screen.height - 64.0f, HPBarWidth + 32.0f, 64.0f ), HPBarHolder );
 	}
 
 	public void Hurt( float damage, int id )
