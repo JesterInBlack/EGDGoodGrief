@@ -72,6 +72,15 @@ public static class ScoreManager
 		GameState.playerStates[id].ScoreText ( "Clutch", amount );
 	}
 
+	public static vois DownedBoss( int id )
+	{
+		//bonus points for bringing down the boss.
+		float amount = 100.0f;
+		GameState.players[id].GetComponent<Player>().score += amount;
+		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
+		GameState.playerStates[id].ScoreText ( "Boss Down", amount );
+	}
+
 	public static void KilledLeg( int id )
 	{
 		//bonus points for last hitting leg.

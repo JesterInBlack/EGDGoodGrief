@@ -833,6 +833,7 @@ public class Player : MonoBehaviour
 	{
 		GameObject obj = (GameObject)Instantiate( scoreTextPrefab, transform.position + new Vector3( 0.0f, 1.0f, 0.0f ), Quaternion.identity );
 		obj.GetComponent<ScoreText>().scoreName.text = name;
+		obj.transform.parent = this.gameObject.transform;
 
 		string text;
 		Color color;
