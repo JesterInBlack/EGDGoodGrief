@@ -115,7 +115,7 @@ public class Impale : Action
 				{
 					foreach ( Collider2D hit in AttackSystem.getHitsInCircle( _targetPoint, radius, -1) )
 					{
-						Player tempPlayer = hit.collider.gameObject.GetComponent<Player>();
+						Player tempPlayer = hit.gameObject.GetComponent<Player>();
 						if ( tempPlayer != null ) //this is a player.
 						{
 							LegScript tempLeg = _blackboard.selectedLeg.GetComponent<LegScript>();
