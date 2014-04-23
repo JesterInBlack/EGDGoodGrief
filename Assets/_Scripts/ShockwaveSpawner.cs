@@ -20,7 +20,8 @@ public class ShockwaveSpawner : MonoBehaviour
 	void Start ()
 	{
 		_timer = 0.0f;
-		_lifeTime = _ringEffect.GetComponent<ParticleEmitter>().maxEnergy;
+		//_lifeTime = _ringEffect.GetComponent<ParticleEmitter>().maxEnergy;
+		_lifeTime = 1.0f;
 	}
 	
 	// Update is called once per frame
@@ -29,14 +30,16 @@ public class ShockwaveSpawner : MonoBehaviour
 		/*
 		if(Input.GetKeyDown(KeyCode.A))
 		{
-			SpawnShockwave(transform.position);
+			SpawnNewShockwave(transform.position);
 		}
 		*/
+		/*
 		if(_timer == 0.0f)
 		{
 			Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, 0.0f);
-			SpawnShockwave(targetPos);
+			//SpawnNewShockwave(targetPos);
 		}
+		*/
 		if(_timer < _lifeTime)
 		{
 			_timer += Time.deltaTime * StaticData.t_scale;
@@ -45,9 +48,8 @@ public class ShockwaveSpawner : MonoBehaviour
 		{
 			Destroy(this.gameObject);
 		}
-
 	}
-
+	/*
 	//this function creates a shockwave at the target vector each time it's called
 	public void SpawnShockwave(Vector3 spawnPoint)
 	{
@@ -80,7 +82,21 @@ public class ShockwaveSpawner : MonoBehaviour
 		//update the particles
 		emitter.particles = p;
 	}
+	*/
+	public void SpawnNewShockwave(Vector3 spawnPoint)
+	{
+		Transform effectObject = Instantiate(_ringEffect, spawnPoint, this.transform.rotation) as Transform;
+		
+		effectObject.transform.parent = this.gameObject.transform;
+		
+		//get the particle emitter from the new effect object
+		//ParticleEmitter emitter = effectObject.GetComponent<ParticleEmitter>();
+		
+		//generate the particles
+		//emitter.Emit();
 
+	}
+	/*
 	Vector3 RandomUnitInVectorPlane(Transform xform, Vector3 axis)
 	{
 		//rotate the specified tranform's axis though a random angle
@@ -91,4 +107,5 @@ public class ShockwaveSpawner : MonoBehaviour
 		ruv.Normalize();
 		return ruv;
 	}
+	*/
 }
