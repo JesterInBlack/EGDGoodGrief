@@ -46,7 +46,7 @@ public static class ScoreManager
 	public static void LastHit( int id )
 	{
 		//bonus points for last hitting boss.
-		float amount = 1000.0f;
+		float amount = 3000.0f;
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.lastHit.count ++;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.lastHit.score += amount;
@@ -55,7 +55,7 @@ public static class ScoreManager
 	public static void LastManStanding( int id )
 	{
 		//bonus for being the last man standing
-		float amount = 100.0f;
+		float amount = 250.0f;
 		GameState.playerStates[id].score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.count++;
@@ -65,7 +65,7 @@ public static class ScoreManager
 	public static void Clutch( int id )
 	{
 		//bonus for being the last man standing and surviving until a teammate revives.
-		float amount = 100.0f;
+		float amount = 250.0f;
 		GameState.playerStates[id].score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.score += amount;
 		GameState.playerStates[id].scorePasser.scoreDetails.misc.count++;
@@ -75,7 +75,7 @@ public static class ScoreManager
 	public static void KilledLeg( int id )
 	{
 		//bonus points for last hitting leg.
-		float amount = 50.0f;
+		float amount = 200.0f;
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
 		GameState.playerStates[id].ScoreText ( "Leg Breaker", amount );
@@ -84,7 +84,7 @@ public static class ScoreManager
 	public static void BrokeArmor( int id )
 	{
 		//bonus points for last hitting leg armor.
-		float amount = 25.0f;
+		float amount = 100.0f;
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.misc.score += amount;
 		GameState.playerStates[id].ScoreText ( "Armor Breaker", amount );

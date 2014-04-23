@@ -7,7 +7,7 @@ public class BossCoreHP : MonoBehaviour
 	[HideInInspector]
 	public BehaviorBlackboard myBlackboard;
 
-	private const float baseFourPlayerHP = 15000.0f; //hp with 4 players.
+	private const float baseFourPlayerHP = 30000.0f; //hp with 4 players.
 
 	public Texture2D HPBarFill;
 	public Texture2D HPBarBG;
@@ -136,29 +136,23 @@ public class BossCoreHP : MonoBehaviour
 		if ( prevHP > 0.0f && myBlackboard.HP <= 0.0f )
 		{
 			ScoreManager.LastHit ( id );
+			//play dead sound
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
 		}
 
 		//Play hurt sound?
 		if ( soundTimer <= 0.0f )
 		{
-			if ( myBlackboard.HP <= 0.0f )
+			//play random hurt sound
+			float rng = Random.Range ( 0.0f, 100.0f );
+			float possibilities = 2.0f;
+			if ( rng <= 1.0f * 100.0f / possibilities )
 			{
-				//play dead sound
-				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit1, 1.0f );
 			}
-			else
+			else //if ( rng <= 2.0f * 100.0f / possibilities )
 			{
-				//play random hurt sound
-				float rng = Random.Range ( 0.0f, 100.0f );
-				float possibilities = 2.0f;
-				if ( rng <= 1.0f * 100.0f / possibilities )
-				{
-					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit1, 1.0f );
-				}
-				else //if ( rng <= 2.0f * 100.0f / possibilities )
-				{
-					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
-				}
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
 			}
 			soundTimer = soundDelay;
 		}
