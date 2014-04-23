@@ -86,6 +86,18 @@ public class Tutorial : MonoBehaviour
 			{
 				RocketSwordTutorial();
 			}
+			else if ( player.characterclass == CharacterClasses.DEFENDER )
+			{
+				MonkTutorial ();
+			}
+			else if ( player.characterclass == CharacterClasses.ARCHER )
+			{
+				ArcherTutorial ();
+			}
+			else if ( player.characterclass == CharacterClasses.NINJA )
+			{
+				NinjaTutorial ();
+			}
 		}
 	}
 
@@ -241,5 +253,160 @@ public class Tutorial : MonoBehaviour
 			completed = true;
 			state++;
 		}
+	}
+
+	private void MonkTutorial()
+	{
+		if ( state == 0 ) //move
+		{
+			spriteRenderer.sprite = lsMove;
+			if ( GetComponent<CustomController>().move_vec.magnitude > 0.0f )
+			{
+				state++;
+			}
+		}
+		else if ( state == 1 ) //X: punch
+		{
+			spriteRenderer.sprite = xSlash; //xPunch;
+			if ( player.state == "xwinddown" ) //oh god, the badness!
+			{
+				state++;
+			}
+		}
+		else if ( state == 2 ) //Y: slash
+		{
+			spriteRenderer.sprite = yBlock;
+			if ( player.state == "ycharge" )
+			{
+				spriteRenderer.sprite = yCounter;
+			}
+			else if ( player.state == "ywinddown" )
+			{
+				state++;
+			}
+		}
+		else if ( state == 3 ) //B: stoneskin
+		{
+			spriteRenderer.sprite = bStoneSkin;
+			if ( player.isStoneSkin )
+			{
+				state++;
+			}
+		}
+		else if ( state == 3 ) //RT: sandstorm
+		{
+			spriteRenderer.sprite = rtSandstorm;
+			if ( player.state == "sandstorm" )
+			{
+				state++;
+			}
+		}
+		else if ( state == 4 ) //Use item
+		{
+			spriteRenderer.sprite = ltItem;
+			if ( usedItem )
+			{
+				state++;
+			}
+		}
+		else if ( state == 5 ) //Swap items
+		{
+			spriteRenderer.sprite = bumperSwap;
+			if ( swappedItem )
+			{
+				state++;
+			}
+		}
+		else if ( state == 6 ) //X charge
+		{
+			/*
+			if ( ! GetComponent<RocketSwordFunctions>().xCharged )
+			{
+				spriteRenderer.sprite = xCharge;
+			}
+			else if ( GetComponent<RocketSwordFunctions>().xCharged2 )
+			{
+				spriteRenderer.sprite = xSpin2; //for Andrew.
+			}
+			else
+			{
+				spriteRenderer.sprite = xSpin;
+			}
+			if ( player.state == "xsmash" )
+			{
+				state++;
+			}
+			*/
+			state++; //skip
+		}
+		else if ( state == 7 ) { state++; } //skip
+		else if ( state == 8 ) //Filler state
+		{
+			timer += Time.deltaTime;
+			if ( timer >= 1.0f )
+			{
+				timer = 0.0f;
+				state++;
+			}
+		}
+		else if ( state == 9 ) //kill the player.
+		{
+			player.HP = 0.0f;
+			spriteRenderer.sprite = textYouDied;
+			timer += Time.deltaTime;
+			if ( timer >= 3.0f )
+			{
+				timer = 0.0f;
+				state++;
+			}
+		}
+		else if ( state == 10 ) //comment
+		{
+			spriteRenderer.sprite = textHowUnfortunate;
+			timer += Time.deltaTime;
+			if ( timer >= 3.0f )
+			{
+				timer = 0.0f;
+				state++;
+			}
+		}
+		else if ( state == 11 ) //give crawl instructions
+		{
+			spriteRenderer.sprite = textCrawl;
+			if ( player.HP >= 5.0f )
+			{
+				state++;
+			}
+		}
+		else if ( state == 12 ) //tell player to chill
+		{
+			spriteRenderer.sprite = textWait;
+			if ( player.HP >= player.maxHP * StaticData.percentHPNeededToRevive )
+			{
+				state++;
+			}
+		}
+		else if ( state == 13 ) //tell player to revive
+		{
+			spriteRenderer.sprite = aRevive;
+			if ( ! player.isDowned )
+			{
+				state++;
+			}
+		}
+		else if ( state == 14 ) //WOOHOO! You did it! YAY!
+		{
+			spriteRenderer.enabled = false;
+			completed = true;
+			state++;
+		}
+	}
+
+	private void ArcherTutorial()
+	{
+	}
+
+	private void NinjaTutorial()
+	{
 	}
 }

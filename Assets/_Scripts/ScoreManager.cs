@@ -72,7 +72,7 @@ public static class ScoreManager
 		GameState.playerStates[id].ScoreText ( "Clutch", amount );
 	}
 
-	public static vois DownedBoss( int id )
+	public static void DownedBoss( int id )
 	{
 		//bonus points for bringing down the boss.
 		float amount = 100.0f;
