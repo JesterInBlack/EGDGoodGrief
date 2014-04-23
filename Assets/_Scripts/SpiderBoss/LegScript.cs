@@ -265,6 +265,11 @@ public class LegScript : MonoBehaviour
 				AttackSystem.hitCircle((Vector2)transform.position, 0.4f, 5.0f, -1);
 				GameState.cameraController.Shake (0.01f, 0.1f );
 				_state = LegState.Idle;
+
+				if(_behaviorState == BehaviorState.Walking)
+				{
+					transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossStep, 0.75f );
+				}
 			}
 			else
 			{
