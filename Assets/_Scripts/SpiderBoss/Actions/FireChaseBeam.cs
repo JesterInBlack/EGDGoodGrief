@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
 [TaskCategory("Attack")]
 public class FireChaseBeam : Action
 {
+	public SharedFloat _timeLeft;
+
 	public GameObject _laserSpawnPoint;
 	public GameObject _laserObject;
 	private GameObject _spawnedLaser;
@@ -13,7 +16,7 @@ public class FireChaseBeam : Action
 
 	private float _lastSpawnedTime;
 
-	public float _chaseSpeed = 12.0f;
+	public float _chaseSpeed = 8.5f;
 
 	public float _chargeDuration;
 	public float _laserDuration;
@@ -44,6 +47,7 @@ public class FireChaseBeam : Action
 
 	public override void OnStart()
 	{
+		_timeLeft.Value = 999.0f;
 		_targetPlayer = _blackboard.targetPlayer.GetComponent<Player>();
 		_eyesScript._behaviorState = EyeScript.BehaviorStates.ChaseBeam;
 		_timer = 0.0f;
@@ -86,6 +90,7 @@ public class FireChaseBeam : Action
 			{
 				if(_timer < _laserDuration)
 				{
+					_timeLeft.Value = _laserDuration - _timer;
 					_timer += Time.deltaTime;
 					_spawnedLaser.transform.position = _laserSpawnPoint.transform.position;
 					_spawnedLaser.transform.eulerAngles = _eyesScript._rotationVec;

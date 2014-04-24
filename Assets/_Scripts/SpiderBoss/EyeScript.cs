@@ -95,4 +95,17 @@ public class EyeScript : MonoBehaviour
 		_rotationVec.z = Mathf.MoveTowardsAngle(transform.eulerAngles.z, _targetAngle, rotSpeed * Time.deltaTime * StaticData.t_scale);
 		transform.eulerAngles = _rotationVec;
 	}
+
+	public bool LookingAtTarget()
+	{
+		GetTargetAngle(_blackboard.targetPlayer.transform.position);
+		if(Mathf.Abs( Mathf.DeltaAngle(transform.eulerAngles.z, _targetAngle)) < 1.0f)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

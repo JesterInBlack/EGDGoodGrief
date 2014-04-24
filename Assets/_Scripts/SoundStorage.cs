@@ -53,6 +53,7 @@ public class SoundStorage : MonoBehaviour
 
 	public static AudioClip PlayerHurt1;
 	public static AudioClip PlayerHurt2;
+	public static AudioClip PlayerHurt3;
 	public static AudioClip PlayerBlock1;
 	public static AudioClip PlayerBlock2;
 	#endregion
@@ -78,14 +79,14 @@ public class SoundStorage : MonoBehaviour
 		ArcherBlowback = Resources.Load<AudioClip>( "_Sounds/Archer/Wind_Gust" );
 		ArcherArrowImpact = Resources.Load<AudioClip>( "_Sounds/Archer/arrow_hit2" );
 
-		PlayerHurt1 = Resources.Load<AudioClip>( "_Sounds/player_hit" );
+		PlayerHurt1 = Resources.Load<AudioClip>( "_Sounds/player_hit3" );
 		PlayerHurt2 = Resources.Load<AudioClip>( "_Sounds/player_hit2" );
 		PlayerBlock1 = Resources.Load<AudioClip>( "_Sounds/block1" );
 		PlayerBlock2 = Resources.Load<AudioClip>( "_Sounds/block2" );
 
 		BossImpale = Resources.Load<AudioClip>( "_Sounds/Boss/Impale" );
 		BossWeb = Resources.Load<AudioClip>( "_Sounds/Boss/web2" );
-		BossLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser2" );
+		BossLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser2_v2" );
 		BossPointLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser3" );
 		BossSuction = Resources.Load<AudioClip>( "_Sounds/Boss/suction2" );
 		BossLegHit = Resources.Load<AudioClip>( "_Sounds/Boss/leg_impact" );

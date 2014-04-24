@@ -186,8 +186,10 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedBool.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedCounter.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedFloat.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedGameObject.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLookingAtTarget.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\ResetSharedObject.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\SetSharedBool.cs" />
