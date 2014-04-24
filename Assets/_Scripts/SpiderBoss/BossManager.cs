@@ -82,7 +82,7 @@ public class BossManager : MonoBehaviour
 				}
 				if(allBehaviors[i].group == 7) //Dissention Suction
 				{
-					testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.25f, 0.0f, 0.0f);
+					testBehavior = new BehaviorData(allBehaviors[i], 0.25f, 1f, 0.4f, 1f, 60.0f, 0.5f, -0.1f, -0.25f, 0.0f, 0.0f);
 					_behaviorList.Add(testBehavior);
 				}
 				if(allBehaviors[i].group == 8) //PointLaser
@@ -110,7 +110,7 @@ public class BossManager : MonoBehaviour
 			GameState.playerThreats[i] = 0.0f;
 		}
 
-		GameState.cooperationAxis = -1.0f; //initialized at 0
+		GameState.cooperationAxis = 0.0f; //initialized at 0
 		GameState.angerAxis = 1.0f; //initialized at -1
 		#endregion
 

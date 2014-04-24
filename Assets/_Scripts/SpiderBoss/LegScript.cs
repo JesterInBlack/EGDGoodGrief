@@ -131,11 +131,31 @@ public class LegScript : MonoBehaviour
 			}
 			else if(_state == LegState.CalculateMove)
 			{
+				transform.parent.rigidbody2D.fixedAngle = true;
+				Vector3 rotation = new Vector3(0, 0, 0.0f);
+				if(_id == 7)
+					rotation.z = 19.0f;
+				else if(_id == 6)
+					rotation.z = 26.0f;
+				else if(_id == 5)
+					rotation.z = 37.0f;
+				else if(_id == 4)
+					rotation.z = 58.0f;
+				else if(_id == 3)
+					rotation.z = -19.0f;
+				else if(_id == 2)
+					rotation.z = -26.0f;
+				else if(_id == 1)
+					rotation.z = -37.0f;
+				else if(_id == 0)
+					rotation.z = -58.0f;
+				transform.parent.transform.eulerAngles = rotation;
+
 				_targetPoint = _disabledPoint.transform.position;
 				_shadowTargetPoint = _targetPoint;
 				_shadowTargetPoint.y -= _blackboard.body._height;
 
-				_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, -1);
+				_intermediatePoint = GetIntermediatePoint(transform.position, _targetPoint, 0);
 				_shadowIntermediatePoint = GetIntermediatePoint(transform.position, _shadowTargetPoint, 0);
 				_intermediatePointReached = false;
 				_startPoint = transform.position;
@@ -323,7 +343,7 @@ public class LegScript : MonoBehaviour
 
 				Vector3 Legscale = transform.parent.transform.localScale;
 				Legscale.x = 2.0f;
-				Legscale.y = 1.5f;
+				Legscale.y = 1.25f;
 				transform.parent.transform.localScale = Legscale;
 
 				//set the cooperation Valance
@@ -349,6 +369,8 @@ public class LegScript : MonoBehaviour
 		{
 			if(_currentHP == _maxHP)
 			{
+				transform.parent.rigidbody2D.fixedAngle = false;
+
 				_recovering = true;
 
 				Vector3 Legscale = transform.parent.transform.localScale;

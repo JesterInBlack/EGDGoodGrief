@@ -124,7 +124,7 @@ public class TetherProjectileScript : MonoBehaviour
 
 	public void Hurt( float damage, int id )
 	{
-		if ( id == 0 ) //TODO: assign this script the id of the player it's tethering, replace 0 with that var.
+		if ( id == _targetPlayer.GetComponent<Player>().id ) //TODO: assign this script the id of the player it's tethering, replace 0 with that var.
 		{
 			//tethered player attacking, take ~ no damage.
 			_moundHP -= damage * 0.1f;
