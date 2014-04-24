@@ -486,6 +486,8 @@ public class LegScript : MonoBehaviour
 			else
 			{
 				//play random hurt sound
+				transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 1.0f );
+				/*
 				float rng = Random.Range ( 0.0f, 100.0f );
 				float possibilities = 2.0f;
 				if ( rng <= 1.0f * 100.0f / possibilities )
@@ -495,7 +497,7 @@ public class LegScript : MonoBehaviour
 				else //if ( rng <= 2.0f * 100.0f / possibilities )
 				{
 					transform.parent.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
-				}
+				}*/
 			}
 			soundTimer = soundDelay;
 		}

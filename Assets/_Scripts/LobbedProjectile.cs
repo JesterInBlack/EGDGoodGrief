@@ -4,10 +4,11 @@ using System.Collections;
 public class LobbedProjectile : MonoBehaviour 
 {
 	#region vars
-	public int id = 0;            //set when setup.
-	public Vector2 aimPoint;      //set when setup.
-	public GameObject shadow;     //set in inspector
-	public GameObject gasPrefab;  //set in inspector
+	public int id = 0;               //set when setup.
+	public Vector2 aimPoint;         //set when setup.
+	public GameObject shadow;        //set in inspector
+	public GameObject gasPrefab;     //set in inspector
+	public GameObject shatterPrefab; //set in inspector
 
 	private float virtualZ = 0.0f;
 	private float virtualY = 0.0f;
@@ -32,7 +33,6 @@ public class LobbedProjectile : MonoBehaviour
 
 		if ( virtualZ < 0.0f )
 		{
-			//TODO: put glass prefab
 			Explode ();
 			Destroy ( transform.parent.gameObject );
 		}
@@ -62,6 +62,7 @@ public class LobbedProjectile : MonoBehaviour
 	{
 		GameState.players[id].GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemJarShatter, 1.0f );
 		Instantiate ( gasPrefab, transform.position, Quaternion.identity );
+		Instantiate ( shatterPrefab, transform.position, Quaternion.identity );
 		foreach (Collider2D hit in AttackSystem.getHitsInCircle( aimPoint, 1.0f, id ) )
 		{
 			Player tempPlayer = hit.gameObject.GetComponent<Player>();
@@ -70,7 +71,16 @@ public class LobbedProjectile : MonoBehaviour
 				//Max out player threat!
 				float maxThreat = 0.0f;
 				for ( int i = 0; i < 4; i++ ) { maxThreat = Mathf.Max ( maxThreat, GameState.playerThreats[i] ); }
-				GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
+				//GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
+
+				Buff buff = new Buff();
+				buff.duration = 15.0f;
+				buff.threat = (maxThreat + 30.0f) - GameState.playerThreats[ tempPlayer.id ];
+				buff.giverId = id;
+				buff.blacklist = false;
+				buff.player = tempPlayer;
+				tempPlayer.buffs.Add ( buff );
+				buff.Start ();
 				
 				if ( tempPlayer.id != id )
 				{

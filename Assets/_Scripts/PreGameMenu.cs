@@ -55,13 +55,14 @@ public class PreGameMenu : MonoBehaviour
 	private bool[] charLockedIn = {false, false, false, false};             //if the player has confirmed their choice
 	private const float charLockinDelay = 3.0f;                             //3 ... 2... 1 ... GO!
 	private float charLockinTimer = 3.0f;
-	private const int CLASS_COUNT = 3;                                      //number of classes
+	private const int CLASS_COUNT = 2;                                      //number of classes
 
 	public Texture2D itemBackground;
 	private Texture2D[] itemIcons = new Texture2D[6];      //item icons
 	private ItemName[] itemNames = { ItemName.PHEROMONE_JAR, ItemName.STOPWATCH, ItemName.VAMPIRE_FANG, 
 		ItemName.AURA_OFFENSE, ItemName.AURA_DEFENSE, ItemName.AURA_REGEN };
 	public GUIStyle itemTextGUIStyle;
+	private string[] itemNameText = new string[6];
 	private string[] itemText = new string[6];
 	private Rect[] itemTextRect = new Rect[4];             //coordinates and dimensions of the item description text.
 	public Vector2 itemCoords;                             //coordinates of the item selection square (0,0)
@@ -127,10 +128,17 @@ public class PreGameMenu : MonoBehaviour
 		itemText[4] = "Defense Up Aura: \nIncrease defense for you and your allies. If an ally messes with you, they lose the buff.";
 		itemText[5] = "Healing Aura: \nConstantly heal you and your allies. If an ally messes with you, they lose the buff.";
 
-		itemTextRect[0] = new Rect( 124.0f * 1440.0f / 960.0f, 280.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
-		itemTextRect[1] = new Rect( 300.0f * 1440.0f / 960.0f, 280.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
-		itemTextRect[2] = new Rect( 484.0f * 1440.0f / 960.0f, 280.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
-		itemTextRect[3] = new Rect( 666.0f * 1440.0f / 960.0f, 280.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemNameText[0] = "Pheromone Jar";
+		itemNameText[1] = "Stop Watch";
+		itemNameText[2] = "Vampire Fang";
+		itemNameText[3] = "Offense Up Aura";
+		itemNameText[4] = "Defense Up Aura";
+		itemNameText[5] = "Healing Aura";
+
+		itemTextRect[0] = new Rect( 124.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[1] = new Rect( 300.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[2] = new Rect( 484.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[3] = new Rect( 666.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
 		#endregion
 
 		#region CharacterSelectionScreen
@@ -664,6 +672,18 @@ public class PreGameMenu : MonoBehaviour
 						}
 					}
 					//Draw description text for the currently hovered over item.
+					itemTextGUIStyle.normal.textColor = playerColors[i];
+					for ( int j = 0; j < 3; j++ )
+					{
+						string temp = "[Pick an item!]";
+						if ( itemSelection[i, j] > -1 )
+						{
+							temp = itemNameText[ itemSelection[i, j] ];
+						}
+						GUI.Label (  new Rect( itemTextRect[ i ].x, itemTextRect[ i ].y - 32.0f * (j + 1), itemTextRect[ i ].width, itemTextRect[ i ].height ), temp, itemTextGUIStyle );
+					}
+
+					itemTextGUIStyle.normal.textColor = new Color( 0.0f, 0.0f, 0.0f, 1.0f );
 					GUI.Label ( itemTextRect[ i ], itemText[ itemIndex[ i ] ], itemTextGUIStyle );
 				}
 			}

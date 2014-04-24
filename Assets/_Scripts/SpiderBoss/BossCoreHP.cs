@@ -146,6 +146,8 @@ public class BossCoreHP : MonoBehaviour
 		if ( soundTimer <= 0.0f )
 		{
 			//play random hurt sound
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 1.0f );
+			/*
 			float rng = Random.Range ( 0.0f, 100.0f );
 			float possibilities = 2.0f;
 			if ( rng <= 1.0f * 100.0f / possibilities )
@@ -156,6 +158,7 @@ public class BossCoreHP : MonoBehaviour
 			{
 				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossHit2, 1.0f );
 			}
+			*/
 			soundTimer = soundDelay;
 		}
 

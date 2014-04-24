@@ -9,6 +9,7 @@ public class PlayerParticleEffectManager : MonoBehaviour
 
 	public ParticleSystem healingEffect;
 	public ParticleSystem poisonEffect;
+	public ParticleSystem pheromoneEffect;
 	public GameObject sandstormEffect;
 	#endregion
 
@@ -59,6 +60,25 @@ public class PlayerParticleEffectManager : MonoBehaviour
 		else
 		{
 			healingEffect.enableEmission = false;
+		}
+		#endregion
+
+		#region pheromone
+		bool stinky = false;
+		for ( int i = 0; i < player.buffs.Count; i++ )
+		{
+			if ( ((Buff) player.buffs[ i ]).threat > 0.0f )
+			{
+				stinky = true;
+			}
+		}
+		if ( stinky )
+		{
+			pheromoneEffect.enableEmission = true;
+		}
+		else
+		{
+			pheromoneEffect.enableEmission = false;
 		}
 		#endregion
 

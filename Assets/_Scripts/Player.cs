@@ -119,6 +119,9 @@ public class Player : MonoBehaviour
 
 	private float soundSpamTimer = 0.0f;
 	private float soundSpamDelay = 0.1f;
+
+	public RuntimeAnimatorController knightAnimator;
+	public RuntimeAnimatorController monkAnimator;
 	#endregion
 
 	//Use this for pre-initialization
@@ -136,6 +139,7 @@ public class Player : MonoBehaviour
 		if ( temp == null ) //Fix errors from skipping the main menu.
 		{
 			characterclass = CharacterClasses.KNIGHT; //default
+			GetComponent<Animator>().runtimeAnimatorController = knightAnimator;
 			//read items from menu data.
 			for ( int i = 0; i < 3; i++ )
 			{
@@ -158,6 +162,15 @@ public class Player : MonoBehaviour
 
 			//read class from menu data
 			characterclass = temp.playerClasses[ id ];
+			//set animator based on class.
+			if ( characterclass == CharacterClasses.KNIGHT )
+			{
+				GetComponent<Animator>().runtimeAnimatorController = knightAnimator;
+			}
+			else if ( characterclass == CharacterClasses.DEFENDER )
+			{
+				GetComponent<Animator>().runtimeAnimatorController = monkAnimator;
+			}
 
 			//read items from menu data.
 			for ( int i = 0; i < 3; i++ )
