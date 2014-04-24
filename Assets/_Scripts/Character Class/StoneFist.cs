@@ -149,6 +149,19 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 0.66f), 0.25f );
 		}
+
+		//automatically trigger stoneskin if fully charged.
+		if ( bHoldTime >= bChargeTime )
+		{
+			//1 hit shield w/ duration buff?
+			//set a stoneskin flag
+			player.isStoneSkin = true;
+			//put it on a timer
+			player.stoneSkinTimer = 15.0f;
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
+			ChangeState ( "idle" );
+			bHoldTime = 0.0f;
+		}
 	}
 	#endregion
 	
@@ -325,6 +338,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "xcharge";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
+			GetComponent<Animator>().Play ( "punch_charge_" + player.GetAniSuffix() );
 		}
 		else if ( player.state == "xcharge" )
 		{
@@ -335,6 +349,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 1.0f; //1 frame
+			GetComponent<Animator>().Play ( "punch_" + player.GetAniSuffix() );
 		}
 		#endregion
 		#region y
@@ -343,6 +358,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			player.nextState = "ycharge"; //freeze in a loop
 			player.stateTimer = 0.0f;
 			shieldHP = shieldMaxHP; //reset damage
+			GetComponent<Animator>().Play ( "guard_" + player.GetAniSuffix() );
 		}
 		else if ( player.state == "ywinddown" )
 		{
@@ -385,6 +401,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
 			#endregion
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkRockBreak, 1.0f );
+			GetComponent<Animator>().Play ( "counter_" + player.GetAniSuffix() );
 		}
 		#endregion
 		#region rt
@@ -404,5 +421,9 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			player.stateTimer = 0.05f * 1.0f; //1 frame
 		}
 		#endregion
+		else if ( player.state == "bcharge" )
+		{
+			GetComponent<Animator>().Play ( "stoneskin_" + player.GetAniSuffix() );
+		}
 	}
 }
