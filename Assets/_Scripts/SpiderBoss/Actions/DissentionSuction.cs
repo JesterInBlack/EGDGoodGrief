@@ -5,6 +5,9 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("Attack")]
 public class DissentionSuction : Action
 {
+	public GameObject _suctionParticles;
+	public GameObject _spawnedSuction;
+
 	public float _chargeTime;
 	public float _chargeDuration;
 	public float _riseDuration;
@@ -63,6 +66,7 @@ public class DissentionSuction : Action
 			{
 				_blackboard.body._bodyState = BodyScript.BodyState.Attacking;
 				_lerpTime = 0.0f;
+				_spawnedSuction = Instantiate(_suctionParticles, _groundedPos, Quaternion.identity) as GameObject;
 			}
 			else
 			{
@@ -105,5 +109,6 @@ public class DissentionSuction : Action
 		shake = new Vector2(0, 0);
 		transform.position = _chargePos;
 		gameObject.GetComponent<AudioSource>().Stop ();
+		_spawnedSuction.GetComponent<SuctionParticleScript>().Kill();
 	}
 }

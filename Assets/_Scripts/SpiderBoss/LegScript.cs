@@ -106,7 +106,7 @@ public class LegScript : MonoBehaviour
 		_maxWebbingHP = 700.0f;
 		_currentWebbingHP = 0.0f;
 
-		_maxBuffDuration = 30.0f;
+		_maxBuffDuration = 45.0f;
 		_currentBuffDuration = 0.0f;
 
 		currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 1.0f), 0.0f );

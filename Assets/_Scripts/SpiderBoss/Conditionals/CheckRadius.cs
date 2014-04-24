@@ -5,7 +5,8 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("Logic")]
 public class CheckRadius : Action 
 {
-	public float _checkRadius;
+	public bool _doNotSetTarget;
+	private float _checkRadius;
 
 	private BehaviorBlackboard _blackboard;
 
@@ -13,7 +14,7 @@ public class CheckRadius : Action
 	{
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
-		_checkRadius = _blackboard.point1.GetComponent<CircleCollider2D>().radius * transform.lossyScale.x;
+		_checkRadius = _blackboard.point1.GetComponent<CircleCollider2D>().radius;
 	}
 
 	//runs the actual task
@@ -32,9 +33,12 @@ public class CheckRadius : Action
 						{
 							if(Vector2.Distance((Vector2)_blackboard.points[i].transform.position, (Vector2)GameState.players[j].transform.position) < _checkRadius)
 							{
-								_blackboard.targetPlayer = GameState.players[j];
-								_blackboard.selectedLeg = _blackboard.legsList[i];
-								_blackboard.selectedPoint = _blackboard.points[i];
+								if(_doNotSetTarget == false)
+								{
+									_blackboard.targetPlayer = GameState.players[j];
+									_blackboard.selectedLeg = _blackboard.legsList[i];
+									_blackboard.selectedPoint = _blackboard.points[i];
+								}
 								return TaskStatus.Success;
 							}
 						}

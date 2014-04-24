@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
 [TaskCategory("Attack")]
@@ -10,6 +11,13 @@ public class Impale : Action
 	private Vector2 _targetPoint;
 	private Vector2 _intermediatePoint;
 	private Vector2 _startPoint;
+
+	public SharedGameObject _optionalSetTarget;
+	private GameObject _targetPlayer;
+	public int _setLeg = -1;
+
+	private LegScript _selectedLeg;
+	private GameObject _selectedPoint;
 
 	private float _lerpTime;
 	public float _windupTime;
@@ -43,21 +51,40 @@ public class Impale : Action
 	public override void OnStart()
 	{
 		_state = AttackState.Windup;
-		_blackboard.selectedLeg._state = LegScript.LegState.Idle;
-		_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Impale;
-		_blackboard.selectedLeg._invincible = true;
+		if(_setLeg == -1)
+		{
+			_selectedLeg = _blackboard.selectedLeg;
+			_selectedPoint = _blackboard.selectedPoint;
+		}
+		else
+		{
+			_selectedLeg = _blackboard.legsList[_setLeg];
+			_selectedPoint = _blackboard.points[_setLeg];
+		}
+		_selectedLeg._state = LegScript.LegState.Idle;
+		_selectedLeg._behaviorState = LegScript.BehaviorState.Impale;
+		_selectedLeg._invincible = true;
 
-		_startPoint = (Vector2)_blackboard.selectedLeg.transform.position;
-		_targetPoint = (Vector2)_blackboard.targetPlayer.transform.position;
-		_intermediatePoint = new Vector2(_blackboard.selectedPoint.transform.position.x, _blackboard.selectedPoint.transform.position.y + 5f);
+		_startPoint = (Vector2)_selectedLeg.transform.position;
+		_targetPoint = (Vector2)_selectedLeg.transform.position;
+		_intermediatePoint = new Vector2(_selectedPoint.transform.position.x, _selectedPoint.transform.position.y + 5f);
+
+		if(_optionalSetTarget.IsShared == true)
+		{
+			_targetPlayer = _optionalSetTarget.Value;
+		}
+		else
+		{
+			_targetPlayer = _blackboard.targetPlayer;
+		}
 
 		_lerpTime = 0.0f;
 
 		//this is for the shadow
-		_blackboard.selectedLeg._lerpTime = 0.0f;
-		_blackboard.selectedLeg._startPoint = _startPoint;
-		_blackboard.selectedLeg._shadowIntermediatePoint = _targetPoint;
-		_blackboard.selectedLeg._shadowMoveTime = _windupTime;
+		_selectedLeg._lerpTime = 0.0f;
+		_selectedLeg._startPoint = _startPoint;
+		_selectedLeg._shadowIntermediatePoint = _targetPoint;
+		_selectedLeg._shadowMoveTime = _windupTime;
 	}
 
 	//runs the actual task
@@ -65,16 +92,16 @@ public class Impale : Action
 	{
 		if(_state == AttackState.Windup)
 		{
-			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _intermediatePoint) < 0.01f)
+			if( Vector2.Distance((Vector2)_selectedLeg.transform.position, _intermediatePoint) < 0.01f)
 			{
 				_state = AttackState.Aim;
 				_lerpTime = 0.0f;
-				_startPoint = (Vector2)_blackboard.selectedLeg.transform.position;
-				_intermediatePoint = Vector2.Lerp(_startPoint, (Vector2)_blackboard.targetPlayer.transform.position, 0.15f);
+				_startPoint = (Vector2)_selectedLeg.transform.position;
+				_intermediatePoint = Vector2.Lerp(_startPoint, (Vector2)_targetPlayer.transform.position, 0.15f);
 			}
 			else
 			{
-				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _windupTime);
+				_selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _windupTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
@@ -82,23 +109,23 @@ public class Impale : Action
 		{
 			TrackPlayer();
 
-			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _intermediatePoint) < 0.001f)
+			if( Vector2.Distance((Vector2)_selectedLeg.transform.position, _intermediatePoint) < 0.001f)
 			{
 				_state = AttackState.Attack;
 				_lerpTime = 0.0f;
-				_startPoint = (Vector2)_blackboard.selectedLeg.transform.position;
+				_startPoint = (Vector2)_selectedLeg.transform.position;
 			}
 			else
 			{
-				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _aimTime);
+				_selectedLeg.transform.position = Vector2.Lerp(_startPoint, _intermediatePoint, _lerpTime / _aimTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
 		else if(_state == AttackState.Attack)
 		{
-			if( Vector2.Distance((Vector2)_blackboard.selectedLeg.transform.position, _targetPoint) < 0.005f)
+			if( Vector2.Distance((Vector2)_selectedLeg.transform.position, _targetPoint) < 0.005f)
 			{
-				_blackboard.selectedLeg._invincible = false;
+				_selectedLeg._invincible = false;
 				_state = AttackState.Cooldown;
 				_lerpTime = 0.0f;
 
@@ -111,14 +138,14 @@ public class Impale : Action
 
 				#region poison
 				//If poisonous, go through all hit objects, find the players, and poison them.
-				if ( _blackboard.selectedLeg.GetComponent<LegScript>().isPoisonous() )
+				if ( _selectedLeg.GetComponent<LegScript>().isPoisonous() )
 				{
 					foreach ( Collider2D hit in AttackSystem.getHitsInCircle( _targetPoint, radius, -1) )
 					{
 						Player tempPlayer = hit.gameObject.GetComponent<Player>();
 						if ( tempPlayer != null ) //this is a player.
 						{
-							LegScript tempLeg = _blackboard.selectedLeg.GetComponent<LegScript>();
+							LegScript tempLeg = _selectedLeg.GetComponent<LegScript>();
 							tempPlayer.Poison ( tempLeg._poisonDuration, tempLeg._poisonDPS );
 						}
 					}
@@ -128,7 +155,7 @@ public class Impale : Action
 			else
 			{
 				//Debug.Log("winding up");
-				_blackboard.selectedLeg.transform.position = Vector2.Lerp(_startPoint, _targetPoint, _lerpTime / _attackTime);
+				_selectedLeg.transform.position = Vector2.Lerp(_startPoint, _targetPoint, _lerpTime / _attackTime);
 				_lerpTime += (Time.deltaTime* StaticData.t_scale);
 			}
 		}
@@ -151,12 +178,16 @@ public class Impale : Action
 
 	public void TrackPlayer()
 	{
-		_targetPoint = Vector2.MoveTowards(_targetPoint, (Vector2)_blackboard.targetPlayer.transform.position, 2.0f * (Time.deltaTime* StaticData.t_scale));
-		_blackboard.selectedLeg._shadowIntermediatePoint = _targetPoint;
+		_targetPoint = Vector2.MoveTowards(_targetPoint, (Vector2)_targetPlayer.transform.position, 2.5f * (Time.deltaTime* StaticData.t_scale));
+		_selectedLeg._shadowIntermediatePoint = _targetPoint;
 	}
 
 	public override void OnEnd()
 	{
-		_blackboard.selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
+		_selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
+		if(_optionalSetTarget.IsShared == true)
+		{
+			_optionalSetTarget.Value = null;
+		}
 	}
 }
