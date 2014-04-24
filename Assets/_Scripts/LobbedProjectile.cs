@@ -71,7 +71,16 @@ public class LobbedProjectile : MonoBehaviour
 				//Max out player threat!
 				float maxThreat = 0.0f;
 				for ( int i = 0; i < 4; i++ ) { maxThreat = Mathf.Max ( maxThreat, GameState.playerThreats[i] ); }
-				GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
+				//GameState.playerThreats[ tempPlayer.id ] = maxThreat + 30.0f;
+
+				Buff buff = new Buff();
+				buff.duration = 15.0f;
+				buff.threat = (maxThreat + 30.0f) - GameState.playerThreats[ tempPlayer.id ];
+				buff.giverId = id;
+				buff.blacklist = false;
+				buff.player = tempPlayer;
+				tempPlayer.buffs.Add ( buff );
+				buff.Start ();
 				
 				if ( tempPlayer.id != id )
 				{

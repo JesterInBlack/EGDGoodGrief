@@ -16,6 +16,7 @@ public class Buff
 	public float defense = 0.0f; //added to defense (% damage reduction) (1.0f =   100% -> 50% damage taken) (2x = 2x)
 	public float speed   = 1.0f; //multiplied by move speed (2.0f = 2x speed)
 	public float regen   = 0.0f; //regen / degen (hp / s)
+	public float threat  = 0.0f; //threat
 	//public float maxHp;        //added to max hp for duration
 	#endregion
 
@@ -26,6 +27,7 @@ public class Buff
 		player.offense += offense;
 		player.defense += defense;
 		player.speedMultiplier2 =  player.speedMultiplier2 * speed;
+		GameState.playerThreats[ player.id ] += threat;
 	}
 
 	//Use for cleanup
@@ -34,13 +36,18 @@ public class Buff
 		player.offense -= offense;
 		player.defense -= defense;
 		player.speedMultiplier2 = player.speedMultiplier2 / speed;
+		GameState.playerThreats[ player.id ] = Mathf.Max ( 0.0f, GameState.playerThreats[ player.id ] - threat );
 	}
 
 	public bool isTheSameAs( Buff buff )
 	{
 		//checks if two buffs are the same
 		//if effect + giver matches
-		if ( buff.giverId == giverId && buff.regen == regen && buff.offense == offense && buff.defense == defense )
+		if ( buff.giverId == giverId && 
+		     buff.regen == regen && 
+		     buff.offense == offense && 
+		     buff.defense == defense &&
+		     buff.threat == threat )
 		{
 			return true;
 		}
