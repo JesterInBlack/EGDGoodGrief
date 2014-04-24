@@ -13,23 +13,24 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	#region move data
 	//Button Hold Times
 	#region X
-	private const float xBaseDamage = 1.0f;  //Sand Blast: base damage (0% charge)
-	private const float xAddDamage = 1.0f;   //Sand Blast: additional damage (100% charge)
+	private const float xBaseDamage = 100.0f;  //Sand Blast: base damage (0% charge)
+	private const float xAddDamage = 100.0f;   //Sand Blast: additional damage (100% charge)
 
-	private const float xInterruptHP = 1.0f; //Sand Blast: interrupt damage threshold.
+	private const float xInterruptHP = 100.0f; //Sand Blast: interrupt damage threshold.
 
 	private float xHoldTime  = 0.0f;
+	private const float xChargeMin = 1.0f;   //minimum charge time to get ranged fist.
 	private const float xChargeMax = 2.0f;   //maximum hold time: more than this confers no benefit.
 	#endregion
 
 	#region Y
 	private float yHoldTime  = 0.0f;
-	private const float yBaseDamage = 1.0f;  //base damage of the shield attack
-	private const float yAddDamage = 1.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
+	private const float yBaseDamage = 100.0f;  //base damage of the shield attack
+	private const float yAddDamage = 100.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
 
 	//this one is uninterruptable. (how to integrate with the interrupt core player call?)
-	private const float shieldMaxHP = 1.0f;             //if the shield takes this much damage, it breaks.
-	private float shieldHP = 1.0f;                      //the shield's HP
+	private const float shieldMaxHP = 10.0f;             //if the shield takes this much damage, it breaks.
+	private float shieldHP = 10.0f;                      //the shield's HP
 	private const float shieldDegenRate = 1.0f / 3.0f;  //the % of sediment the shield drains, per second.
 	#endregion
 
@@ -40,7 +41,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	
 	#region RT
 	private float rtHoldTime = 0.0f;
-	private const float rtDamage = 2.0f;  //Sandstorm DPS
+	private const float rtDamage = 20.0f;  //Sandstorm DPS
 	private const float rtRadius = 1.0f;  //Sandstorm area
 	private const float rtResourceRate = 0.1f; // % resource gained per second while sandstorm is up
 	#endregion
@@ -83,6 +84,16 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 				ChangeState( "ywinddown" );
 			}
 		}
+		if ( player.state == "xcharge" )
+		{
+			if ( xHoldTime - dt < xChargeMin && xHoldTime >= xChargeMin )
+			{
+				//feedback: charge reached.
+				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
+				//TODO: sound
+				GetComponent<VibrationManager>().ScheduleVibration ( 0.25f, 0.25f, 0.25f );
+			}
+		}
 		if ( player.state == "sandstorm" )
 		{
 			float x = transform.position.x;
@@ -101,7 +112,11 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		prevState = player.state;
 	}
 
-	public void OnHitCallback() {}
+	public void OnHitCallback() 
+	{
+		//If you hit an enemy, charge up your resource.
+		GetComponent<VibrationManager>().AddVibrationForThisFrame( 0.0f, 0.35f);
+	}
 
 	#region B
 	//"Dodge" type ability
