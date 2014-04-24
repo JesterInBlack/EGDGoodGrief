@@ -671,7 +671,7 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			//player.resourceGraceT = yNormalGraceT;
 			player.interruptHP = yNormalInterruptHP;
 			GetComponent<Animator>().Play( "yslash_" + player.GetAniSuffix() );
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightSlice, 1.0f );
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.KnightFireSword, 1.0f );
 		}
 		else if ( newState == "ywinddown" )
 		{

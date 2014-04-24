@@ -99,6 +99,7 @@
      <Compile Include="Assets\_Scripts\Credits.cs" />
      <Compile Include="Assets\_Scripts\CustomController.cs" />
      <Compile Include="Assets\_Scripts\Debug\BossDebugHelper.cs" />
+     <Compile Include="Assets\_Scripts\Esc.cs" />
      <Compile Include="Assets\_Scripts\GameState.cs" />
      <Compile Include="Assets\_Scripts\GameStateWatcher.cs" />
      <Compile Include="Assets\_Scripts\HUD.cs" />

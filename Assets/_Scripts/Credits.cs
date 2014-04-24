@@ -16,20 +16,20 @@ public class Credits : MonoBehaviour
 			"\n" +
 			"PRODUCTION\n" +
 			"Executive Producer:\n" +
-			"Marcus 'Dough Puncher' Baker\n" +
+			"Marcus Baker\n" +
 			"\n" +
 			"\n" +
 			"DESIGN\n" +
 			"Lead Designers:\n" +
-			"Jay Ree\n" +
-			"Allen Smithee\n" +
+			"Jay Lee\n" +
+			"Gabriel Violette\n" +
 			"\n" +
 			"HUD Designer:\n" +
-			"Pj 'PJ' Castracucco\n" +
+			"Pj Castracucco\n" +
 			"\n" +
 			"Designers:\n" +
 			"Marcus Baker\n" +
-			"Victor Ariel Corteszszszszszsz\n" +
+			"Victor Ariel Cortes\n" +
 			"\n" +
 			"\n" +
 			"PROGRAMMING\n" +
