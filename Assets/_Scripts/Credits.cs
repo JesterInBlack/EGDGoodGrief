@@ -53,8 +53,9 @@ public class Credits : MonoBehaviour
 			"Gabriel Violette\n" +
 			"\n" +
 			"\n" +
-			"FOLEY\n" +
+			"SOUND EFFECTS\n" +
 			"Andrew Ryther\n" +
+			"Mark DiAngelo\n" +
 			"\n" +
 			"\n" +
 			"MUSIC\n" +
@@ -130,7 +131,8 @@ public class Credits : MonoBehaviour
 			"\n" +
 			"\n" +
 			"\n" +
-			"FOLEY\n" +
+			"SOUND EFFECTS\n" +
+			"\n" +
 			"\n" +
 			"\n" +
 			"\n" +
