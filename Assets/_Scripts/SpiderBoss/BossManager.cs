@@ -110,8 +110,8 @@ public class BossManager : MonoBehaviour
 			GameState.playerThreats[i] = 0.0f;
 		}
 
-		GameState.cooperationAxis = 0.0f; //initialized at 0
-		GameState.angerAxis = -1.0f; //initialized at -1
+		GameState.cooperationAxis = -1.0f; //initialized at 0
+		GameState.angerAxis = 1.0f; //initialized at -1
 		#endregion
 
 		#region Blackboard Variables

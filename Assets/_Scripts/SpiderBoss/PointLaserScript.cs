@@ -5,12 +5,13 @@ public class PointLaserScript : MonoBehaviour
 {
 	public GameObject _pointExplosion;
 
-	private Vector2 _startPos;
+	//private Vector2 _startPos;
 	private Vector2 _endPos;
 	//private float _rotationAngle;
 
-	public float _flightDuration = 0.3f;
-	public float _lerpTime = 0.0f;
+	//public float _flightDuration = 0.3f;
+	//public float _lerpTime = 0.0f;
+	public float _speed = 20.0f;
 
 	// Use this for initialization
 	void Start () 
@@ -28,15 +29,16 @@ public class PointLaserScript : MonoBehaviour
 		}
 		else
 		{
-			transform.position = Vector2.Lerp(_startPos, _endPos, _lerpTime / _flightDuration);
-			_lerpTime += (Time.deltaTime* StaticData.t_scale);
+			transform.position = Vector2.MoveTowards((Vector2)transform.position, _endPos, _speed * (Time.deltaTime* StaticData.t_scale));
+			//transform.position = Vector2.Lerp(_startPos, _endPos, _lerpTime / _flightDuration);
+			//_lerpTime += (Time.deltaTime* StaticData.t_scale);
 		}
 	}
 
 	public void Initializer(Vector2 startPos, Vector2 endPos)
 	{
 		transform.position = startPos;
-		_startPos = transform.position;
+		//_startPos = transform.position;
 		_endPos = endPos;
 		float xDiff = endPos.x - startPos.x; 
 		float yDiff = endPos.y - startPos.y; 

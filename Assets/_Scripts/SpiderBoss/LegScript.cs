@@ -100,10 +100,10 @@ public class LegScript : MonoBehaviour
 
 		_regenRate = 10.0f;
 		_moveTime = 0.25f;
-		_maxHP = 600.0f;
+		_maxHP = 1400.0f;
 		_currentHP = _maxHP;
 
-		_maxWebbingHP = 700.0f;
+		_maxWebbingHP = 1000.0f;
 		_currentWebbingHP = 0.0f;
 
 		_maxBuffDuration = 45.0f;
@@ -539,7 +539,7 @@ public class LegScript : MonoBehaviour
 			}
 
 			//increase player threat for dealing damage
-			GameState.playerThreats[id] += 0.4f;
+			GameState.playerThreats[id] += 0.25f;
 		}
 		#endregion
 

@@ -189,6 +189,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedGameObject.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsPlayerAlive.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\ResetSharedObject.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\SetSharedBool.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\SetSharedCounter.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EggAnimation.cs" />

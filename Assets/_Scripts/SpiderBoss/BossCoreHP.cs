@@ -7,7 +7,7 @@ public class BossCoreHP : MonoBehaviour
 	[HideInInspector]
 	public BehaviorBlackboard myBlackboard;
 
-	private const float baseFourPlayerHP = 30000.0f; //hp with 4 players.
+	private const float baseFourPlayerHP = 12000.0f; //hp with 4 players.
 
 	public Texture2D HPBarFill;
 	public Texture2D HPBarBG;
@@ -165,7 +165,7 @@ public class BossCoreHP : MonoBehaviour
 		GameState.angerAxis += Mathf.Min(0.0075f , 1.0f - GameState.angerAxis);
 
 		//increase player threat for dealing damage
-		GameState.playerThreats[id] += 1.5f;
+		GameState.playerThreats[id] += 0.3f;
 
 		//callback player
 		GameState.playerStates[id].OnHitCallback();

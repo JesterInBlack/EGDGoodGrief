@@ -36,7 +36,7 @@ public class DisableBody : Action
 
 		_shake = new Vector3( 0.0f, 0.0f, 0.0f );
 
-		_disabledDuration = 12.0f;
+		_disabledDuration = 7.0f;
 		_disableTimer = 0.0f;
 		_startingPos = (Vector2)transform.position;
 

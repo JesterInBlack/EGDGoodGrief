@@ -8,6 +8,7 @@ public class MegaFlareScript : MonoBehaviour
 	//private float _rotationAngle;
 	public float _lerpTime = 0.0f;
 	public float _travelTime = 1.5f;
+	public float _deathTime = 6.0f;
 
 	private float _chargeDuration;
 	private float _cancelDuration;
@@ -15,6 +16,7 @@ public class MegaFlareScript : MonoBehaviour
 	private Vector3 _baseSize;
 	private GameObject _spawnPoint;
 
+	public GameObject _megaFlareGraphic;
 	public GameObject whiteoutPrefab; //set in inspector.
 	public GameObject overlayPrefab;  //set in inspector.
 
@@ -23,6 +25,7 @@ public class MegaFlareScript : MonoBehaviour
 		Charging = 0,
 		Fire = 1,
 		Cancel = 2,
+		Dieout = 3,
 	}
 	private State _state;
 
@@ -65,12 +68,26 @@ public class MegaFlareScript : MonoBehaviour
 				}
 				GameState.cameraController.Shake (0.4f, 2.0f );
 				Instantiate ( whiteoutPrefab, transform.position, Quaternion.identity );
-				Destroy ( this.gameObject );
+				gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossMegaFlare );
+				_megaFlareGraphic.SetActive(false);
+				_state = State.Dieout;
+				_lerpTime = 0.0f;
 			}
 			else
 			{
 				transform.position = Vector2.Lerp(_startPos, _endPos, _lerpTime / _travelTime);
 				_lerpTime += (Time.deltaTime * StaticData.t_scale);
+			}
+		}
+		else if(_state == State.Dieout)
+		{
+			if(_lerpTime < _deathTime)
+			{
+				_lerpTime += Time.deltaTime * StaticData.t_scale;
+			}
+			else
+			{
+				Destroy ( this.gameObject );
 			}
 		}
 		else if(_state == State.Cancel)

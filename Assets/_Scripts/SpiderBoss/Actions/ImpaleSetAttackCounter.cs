@@ -11,21 +11,25 @@ public class ImpaleSetAttackCounter : Action
 	{
 		float anger = GameState.angerAxis;
 
-		if(anger < -0.25f)
+		if(anger < -0.5f)
 		{
 			_minimumAttacks.Value = 1;
 		}
-		else if(anger < 0.25f)
+		else if(anger < 0.0f)
 		{
 			_minimumAttacks.Value = 2;
 		}
-		else if(anger < 0.75f)
+		else if(anger < 0.25f)
 		{
 			_minimumAttacks.Value = 3;
 		}
-		else
+		else if(anger < 0.7f)
 		{
 			_minimumAttacks.Value = 4;
+		}
+		else
+		{
+			_minimumAttacks.Value = 5;
 		}
 		return TaskStatus.Success;
 	}

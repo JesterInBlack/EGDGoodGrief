@@ -69,7 +69,7 @@ public class Impale : Action
 		_targetPoint = (Vector2)_selectedLeg.transform.position;
 		_intermediatePoint = new Vector2(_selectedPoint.transform.position.x, _selectedPoint.transform.position.y + 5f);
 
-		if(_optionalSetTarget.IsShared == true)
+		if(_optionalSetTarget.Value != null)
 		{
 			_targetPlayer = _optionalSetTarget.Value;
 		}
@@ -163,8 +163,8 @@ public class Impale : Action
 		{
 			if(_lerpTime > _cooldownTime)
 			{
-
 				//Debug.Log("It still finishes fine");
+				//_selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
 				return TaskStatus.Success;
 			}
 			else
@@ -185,7 +185,7 @@ public class Impale : Action
 	public override void OnEnd()
 	{
 		_selectedLeg._behaviorState = LegScript.BehaviorState.Walking;
-		if(_optionalSetTarget.IsShared == true)
+		if(_optionalSetTarget.Value != null)
 		{
 			_optionalSetTarget.Value = null;
 		}

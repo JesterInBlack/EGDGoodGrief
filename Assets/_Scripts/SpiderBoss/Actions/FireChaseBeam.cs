@@ -54,6 +54,7 @@ public class FireChaseBeam : Action
 
 		_spawnedCharge = Instantiate(_chargeObject) as GameObject;
 		_spawnedCharge.transform.position = _laserSpawnPoint.transform.position;
+		gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossPowerUp );
 	}
 	
 	//runs the actual task
