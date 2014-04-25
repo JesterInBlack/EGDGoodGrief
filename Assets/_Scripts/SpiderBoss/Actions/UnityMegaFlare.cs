@@ -7,7 +7,7 @@ using BehaviorDesigner.Runtime.Tasks;
 public class UnityMegaFlare : Action
 {
 	public GameObject _megaFlareLaser;
-	public EyeScript _eyeScript;
+	private EyeScript _eyeScript;
 	private GameObject _spawnedMegaFlare;
 
 	public SharedBool _sharedFinishedAttack;

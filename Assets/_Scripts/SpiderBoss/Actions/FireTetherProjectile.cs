@@ -9,7 +9,7 @@ public class FireTetherProjectile : Action
 	public SharedGameObject _spawnedTether;
 
 	public GameObject _webTetherProjectile;
-	public GameObject _startingPosition;
+	private GameObject _startingPosition;
 	private GameObject _targetPlayer;
 
 	private BehaviorBlackboard _blackboard;
