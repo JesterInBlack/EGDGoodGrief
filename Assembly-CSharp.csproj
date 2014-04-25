@@ -98,6 +98,7 @@
      <Compile Include="Assets\_scripts\Character Class\StoneFist.cs" />
      <Compile Include="Assets\_scripts\Credits.cs" />
      <Compile Include="Assets\_scripts\CustomController.cs" />
+     <Compile Include="Assets\_scripts\DamageNumbers.cs" />
      <Compile Include="Assets\_scripts\Debug\BossDebugHelper.cs" />
      <Compile Include="Assets\_scripts\Esc.cs" />
      <Compile Include="Assets\_scripts\GameState.cs" />
