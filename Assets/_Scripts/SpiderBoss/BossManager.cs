@@ -100,6 +100,11 @@ public class BossManager : MonoBehaviour
 					testBehavior = new BehaviorData(allBehaviors[i], 0.3f, 1f, 0.4f, 1f, 65.0f, 0.5f, -0.1f, -0.25f, 0.0f, 0.0f);
 					_behaviorList.Add(testBehavior);
 				}
+				if(allBehaviors[i].group == 11) //interrupt test
+				{
+					testBehavior = new BehaviorData(allBehaviors[i], -1.0f, 1.0f, -1.0f, 1.0f, 45.0f, 0.5f);
+					_behaviorList.Add(testBehavior);
+				}
 			}
 		}
 		#endregion
