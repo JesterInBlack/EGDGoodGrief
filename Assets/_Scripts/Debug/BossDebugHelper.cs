@@ -21,6 +21,18 @@ public class BossDebugHelper : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if(Input.GetKeyDown(KeyCode.D))
+		{
+			if(GetComponent<GUIText>().enabled == false)
+			{
+				GetComponent<GUIText>().enabled = true;
+			}
+			else
+			{
+				GetComponent<GUIText>().enabled = false;
+			}
+		}
+
 		string text = "Coop: " + GameState.cooperationAxis + 
 			"\nAnger: " + GameState.angerAxis + 
 			"\nThreat: " + 

@@ -111,7 +111,7 @@ public class BossManager : MonoBehaviour
 		}
 
 		GameState.cooperationAxis = 0.0f; //initialized at 0
-		GameState.angerAxis = 1.0f; //initialized at -1
+		GameState.angerAxis = -1.0f; //initialized at -1
 		#endregion
 
 		#region Blackboard Variables
@@ -190,7 +190,7 @@ public class BossManager : MonoBehaviour
 		{
 			GameState.angerAxis += Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery), Mathf.Abs(GameState.angerAxis));
 		}
-		else if(GameState.cooperationAxis > 0.0f)
+		else if(GameState.angerAxis > 0.0f)
 		{
 			GameState.angerAxis -= Mathf.Min(( (Time.deltaTime* StaticData.t_scale) * _blackboard.angerAxisRecovery/3.0f), Mathf.Abs(GameState.angerAxis));
 		}
