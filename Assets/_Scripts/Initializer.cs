@@ -8,6 +8,8 @@ public class Initializer : MonoBehaviour
 
 	#region vars
 	public GameObject[] players = new GameObject[4];  //assign in pre-game screens
+	public GameObject bossPrefab;
+	//public GameObject spawnedPrefab;
 	public GameObject boss;                           //assign in pre-game screens
 	public GameObject[] bossLegs = new GameObject[8]; //assign in pre-game screens
 	public GameObject cameraController;               //set in inspector.
@@ -24,6 +26,10 @@ public class Initializer : MonoBehaviour
 	// Use this for pre-initialization
 	void Awake()
 	{
+		//spawnedPrefab = Instantiate(bossPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+		bossPrefab = GameObject.Find("BossTest");
+		boss = bossPrefab.transform.Find("BodyParts/MainBody").gameObject;
+
 		//Assign the GameState's references
 		for ( int i = 0; i < 4; i++ )
 		{
