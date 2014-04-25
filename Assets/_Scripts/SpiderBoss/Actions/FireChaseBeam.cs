@@ -149,6 +149,10 @@ public class FireChaseBeam : Action
 
 	public override void OnEnd()
 	{
+		if(_spawnedCharge != null)
+		{
+			_spawnedCharge.GetComponent<Lifetime>().timer = _spawnedCharge.GetComponent<Lifetime>().lifetime;
+		}
 		_eyesScript._behaviorState = EyeScript.BehaviorStates.Idle;
 	}
 }
