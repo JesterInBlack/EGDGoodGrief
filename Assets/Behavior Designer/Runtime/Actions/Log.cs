@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Log is a simple task which will output the specified text and return success. It can be used for debugging.
+    [TaskDescription("Log is a simple task which will output the specified text and return success. It can be used for debugging.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=16")]
     [TaskIcon("{SkinColor}LogIcon.png")]
     public class Log : Action

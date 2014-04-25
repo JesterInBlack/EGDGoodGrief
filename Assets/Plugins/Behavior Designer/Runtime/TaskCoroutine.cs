@@ -30,7 +30,7 @@ namespace BehaviorDesigner.Runtime
                     break;
                 }
             }
-            mParent.taskCoroutineEnded(this, mCoroutineName);
+            mParent.TaskCoroutineEnded(this, mCoroutineName);
         }
     }
 }

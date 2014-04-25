@@ -49,4 +49,12 @@ namespace BehaviorDesigner.Runtime.Tasks
         public readonly string mCategory;
         public TaskCategoryAttribute(string category) { mCategory = category; }
     }
+
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class TaskDescriptionAttribute : System.Attribute
+    {
+        public string Description { get { return mDescription; } }
+        public readonly string mDescription;
+        public TaskDescriptionAttribute(string description) { mDescription = description; }
+    }
 }

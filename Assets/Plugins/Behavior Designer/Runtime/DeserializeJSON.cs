@@ -109,11 +109,14 @@ namespace BehaviorDesigner.Runtime
 
             task.hideFlags = HideFlags.HideAndDontSave;
             task.ID = Convert.ToInt32(dict["ID"]);
+            if (dict.ContainsKey("Instant")) {
+                task.IsInstant = (bool)Convert.ChangeType(dict["Instant"], typeof(bool));
+            }
             IDtoTask.Add(task.ID, task);
             task.Owner = behaviorSource.Owner as Behavior;
 #if UNITY_EDITOR || DLL_DEBUG || DLL_RELEASE
             task.NodeData = new NodeData();
-            task.NodeData.deserialize(dict["NodeData"] as Dictionary<string, object>);
+            task.NodeData.deserialize(dict["NodeData"] as Dictionary<string, object>, task);
 
             // give a little warning if the task is an unknown type
             if (task.GetType().Equals(typeof(UnknownTask)) || task.GetType().Equals(typeof(UnknownParentTask))) {
@@ -143,21 +146,22 @@ namespace BehaviorDesigner.Runtime
                         if (fields[i].FieldType.IsArray) {
                             var objectList = Activator.CreateInstance(typeof(List<>).MakeGenericType(fields[i].FieldType.GetElementType())) as IList;
                             var objectValues = dict[fields[i].Name] as IList;
-                            int id = 0;
                             for (int j = 0; j < objectValues.Count; ++j) {
-                                var dictValue = (string)objectValues[j];
-                                if (int.TryParse(dictValue, out id)) {
-                                    objectList.Add(behaviorSource.Owner.DeserializeUnityObject(id));
-                                } else if (dictValue != null && !dictValue.Equals("")) { // pre-version 1.1.1 - remove with version 1.2.
-                                    if (dictValue[0].Equals('/') && task.Owner as Component != null) { // local path to the component
-                                        var transform = GetTransform(task.Owner.transform, dictValue);
-                                        if (fields[i].FieldType.Equals(typeof(GameObject))) {
-                                            objectList.Add(transform.gameObject);
+                                try {
+                                    objectList.Add(behaviorSource.Owner.DeserializeUnityObject(Convert.ToInt32(objectValues[j])));
+                                } catch (Exception /*e*/) {
+                                    var dictValue = (string)objectValues[j];
+                                    if (dictValue != null && !dictValue.Equals("")) { // pre-version 1.1.1 - remove with version 1.2.
+                                        if (dictValue[0].Equals('/') && task.Owner as Component != null) { // local path to the component
+                                            var transform = GetTransform(task.Owner.transform, dictValue);
+                                            if (fields[i].FieldType.Equals(typeof(GameObject))) {
+                                                objectList.Add(transform.gameObject);
+                                            } else {
+                                                objectList.Add(transform.GetComponent(fields[i].FieldType));
+                                            }
                                         } else {
-                                            objectList.Add(transform.GetComponent(fields[i].FieldType));
+                                            objectList.Add(Resources.Load(GetResourcePath(dictValue), fields[i].FieldType.GetElementType()));
                                         }
-                                    } else {
-                                        objectList.Add(Resources.Load(GetResourcePath(dictValue), fields[i].FieldType.GetElementType()));
                                     }
                                 }
                             }

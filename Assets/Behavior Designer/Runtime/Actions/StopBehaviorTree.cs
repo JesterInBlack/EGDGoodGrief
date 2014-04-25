@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Pause or disable a behavior tree and return success after it has been stopped.
+    [TaskDescription("Pause or disable a behavior tree and return success after it has been stopped.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=21")]
     [TaskIcon("{SkinColor}StopBehaviorTreeIcon.png")]
     public class StopBehaviorTree : Action
@@ -23,7 +23,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override TaskStatus OnUpdate()
         {
             // Start the behavior and return success.
-            behavior.disableBehavior(pauseBehavior);
+            behavior.DisableBehavior(pauseBehavior);
             return TaskStatus.Success;
         }
 

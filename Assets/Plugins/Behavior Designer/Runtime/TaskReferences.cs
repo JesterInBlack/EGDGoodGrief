@@ -39,7 +39,7 @@ namespace BehaviorDesigner.Runtime
                 } else if (fieldInfo[i].FieldType.IsArray && (fieldInfo[i].FieldType.GetElementType().Equals(typeof(Task)) || fieldInfo[i].FieldType.GetElementType().IsSubclassOf(typeof(Task)))) {
                     var referencedTasks = fieldInfo[i].GetValue(task) as Task[];
                     if (referencedTasks != null && i < referencedTasks.Length) {
-                        if (referencedTasks[i].Owner.Equals(behaviorSource.Owner)) {
+                        if (referencedTasks[i].Owner == null || referencedTasks[i].Owner.Equals(behaviorSource.Owner)) {
                             continue;
                         }
                         var referencedTasksList = Activator.CreateInstance(typeof(List<>).MakeGenericType(fieldInfo[i].FieldType.GetElementType())) as IList;

@@ -10,7 +10,6 @@ namespace BehaviorDesigner.Runtime
         public string behaviorName = "Behavior";
         public string behaviorDescription = "";
 
-        [SerializeField]
         private int behaviorID = -1;
         public int BehaviorID { get { return behaviorID; } set { behaviorID = value; } }
 
@@ -63,17 +62,19 @@ namespace BehaviorDesigner.Runtime
 
         public SharedVariable GetVariable(string name)
         {
-            if (mVariables != null && (mSharedVariableIndex == null || (mSharedVariableIndex.Count != mVariables.Count))) {
-                mSharedVariableIndex = new Dictionary<string, int>(Variables.Count);
-                for (int i = 0; i < mVariables.Count; ++i) {
-                    if (mVariables[i] == null) {
-                        return null;
+            if (mVariables != null) {
+                if (mSharedVariableIndex == null || (mSharedVariableIndex.Count != mVariables.Count)) {
+                    mSharedVariableIndex = new Dictionary<string, int>(Variables.Count);
+                    for (int i = 0; i < mVariables.Count; ++i) {
+                        if (mVariables[i] == null) {
+                            return null;
+                        }
+                        mSharedVariableIndex.Add(mVariables[i].name, i);
                     }
-                    mSharedVariableIndex.Add(mVariables[i].name, i);
                 }
-            }
-            if (mSharedVariableIndex.ContainsKey(name)) {
-                return mVariables[mSharedVariableIndex[name]];
+                if (mSharedVariableIndex.ContainsKey(name)) {
+                    return mVariables[mSharedVariableIndex[name]];
+                }
             }
             return null;
         }

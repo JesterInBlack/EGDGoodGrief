@@ -40,11 +40,11 @@ namespace BehaviorDesigner.Runtime.Tasks
         public virtual void OnSceneGUI() { }
 
         // Support coroutines within the task
-        protected void StartCoroutine(string methodName) { Owner.startTaskCoroutine(this, methodName); }
+        protected void StartCoroutine(string methodName) { Owner.StartTaskCoroutine(this, methodName); }
         protected void StartCoroutine(System.Collections.IEnumerator routine) { Owner.StartCoroutine(routine); }
-        protected void StartCoroutine(string methodName, object value) { Owner.startTaskCoroutine(this, methodName, value); }
-        protected void StopCoroutine(string methodName) { Owner.stopTaskCoroutine(methodName); }
-        protected void StopAllCoroutines() { Owner.stopAllTaskCoroutines(); }
+        protected void StartCoroutine(string methodName, object value) { Owner.StartTaskCoroutine(this, methodName, value); }
+        protected void StopCoroutine(string methodName) { Owner.StopTaskCoroutine(methodName); }
+        protected void StopAllCoroutines() { Owner.StopAllTaskCoroutines(); }
 
         // Support collision/trigger callbacks:
         public virtual void OnCollisionEnter(Collision collision) { }
