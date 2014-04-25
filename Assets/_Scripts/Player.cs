@@ -557,6 +557,18 @@ public class Player : MonoBehaviour
 		interruptHP -= damage;
 		interruptDR++;
 
+		//TESTING:
+		HP = Mathf.Max ( 0.0f, HP - damage * 0.025f ); //take a tiny amount of damage from friendly fire.
+
+		float scoreLossMultiplier = 0.25f; //percent of damage lost as score from friendly attacks.
+		score -= damage * scoreLossMultiplier;
+		ScoreManager.TookDamage ( id, damage * scoreLossMultiplier );
+		//drain points?
+		if ( attackerId != -1 )
+		{
+			ScoreManager.DealtDamage ( attackerId, damage * scoreLossMultiplier );
+		}
+
 		//TODO: scale anti-cooperation based on how often interruption occurs
 		//TODO: greatly improve this horrible naiieve implementation
 		if ( attackerId != -1 )

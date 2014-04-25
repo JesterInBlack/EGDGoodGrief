@@ -11,8 +11,15 @@ public class HealingFountain : MonoBehaviour
 	private const float regenRate = 20.0f;           //health per second, when down and can't revive
 	private const float regenRateTopOff = 10.0f;     //health per second, when down and can revive
 	private const float regenRateStillAlive = 10.0f; //health per second, when alive and healing
+
+	private SpriteRenderer spriteRenderer;
 	#endregion
 
+
+	void Awake()
+	{
+		spriteRenderer = GetComponent<SpriteRenderer>();
+	}
 
 	// Use this for initialization
 	void Start () 
@@ -23,12 +30,16 @@ public class HealingFountain : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		//TODO: graphical changes based on power remaining.
+		if ( juice < 0.0f ) { juice = 0.0f; } //minor color correction
+
+		//graphical changes based on power remaining.
 		foreach ( ParticleSystem p in GetComponentsInChildren<ParticleSystem>() )
 		{
 			p.startSize = 1.5f * juice / maxJuice + 1.5f;
 			p.emissionRate = 1.5f * juice / maxJuice + 1.5f;
+			p.startColor = GetRGBFromHSV ( juice / maxJuice * 120.0f, 1.0f, 1.0f );
 		}
+		spriteRenderer.color = GetRGBFromHSV ( juice / maxJuice * 120.0f, 1.0f, 1.0f );
 
 		bool stop = false;
 		if ( juice <= 0.0f )
@@ -176,5 +187,20 @@ public class HealingFountain : MonoBehaviour
 			
 			juice = maxJuice;
 		}
+	}
+
+	private Color GetRGBFromHSV( float h, float s, float v )
+	{
+		//A function to convert HSV into RGB color space.
+		//stolen from: http://www.rapidtables.com/convert/color/hsv-to-rgb.htm
+		float c = v * s;
+		float x = c * ( 1.0f - Mathf.Abs ( (h / 60) % 2 - 1 ) );
+		if      ( h >= 0.0f  && h <=  60.0f ) { return new Color( c, x, 0.0f ); }
+		else if ( h > 60.0f  && h <= 120.0f ) { return new Color( x, c, 0.0f ); }
+		else if ( h > 120.0f && h <= 180.0f ) { return new Color( 0.0f, c, x ); }
+		else if ( h > 180.0f && h <= 240.0f ) { return new Color( 0.0f, x, c ); }
+		else if ( h > 240.0f && h <= 300.0f ) { return new Color( x, 0.0f, c ); }
+		else if ( h > 300.0f && h <= 360.0f ) { return new Color( c, 0.0f, x ); }
+		else { return new Color( 0.0f, 0.0f, 0.0f ); }
 	}
 }
