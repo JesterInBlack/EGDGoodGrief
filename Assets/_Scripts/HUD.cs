@@ -323,7 +323,7 @@ public class HUD : MonoBehaviour
 			float f = Mathf.Lerp ( 0.25f, 1.0f, 1.0f - (player.items[itemIndex].coolDownTimer / player.items[itemIndex].coolDownDelay) );
 			GUI.color = new Color( 1.0f, 1.0f, 1.0f, f );
 			GUI.DrawTexture ( new Rect( pos.x + itemPos.x + (r * Mathf.Cos ( ( angle + 60.0f * player.itemLerp ) * Mathf.Deg2Rad ) ) - 16.0f, 
-			                            pos.y + itemPos.y + (r * Mathf.Sin ( ( angle + 60.0f * player.itemLerp )* Mathf.Deg2Rad ) ) - 16.0f, 32, 32 ), 
+			                            pos.y + itemPos.y + (r * Mathf.Sin ( ( angle + 60.0f * player.itemLerp ) * Mathf.Deg2Rad ) ) - 16.0f, 32, 32 ), 
 			                  ItemImages.getImage ( player.items[itemIndex].name ) );
 			GUI.color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 			itemIndex --;

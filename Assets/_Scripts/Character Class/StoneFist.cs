@@ -19,8 +19,8 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	private const float xInterruptHP = 100.0f; //Sand Blast: interrupt damage threshold.
 
 	private float xHoldTime  = 0.0f;
-	private const float xChargeMin = 1.0f;   //minimum charge time to get ranged fist.
-	private const float xChargeMax = 2.0f;   //maximum hold time: more than this confers no benefit.
+	private const float xChargeMin = 0.5f;   //minimum charge time to get ranged fist.
+	private const float xChargeMax = 1.0f;   //maximum hold time: more than this confers no benefit.
 	#endregion
 
 	#region Y
@@ -29,24 +29,27 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	private const float yAddDamage = 100.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
 
 	//this one is uninterruptable. (how to integrate with the interrupt core player call?)
-	private const float shieldMaxHP = 10.0f;             //if the shield takes this much damage, it breaks.
-	private float shieldHP = 10.0f;                      //the shield's HP
-	private const float shieldDegenRate = 1.0f / 3.0f;  //the % of sediment the shield drains, per second.
+	private const float shieldMaxHP = 20.0f;             //if the shield takes this much damage, it breaks.
+	private float shieldHP = 20.0f;                      //the shield's HP
+	private const float shieldDegenRate = 1.0f / 3.0f;   //the % of sediment the shield drains, per second.
 	#endregion
 
 	#region B
 	private float bHoldTime  = 0.0f;
-	private const float bChargeTime = 1.0f;    //hold time to use the B buff.
+	private const float bChargeTime = 0.5f;    //hold time to use the B buff.
 	#endregion
 	
 	#region RT
 	private float rtHoldTime = 0.0f;
 	private const float rtDamage = 20.0f;  //Sandstorm DPS
-	private const float rtRadius = 1.0f;  //Sandstorm area
-	private const float rtResourceRate = 0.1f; // % resource gained per second while sandstorm is up
+	private const float rtRadius = 1.2f;   //Sandstorm area
+	private const float rtResourceRate = 0.4f; // % resource gained per second while sandstorm is up
 	#endregion
 
 	#endregion
+	public GameObject sandFistPrefab; //for instantiating the animated effect
+	public GameObject shieldPrefab;   //for instantiating the stone wall
+	private GameObject myShield;      //reference to the currently active shield. (send signal to destroy)
 
 	#endregion
 	
@@ -66,7 +69,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		#endregion
 		UpdateResource ( dt ); //update "sediment accumulation"
 
-		if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
+		//if ( player.state != "idle" ) { Debug.Log ( player.state ); } //DEBUG
 
 		//Custom State Logic
 		if ( player.state == "ycharge" )
@@ -84,13 +87,22 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 				ChangeState( "ywinddown" );
 			}
 		}
+		else
+		{
+			//not holding y.
+			if ( myShield != null )
+			{
+				myShield.GetComponent<StoneWall>().Shatter();
+			}
+		}
+
 		if ( player.state == "xcharge" )
 		{
 			if ( xHoldTime - dt < xChargeMin && xHoldTime >= xChargeMin )
 			{
 				//feedback: charge reached.
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
-				//TODO: sound
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerCharge, 1.0f );
 				GetComponent<VibrationManager>().ScheduleVibration ( 0.25f, 0.25f, 0.25f );
 			}
 		}
@@ -101,7 +113,8 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			float damage = player.offense * (rtDamage * dt);
 			AttackSystem.hitCircle ( new Vector2( x, y ), rtRadius, damage, player.id );
 			player.resource = Mathf.Min ( player.resource + rtResourceRate * dt, 1.0f );
-			//TODO: suck enemies / other players in (SLOWLY)
+			//suck enemies / other players in (SLOWLY)
+			AttackSystem.Suck ( new Vector2( transform.position.x, transform.position.y ), 0.1f, dt );
 		}
 
 		//trap state changes
@@ -110,12 +123,90 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			OnStateChange( player.state );
 		}
 		prevState = player.state;
+
+		#region Animation
+		if ( player.state == "sandstorm" )
+		{
+			#region sound
+			if ( GetComponent<AudioSource>().isPlaying == false )
+			{
+				GetComponent<AudioSource>().volume = 1.0f;
+				GetComponent<AudioSource>().clip = SoundStorage.MonkSandStorm;
+				if ( ! GetComponent<AudioSource>().isPlaying )
+				{
+					GetComponent<AudioSource>().Play();
+				}
+			}
+			#endregion
+			#region animation
+			if ( GetComponent<CustomController>().move_vec.sqrMagnitude > 0.0f ) //moving
+			{
+				gameObject.GetComponent<Animator>().Play( "walk_" +  player.GetAniSuffix() );
+			}
+			else //idle
+			{
+				gameObject.GetComponent<Animator>().Play( "idle_" +  player.GetAniSuffix() );
+			}
+			#endregion
+			
+		}
+		
+		if ( player.state == "xcharge" || player.state == "ycharge" )
+		{
+			#region animation
+			if ( GetComponent<CustomController>().move_vec.sqrMagnitude > 0.0f ) //moving
+			{
+				gameObject.GetComponent<Animator>().Play( "shuffle_" +  player.GetAniSuffix() );
+			}
+			else //idle
+			{
+				gameObject.GetComponent<Animator>().Play( "shuffle_idle_" +  player.GetAniSuffix() );
+			}
+			#endregion
+		}
+
+		if ( player.state == "idle" )
+		{
+			#region animation
+			if ( ! player.isDowned )
+			{
+				if ( player.isCarrier == false )
+				{
+					GetComponent<Animator>().Play ( "idle_" +  player.GetAniSuffix() );
+				}
+				else
+				{
+					GetComponent<Animator>().Play ( "carry_idle_" +  player.GetAniSuffix() );
+				}
+			}
+			else
+			{
+				GetComponent<Animator>().Play ( "downed_" +  player.GetAniSuffix() );
+			}
+			#endregion
+		}
+		#endregion
 	}
 
 	public void OnHitCallback() 
 	{
-		//If you hit an enemy, charge up your resource.
+		//If you hit an enemy, basically nothing happens.
 		GetComponent<VibrationManager>().AddVibrationForThisFrame( 0.0f, 0.35f);
+	}
+
+	public void OnWasHit( int attackerID, float damage )
+	{
+		//whoever wrote the original version of this ... >:O
+		if ( player.state == "ycharge" )
+		{
+			//take hp from shield.
+			if ( attackerID != -1 )
+			{
+				damage = damage * 0.025f; //immensely reduce damage from players.
+			}
+			float finalDamage = damage / player.defense;
+			shieldHP -= finalDamage;
+		}
 	}
 
 	#region B
@@ -143,7 +234,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			//set a stoneskin flag
 			player.isStoneSkin = true;
 			//put it on a timer
-			player.stoneSkinTimer = 15.0f;
+			player.stoneSkinTimer = 5.0f;
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
 			ChangeState ( "idle" );
 		}
@@ -186,7 +277,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when X is pressed.
 		if ( player.isDowned ) { return; }
-		if ( player.state == "idle" || player.state == "walk" )
+		if ( player.state == "idle" || player.state == "walk" || player.state == "xwinddown" )
 		{
 			ChangeState ( "xwindup" );
 		}
@@ -203,14 +294,23 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			#region hitbox
 			//damage
-			float percentCharge = Mathf.Min ( savedHoldTime, xChargeMax ) / xChargeMax;
+			float percentCharge = Mathf.Max ( 0.0f, (Mathf.Min ( savedHoldTime, xChargeMax ) - xChargeMin) / (xChargeMax - xChargeMin) );
 			float damage = player.offense * (xBaseDamage + xAddDamage * percentCharge);
 			//hitbox
 			float angle = controller.facing * Mathf.PI / 2.0f;
 			float x = this.gameObject.transform.position.x;
 			float y = this.gameObject.transform.position.y;
-			float w = 5.0f * Mathf.Cos ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Cos ( angle + Mathf.PI / 2.0f );
-			float h = 5.0f * Mathf.Sin ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+			float w = 1.5f * Mathf.Cos ( angle ) + 1.5f * Mathf.Cos ( angle + Mathf.PI / 2.0f );
+			float h = 1.5f * Mathf.Sin ( angle ) + 1.5f * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+			if ( percentCharge > 0.0f )
+			{
+				w = (5.0f + 5.0f * percentCharge) * Mathf.Cos ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Cos ( angle + Mathf.PI / 2.0f );
+				h = (5.0f + 5.0f * percentCharge) * Mathf.Sin ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+				//make long-range sand fist.
+				GameObject obj = (GameObject)Instantiate ( sandFistPrefab, transform.position, Quaternion.identity );
+				obj.GetComponent<StonePunch>().range = Mathf.Max ( Mathf.Abs( w ), Mathf.Abs ( h ) );
+				obj.GetComponent<StonePunch>().angle = angle;
+			}
 
 			//shift so the box is centered on the player: 
 			//move along the perpindicular axis to the target
@@ -237,7 +337,11 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 
 			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
 			#endregion
+			//TODO: play a random sound
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch, 1.0f );
+			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch2, 1.0f );
+			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch3, 1.0f );
+			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch4, 1.0f );
 		}
 		ChangeState ( "xwinddown" );
 	}
@@ -269,7 +373,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			//TODO: change direction not allowed, move is?
 			//TODO?: have a start-up cost / wind up window? (so you can't just spam block just in time?)
-			ChangeState( "ycharge" );
+			ChangeState( "ywindup" );
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkRockRaise, 1.0f );
 		}
 	}
@@ -278,7 +382,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//Called when Y is released.
 		yHoldTime = 0.0f;
 		if ( player.isDowned ) { return; }
-		if ( player.state != "ycharge" ) { return; }
+		if ( player.state != "ycharge" && player.state != "ywindup" ) { return; }
 		ChangeState ( "ywinddown" );
 	}
 	public void YHeld( float dt )
@@ -300,7 +404,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		//Called when RT is pressed.
 		//TODO: sandstorm
 		if ( player.isDowned ) { return; }
-		if ( player.state != "idle" ) { return; }
+		if ( player.state != "idle" && player.state != "walk" ) { return; }
 		ChangeState ( "rtwindup" );
 	}
 	public void RTReleased()
@@ -310,6 +414,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.isDowned ) { return; }
 		if ( player.state != "rtwindup" && player.state != "sandstorm" ) { return; }
 		ChangeState( "rtwinddown" );
+		GetComponent<AudioSource>().Stop();
 	}
 	public void RTHeld( float dt )
 	{
@@ -321,21 +426,14 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	}
 	#endregion
 
-    public void OnHitCallback( int attackerID, float damage )
-	{
-		if ( player.state == "ycharge" )
-		{
-			//take hp from shield.
-			float finalDamage = damage / player.defense;
-			shieldHP -= finalDamage;
-		}
-	}
-
 	private void UpdateResource( float dt )
 	{
 		//Constantly gain sediment accumulation.
 		//Some moves degenerate it.
-		player.resource = Mathf.Min ( player.resource + 0.25f * dt, 1.0f );
+		if ( player.state != "ycharge" )
+		{
+			player.resource = Mathf.Min ( player.resource + 0.1f * dt, 1.0f );
+		}
 	}
 
 	void ChangeState( string newState )
@@ -363,22 +461,37 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		else if ( player.state == "xwinddown" )
 		{
 			player.nextState = "idle";
-			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.stateTimer = 0.05f * 10.0f; //10 frames
 			GetComponent<Animator>().Play ( "punch_" + player.GetAniSuffix() );
 		}
 		#endregion
 		#region y
+		else if ( player.state == "ywindup" )
+		{
+			player.nextState = "ycharge";     //transition to immunity state!
+			player.stateTimer = 0.05f * 4.0f; //4 frames
+			player.canMove = false;
+			GetComponent<Animator>().Play ( "guard_" + player.GetAniSuffix() );
+		}
 		else if ( player.state == "ycharge" )
 		{
 			player.nextState = "ycharge"; //freeze in a loop
 			player.stateTimer = 0.0f;
+			player.canMove = false;
 			shieldHP = shieldMaxHP; //reset damage
-			GetComponent<Animator>().Play ( "guard_" + player.GetAniSuffix() );
+			//Spawn wall
+			GameObject obj = (GameObject)Instantiate( shieldPrefab, transform.position, Quaternion.identity );
+			obj.GetComponent<StoneWall>().facing = controller.facing;
+			obj.transform.position += new Vector3( 0.5f * Mathf.Cos ( Mathf.PI / 2.0f * controller.facing ), 
+			                                       0.5f * Mathf.Sin ( Mathf.PI / 2.0f * controller.facing ), 0.0f );
+			if ( myShield != null ) { myShield.GetComponent<StoneWall>().Shatter(); }
+			myShield = obj;
 		}
 		else if ( player.state == "ywinddown" )
 		{
 			player.nextState = "idle";
-			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.stateTimer = 0.05f * 6.0f; //6 frames
+			player.canMove = true;
 			//attack
 			#region hitbox
 			//hitbox
@@ -417,6 +530,11 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			#endregion
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkRockBreak, 1.0f );
 			GetComponent<Animator>().Play ( "counter_" + player.GetAniSuffix() );
+			if ( myShield != null )
+			{
+				myShield.GetComponent<StoneWall>().Shatter();
+			}
+			myShield = null;
 		}
 		#endregion
 		#region rt

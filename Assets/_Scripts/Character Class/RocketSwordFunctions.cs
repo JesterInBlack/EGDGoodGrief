@@ -390,19 +390,18 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "xcharge" )
 		{
 			//freeze animation at charging.
-
 			if ( xHoldTime - dt < xChargeMin && xHoldTime >= xChargeMin )
 			{
 				//feedback: charge reached.
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
-				//TODO: sound
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerCharge, 1.0f );
 				GetComponent<VibrationManager>().ScheduleVibration ( 0.25f, 0.25f, 0.25f );
 			}
 			if ( xHoldTime - dt < xChargeMax && xHoldTime >= xChargeMax )
 			{
 				//feedback: max charge reached.
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
-				//TODO: sound
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerCharge, 1.0f );
 				GetComponent<VibrationManager>().ScheduleVibration ( 0.5f, 0.5f, 0.25f );
 			}
 		}
@@ -477,13 +476,13 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 			if ( yHoldTime - dt < yChargeMin && yHoldTime >= yChargeMin )
 			{
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
-				//TODO: sound
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerCharge, 1.0f );
 				GetComponent<VibrationManager>().ScheduleVibration ( 0.25f, 0.25f, 0.25f );
 			}
 			if ( yHoldTime - dt < yChargeMax && yHoldTime >= yChargeMax )
 			{
 				this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color( 1.0f, 1.0f, 0.66f ), 0.25f );
-				//TODO: sound
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerCharge, 1.0f );
 				GetComponent<VibrationManager>().ScheduleVibration ( 0.5f, 0.5f, 0.25f );
 			}
 		}

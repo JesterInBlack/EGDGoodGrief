@@ -63,7 +63,7 @@ public class LobbedProjectile : MonoBehaviour
 		GameState.players[id].GetComponent<AudioSource>().PlayOneShot ( SoundStorage.ItemJarShatter, 1.0f );
 		Instantiate ( gasPrefab, transform.position, Quaternion.identity );
 		Instantiate ( shatterPrefab, transform.position, Quaternion.identity );
-		foreach (Collider2D hit in AttackSystem.getHitsInCircle( aimPoint, 1.0f, id ) )
+		foreach (Collider2D hit in AttackSystem.getHitsInCircle( aimPoint, 2.0f, id ) )
 		{
 			Player tempPlayer = hit.gameObject.GetComponent<Player>();
 			if ( tempPlayer != null )

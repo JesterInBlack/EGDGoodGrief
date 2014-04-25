@@ -28,7 +28,10 @@ public class Initializer : MonoBehaviour
 	{
 		//spawnedPrefab = Instantiate(bossPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 		bossPrefab = GameObject.Find("BossTest");
-		boss = bossPrefab.transform.Find("BodyParts/MainBody").gameObject;
+		if ( bossPrefab != null )
+		{
+			boss = bossPrefab.transform.Find("BodyParts/MainBody").gameObject;
+		}
 
 		//Assign the GameState's references
 		for ( int i = 0; i < 4; i++ )
@@ -97,6 +100,7 @@ public class Initializer : MonoBehaviour
 		else
 		{
 			GameState.playerCount = 4;
+			ItemImages.Start ();
 		}
 	}
 

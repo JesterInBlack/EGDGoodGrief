@@ -151,7 +151,9 @@ public class FireChaseBeam : Action
 	{
 		if(_spawnedCharge != null)
 		{
-			_spawnedCharge.GetComponent<Lifetime>().timer = _spawnedCharge.GetComponent<Lifetime>().lifetime;
+			//Jay, what the fuck is this?
+			//_spawnedCharge.GetComponent<Lifetime>().timer = _spawnedCharge.GetComponent<Lifetime>().lifetime;
+			Destroy ( _spawnedCharge ); //Encapsulation is good.
 		}
 		_eyesScript._behaviorState = EyeScript.BehaviorStates.Idle;
 	}

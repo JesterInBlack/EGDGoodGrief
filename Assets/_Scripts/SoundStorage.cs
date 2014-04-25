@@ -8,10 +8,12 @@ public class SoundStorage : MonoBehaviour
 	//Set all these in editor.
 	public static AudioClip MonkStoneSkinOn;
 	public static AudioClip MonkPunch;
+	public static AudioClip MonkPunch2;
+	public static AudioClip MonkPunch3;
+	public static AudioClip MonkPunch4;
 	public static AudioClip MonkSandStorm;
 	public static AudioClip MonkRockRaise;
 	public static AudioClip MonkRockBreak;
-	public static AudioClip MonkImpact;
 
 	public static AudioClip KnightBlastOff;
 	public static AudioClip KnightRev;
@@ -56,60 +58,73 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip PlayerHurt3;
 	public static AudioClip PlayerBlock1;
 	public static AudioClip PlayerBlock2;
+	public static AudioClip PlayerCharge;
 	#endregion
 
 	void Awake()
 	{
 		//Load up all the sounds
 		//ugh... these paths should be more modable, and a naming convention would be nice.
-		MonkStoneSkinOn = Resources.Load<AudioClip>( "_Sounds/Monk/block" );
-		MonkPunch = Resources.Load<AudioClip>( "_Sounds/Monk/punch" );
-		MonkSandStorm = Resources.Load<AudioClip>( "_Sounds/Monk/sand_flow" );
-		MonkRockRaise = Resources.Load<AudioClip>( "_Sounds/Monk/rockslide" );
-		MonkRockBreak = Resources.Load<AudioClip>( "_Sounds/Monk/rocks" );
+		LoadAudio ( ref MonkStoneSkinOn, "_Sounds/Monk/block" );
+		LoadAudio ( ref MonkPunch, "_Sounds/Monk/punch" );
+		LoadAudio ( ref MonkPunch2, "_Sounds/Monk/impact" );
+		LoadAudio ( ref MonkPunch3, "_Sounds/Monk/RightCross" );
+		LoadAudio ( ref MonkPunch4, "_Sounds/Monk/Jab-SoundBible.com-1806727891" );
+		LoadAudio ( ref MonkSandStorm, "_Sounds/Monk/sand_flow" );
+		LoadAudio ( ref MonkRockRaise, "_Sounds/Monk/rockslide" );
+		LoadAudio ( ref MonkRockBreak, "_Sounds/Monk/rocks" );
 
-		KnightBlastOff = Resources.Load<AudioClip>( "_Sounds/RocketSword/launch_proto" );
-		KnightRev = Resources.Load<AudioClip>( "_Sounds/RocketSword/single_rev" );
-		KnightRevLoop = Resources.Load<AudioClip>( "_Sounds/RocketSword/rev_cont" );
-		KnightSlice = Resources.Load<AudioClip>( "_Sounds/RocketSword/sword_slice" );
-		KnightSwoosh = Resources.Load<AudioClip>( "_Sounds/RocketSword/sword_swoosh" );
-		KnightFireSword = Resources.Load<AudioClip>( "_Sounds/RocketSword/fire_slow" );
+		LoadAudio ( ref KnightBlastOff, "_Sounds/RocketSword/launch_proto" );
+		LoadAudio ( ref KnightRev, "_Sounds/RocketSword/single_rev" );
+		LoadAudio ( ref KnightRevLoop, "_Sounds/RocketSword/rev_cont" );
+		LoadAudio ( ref KnightSlice, "_Sounds/RocketSword/sword_slice" );
+		LoadAudio ( ref KnightSwoosh, "_Sounds/RocketSword/sword_swoosh" );
+		LoadAudio ( ref KnightFireSword, "_Sounds/RocketSword/fire_slow" );
 
-		ArcherFire = Resources.Load<AudioClip>( "_Sounds/Archer/bow_fire" );
-		ArcherBlowback = Resources.Load<AudioClip>( "_Sounds/Archer/Wind_Gust" );
-		ArcherArrowImpact = Resources.Load<AudioClip>( "_Sounds/Archer/arrow_hit2" );
+		LoadAudio ( ref ArcherFire, "_Sounds/Archer/bow_fire" );
+		LoadAudio ( ref ArcherBlowback, "_Sounds/Archer/Wind_Gust" );
+		LoadAudio ( ref ArcherArrowImpact, "_Sounds/Archer/arrow_hit2" );
 
-		PlayerHurt1 = Resources.Load<AudioClip>( "_Sounds/player_hit3" );
-		PlayerHurt2 = Resources.Load<AudioClip>( "_Sounds/player_hit2" );
-		PlayerBlock1 = Resources.Load<AudioClip>( "_Sounds/block1" );
-		PlayerBlock2 = Resources.Load<AudioClip>( "_Sounds/block2" );
+		LoadAudio ( ref PlayerHurt1, "_Sounds/player_hit3" );
+		LoadAudio ( ref PlayerHurt2, "_Sounds/player_hit2" );
+		LoadAudio ( ref PlayerBlock1, "_Sounds/block1" );
+		LoadAudio ( ref PlayerBlock2, "_Sounds/block2" );
+		LoadAudio ( ref PlayerCharge, "_Sounds/charge2" );
 
-		BossImpale = Resources.Load<AudioClip>( "_Sounds/Boss/Impale" );
-		BossWeb = Resources.Load<AudioClip>( "_Sounds/Boss/web2" );
-		BossLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser2_v2" );
-		BossPointLaser = Resources.Load<AudioClip>( "_Sounds/Boss/laser3" );
-		BossSuction = Resources.Load<AudioClip>( "_Sounds/Boss/suction2" );
-		BossLegHit = Resources.Load<AudioClip>( "_Sounds/Boss/leg_impact" );
-		BossLegBreak = Resources.Load<AudioClip>( "_Sounds/Boss/leg_break" );
-		BossHit1 = Resources.Load<AudioClip>( "_Sounds/stab_squish_heavy" );
-		BossHit2 = Resources.Load<AudioClip>( "_Sounds/stab_squish_light" );
-		BossDeathScream = Resources.Load<AudioClip>( "_Sounds/Boss/what_have_i_done_final_bellow" );
-		BossStep = Resources.Load<AudioClip>( "_Sounds/Boss/step" );
-		BossFall = Resources.Load<AudioClip>( "_Sounds/Boss/fall" );
-		BossCrunch = Resources.Load<AudioClip>( "_Sounds/Boss/crunch" );
-		BossMegaFlare = Resources.Load<AudioClip>("_Sounds/Boss/Explosion_Mark_DiAngelo");
-		BossPowerUp = Resources.Load<AudioClip>("_Sounds/Boss/PowerUp");
+		LoadAudio ( ref BossImpale, "_Sounds/Boss/Impale" );
+		LoadAudio ( ref BossWeb, "_Sounds/Boss/web2" );
+		LoadAudio ( ref BossLaser, "_Sounds/Boss/laser2_v2" );
+		LoadAudio ( ref BossPointLaser, "_Sounds/Boss/laser3" );
+		LoadAudio ( ref BossSuction, "_Sounds/Boss/suction2" );
+		LoadAudio ( ref BossLegHit, "_Sounds/Boss/leg_impact" );
+		LoadAudio ( ref BossLegBreak, "_Sounds/Boss/leg_break" );
+		LoadAudio ( ref BossHit1, "_Sounds/stab_squish_heavy" );
+		LoadAudio ( ref BossHit2, "_Sounds/stab_squish_light" );
+		LoadAudio ( ref BossDeathScream, "_Sounds/Boss/what_have_i_done_final_bellow" );
+		LoadAudio ( ref BossStep, "_Sounds/Boss/step" );
+		LoadAudio ( ref BossFall, "_Sounds/Boss/fall" );
+		LoadAudio ( ref BossCrunch, "_Sounds/Boss/crunch" );
+		LoadAudio ( ref BossMegaFlare, "_Sounds/Boss/Explosion_Mark_DiAngelo");
+		LoadAudio ( ref BossPowerUp, "_Sounds/Boss/PowerUp");
 
 
-		ItemJarShatter = Resources.Load<AudioClip>( "_Sounds/Item/jar_shatter" );
-		ItemSlowMoIn = Resources.Load<AudioClip>( "_Sounds/Item/slomo_in" );
-		ItemSlowMoOut = Resources.Load<AudioClip>( "_Sounds/Item/slomo_out" );
-		ItemVampFang = Resources.Load<AudioClip>( "_Sounds/Item/vampire_suck" );
-		ItemBuff = Resources.Load<AudioClip>( "_Sounds/Item/powerup" );
-		ItemDebuff = Resources.Load<AudioClip>( "_Sounds/Item/debuff" );
+		LoadAudio ( ref ItemJarShatter, "_Sounds/Item/jar_shatter" );
+		LoadAudio ( ref ItemSlowMoIn, "_Sounds/Item/slomo_in" );
+		LoadAudio ( ref ItemSlowMoOut, "_Sounds/Item/slomo_out" );
+		LoadAudio ( ref ItemVampFang, "_Sounds/Item/vampire_suck" );
+		LoadAudio ( ref ItemBuff, "_Sounds/Item/powerup" );
+		LoadAudio ( ref ItemDebuff, "_Sounds/Item/debuff" );
 
-		MenuCancel = Resources.Load<AudioClip>( "_Sounds/Menu/menu_cancel" );
-		MenuBack = Resources.Load<AudioClip>( "_Sounds/Menu/menu_back" );
-		MenuConfirm = Resources.Load<AudioClip>( "_Sounds/Menu/menu_select" );
+		LoadAudio ( ref MenuCancel, "_Sounds/Menu/menu_cancel" );
+		LoadAudio ( ref MenuBack, "_Sounds/Menu/menu_back" );
+		LoadAudio ( ref MenuConfirm, "_Sounds/Menu/menu_select" );
+	}
+
+	private void LoadAudio( ref AudioClip clip, string path )
+	{
+		//function loads the file at path into the clip variable.
+		//Debug.Log ( clip != null );
+		if ( clip != null ) { return; } //already loaded, so don't load it again.
+		clip = Resources.Load<AudioClip>( path );
 	}
 }

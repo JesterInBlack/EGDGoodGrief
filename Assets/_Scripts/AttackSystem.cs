@@ -396,17 +396,20 @@ public static class AttackSystem
 	public static void Suck( Vector2 position, float speed, float dt )
 	{
 		//Sucks all players toward position at speed.
-		for ( int i = 0; i < 4; i++ )
+		for ( int i = 0; i < GameState.players.Length; i++ )
 		{
-			if ( ! GameState.players[i].GetComponent<Player>().isDowned ) //don't draw in the downed.
+			if ( GameState.players[i] != null )
 			{
-				float x = GameState.players[i].transform.position.x;
-				float y = GameState.players[i].transform.position.y;
-				float z = GameState.players[i].transform.position.z;
-				Vector2 moveDirection = position - new Vector2( x, y );
-				moveDirection.Normalize();
-				moveDirection = moveDirection * speed * dt;
-				GameState.players[i].transform.position = new Vector3( x + moveDirection.x, y + moveDirection.y, z );
+				if ( ! GameState.players[i].GetComponent<Player>().isDowned ) //don't draw in the downed.
+				{
+					float x = GameState.players[i].transform.position.x;
+					float y = GameState.players[i].transform.position.y;
+					float z = GameState.players[i].transform.position.z;
+					Vector2 moveDirection = position - new Vector2( x, y );
+					moveDirection.Normalize();
+					moveDirection = moveDirection * speed * dt;
+					GameState.players[i].transform.position = new Vector3( x + moveDirection.x, y + moveDirection.y, z );
+				}
 			}
 		}
 	}

@@ -453,7 +453,7 @@ public class Player : MonoBehaviour
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			ScoreManager.AvoidedDamage ( id, damage );
-			this.gameObject.GetComponent<StoneFist>().OnHitCallback( -1, damage );
+			this.gameObject.GetComponent<StoneFist>().OnWasHit( -1, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
 			PlayBlockSound();
 			return; 
@@ -544,7 +544,7 @@ public class Player : MonoBehaviour
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
-			this.gameObject.GetComponent<StoneFist>().OnHitCallback( attackerId, damage );
+			this.gameObject.GetComponent<StoneFist>().OnWasHit( attackerId, damage );
 			return; 
 		}
 
@@ -612,7 +612,6 @@ public class Player : MonoBehaviour
 		if ( isStoneSkin ) { return; }
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
-			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
 			return; 
 		}
 		Vector2 vec = (new Vector2( transform.position.x, transform.position.y ) - pos ).normalized * magnitude;
@@ -629,7 +628,6 @@ public class Player : MonoBehaviour
 		if ( isStoneSkin ) { return; }
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
-			//this.gameObject.GetComponent<StoneFist>().OnHitCallback( damage );
 			return; 
 		}
 

@@ -95,7 +95,7 @@ public class ItemHandler : MonoBehaviour
 		else if ( player.items[index].name == ItemName.AURA_OFFENSE )
 		{
 			const float duration = 60.0f;
-			Aura ( player.id, duration, 0.5f, 0.0f, 0.0f );
+			Aura ( player.id, duration, 0.25f, 0.0f, 0.0f );
 		}
 		else if ( player.items[index].name == ItemName.AURA_REGEN )
 		{
