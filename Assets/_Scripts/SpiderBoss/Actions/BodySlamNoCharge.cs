@@ -99,4 +99,11 @@ public class BodySlamNoCharge : Action
 
 		return TaskStatus.Running;
 	}
+
+	public override void OnEnd()
+	{
+		_blackboard.body._bodyState = BodyScript.BodyState.Floating;
+		_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
+		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.Idle;
+	}
 }
