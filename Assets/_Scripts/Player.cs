@@ -706,13 +706,18 @@ public class Player : MonoBehaviour
 		if ( soundSpamTimer > 0.0f ) { return; }
 		soundSpamTimer = soundSpamDelay;
 		float rng = Random.Range ( 0.0f, 100.0f );
-		if ( rng <= 50.0f )
+		float possibilities = 3;
+		if ( rng <= 100.0f / possibilities * 1.0f )
 		{
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerHurt1, 1.0f );
 		}
-		else
+		else if ( rng <= 100.0f / possibilities * 2.0f )
 		{
 			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerHurt2, 1.0f );
+		}
+		else
+		{
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.PlayerHurt3, 1.0f );
 		}
 	}
 
@@ -866,19 +871,46 @@ public class Player : MonoBehaviour
 		obj.GetComponent<ScoreText>().scoreName.text = name;
 		obj.transform.parent = this.gameObject.transform;
 
+		/*
 		string text;
 		Color color;
 		if ( amount > 0.0f ) 
 		{ 
 			text = "+" + ((int) amount); 
-			color = new Color( 0.0f, 0.0f, 1.0f, 1.0f );
+			color = GetPlayerColor (); //new Color( 0.0f, 0.0f, 1.0f, 1.0f );
 		}
 		else 
 		{ 
 			text = ((int) amount).ToString();
-			color = new Color( 0.9f, 0.0f, 0.0f, 1.0f );
+			color = new Color( 0.0f, 0.0f, 0.0f, 1.0f );
 		}
-		obj.GetComponent<ScoreText>().scorePoints.text = text;
+		obj.GetComponent<ScoreText>().scorePoints.text = text; //removed
 		obj.GetComponent<ScoreText>().scorePoints.color = color;
+		*/
+
+		//Color color = GetPlayerColor ();
+		obj.GetComponent<ScoreText>().scoreName.color = Color.white; //color;
+		obj.GetComponent<ScoreText>().scorePoints.text = "";
+	}
+
+	private Color GetPlayerColor()
+	{
+		if ( id == 0 )
+		{
+			return new Color( 0.9f, 0.0f, 0.0f, 1.0f );
+		}
+		else if ( id == 1 )
+		{
+			return new Color( 0.0f, 0.0f, 1.0f, 1.0f );
+		}
+		else if ( id == 2 )
+		{
+			return new Color( 0.0f, 0.9f, 0.0f, 1.0f );
+		}
+		else if ( id == 3 )
+		{
+			return new Color( 1.0f, 0.9f, 0.0f, 1.0f );
+		}
+		return Color.black;
 	}
 }

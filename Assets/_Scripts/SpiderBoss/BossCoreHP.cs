@@ -135,6 +135,8 @@ public class BossCoreHP : MonoBehaviour
 		ScoreManager.DealtDamage( id, damage );
 		currentColor = new ScheduledColor( new Color( 1.0f, 0.5f, 0.5f), 0.25f );
 
+		GetComponent<DamageNumbersForBoss>().AddTakeDamagePoints ( id, damage );
+
 		if ( prevHP > 0.0f && myBlackboard.HP <= 0.0f )
 		{
 			ScoreManager.LastHit ( id );

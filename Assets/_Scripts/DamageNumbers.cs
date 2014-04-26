@@ -12,6 +12,8 @@ public class DamageNumbers : MonoBehaviour
 
 	//TODO: color code + points to characters???
 
+	//TODO: clean up this hacky mess.
+
 	#region vars
 	private const float takeDelay = 0.1f;   //how long, in seconds, needs to pass before an attack is considered separate.
 	private const float dealDelay = 0.1f;   //how long, in seconds, needs to pass before an attack is considered separate.
@@ -84,12 +86,14 @@ public class DamageNumbers : MonoBehaviour
 		blockPoints[attackerId] += points;
 	}
 
+	/*
 	public void AddDealDamagePoints( float points )
 	{
 		//handles the + points on your side
 		dealTimer = dealDelay;
 		dealPoints += points;
 	}
+	*/
 
 	public void AddTakeDamagePoints( int attackerId, float points )
 	{
@@ -104,7 +108,7 @@ public class DamageNumbers : MonoBehaviour
 	{
 		GameObject obj = (GameObject)Instantiate( player.scoreTextPrefab, transform.position + new Vector3( 0.0f, 1.0f, 0.0f ), Quaternion.identity );
 		obj.GetComponent<ScoreText>().scoreName.text = name;
-		float scale = 0.80f;
+		float scale = 0.85f;
 		obj.transform.localScale = new Vector3( scale, scale, scale );
 		obj.transform.parent = this.gameObject.transform;
 		
@@ -112,16 +116,19 @@ public class DamageNumbers : MonoBehaviour
 		Color color;
 		if ( amount > 0.0f ) 
 		{ 
-			text = "+" + ((int) amount); 
-			color = /*GetPlayerColor ();*/ new Color( 0.0f, 0.0f, 1.0f, 1.0f );
+			text = ""; //hide block score.
+			color = Color.white;
+			//text = "+" + ((int) amount); 
+			//color = GetPlayerColor (); //new Color( 0.0f, 0.0f, 1.0f, 1.0f );
 		}
 		else 
 		{ 
 			text = ((int) amount).ToString();
-			color = new Color( 0.9f, 0.0f, 0.0f, 1.0f );
+			color = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		}
 		obj.GetComponent<ScoreText>().scorePoints.text = text;
 		obj.GetComponent<ScoreText>().scorePoints.color = color;
+		obj.GetComponent<ScoreText>().scoreName.color = Color.white; //GetPlayerColor ();
 	}
 
 	private Color GetPlayerColor()

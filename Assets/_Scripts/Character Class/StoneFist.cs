@@ -13,8 +13,8 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	#region move data
 	//Button Hold Times
 	#region X
-	private const float xBaseDamage = 50.0f;   //Sand Blast: base damage (0% charge)
-	private const float xAddDamage = 200.0f;   //Sand Blast: additional damage (100% charge)
+	private const float xBaseDamage = 75.0f;   //Sand Blast: base damage (0% charge)
+	private const float xAddDamage = 150.0f;   //Sand Blast: additional damage (100% charge)
 
 	private const float xInterruptHP = 100.0f; //Sand Blast: interrupt damage threshold.
 
@@ -26,7 +26,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	#region Y
 	private float yHoldTime  = 0.0f;
 	private const float yBaseDamage = 50.0f;  //base damage of the shield attack
-	private const float yAddDamage = 250.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
+	private const float yAddDamage = 450.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
 
 	//this one is uninterruptable. (how to integrate with the interrupt core player call?)
 	private const float shieldMaxHP = 70.0f;             //if the shield takes this much damage, it breaks.
