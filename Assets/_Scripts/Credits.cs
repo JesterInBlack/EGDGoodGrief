@@ -56,6 +56,7 @@ public class Credits : MonoBehaviour
 			"SOUND EFFECTS\n" +
 			"Andrew Ryther\n" +
 			"Mark DiAngelo\n" +
+			"Mike Koenig\n" +
 			"\n" +
 			"\n" +
 			"MUSIC\n" +
@@ -132,6 +133,7 @@ public class Credits : MonoBehaviour
 			"\n" +
 			"\n" +
 			"SOUND EFFECTS\n" +
+			"\n" +
 			"\n" +
 			"\n" +
 			"\n" +
