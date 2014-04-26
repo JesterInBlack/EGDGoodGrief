@@ -48,6 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\Behavior Designer\Editor\BehaviorTreeInspector.cs" />
      <Compile Include="Assets\Behavior Designer\Editor\ExternalBehaviorTreeInspector.cs" />
+ <Reference Include="Assembly-UnityScript">
+ <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
+ </Reference>
  <Reference Include="BehaviorDesignerEditor">
  <HintPath>Assets\Behavior Designer\Editor\BehaviorDesignerEditor.dll</HintPath>
  </Reference>
