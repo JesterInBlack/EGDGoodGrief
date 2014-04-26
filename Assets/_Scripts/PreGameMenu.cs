@@ -136,10 +136,10 @@ public class PreGameMenu : MonoBehaviour
 		itemNameText[5] = "Healing Aura";
 
 		//note: +96 is a hack.
-		itemTextRect[0] = new Rect( 124.0f * 1440.0f / 960.0f + 96.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
-		itemTextRect[1] = new Rect( 300.0f * 1440.0f / 960.0f + 96.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
-		itemTextRect[2] = new Rect( 484.0f * 1440.0f / 960.0f + 96.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
-		itemTextRect[3] = new Rect( 666.0f * 1440.0f / 960.0f + 96.0f, 300.0f * 900.0f / 600.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[0] = new Rect( 124.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f + 96.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[1] = new Rect( 300.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f + 96.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[2] = new Rect( 484.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f + 96.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
+		itemTextRect[3] = new Rect( 666.0f * 1440.0f / 960.0f, 300.0f * 900.0f / 600.0f + 96.0f, 169.0f * 1440.0f / 960.0f, 240.0f * 900.0f / 600.0f );
 		#endregion
 
 		#region CharacterSelectionScreen
