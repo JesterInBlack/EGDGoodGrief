@@ -24,6 +24,7 @@ public class ScoreDetails
 {
 	//A class for storing detailed score data
 	#region vars
+	public CharacterClasses characterClass;
 	public SubScore downs;
 	public SubScore damageDealt;
 	public SubScore damageTaken;
@@ -65,5 +66,10 @@ public class ScoreDetails
 		objectiveScores[5] = lastHit;
 
 		return objectiveScores;
+	}
+
+	public CharacterClasses GetCharacterClass()
+	{
+		return characterClass;
 	}
 }

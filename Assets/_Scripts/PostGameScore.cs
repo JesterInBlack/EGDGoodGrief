@@ -6,6 +6,10 @@ public class PostGameScore : MonoBehaviour
 	#region vars
 	public GameObject[] scorebars = new GameObject[4];              //set in inspector
 	public GameObject[] playerSprites = new GameObject[4];          //set in inspector (need to set sprite renderer, + animate it, + jump, + move with scorebar)
+	private CharacterClasses[] charClasses = new CharacterClasses[4];
+	public RuntimeAnimatorController[] knightAnis = new RuntimeAnimatorController[4];
+	public RuntimeAnimatorController[] monkAnis = new RuntimeAnimatorController[4];
+
 	public GameObject[] spotLights = new GameObject[4];             //set in inspector
 	public GameObject[] totalScoreText = new GameObject[4];         //set in inspector
 	public GameObject[] objScoreText = new GameObject[4];           //set in inspector
@@ -53,6 +57,7 @@ public class PostGameScore : MonoBehaviour
 
 		for ( int i = 0; i < 4; i++ )
 		{
+			charClasses[i] = playerScoreDetails[i].GetCharacterClass();
 			totalScores[i] = 0.0f;
 			currentObjectiveScores[i] = 0.0f;
 			currentBarPercent[i] = 0.0f;
@@ -283,8 +288,18 @@ public class PostGameScore : MonoBehaviour
 	{
 		for ( int i = 0; i < 4; i++ )
 		{
-			float y = -13.0f;
+			float y = -15.0f;
 			scorebars[i].transform.position = new Vector3( scorebars[i].transform.position.x, y, 0.0f );
+			//set up sprites
+			if ( charClasses[i] == CharacterClasses.KNIGHT )
+			{
+				playerSprites[i].GetComponent<Animator>().runtimeAnimatorController = knightAnis[i];
+			}
+			else if ( charClasses[i] == CharacterClasses.DEFENDER )
+			{
+				playerSprites[i].GetComponent<Animator>().runtimeAnimatorController = monkAnis[i];
+			}
+			playerSprites[i].GetComponent<Animator>().Play ( "idle_down" );
 		}
 	}
 

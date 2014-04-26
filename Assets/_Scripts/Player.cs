@@ -183,6 +183,7 @@ public class Player : MonoBehaviour
 			temp.read[ id ] = true;
 		}
 		scorePasser = GameObject.Find ( "P" + (id + 1) + "ScoreData" ).GetComponent<ScorePasser>();
+		scorePasser.scoreDetails.characterClass = characterclass; //save class
 	}
 
 	// Use this for initialization
