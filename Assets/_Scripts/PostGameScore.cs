@@ -222,6 +222,7 @@ public class PostGameScore : MonoBehaviour
 					//DONE. (all scores tallied)
 					done = true;
 					t = 0.0f; //reset timer.
+					GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuApplause, 1.0f );
 					objectiveText.GetComponent<TextMesh>().text = "";
 					for ( int i = 0; i < confettiEmitters.Length; i++ )
 					{
