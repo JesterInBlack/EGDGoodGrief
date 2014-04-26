@@ -21,6 +21,8 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 0.5f;   //minimum charge time to get ranged fist.
 	private const float xChargeMax = 1.5f;   //maximum hold time: more than this confers no benefit.
+
+	public bool xCharged = false;
 	#endregion
 
 	#region Y
@@ -188,6 +190,19 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			#endregion
 		}
 		#endregion
+
+		if ( player.state == "xcharge" && (xHoldTime >= xChargeMin || savedHoldTime >= xChargeMin) )
+		{
+			xCharged = true;
+		}
+		else if ( player.state == "xwinddown" )
+		{
+			//retain charge
+		}
+		else
+		{
+			xCharged = false;
+		}
 	}
 
 	public void OnHitCallback() 

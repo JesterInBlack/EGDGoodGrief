@@ -320,27 +320,27 @@ public class Tutorial : MonoBehaviour
 		}
 		else if ( state == 6 ) //X charge
 		{
-			/*
-			if ( ! GetComponent<RocketSwordFunctions>().xCharged )
+			if ( ! GetComponent<StoneFist>().xCharged )
 			{
 				spriteRenderer.sprite = xCharge;
 			}
-			else if ( GetComponent<RocketSwordFunctions>().xCharged2 )
-			{
-				spriteRenderer.sprite = xSpin2; //for Andrew.
-			}
 			else
 			{
-				spriteRenderer.sprite = xSpin;
+				spriteRenderer.sprite = xPunch2;
 			}
-			if ( player.state == "xsmash" )
+			if ( player.state == "xwinddown" )
 			{
 				state++;
 			}
-			*/
-			state++; //skip
 		}
-		else if ( state == 7 ) { state++; } //skip
+		else if ( state == 7 ) //RT charge
+		{ 
+			spriteRenderer.sprite = rtSandstorm;
+			if ( player.state == "sandstorm" )
+			{
+				state++; 
+			}
+		} 
 		else if ( state == 8 ) //Filler state
 		{
 			timer += Time.deltaTime;
