@@ -55,7 +55,7 @@ namespace BehaviorDesigner.Runtime
         private bool dirty = false;
         public bool Dirty { get { return dirty; } set { dirty = value; } }
 #endif
-
+        
         // convenience task used for adding new tasks
         public class TaskAddData
         {
@@ -187,12 +187,10 @@ namespace BehaviorDesigner.Runtime
             if (dirty) {
                 // update the root task with the newly instantiated task
                 behavior.GetBehaviorSource().RootTask = behaviorTree.taskList[0];
-            }
-#endif
-            if (hasExternalBehavior) {
                 // Make sure all of the tasks are pointing to other tasks within the same tree
                 TaskReferences.CheckReferences(behaviorTree.behavior, behaviorTree.taskList);
             }
+#endif
 
             behaviorTree.activeStack = new List<Stack<int>>();
             behaviorTree.interruptionIndex = new List<int>();
@@ -991,7 +989,7 @@ namespace BehaviorDesigner.Runtime
             int interruptionIndex = -1;
             var behaviorTree = behaviorTreeMap[behavior];
             for (int i = 0; i < behaviorTree.taskList.Count; ++i) {
-                if (behaviorTree.taskList[i].Equals(task)) {
+                if (behaviorTree.taskList[i].ReferenceID == task.ReferenceID) {
                     interruptionIndex = i;
                     break;
                 }

@@ -13,38 +13,35 @@ namespace BehaviorDesigner.Runtime
         public static void CheckReferences(BehaviorSource behaviorSource)
         {
             if (behaviorSource.RootTask != null) {
-                checkReferences(behaviorSource, behaviorSource.RootTask);
+                CheckReferences(behaviorSource, behaviorSource.RootTask);
             }
 
             if (behaviorSource.DetachedTasks != null) {
                 for (int i = 0; i < behaviorSource.DetachedTasks.Count; ++i) {
-                    checkReferences(behaviorSource, behaviorSource.DetachedTasks[i]);
+                    CheckReferences(behaviorSource, behaviorSource.DetachedTasks[i]);
                 }
             }
         }
 
-        private static void checkReferences(BehaviorSource behaviorSource, Task task)
+        private static void CheckReferences(BehaviorSource behaviorSource, Task task)
         {
             var fieldInfo = task.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             for (int i = 0; i < fieldInfo.Length; ++i) {
                 if (!fieldInfo[i].FieldType.IsArray && (fieldInfo[i].FieldType.Equals(typeof(Task)) || fieldInfo[i].FieldType.IsSubclassOf(typeof(Task)))) {
                     // find the new task
                     var referencedTask = fieldInfo[i].GetValue(task) as Task;
-                    if (referencedTask != null && !referencedTask.Owner.Equals(behaviorSource.Owner)) {
-                        var newTask = findReferencedTask(behaviorSource, referencedTask);
+                    if (referencedTask != null) {
+                        var newTask = FindReferencedTask(behaviorSource, referencedTask);
                         if (newTask != null) {
                             fieldInfo[i].SetValue(task, newTask);
                         }
                     }
                 } else if (fieldInfo[i].FieldType.IsArray && (fieldInfo[i].FieldType.GetElementType().Equals(typeof(Task)) || fieldInfo[i].FieldType.GetElementType().IsSubclassOf(typeof(Task)))) {
                     var referencedTasks = fieldInfo[i].GetValue(task) as Task[];
-                    if (referencedTasks != null && i < referencedTasks.Length) {
-                        if (referencedTasks[i].Owner == null || referencedTasks[i].Owner.Equals(behaviorSource.Owner)) {
-                            continue;
-                        }
+                    if (referencedTasks != null) {
                         var referencedTasksList = Activator.CreateInstance(typeof(List<>).MakeGenericType(fieldInfo[i].FieldType.GetElementType())) as IList;
                         for (int j = 0; j < referencedTasks.Length; ++j) {
-                            var newTask = findReferencedTask(behaviorSource, referencedTasks[j]);
+                            var newTask = FindReferencedTask(behaviorSource, referencedTasks[j]);
                             if (newTask != null) {
                                 referencedTasksList.Add(newTask);
                             }
@@ -61,23 +58,23 @@ namespace BehaviorDesigner.Runtime
                 var parentTask = task as ParentTask;
                 if (parentTask.Children != null) {
                     for (int i = 0; i < parentTask.Children.Count; ++i) {
-                        checkReferences(behaviorSource, parentTask.Children[i]);
+                        CheckReferences(behaviorSource, parentTask.Children[i]);
                     }
                 }
             }
         }
 
-        private static Task findReferencedTask(BehaviorSource behaviorSource, Task referencedTask)
+        private static Task FindReferencedTask(BehaviorSource behaviorSource, Task referencedTask)
         {
             int referencedTaskID = referencedTask.ID;
             Task task;
-            if (behaviorSource.RootTask != null && (task = findReferencedTask(behaviorSource.RootTask, referencedTaskID)) != null) {
+            if (behaviorSource.RootTask != null && (task = FindReferencedTask(behaviorSource.RootTask, referencedTaskID)) != null) {
                 return task;
             }
 
             if (behaviorSource.DetachedTasks != null) {
                 for (int i = 0; i < behaviorSource.DetachedTasks.Count; ++i) {
-                    if ((task = findReferencedTask(behaviorSource.DetachedTasks[i], referencedTaskID)) != null) {
+                    if ((task = FindReferencedTask(behaviorSource.DetachedTasks[i], referencedTaskID)) != null) {
                         return task;
                     }
                 }
@@ -85,7 +82,7 @@ namespace BehaviorDesigner.Runtime
             return null;
         }
 
-        private static Task findReferencedTask(Task task, int referencedTaskID)
+        private static Task FindReferencedTask(Task task, int referencedTaskID)
         {
             if (task.ID == referencedTaskID) {
                 return task;
@@ -96,7 +93,7 @@ namespace BehaviorDesigner.Runtime
                 if (parentTask.Children != null) {
                     Task childTask;
                     for (int i = 0; i < parentTask.Children.Count; ++i) {
-                        if ((childTask = findReferencedTask(parentTask.Children[i], referencedTaskID)) != null) {
+                        if ((childTask = FindReferencedTask(parentTask.Children[i], referencedTaskID)) != null) {
                             return childTask;
                         }
                     }
@@ -109,11 +106,11 @@ namespace BehaviorDesigner.Runtime
         public static void CheckReferences(Behavior behavior, List<Task> taskList)
         {
             for (int i = 0; i < taskList.Count; ++i) {
-                checkReferences(behavior, taskList[i], taskList);
+                CheckReferences(behavior, taskList[i], taskList);
             }
         }
 
-        private static void checkReferences(Behavior behavior, Task task, List<Task> taskList)
+        private static void CheckReferences(Behavior behavior, Task task, List<Task> taskList)
         {
             var fieldInfo = task.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             for (int i = 0; i < fieldInfo.Length; ++i) {
@@ -121,20 +118,17 @@ namespace BehaviorDesigner.Runtime
                     // find the new task
                     var referencedTask = fieldInfo[i].GetValue(task) as Task;
                     if (referencedTask != null && !referencedTask.Owner.Equals(behavior)) {
-                        var newTask = findReferencedTask(referencedTask, taskList);
+                        var newTask = FindReferencedTask(referencedTask, taskList);
                         if (newTask != null) {
                             fieldInfo[i].SetValue(task, newTask);
                         }
                     }
                 } else if (fieldInfo[i].FieldType.IsArray && (fieldInfo[i].FieldType.GetElementType().Equals(typeof(Task)) || fieldInfo[i].FieldType.GetElementType().IsSubclassOf(typeof(Task)))) {
                     var referencedTasks = fieldInfo[i].GetValue(task) as Task[];
-                    if (referencedTasks != null && i < referencedTasks.Length) {
-                        if (referencedTasks[i].Owner != null && referencedTasks[i].Owner.Equals(behavior)) {
-                            continue;
-                        }
+                    if (referencedTasks != null) {
                         var referencedTasksList = Activator.CreateInstance(typeof(List<>).MakeGenericType(fieldInfo[i].FieldType.GetElementType())) as IList;
                         for (int j = 0; j < referencedTasks.Length; ++j) {
-                            var newTask = findReferencedTask(referencedTasks[j], taskList);
+                            var newTask = FindReferencedTask(referencedTasks[j], taskList);
                             if (newTask != null) {
                                 referencedTasksList.Add(newTask);
                             }
@@ -148,7 +142,7 @@ namespace BehaviorDesigner.Runtime
             }
         }
 
-        private static Task findReferencedTask(Task referencedTask, List<Task> taskList)
+        private static Task FindReferencedTask(Task referencedTask, List<Task> taskList)
         {
             int referencedTaskID = referencedTask.ReferenceID;
             for (int i = 0; i < taskList.Count; ++i) {

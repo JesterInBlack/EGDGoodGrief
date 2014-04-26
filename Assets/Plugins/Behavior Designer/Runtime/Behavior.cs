@@ -39,8 +39,6 @@ namespace BehaviorDesigner.Runtime
         private string behaviorName;
         [SerializeField]
         private string behaviorDescription;
-        [SerializeField]
-        private int behaviorID = -1;
 
         private bool isPaused = false;
 
@@ -139,10 +137,6 @@ namespace BehaviorDesigner.Runtime
             if (behaviorDescription != null && !behaviorDescription.Equals("")) {
                 mBehaviorSource.behaviorDescription = behaviorDescription;
                 behaviorDescription = "";
-            }
-            if (behaviorID != -1) {
-                mBehaviorSource.BehaviorID = behaviorID;
-                behaviorID = -1;
             }
             mBehaviorSource.Owner = this;
             return changed;
