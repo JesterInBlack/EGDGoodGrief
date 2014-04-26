@@ -53,6 +53,7 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip MenuCancel;
 	public static AudioClip MenuBack;
 	public static AudioClip MenuConfirm;
+	public static AudioClip MenuApplause;
 
 	public static AudioClip PlayerHurt1;
 	public static AudioClip PlayerHurt2;
@@ -121,6 +122,7 @@ public class SoundStorage : MonoBehaviour
 		LoadAudio ( ref MenuCancel, "_Sounds/Menu/menu_cancel" );
 		LoadAudio ( ref MenuBack, "_Sounds/Menu/menu_back" );
 		LoadAudio ( ref MenuConfirm, "_Sounds/Menu/menu_select" );
+		LoadAudio ( ref MenuApplause, "_Sounds/Menu/Applause_Mike_Koenig" );
 	}
 
 	private void LoadAudio( ref AudioClip clip, string path )
