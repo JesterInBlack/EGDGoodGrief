@@ -190,6 +190,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckRadius.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedBool.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedCounter.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedDisabledLeg.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedFloat.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\CheckSharedGameObject.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\Conditionals\IsLegBuffed.cs" />
