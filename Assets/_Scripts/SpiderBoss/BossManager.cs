@@ -135,6 +135,8 @@ public class BossManager : MonoBehaviour
 
 		_blackboard._naturalThreatRecovery = 1.25f;
 		_blackboard._attackWasSuccess = false;
+
+		_blackboard._downCount = 0;
 		#endregion
 
 		_foundMove = false;

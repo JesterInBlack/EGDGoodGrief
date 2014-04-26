@@ -5,18 +5,23 @@ using BehaviorDesigner.Runtime.Tasks;
 public class DisableBody : Action
 {
 	public GameObject _shockwaveSpawner;
+	public GameObject _indicatorArrow;
 
 	public float _fallSpeed;
 	public float _riseSpeed;
 	public float _shakeDuration;
 	public float _disabledDuration;
 	public float _disableTimer;
+	public float _indicatorTimer;
+	private float _indicatorCountdown;
 
 	private Vector2 _startingPos;
 	private Vector2 _groundedPos;
 
 	private Vector2 _shake;
 	private float _shakeMagnitude;
+
+	private bool _stopIndicator;
 
 	private BehaviorBlackboard _blackboard;
 	
@@ -28,10 +33,15 @@ public class DisableBody : Action
 		_riseSpeed = 3.0f;
 		_shakeDuration = 1.5f;
 		_shakeMagnitude = 0.1f;
+		_indicatorTimer = 0.75f;
+		_indicatorArrow = GameObject.Find("BossIndicatorArrow");
 	}
 
 	public override void OnStart()
 	{
+		_indicatorCountdown = 0.0f;
+		_stopIndicator = false;
+		_blackboard._downCount++;
 		_blackboard.body._behaviorState = BodyScript.BehaviorState.Disabled;
 
 		_shake = new Vector3( 0.0f, 0.0f, 0.0f );
@@ -95,6 +105,19 @@ public class DisableBody : Action
 		{
 			if(_disableTimer < _disabledDuration)
 			{
+				if(_indicatorCountdown > _indicatorTimer)
+				{
+					if(_blackboard._downCount < 3)
+					{
+						PlayIndicator();
+						_stopIndicator = true;
+						_indicatorCountdown = 0.0f;
+					}
+				}
+				if(_stopIndicator == false)
+				{
+					_indicatorCountdown += Time.deltaTime * StaticData.t_scale;
+				}
 				_disableTimer += Time.deltaTime * StaticData.t_scale;
 			}
 			else
@@ -112,6 +135,7 @@ public class DisableBody : Action
 				}
 				_blackboard.body._bodyState = BodyScript.BodyState.Recovery;
 				_blackboard._invincible = true;
+				_indicatorArrow.GetComponent<IndicatorArrow>().Disable();
 			}
 		}
 		else if(_blackboard.body._bodyState == BodyScript.BodyState.Recovery)
@@ -128,6 +152,11 @@ public class DisableBody : Action
 		}
 
 		return TaskStatus.Running;
+	}
+
+	void PlayIndicator()
+	{
+		_indicatorArrow.GetComponent<IndicatorArrow>().Enable();
 	}
 
 	//make the boss shake harder over time

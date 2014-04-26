@@ -41,6 +41,7 @@ public class SoundStorage : MonoBehaviour
 	public static AudioClip BossCrunch;
 	public static AudioClip BossMegaFlare;
 	public static AudioClip BossPowerUp;
+	public static AudioClip BossIndicator;
 
 	public static AudioClip ItemJarShatter;
 	public static AudioClip ItemVampFang;
@@ -106,6 +107,7 @@ public class SoundStorage : MonoBehaviour
 		LoadAudio ( ref BossCrunch, "_Sounds/Boss/crunch" );
 		LoadAudio ( ref BossMegaFlare, "_Sounds/Boss/Explosion_Mark_DiAngelo");
 		LoadAudio ( ref BossPowerUp, "_Sounds/Boss/PowerUp");
+		LoadAudio ( ref BossIndicator, "_Sounds/Boss/indicator");
 
 
 		LoadAudio ( ref ItemJarShatter, "_Sounds/Item/jar_shatter" );

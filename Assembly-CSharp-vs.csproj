@@ -201,6 +201,7 @@
      <Compile Include="Assets\_scripts\SpiderBoss\ExplodingSacProjectileScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EyeLaserScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\EyeScript.cs" />
+     <Compile Include="Assets\_scripts\SpiderBoss\IndicatorArrow.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\IsTargetAlive.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegScript.cs" />
      <Compile Include="Assets\_scripts\SpiderBoss\LegShadow.cs" />

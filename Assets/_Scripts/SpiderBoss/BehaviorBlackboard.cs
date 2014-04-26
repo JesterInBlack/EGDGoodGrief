@@ -107,6 +107,8 @@ public class BehaviorBlackboard : MonoBehaviour
 
 	public int[] selectedLegs;
 
+	public int _downCount;
+
 	#endregion
 
 	void Start()
