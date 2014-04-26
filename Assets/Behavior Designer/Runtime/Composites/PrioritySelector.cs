@@ -2,8 +2,9 @@ using System.Collections.Generic;
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Similar to the selector task, the priority selector task will return success as soon as a child task returns success. Instead of running the tasks sequentially from left to right within the
-    // tree, the priority selector will ask the task what its priority is to determine the order. The higher priority tasks have a higher chance at being run first.
+    [TaskDescription("Similar to the selector task, the priority selector task will return success as soon as a child task returns success. " +
+                      "Instead of running the tasks sequentially from left to right within the tree, the priority selector will ask the task what its priority is to determine the order. " +
+                      "The higher priority tasks have a higher chance at being run first.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=29")]
     [TaskIcon("{SkinColor}PrioritySelectorIcon.png")]
     public class PrioritySelector : Composite

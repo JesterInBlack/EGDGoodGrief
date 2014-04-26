@@ -14,5 +14,7 @@ namespace BehaviorDesigner.Runtime
 
         public override object GetValue() { return mValue; }
         public override void SetValue(object value) { mValue = (Rect)value; }
+
+        public override string ToString() { return mValue.ToString(); }
     }
 }

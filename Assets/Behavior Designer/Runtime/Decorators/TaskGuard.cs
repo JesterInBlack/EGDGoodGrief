@@ -1,11 +1,11 @@
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // The task guard task is similar to a semaphore in multithreaded programming. The task guard task is there to ensure a limited resource is not being overused. 
-    // For example, you may place a task guard above a task that plays an animation. Elsewhere within your behavior tree you may also have another task that plays a different
-    // animation but uses the same bones for that animation. Because of this you don't want that animation to play twice at the same time. Placing a task guard will let you
-    // specify how many times a particular task can be accessed at the same time. In the previous animation task example you would specify an access count of 1. With this setup
-    // the animation task can be only controlled by one task at a time. If the first task is playing the animation and a second task wants to control the animation as well, it will
-    // either have to wait or skip over the task completely.
+    [TaskDescription("The task guard task is similar to a semaphore in multithreaded programming. The task guard task is there to ensure a limited resource is not being overused. " +
+                     "\n\nFor example, you may place a task guard above a task that plays an animation. Elsewhere within your behavior tree you may also have another task that plays a different " +
+                     "animation but uses the same bones for that animation. Because of this you don't want that animation to play twice at the same time. Placing a task guard will let you " +
+                     "specify how many times a particular task can be accessed at the same time.\n\nIn the previous animation task example you would specify an access count of 1. With this setup " +
+                     "the animation task can be only controlled by one task at a time. If the first task is playing the animation and a second task wants to control the animation as well, it will " +
+                     "either have to wait or skip over the task completely.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=40")]
     [TaskIcon("{SkinColor}TaskGuardIcon.png")]
     public class TaskGuard : Decorator

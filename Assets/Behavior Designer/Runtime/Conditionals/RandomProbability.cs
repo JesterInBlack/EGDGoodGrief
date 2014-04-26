@@ -2,7 +2,7 @@
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // The random probability task will return success when the random probability is above the succeed probability. It will otherwise return failure.
+    [TaskDescription("The random probability task will return success when the random probability is above the succeed probability. It will otherwise return failure.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=33")]
     public class RandomProbability : Conditional
     {

@@ -49,5 +49,15 @@ namespace BehaviorDesigner.Runtime.Tasks
             }
             children.Insert(index, child);
         }
+
+        // replace the child task if the index already exists, otherwise add
+        public void ReplaceAddChild(Task child, int index)
+        {
+            if (children != null && index < children.Count) {
+                children[index] = child;
+            } else {
+                AddChild(child, index);
+            }
+        }
     }
 }

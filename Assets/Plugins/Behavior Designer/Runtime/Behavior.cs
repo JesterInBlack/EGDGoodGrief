@@ -14,6 +14,8 @@ namespace BehaviorDesigner.Runtime
         public bool restartWhenComplete = false;
         public bool logTaskChanges = false;
         public int group = 0;
+        // reference to an external behavior tree, useful if creating a behavior tree from script
+        public ExternalBehavior externalBehavior;
 
         [SerializeField]
         private BehaviorSource mBehaviorSource;
@@ -37,8 +39,6 @@ namespace BehaviorDesigner.Runtime
         private string behaviorName;
         [SerializeField]
         private string behaviorDescription;
-        [SerializeField]
-        private int behaviorID = -1;
 
         private bool isPaused = false;
 
@@ -62,14 +62,7 @@ namespace BehaviorDesigner.Runtime
                 return null;
             }
 
-            var obj = mUnityObjects[id];
-            // UnityEngine.Object overrides equals so that obj == null is true when ReferenceEquals(obj, null) returns false.
-            // Return the correct null value.
-            if (obj == null) {
-                return null;
-            }
-
-            return obj;
+            return mUnityObjects[id];
         }
         
         // coroutines
@@ -95,18 +88,17 @@ namespace BehaviorDesigner.Runtime
     
         public void Awake()
         {
-            if (updateDeprecatedTasks()) {
+            if (UpdateDeprecatedTasks()) {
                 Debug.LogWarning(string.Format("{0}: the data format for this behavior tree has been deprecated. Run the Behavior Designer Update tool or select this game object within the inspector to update this behavior tree.", ToString()));
             }
-            mBehaviorSource.checkForJSONSerialization();
         }
 
-        public bool hasDeprecatedTasks()
+        public bool HasDeprecatedTasks()
         {
             return (entryTask != null || (serialization != null && !serialization.Equals("")));
         }
 
-        public bool updateDeprecatedTasks()
+        public bool UpdateDeprecatedTasks()
         {
             if (mBehaviorSource == null) {
                 mBehaviorSource = new BehaviorSource(this);
@@ -146,10 +138,6 @@ namespace BehaviorDesigner.Runtime
                 mBehaviorSource.behaviorDescription = behaviorDescription;
                 behaviorDescription = "";
             }
-            if (behaviorID != -1) {
-                mBehaviorSource.BehaviorID = behaviorID;
-                behaviorID = -1;
-            }
             mBehaviorSource.Owner = this;
             return changed;
         }
@@ -157,20 +145,33 @@ namespace BehaviorDesigner.Runtime
         public void Start()
         {
             if (startWhenEnabled) {
-                enableBehavior();
+                EnableBehavior();
             }
         }
 
+        [System.Obsolete("Behavior.enableBehavior has been deprectead. Use Behavior.EnableBehavior.")]
         public void enableBehavior()
         {
-            if (mBehaviorSource.RootTask != null) {
+            EnableBehavior();
+        }
+
+        public void EnableBehavior()
+        {
+            mBehaviorSource.checkForJSONSerialization();
+            if (mBehaviorSource.RootTask != null || externalBehavior != null) {
                 // create the behavior manager if it doesn't already exist
                 CreateBehaviorManager();
                 BehaviorManager.instance.enableBehavior(this);
             }
         }
 
+        [System.Obsolete("Behavior.disableBehavior has been deprectead. Use Behavior.DisableBehavior.")]
         public void disableBehavior()
+        {
+            DisableBehavior();
+        }
+
+        public void DisableBehavior()
         {
             if (BehaviorManager.instance != null) {
                 BehaviorManager.instance.disableBehavior(this, pauseWhenDisabled);
@@ -178,7 +179,7 @@ namespace BehaviorDesigner.Runtime
             }
         }
 
-        public void disableBehavior(bool pause)
+        public void DisableBehavior(bool pause)
         {
             if (BehaviorManager.instance != null) {
                 BehaviorManager.instance.disableBehavior(this, pause);
@@ -196,7 +197,7 @@ namespace BehaviorDesigner.Runtime
 
         public void OnDisable()
         {
-            disableBehavior();
+            DisableBehavior();
         }
         
         // Support blackboard variables:
@@ -254,7 +255,7 @@ namespace BehaviorDesigner.Runtime
         }
 
         // ScriptableObjects don't normally support coroutines. Add that support here.
-        public void startTaskCoroutine(Task task, string methodName)
+        public void StartTaskCoroutine(Task task, string methodName)
         {
             if (activeTaskCoroutines == null) {
                 activeTaskCoroutines = new Dictionary<string, List<TaskCoroutine>>();
@@ -273,7 +274,7 @@ namespace BehaviorDesigner.Runtime
             }
         }
 
-        public void startTaskCoroutine(Task task, string methodName, object value)
+        public void StartTaskCoroutine(Task task, string methodName, object value)
         {
             if (activeTaskCoroutines == null) {
                 activeTaskCoroutines = new Dictionary<string, List<TaskCoroutine>>();
@@ -291,7 +292,7 @@ namespace BehaviorDesigner.Runtime
             }
         }
 
-        public void stopTaskCoroutine(string methodName)
+        public void StopTaskCoroutine(string methodName)
         {
             if (!activeTaskCoroutines.ContainsKey(methodName)) {
                 return;
@@ -303,7 +304,7 @@ namespace BehaviorDesigner.Runtime
             }
         }
 
-        public void stopAllTaskCoroutines()
+        public void StopAllTaskCoroutines()
         {
             StopAllCoroutines();
 
@@ -315,7 +316,7 @@ namespace BehaviorDesigner.Runtime
             }
         }
 
-        public void taskCoroutineEnded(TaskCoroutine taskCoroutine, string coroutineName)
+        public void TaskCoroutineEnded(TaskCoroutine taskCoroutine, string coroutineName)
         {
             if (activeTaskCoroutines.ContainsKey(coroutineName)) {
                 var taskCoroutines = activeTaskCoroutines[coroutineName];

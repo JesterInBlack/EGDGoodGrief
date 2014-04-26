@@ -27,7 +27,7 @@ public class PauseResumeBehavior : Action
 		{
 			if(_pause == Pause.PauseBehavior)
 			{
-				_blackboard._currentBehavior.Action.disableBehavior(true);
+				_blackboard._currentBehavior.Action.DisableBehavior();
 			}
 			else if(_pause == Pause.ResumeBehavior)
 			{
@@ -38,7 +38,7 @@ public class PauseResumeBehavior : Action
 			else if(_pause == Pause.StopBehavior)
 			{
 				_blackboard.attackPatternStopped = true;
-				_blackboard._currentBehavior.Action.disableBehavior(false);
+				_blackboard._currentBehavior.Action.EnableBehavior();
 			}
 			return TaskStatus.Success;
 		}
