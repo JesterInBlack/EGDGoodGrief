@@ -22,7 +22,6 @@ public static class ScoreManager
 		GameState.players[id].GetComponent<Player>().score += amount;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageDealt.count += damage;
 		GameState.players[id].GetComponent<Player>().scorePasser.scoreDetails.damageDealt.score += amount;
-		GameState.players[id].GetComponent<DamageNumbers>().AddDealDamagePoints( amount );
 	}
 
 	public static void TookDamage( int id, float damage )

@@ -46,8 +46,8 @@ public class RocketSwordFunctions : MonoBehaviour, ClassFunctionalityInterface
 	
 	#region Y
 	private const float yNormalBaseDamage = 300.0f;   //Normal attack: Vertical Slash: base damage                (DPS) (0.5s)
-	private const float ySmashBaseDamage  = 300.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
-	private const float ySmashAddDamage   = 300.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
+	private const float ySmashBaseDamage  = 600.0f;   //Smash  attack: Blast Off: base damage (0 charge)          (DPS)
+	private const float ySmashAddDamage   = 600.0f;   //Smash  attack: Blast Off: additional damage (100% charge) (DPS)
 	private const float ySmashChainBonus  = 3.0f;     //Smash  attack: Blast Off: damage multiplier from full chain
 
 	private const float yChargeInterruptHP = 100.0f;  //Charging up Y: interruption damage threshold.

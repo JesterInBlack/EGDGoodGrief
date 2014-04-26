@@ -85,8 +85,9 @@ public class SoundStorage : MonoBehaviour
 		LoadAudio ( ref ArcherBlowback, "_Sounds/Archer/Wind_Gust" );
 		LoadAudio ( ref ArcherArrowImpact, "_Sounds/Archer/arrow_hit2" );
 
-		LoadAudio ( ref PlayerHurt1, "_Sounds/player_hit3" );
+		LoadAudio ( ref PlayerHurt1, "_Sounds/player_hit" );
 		LoadAudio ( ref PlayerHurt2, "_Sounds/player_hit2" );
+		LoadAudio ( ref PlayerHurt3, "_Sounds/player_hit3" );
 		LoadAudio ( ref PlayerBlock1, "_Sounds/block1" );
 		LoadAudio ( ref PlayerBlock2, "_Sounds/block2" );
 		LoadAudio ( ref PlayerCharge, "_Sounds/charge2" );

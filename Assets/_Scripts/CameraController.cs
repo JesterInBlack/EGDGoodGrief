@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
 	private int cameraSizeOverwriteIndex = 0;
 
 	//define clamp region.
-	private bool clamp = false;
+	private bool clamp = true;
 	private float maxX = 20.0f;
 	private float minX = -20.0f;
 	private float maxY = 12.0f;
@@ -168,7 +168,7 @@ public class CameraController : MonoBehaviour
 		if ( clamp )
 		{
 			float ratio = Camera.main.aspect;
-			Debug.Log ( ratio );
+			//Debug.Log ( ratio );
 			if ( avg_size > max_orthographic_size ) { avg_size = max_orthographic_size; }
 			if ( (avg_vec.x + avg_size) * ratio > maxX )
 			{
