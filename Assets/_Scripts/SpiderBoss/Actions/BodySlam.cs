@@ -130,8 +130,11 @@ public class BodySlam : Action
 
 	public override void OnEnd()
 	{
-		_blackboard.body._bodyState = BodyScript.BodyState.Floating;
-		_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
-		_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.Idle;
+		if(_blackboard.body._behaviorState != BodyScript.BehaviorState.Disabled)
+		{
+			_blackboard.body._bodyState = BodyScript.BodyState.Floating;
+			_blackboard.body._behaviorState = BodyScript.BehaviorState.Healthy;
+			_blackboard.eye.GetComponent<EyeScript>()._behaviorState = EyeScript.BehaviorStates.Idle;
+		}
 	}
 }
