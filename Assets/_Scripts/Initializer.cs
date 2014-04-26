@@ -7,6 +7,7 @@ public class Initializer : MonoBehaviour
 	//changed width / height to be in tiles.
 
 	#region vars
+	public GameObject[] fountains = new GameObject[4];//assign in pre-game screens
 	public GameObject[] players = new GameObject[4];  //assign in pre-game screens
 	public GameObject bossPrefab;
 	//public GameObject spawnedPrefab;
@@ -39,6 +40,10 @@ public class Initializer : MonoBehaviour
 			GameState.players[i] = players[i];
 			GameState.playerStates[i] = players[i].GetComponent<Player>();
 			players[i].GetComponent<Player>().id = i;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			GameState.fountains[i] = fountains[i];
 		}
 
 		if ( boss != null )

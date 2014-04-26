@@ -102,6 +102,7 @@
      <Compile Include="Assets\_scripts\DamageNumbers.cs" />
      <Compile Include="Assets\_scripts\Debug\BossDebugHelper.cs" />
      <Compile Include="Assets\_scripts\Esc.cs" />
+     <Compile Include="Assets\_scripts\FountainPointer.cs" />
      <Compile Include="Assets\_scripts\GameState.cs" />
      <Compile Include="Assets\_scripts\GameStateWatcher.cs" />
      <Compile Include="Assets\_scripts\HUD.cs" />

@@ -71,19 +71,19 @@ public class UnityMegaFlare : Action
 		}
 		if(legsAlive <= 5)
 		{
-			_chargeDuration = 9.0f;
+			_chargeDuration = 4.5f;
 		}
 		else if(legsAlive == 6)
 		{
-			_chargeDuration = 12.0f;
+			_chargeDuration = 8.5f;
 		}
 		else if(legsAlive == 7)
 		{
-			_chargeDuration = 15.0f;
+			_chargeDuration = 12.5f;
 		}
 		else if(legsAlive == 8)
 		{
-			_chargeDuration = 18.0f;
+			_chargeDuration = 16.5f;
 		}
 		_chargeTime = 0.0f;
 		_lerpTime = 0.0f;
