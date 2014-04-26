@@ -170,14 +170,14 @@ public class CameraController : MonoBehaviour
 			float ratio = Camera.main.aspect;
 			//Debug.Log ( ratio );
 			if ( avg_size > max_orthographic_size ) { avg_size = max_orthographic_size; }
-			if ( (avg_vec.x + avg_size) * ratio > maxX )
+			/*if ( (avg_vec.x + avg_size) * ratio > maxX )
 			{
 				avg_vec.x = maxX - avg_size * ratio;
 			}
 			if ( (avg_vec.x - avg_size) * ratio < minX )
 			{
 				avg_vec.x = minX + avg_size * ratio;
-			}
+			}*/
 			if ( avg_vec.y + avg_size > maxY )
 			{
 				avg_vec.y = maxY - avg_size;
