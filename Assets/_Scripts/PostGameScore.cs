@@ -15,7 +15,7 @@ public class PostGameScore : MonoBehaviour
 
 	private float[] currentBarPercent = new float[4];
 	private float[] nextBarPercent = new float[4];
-
+	
 	private float[] totalScores = new float[4];
 	private float[] currentObjectiveScores = new float[4];
 	private float[] nextTotalScores = new float[4];
@@ -118,12 +118,12 @@ public class PostGameScore : MonoBehaviour
 
 	private float GetMaxFinalScore()
 	{
-		//Gets the highest final score.
+		//Gets the highest final score. (adjusted so going above highest total temporarily isn't a problem)
 		float highest = 1.0f;
 		for ( int i = 0; i < 4; i++ )
 		{
 			float sum = 0.0f;
-			for ( int j = 0; j < NUMBER_OF_OBJECTIVES; j++) { sum += GetObjectiveScoreFromIndex(i)[j].score;}
+			for ( int j = 0; j < NUMBER_OF_OBJECTIVES; j++) { sum += Mathf.Max ( 0.0f, GetObjectiveScoreFromIndex(i)[j].score ); }
 			if ( sum > highest )
 			{
 				highest = sum;
