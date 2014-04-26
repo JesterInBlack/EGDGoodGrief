@@ -85,7 +85,6 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector2.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector3.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector4.cs" />
-     <Compile Include="Assets\LossScreen.cs" />
      <Compile Include="Assets\_scripts\AttackSystem.cs" />
      <Compile Include="Assets\_scripts\AuraFX.cs" />
      <Compile Include="Assets\_scripts\Buff.cs" />
@@ -100,6 +99,7 @@
      <Compile Include="Assets\_scripts\Credits.cs" />
      <Compile Include="Assets\_scripts\CustomController.cs" />
      <Compile Include="Assets\_scripts\DamageNumbers.cs" />
+     <Compile Include="Assets\_scripts\DamageNumbersForBoss.cs" />
      <Compile Include="Assets\_scripts\Debug\BossDebugHelper.cs" />
      <Compile Include="Assets\_scripts\Esc.cs" />
      <Compile Include="Assets\_scripts\GameState.cs" />
@@ -115,6 +115,7 @@
      <Compile Include="Assets\_scripts\JarLink.cs" />
      <Compile Include="Assets\_scripts\Lifetime.cs" />
      <Compile Include="Assets\_scripts\LobbedProjectile.cs" />
+     <Compile Include="Assets\_scripts\LossScreen.cs" />
      <Compile Include="Assets\_scripts\MenuDataSaver.cs" />
      <Compile Include="Assets\_scripts\ObjectivesGUIText.cs" />
      <Compile Include="Assets\_scripts\Old\Info_Script.cs" />
