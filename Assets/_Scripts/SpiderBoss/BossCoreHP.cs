@@ -140,8 +140,6 @@ public class BossCoreHP : MonoBehaviour
 		if ( prevHP > 0.0f && myBlackboard.HP <= 0.0f )
 		{
 			ScoreManager.LastHit ( id );
-			//play dead sound
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
 		}
 
 		//Play hurt sound?

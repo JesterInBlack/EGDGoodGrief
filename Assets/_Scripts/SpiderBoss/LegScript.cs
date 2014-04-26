@@ -65,6 +65,7 @@ public class LegScript : MonoBehaviour
 	//enums
 	public enum BehaviorState
 	{
+		Dead = -2,
 		Disabled = -1,
 		Walking = 0,
 		Impale = 1,

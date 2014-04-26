@@ -8,6 +8,8 @@ public class Death : Action
 	public float _chargeTime;
 	public float _chargeDuration;
 	public float _recoveryDuration;
+	private float _explosionTimer;
+	private float _explosionTime;
 
 	private Vector2 _startingPos;
 
@@ -26,9 +28,11 @@ public class Death : Action
 		// cache for quick lookup
 		_blackboard = gameObject.GetComponent<BehaviorBlackboard>();
 
-		_shakeMagnitude = 0.1f;
-		_chargeDuration = 4.0f;
-		_recoveryDuration = 5.0f;
+		_explosionTime = 0.0f;
+		_explosionTimer = 0.15f;
+		_shakeMagnitude = 0.15f;
+		_chargeDuration = 2.5f;
+		_recoveryDuration = 4.0f;
 
 		//_legParts = new List<GameObject>();
 		_legParts = GameObject.FindGameObjectsWithTag("LegSegment");
@@ -48,6 +52,14 @@ public class Death : Action
 		_startingPos = (Vector2)transform.position;
 		
 		_shake = new Vector3( 0.0f, 0.0f, 0.0f );
+
+		//play dead sound
+		this.gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossDeathScream, 1.0f );
+
+		foreach(LegScript x in _blackboard.legsList)
+		{
+			x._behaviorState = LegScript.BehaviorState.Dead;
+		}
 	}
 	
 	//runs the actual task
@@ -63,6 +75,11 @@ public class Death : Action
 			}
 			else
 			{
+				if(_chargeTime > _explosionTime)
+				{
+					_explosionTime += _explosionTimer;
+					this.gameObject.GetComponent<AudioSource>().PlayOneShot ( SoundStorage.BossImpale, 0.75f );
+				}
 				ShakeBoss(_chargeTime / _chargeDuration);
 				_chargeTime += Time.deltaTime * StaticData.t_scale;
 			}
