@@ -3,7 +3,6 @@ using System.Collections;
 
 public class StoneFist : MonoBehaviour, ClassFunctionalityInterface 
 {
-	//TODO: y shield
 	//TODO: interrupt HPs.
 	#region vars
 	private Player player;
@@ -358,12 +357,18 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel, 1.0f );
 			}
 		}
+		else if ( player.state == "xwinddown" || player.state == "ywinddown" )
+		{
+			//added leniency with input when you're going for the shield.
+			player.nextState = "ywindup";
+		}
 	}
 	public void YReleased()
 	{
 		//Called when Y is released.
 		yHoldTime = 0.0f;
 		if ( player.isDowned ) { return; }
+		if ( player.nextState == "ywindup" ) { player.nextState = "idle"; } //reset queued action on release.
 		if ( player.state != "ycharge" && player.state != "ywindup" ) { return; }
 		ChangeState ( "ywinddown" );
 	}

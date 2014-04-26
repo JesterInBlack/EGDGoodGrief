@@ -40,6 +40,14 @@ public class BossCoreHP : MonoBehaviour
 	{
 		soundTimer = Mathf.Max ( 0.0f, soundTimer - Time.deltaTime * StaticData.t_scale );
 		HandleColoration();
+
+		if ( Input.GetKeyDown ( KeyCode.H ) )
+		{
+			//H FOR HAX: cut boss core health by a factor of 4x.
+			float savedPercent = myBlackboard.HP / myBlackboard.maxHP;
+			myBlackboard.maxHP = myBlackboard.maxHP / 4.0f;
+			myBlackboard.HP = savedPercent * myBlackboard.maxHP;
+		}
 	}
 
 	void HandleColoration()
@@ -120,7 +128,11 @@ public class BossCoreHP : MonoBehaviour
 		float percentHP = Mathf.Max( myBlackboard.HP / myBlackboard.maxHP, 0.0f );
 		float HPBarWidth = 800.0f;
 		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 48.0f, HPBarWidth, 32.0f ), HPBarBG );
-		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 48.0f, HPBarWidth * percentHP, 32.0f ), HPBarFill );
+		//use group to crop hp bar.
+		GUI.BeginGroup ( new Rect( (Screen.width - HPBarWidth) / 2.0f, Screen.height - 48.0f, HPBarWidth * percentHP, 32.0f ) );
+		//coordinates are relative within a group.
+		GUI.DrawTexture ( new Rect( 0.0f, 0.0f, HPBarWidth, 32.0f ), HPBarFill );
+		GUI.EndGroup ();
 		GUI.DrawTexture ( new Rect( (Screen.width - HPBarWidth - 32.0f) / 2.0f, Screen.height - 64.0f, HPBarWidth + 32.0f, 64.0f ), HPBarHolder );
 	}
 
