@@ -438,6 +438,7 @@ public class Player : MonoBehaviour
 		if ( isParrying ) 
 		{
 			ScoreManager.AvoidedDamage ( id, damage );
+			GetComponent<DamageNumbers>().AddBlockPoints( -1, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			PlayBlockSound();
 			return; 
@@ -445,6 +446,7 @@ public class Player : MonoBehaviour
 		if ( isStoneSkin ) 
 		{ 
 			ScoreManager.AvoidedDamage ( id, damage );
+			GetComponent<DamageNumbers>().AddBlockPoints( -1, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
 			isStoneSkin = false; 
 			PlayBlockSound();
@@ -453,6 +455,7 @@ public class Player : MonoBehaviour
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			ScoreManager.AvoidedDamage ( id, damage );
+			GetComponent<DamageNumbers>().AddBlockPoints( -1, damage );
 			this.gameObject.GetComponent<StoneFist>().OnWasHit( -1, damage );
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
 			PlayBlockSound();
@@ -470,12 +473,13 @@ public class Player : MonoBehaviour
 		//deal damage
 		float finalDamage = damage / defense;
 		ScoreManager.TookDamage ( id, finalDamage ); //reduce point loss by buffing defense.
+		GetComponent<DamageNumbers>().AddTakeDamagePoints( -1, finalDamage );
 		//sedimentary, dear watson.
 		if ( characterclass == CharacterClasses.DEFENDER )
 		{
-			//TODO: make this sane.
-			resource = 0.0f;
-			finalDamage = damage - 1.0f;
+			float unreducedDamage = finalDamage;
+			finalDamage = finalDamage - (0.33f * resource * finalDamage); //cut damage by up to 33% based on sediment.
+			resource = Mathf.Max ( 0.0f, resource - (unreducedDamage * 0.02f) );
 		}
 		HP -= finalDamage;
 		if ( HP <= 0.0f )
@@ -498,10 +502,6 @@ public class Player : MonoBehaviour
 		if ( characterclass == CharacterClasses.KNIGHT )
 		{
 			resource = 0.0f;
-		}
-		if ( characterclass == CharacterClasses.DEFENDER )
-		{
-			resource = 0.0f; //?
 		}
 		#endregion
 	}
@@ -526,9 +526,14 @@ public class Player : MonoBehaviour
 	{
 		//Attempt to interrupt the current move.
 		//(Friendly player attacks you)
+		float scoreLossMultiplier = 0.25f; //percent of damage lost as score from friendly attacks.
 
 		if ( isDowned ) { return; }
-		if ( isParrying ) { return; }
+		if ( isParrying ) 
+		{ 
+			GetComponent<DamageNumbers>().AddBlockPoints( attackerId, damage );
+			return; 
+		}
 		if ( isStoneSkin ) 
 		{
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.35f, 0.35f, 0.10f );
@@ -539,12 +544,14 @@ public class Player : MonoBehaviour
 				GameState.playerStates[ attackerId ].KnockBack ( 2.0f, new Vector2( x, y ) );
 			}
 			isStoneSkin = false;
+			GetComponent<DamageNumbers>().AddBlockPoints( attackerId, damage );
 			return; 
 		}
 		if ( state == "ycharge" && characterclass == CharacterClasses.DEFENDER ) 
 		{ 
 			GetComponent<VibrationManager>().ScheduleVibration ( 0.20f, 0.20f, 0.10f );
 			this.gameObject.GetComponent<StoneFist>().OnWasHit( attackerId, damage );
+			GetComponent<DamageNumbers>().AddBlockPoints( attackerId, damage );
 			return; 
 		}
 
@@ -558,11 +565,12 @@ public class Player : MonoBehaviour
 		interruptDR++;
 
 		//TESTING:
-		HP = Mathf.Max ( 0.0f, HP - damage * 0.025f ); //take a tiny amount of damage from friendly fire.
+		float finalDamage = damage /defense * 0.025f;
+		HP = Mathf.Max ( 0.0f, HP - finalDamage ); //take a tiny amount of damage from friendly fire.
 
-		float scoreLossMultiplier = 0.25f; //percent of damage lost as score from friendly attacks.
 		score -= damage * scoreLossMultiplier;
 		ScoreManager.TookDamage ( id, damage * scoreLossMultiplier );
+		GetComponent<DamageNumbers>().AddTakeDamagePoints( attackerId, damage );
 		//drain points?
 		if ( attackerId != -1 )
 		{

@@ -13,25 +13,25 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	#region move data
 	//Button Hold Times
 	#region X
-	private const float xBaseDamage = 100.0f;  //Sand Blast: base damage (0% charge)
-	private const float xAddDamage = 100.0f;   //Sand Blast: additional damage (100% charge)
+	private const float xBaseDamage = 50.0f;   //Sand Blast: base damage (0% charge)
+	private const float xAddDamage = 200.0f;   //Sand Blast: additional damage (100% charge)
 
 	private const float xInterruptHP = 100.0f; //Sand Blast: interrupt damage threshold.
 
 	private float xHoldTime  = 0.0f;
 	private const float xChargeMin = 0.5f;   //minimum charge time to get ranged fist.
-	private const float xChargeMax = 1.0f;   //maximum hold time: more than this confers no benefit.
+	private const float xChargeMax = 1.5f;   //maximum hold time: more than this confers no benefit.
 	#endregion
 
 	#region Y
 	private float yHoldTime  = 0.0f;
-	private const float yBaseDamage = 100.0f;  //base damage of the shield attack
-	private const float yAddDamage = 100.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
+	private const float yBaseDamage = 50.0f;  //base damage of the shield attack
+	private const float yAddDamage = 250.0f;   //additional damage of the shield attack, based on the % damage / sediment it took.
 
 	//this one is uninterruptable. (how to integrate with the interrupt core player call?)
-	private const float shieldMaxHP = 20.0f;             //if the shield takes this much damage, it breaks.
-	private float shieldHP = 20.0f;                      //the shield's HP
-	private const float shieldDegenRate = 1.0f / 3.0f;   //the % of sediment the shield drains, per second.
+	private const float shieldMaxHP = 70.0f;             //if the shield takes this much damage, it breaks.
+	private float shieldHP = 70.0f;                      //the shield's HP
+	private const float shieldDegenRate = 1.0f / 10.0f;    //the % of sediment the shield drains, per second.
 	#endregion
 
 	#region B
@@ -47,10 +47,12 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	#endregion
 
 	#endregion
+	private const float passiveResourceRate = 0.25f; //what % of resource is regenerated per second.
+	float savedHoldTime = 0.0f;
+
 	public GameObject sandFistPrefab; //for instantiating the animated effect
 	public GameObject shieldPrefab;   //for instantiating the stone wall
 	private GameObject myShield;      //reference to the currently active shield. (send signal to destroy)
-
 	#endregion
 	
 	// Use this for initialization
@@ -200,10 +202,12 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "ycharge" )
 		{
 			//take hp from shield.
+			/*
 			if ( attackerID != -1 )
 			{
 				damage = damage * 0.025f; //immensely reduce damage from players.
 			}
+			*/
 			float finalDamage = damage / player.defense;
 			shieldHP -= finalDamage;
 		}
@@ -222,12 +226,14 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			ChangeState ( "bcharge" );
 		}
+		bHoldTime = 0.0f;
 	}
 	public void BReleased()
 	{
 		//Called when B is released.
 		if ( player.isDowned ) { return; }
 		if ( player.state != "bcharge" ) { return; }
+		//changed to automatically activate.
 		if ( bHoldTime >= bChargeTime )
 		{
 			//TODO: 1 hit shield w/ duration buff?
@@ -235,13 +241,13 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 			player.isStoneSkin = true;
 			//put it on a timer
 			player.stoneSkinTimer = 5.0f;
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
-			ChangeState ( "idle" );
+			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
+			ChangeState ( "bwinddown" );
 		}
-		else
+		else if ( bHoldTime < bChargeTime )
 		{
 			//not fully charged.
-			//TODO: play fail sound?
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel, 1.0f );
 			ChangeState ( "idle" );
 		}
 		bHoldTime = 0.0f;
@@ -251,21 +257,17 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		bHoldTime += dt;
 		//Called every frame B is held down.
 		if ( player.state != "bcharge" ) { return; }
+		//automatically trigger stoneskin if fully charged.
 		if ( bHoldTime >= bChargeTime && bHoldTime - dt < bChargeTime )
 		{
 			this.gameObject.GetComponent<PlayerColor>().currentColor = new ScheduledColor( new Color(1.0f, 1.0f, 0.66f), 0.25f );
-		}
-
-		//automatically trigger stoneskin if fully charged.
-		if ( bHoldTime >= bChargeTime )
-		{
 			//1 hit shield w/ duration buff?
 			//set a stoneskin flag
 			player.isStoneSkin = true;
 			//put it on a timer
-			player.stoneSkinTimer = 15.0f;
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
-			ChangeState ( "idle" );
+			player.stoneSkinTimer = 7.5f;
+			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
+			ChangeState ( "bwinddown" );
 			bHoldTime = 0.0f;
 		}
 	}
@@ -277,73 +279,31 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Called when X is pressed.
 		if ( player.isDowned ) { return; }
-		if ( player.state == "idle" || player.state == "walk" || player.state == "xwinddown" )
+		if ( player.state == "idle" || player.state == "walk" )
 		{
 			ChangeState ( "xwindup" );
+		}
+		if ( player.state == "xwinddown" )
+		{
+			player.nextState = "xwindup";
 		}
 	}
 	public void XReleased()
 	{
 		//Called when X is released.
 		//TODO: sand laser
-		float savedHoldTime = xHoldTime;
+		savedHoldTime = xHoldTime;
 		xHoldTime = 0.0f;
 		if ( player.isDowned ) { return; }
 		if ( player.state != "xcharge" && player.state != "xwindup" ) { return; }
 		if ( player.state == "xcharge" )
 		{
-			#region hitbox
-			//damage
-			float percentCharge = Mathf.Max ( 0.0f, (Mathf.Min ( savedHoldTime, xChargeMax ) - xChargeMin) / (xChargeMax - xChargeMin) );
-			float damage = player.offense * (xBaseDamage + xAddDamage * percentCharge);
-			//hitbox
-			float angle = controller.facing * Mathf.PI / 2.0f;
-			float x = this.gameObject.transform.position.x;
-			float y = this.gameObject.transform.position.y;
-			float w = 1.5f * Mathf.Cos ( angle ) + 1.5f * Mathf.Cos ( angle + Mathf.PI / 2.0f );
-			float h = 1.5f * Mathf.Sin ( angle ) + 1.5f * Mathf.Sin ( angle + Mathf.PI / 2.0f );
-			if ( percentCharge > 0.0f )
-			{
-				w = (5.0f + 5.0f * percentCharge) * Mathf.Cos ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Cos ( angle + Mathf.PI / 2.0f );
-				h = (5.0f + 5.0f * percentCharge) * Mathf.Sin ( angle ) + (0.5f + 1.0f * percentCharge ) * Mathf.Sin ( angle + Mathf.PI / 2.0f );
-				//make long-range sand fist.
-				GameObject obj = (GameObject)Instantiate ( sandFistPrefab, transform.position, Quaternion.identity );
-				obj.GetComponent<StonePunch>().range = Mathf.Max ( Mathf.Abs( w ), Mathf.Abs ( h ) );
-				obj.GetComponent<StonePunch>().angle = angle;
-			}
-
-			//shift so the box is centered on the player: 
-			//move along the perpindicular axis to the target
-			if ( controller.facing == 1 || controller.facing == 3 )
-			{
-				x -= w / 2.0f;
-			}
-			else
-			{
-				y -= h / 2.0f;
-			}
-
-			//fix negatives (swap x1 <-> x2 and y1 <-> y2)
-			if ( w < 0.0f ) 
-			{
-				x = x + w;
-				w = Mathf.Abs ( w );
-			}
-			if ( h < 0.0f )
-			{
-				y = y + h;
-				h = Mathf.Abs ( h );
-			}
-
-			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
-			#endregion
-			//TODO: play a random sound
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch, 1.0f );
-			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch2, 1.0f );
-			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch3, 1.0f );
-			//GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch4, 1.0f );
+			ChangeState ( "xwinddown" );
 		}
-		ChangeState ( "xwinddown" );
+		else if ( player.state == "xwindup" )
+		{
+			player.nextState = "xwinddown"; //queue up.
+		}
 	}
 	public void XHeld( float dt )
 	{
@@ -371,10 +331,17 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.isDowned ) { return; }
 		if ( player.state == "idle" || player.state == "walk" )
 		{
-			//TODO: change direction not allowed, move is?
-			//TODO?: have a start-up cost / wind up window? (so you can't just spam block just in time?)
-			ChangeState( "ywindup" );
-			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkRockRaise, 1.0f );
+			if ( player.resource >= 0.50f )
+			{
+				//TODO: change direction not allowed, move is?
+				//TODO?: have a start-up cost / wind up window? (so you can't just spam block just in time?)
+				ChangeState( "ywindup" );
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkRockRaise, 1.0f );
+			}
+			else
+			{
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuCancel, 1.0f );
+			}
 		}
 	}
 	public void YReleased()
@@ -430,9 +397,9 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 	{
 		//Constantly gain sediment accumulation.
 		//Some moves degenerate it.
-		if ( player.state != "ycharge" )
+		if ( player.state != "ycharge" && player.state != "ywindup" )
 		{
-			player.resource = Mathf.Min ( player.resource + 0.1f * dt, 1.0f );
+			player.resource = Mathf.Min ( player.resource + passiveResourceRate * dt, 1.0f );
 		}
 	}
 
@@ -450,7 +417,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		if ( player.state == "xwindup" )
 		{
 			player.nextState = "xcharge";
-			player.stateTimer = 0.05f * 1.0f; //1 frame
+			player.stateTimer = 0.05f * 7.0f * 0.67f; //7 frames @ 30FPS
 			GetComponent<Animator>().Play ( "punch_charge_" + player.GetAniSuffix() );
 		}
 		else if ( player.state == "xcharge" )
@@ -461,15 +428,82 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		else if ( player.state == "xwinddown" )
 		{
 			player.nextState = "idle";
-			player.stateTimer = 0.05f * 10.0f; //10 frames
+			player.stateTimer = 0.05f * 10.0f * 0.33f; //10 frames @ 60FPS
 			GetComponent<Animator>().Play ( "punch_" + player.GetAniSuffix() );
+			#region hitbox
+			//damage
+			float percentCharge = Mathf.Max ( 0.0f, (Mathf.Min ( savedHoldTime, xChargeMax ) - xChargeMin) / (xChargeMax - xChargeMin) );
+			float damage = player.offense * (xBaseDamage + xAddDamage * percentCharge);
+			//hitbox
+			float angle = controller.facing * Mathf.PI / 2.0f;
+			float x = this.gameObject.transform.position.x;
+			float y = this.gameObject.transform.position.y;
+			float w = 0.5f * Mathf.Cos ( angle ) + 1.0f * Mathf.Cos ( angle + Mathf.PI / 2.0f );
+			float h = 0.5f * Mathf.Sin ( angle ) + 1.0f * Mathf.Sin ( angle + Mathf.PI / 2.0f );
+			if ( percentCharge > 0.0f && player.resource >= 0.25f )
+			{
+				//= length formula (along axis)                         + width formula (perpindicular to axis)
+				w = (2.5f + 2.5f * percentCharge) * Mathf.Cos ( angle ) + Mathf.Cos ( angle + Mathf.PI / 2.0f );
+				h = (2.5f + 2.5f * percentCharge) * Mathf.Sin ( angle ) + Mathf.Sin ( angle + Mathf.PI / 2.0f );
+				//make long-range sand fist.
+				GameObject obj = (GameObject)Instantiate ( sandFistPrefab, transform.position, Quaternion.identity );
+				obj.GetComponent<StonePunch>().range = Mathf.Max ( Mathf.Abs( w ), Mathf.Abs ( h ) );
+				obj.GetComponent<StonePunch>().angle = angle;
+				player.resource = Mathf.Max ( 0.0f, player.resource - 0.25f );
+			}
+			
+			//shift so the box is centered on the player: 
+			//move along the perpindicular axis to the target
+			if ( controller.facing == 1 || controller.facing == 3 )
+			{
+				x -= w / 2.0f;
+			}
+			else
+			{
+				y -= h / 2.0f;
+			}
+			
+			//fix negatives (swap x1 <-> x2 and y1 <-> y2)
+			if ( w < 0.0f ) 
+			{
+				x = x + w;
+				w = Mathf.Abs ( w );
+			}
+			if ( h < 0.0f )
+			{
+				y = y + h;
+				h = Mathf.Abs ( h );
+			}
+			
+			AttackSystem.hitBox ( new Rect( x, y, w, h ), damage, player.id  );
+			#endregion
+			#region PlayRandomSound
+			float rn = Random.Range ( 0.0f, 100.0f );
+			float possibilities = 4;
+			if ( rn <= 100.0f / possibilities * 1.0f )
+			{
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch, 1.0f );
+			}
+			else if ( rn <= 100.0f / possibilities * 2.0f )
+			{
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch2, 1.0f );
+			}
+			else if ( rn <= 100.0f / possibilities * 3.0f )
+			{
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch3, 1.0f );
+			}
+			else if ( rn <= 100.0f / possibilities * 4.0f )
+			{
+				GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkPunch4, 1.0f );
+			}
+			#endregion
 		}
 		#endregion
 		#region y
 		else if ( player.state == "ywindup" )
 		{
 			player.nextState = "ycharge";     //transition to immunity state!
-			player.stateTimer = 0.05f * 4.0f; //4 frames
+			player.stateTimer = 0.05f * 3.0f; //3 frames
 			player.canMove = false;
 			GetComponent<Animator>().Play ( "guard_" + player.GetAniSuffix() );
 		}
@@ -491,6 +525,7 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		{
 			player.nextState = "idle";
 			player.stateTimer = 0.05f * 6.0f; //6 frames
+			player.resource = Mathf.Max ( 0.0f, player.resource - 0.50f ); //hefty cost to break early to stop spam 4 damage.
 			player.canMove = true;
 			//attack
 			#region hitbox
@@ -556,7 +591,16 @@ public class StoneFist : MonoBehaviour, ClassFunctionalityInterface
 		#endregion
 		else if ( player.state == "bcharge" )
 		{
+			player.stateTimer = 0.0f;
+			player.nextState = "bcharge"; //freeze in loop
 			GetComponent<Animator>().Play ( "stoneskin_" + player.GetAniSuffix() );
+			player.canMove = false;
+		}
+		else if ( player.state == "bwinddown" )
+		{
+			player.stateTimer = 0.05f * 5.0f;
+			player.nextState = "idle";
+			GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MonkStoneSkinOn, 1.0f );
 		}
 	}
 }

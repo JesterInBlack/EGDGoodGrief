@@ -85,6 +85,7 @@
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector2.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector3.cs" />
      <Compile Include="Assets\Behavior Designer\Runtime\Variables\SharedVector4.cs" />
+     <Compile Include="Assets\LossScreen.cs" />
      <Compile Include="Assets\_Scripts\AttackSystem.cs" />
      <Compile Include="Assets\_Scripts\AuraFX.cs" />
      <Compile Include="Assets\_Scripts\Buff.cs" />

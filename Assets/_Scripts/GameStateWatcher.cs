@@ -51,7 +51,7 @@ public class GameStateWatcher : MonoBehaviour
 			}
 			else if ( lostT >= 1.5f )
 			{
-				Application.LoadLevel ( "MainMenu" );
+				Application.LoadLevel ( "Loss" );
 			}
 			//Debug.Log ( "Total Party Kill" );
 			lostT += Time.deltaTime * StaticData.t_scale;

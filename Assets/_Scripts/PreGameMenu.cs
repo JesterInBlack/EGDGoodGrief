@@ -54,7 +54,7 @@ public class PreGameMenu : MonoBehaviour
 	private int[] charSelection = new int[4];                               //index of player's selection
 	private bool[] charLockedIn = {false, false, false, false};             //if the player has confirmed their choice
 	private const float charLockinDelay = 3.0f;                             //3 ... 2... 1 ... GO!
-	private float charLockinTimer = 3.0f;
+	private float charLockinTimer = 1.0f;
 	private const int CLASS_COUNT = 2;                                      //number of classes
 
 	public Texture2D itemBackground;
@@ -73,7 +73,7 @@ public class PreGameMenu : MonoBehaviour
 	private const int ITEMS_PER_ROW = 6;                   //number of items per row
 	private const int ITEM_COUNT = 6;                      //number of items in total
 	private const float itemLockinDelay = 3.0f;            //3 ... 2 ... 1 ... GO!
-	private float itemLockinTimer = 3.0f;
+	private float itemLockinTimer = 1.0f;
 
 	#endregion
 
@@ -298,6 +298,9 @@ public class PreGameMenu : MonoBehaviour
 					{
 						currentScreen = MenuScreens.MAIN_MENU;
 						GetComponent<AudioSource>().PlayOneShot ( SoundStorage.MenuBack );
+						tutorial = false;
+						menuDataSaver.tutorial = tutorial; //write
+						GameState.isTutorial = tutorial; //write
 					}
 				}
 				if ( onLeftPressed( currentGamePadState[i], prevState[i] ) )
